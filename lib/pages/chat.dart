@@ -105,7 +105,9 @@ class _ChatPageState extends State<ChatPage> {
     const stringOutputParser = StringOutputParser<ChatResult>();
 
     final prompt = PromptValue.string(text);
-    final chain = model.pipe(stringOutputParser);
+
+    final chain = LangchainHelpers.buildConversationChain(text, model);
+
     final stream = chain.stream(prompt);
 
     chatHistoryController.addMessage(
