@@ -11,7 +11,8 @@ class ChatHistoryController {
 
   static void addMessage(String message, String sender) {
     final now = DateTime.now();
-    final formattedDateTime =  '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
+    final formattedDateTime =
+        '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
 
     _messageHistory.add(ChatMessage(
       message,
