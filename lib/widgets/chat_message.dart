@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:open_local_ui/controller/chat_controller.dart';
 import 'package:unicons/unicons.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   final String text;
   final String sender;
   final String dateTime;
-  final VoidCallback onCopyPressed;
-  final VoidCallback onRegeneratePressed;
 
   const ChatMessageWidget({
     super.key,
     required this.text,
     required this.sender,
     required this.dateTime,
-    required this.onCopyPressed,
-    required this.onRegeneratePressed,
   });
 
   @override
@@ -64,13 +62,10 @@ class ChatMessageWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () => {},
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: text));
+                },
                 icon: const Icon(UniconsLine.copy),
-              ),
-              const SizedBox(width: 8.0),
-              IconButton(
-                onPressed: () => {},
-                icon: const Icon(UniconsLine.repeat),
               ),
             ],
           ),

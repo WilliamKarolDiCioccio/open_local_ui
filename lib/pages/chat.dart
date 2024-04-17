@@ -140,8 +140,6 @@ class _ChatPageState extends State<ChatPage> {
                       text: message.text,
                       sender: message.sender,
                       dateTime: message.dateTime,
-                      onCopyPressed: () => {},
-                      onRegeneratePressed: () => {},
                     ),
                   ),
                 );
