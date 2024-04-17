@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
     const List<String> links = [
       'https://github.com/WilliamKarolDiCioccio/open_local_ui',
       'https://github.com/WilliamKarolDiCioccio',
-      'https://www.facebook.com',
+      'https://www.instagram.com/wilielmus/',
     ];
 
     return Card(

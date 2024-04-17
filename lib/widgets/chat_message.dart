@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:unicons/unicons.dart';
 
 class ChatMessageWidget extends StatelessWidget {
   final String text;
   final String sender;
-  final VoidCallback onCopyPressed;
-  final VoidCallback onRegeneratePressed;
+  final String dateTime;
 
   const ChatMessageWidget({
     super.key,
     required this.text,
     required this.sender,
-    required this.onCopyPressed,
-    required this.onRegeneratePressed,
+    required this.dateTime,
   });
 
   @override
@@ -41,6 +40,14 @@ class ChatMessageWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(width: 8.0),
+              Text(
+                dateTime,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w100,
+                ),
+              ),
             ],
           ),
           const Divider(),
@@ -54,13 +61,26 @@ class ChatMessageWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () => {},
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: text));
+
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'Text copied to clipboard',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    duration: const Duration(seconds: 3),
+                    backgroundColor: Colors.greenAccent.withOpacity(0.8),
+                    behavior: SnackBarBehavior.floating,
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
                 icon: const Icon(UniconsLine.copy),
-              ),
-              const SizedBox(width: 8.0),
-              IconButton(
-                onPressed: () => {},
-                icon: const Icon(UniconsLine.repeat),
               ),
             ],
           ),

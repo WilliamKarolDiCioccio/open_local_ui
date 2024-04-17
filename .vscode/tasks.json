@@ -31,7 +31,7 @@
         {
             "label": "Format",
             "type": "shell",
-            "command": "flutter format .",
+            "command": "dart format .",
             "group": {
                 "kind": "build",
                 "isDefault": true

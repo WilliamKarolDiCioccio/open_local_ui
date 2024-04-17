@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:unicons/unicons.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
-import 'package:unicons/unicons.dart';
+import 'package:open_local_ui/helpers/langchain_helpers.dart';
 import 'package:open_local_ui/controller/chat_controller.dart';
 import 'package:open_local_ui/widgets/chat_message.dart';
 import 'package:open_local_ui/widgets/page_base.dart';
@@ -49,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
       });
 
       setState(() {
-        final historyLenght = chatHistoryController.getHistoryLength();
+        final historyLenght = ChatHistoryController.getHistoryLength();
 
         if ((historyLenght - _messagesCnt) > 10) {
           _messagesCnt += 10;
@@ -62,7 +63,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  // ignore: unused_element
   void _autoScroll() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
@@ -71,51 +71,50 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  void _updateMessagesCnt() {
+    setState(() {
+      _messagesCnt = ChatHistoryController.getHistoryLength();
+    });
+  }
+
   void _sendMessage(String text) async {
     if (text.isEmpty) return;
 
-    if (chatSessionController.getUserName().isEmpty) {
-      chatHistoryController.addMessage(
-        'Please select a user',
-        chatSessionController.getModelName(),
-        DateTime.now(),
+    if (!ChatSessionController.isModelSelected() ||
+        !ChatSessionController.isModelSelected()) {
+      ChatHistoryController.addMessage(
+        'Please select a model and a user',
+        ChatSessionController.getModelName(),
       );
-      return;
-    }
-    if (chatSessionController.getModelName().isEmpty) {
-      chatHistoryController.addMessage(
-        'Please select a model',
-        chatSessionController.getModelName(),
-        DateTime.now(),
-      );
+
+      _updateMessagesCnt();
+
       return;
     }
 
-    chatHistoryController.addMessage(
-      text,
-      chatSessionController.getUserName(),
-      DateTime.now(),
-    );
+    ChatHistoryController.addMessage(text, ChatSessionController.getUserName());
 
-    const stringOutputParser = StringOutputParser<ChatResult>();
+    _updateMessagesCnt();
+
+    _autoScroll();
 
     final prompt = PromptValue.string(text);
-    final chain = model.pipe(stringOutputParser);
+
+    final chain = LangchainHelpers.buildConversationChain(text, model);
+
     final stream = chain.stream(prompt);
 
-    chatHistoryController.addMessage(
-      '',
-      chatSessionController.getModelName(),
-      DateTime.now(),
-    );
+    ChatHistoryController.addMessage('', ChatSessionController.getModelName());
+
+    _updateMessagesCnt();
 
     await stream.forEach((response) {
-      chatHistoryController.getLastMessage().text += response;
+      ChatHistoryController.getLastMessage().text += response;
 
-      setState(() {
-        _messagesCnt = chatHistoryController.getHistoryLength();
-      });
+      setState(() {});
     });
+
+    _autoScroll();
   }
 
   @override
@@ -130,7 +129,7 @@ class _ChatPageState extends State<ChatPage> {
               controller: _scrollController,
               itemCount: _messagesCnt,
               itemBuilder: (context, index) {
-                final message = chatHistoryController.getMessage(index);
+                final message = ChatHistoryController.getMessage(index);
                 if (index == _messagesCnt - 1 && _isLoading) {
                   return const Center(child: LinearProgressIndicator());
                 }
@@ -140,8 +139,7 @@ class _ChatPageState extends State<ChatPage> {
                     child: ChatMessageWidget(
                       text: message.text,
                       sender: message.sender,
-                      onCopyPressed: () => {},
-                      onRegeneratePressed: () => {},
+                      dateTime: message.dateTime,
                     ),
                   ),
                 );
@@ -175,7 +173,7 @@ class _ChatPageState extends State<ChatPage> {
                 DropdownMenuEntry(value: 'llama2', label: 'llama2'),
               ],
               onSelected: (value) =>
-                  chatSessionController.setModelName(value ?? ''),
+                  ChatSessionController.setModelName(value ?? ''),
             ),
             const Spacer(),
             DropdownMenu(
@@ -191,7 +189,7 @@ class _ChatPageState extends State<ChatPage> {
                 DropdownMenuEntry(value: 'Wilielmus', label: 'Wilielmus'),
               ],
               onSelected: (value) =>
-                  chatSessionController.setUserName(value ?? ''),
+                  ChatSessionController.setUserName(value ?? ''),
             ),
           ],
         ),
