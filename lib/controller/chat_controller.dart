@@ -1,77 +1,75 @@
-
-const int ollamaDefaultPort = 11434;
-
 class ChatMessage {
-   String text;
-   String sender;
-   DateTime time;
+  String text;
+  String sender;
+  String dateTime;
 
-  ChatMessage(this.text, this.sender, this.time);
+  ChatMessage(this.text, this.sender, this.dateTime);
 }
 
 class ChatHistoryController {
-  final List<ChatMessage> _messageHistory = [];
+  static final List<ChatMessage> _messageHistory = [];
 
-  void addMessage(String message, String sender, DateTime time) async {
-    _messageHistory.add(ChatMessage(message, sender, time));
+  static void addMessage(String message, String sender) {
+    final now = DateTime.now();
+    final formattedDateTime =  '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
+
+    _messageHistory.add(ChatMessage(
+      message,
+      sender,
+      formattedDateTime,
+    ));
   }
 
-  void removeMessage(int index) async {
+  static void removeMessage(int index) {
     _messageHistory.removeAt(index);
   }
 
-  void clearHistory() async {
+  static void clearHistory() {
     _messageHistory.clear();
   }
 
-  List<ChatMessage> getHistory() {
+  static List<ChatMessage> getHistory() {
     return List.from(_messageHistory);
   }
 
-  ChatMessage getMessage(int index) {
+  static ChatMessage getMessage(int index) {
     return _messageHistory[index];
   }
 
-  ChatMessage getLastMessage() {
+  static ChatMessage getLastMessage() {
     return _messageHistory.last;
   }
 
-  int getHistoryLength() {
+  static int getHistoryLength() {
     return _messageHistory.length;
   }
 }
 
-final ChatHistoryController chatHistoryController =
-    ChatHistoryController();
-
 class ChatSessionController {
-  String _userName = '';
-  String _modelName = '';
+  static String _userName = '';
+  static String _modelName = '';
 
-  void setUserName(String userName) {
+  static void setUserName(String userName) {
     _userName = userName;
   }
 
-  void setModelName(String modelName) {
+  static void setModelName(String modelName) {
     _modelName = modelName;
   }
 
-  String getUserName() {
+  static String getUserName() {
     return _userName;
   }
 
-  String getModelName() {
+  static String getModelName() {
     return _modelName;
   }
 
-  bool isUserSelected() {
+  static bool isUserSelected() {
     return _userName.isNotEmpty;
   }
 
-  bool isModelSelected() {
+  static bool isModelSelected() {
     return _modelName.isNotEmpty;
   }
 }
-
-final ChatSessionController chatSessionController =
-    ChatSessionController();

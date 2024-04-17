@@ -4,6 +4,7 @@ import 'package:unicons/unicons.dart';
 class ChatMessageWidget extends StatelessWidget {
   final String text;
   final String sender;
+  final String dateTime;
   final VoidCallback onCopyPressed;
   final VoidCallback onRegeneratePressed;
 
@@ -11,6 +12,7 @@ class ChatMessageWidget extends StatelessWidget {
     super.key,
     required this.text,
     required this.sender,
+    required this.dateTime,
     required this.onCopyPressed,
     required this.onRegeneratePressed,
   });
@@ -39,6 +41,14 @@ class ChatMessageWidget extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Text(
+                dateTime,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w100,
                 ),
               ),
             ],
