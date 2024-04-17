@@ -1,7 +1,7 @@
 # OpenLocalUI
 
 <p align="center">
-  <img align="center" width="256" height="256" title="Rake logo" src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/screenshot.png">
+  <img align="center" width="512" title="Rake logo" src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/screenshot.png">
 </p>
 
 ## What is OpenLocalUI
