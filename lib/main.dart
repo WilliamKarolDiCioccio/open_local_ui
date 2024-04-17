@@ -2,10 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
+
+  FlutterNativeSplash.remove();
+
   runApp(MyApp(savedThemeMode: savedThemeMode));
 }
 
