@@ -62,7 +62,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  // ignore: unused_element
   void _autoScroll() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
@@ -71,23 +70,25 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  void _updateMessagesCnt() {
+    setState(() {
+      _messagesCnt = chatHistoryController.getHistoryLength();
+    });
+  }
+
   void _sendMessage(String text) async {
     if (text.isEmpty) return;
 
-    if (chatSessionController.getUserName().isEmpty) {
+    if (!chatSessionController.isModelSelected() ||
+        !chatSessionController.isModelSelected()) {
       chatHistoryController.addMessage(
-        'Please select a user',
+        'Please select a model and a user',
         chatSessionController.getModelName(),
         DateTime.now(),
       );
-      return;
-    }
-    if (chatSessionController.getModelName().isEmpty) {
-      chatHistoryController.addMessage(
-        'Please select a model',
-        chatSessionController.getModelName(),
-        DateTime.now(),
-      );
+
+      _updateMessagesCnt();
+
       return;
     }
 
@@ -96,6 +97,10 @@ class _ChatPageState extends State<ChatPage> {
       chatSessionController.getUserName(),
       DateTime.now(),
     );
+
+    _updateMessagesCnt();
+    
+    _autoScroll();
 
     const stringOutputParser = StringOutputParser<ChatResult>();
 
@@ -109,13 +114,15 @@ class _ChatPageState extends State<ChatPage> {
       DateTime.now(),
     );
 
+    _updateMessagesCnt();
+
     await stream.forEach((response) {
       chatHistoryController.getLastMessage().text += response;
 
-      setState(() {
-        _messagesCnt = chatHistoryController.getHistoryLength();
-      });
+      setState(() {});
     });
+
+    _autoScroll();
   }
 
   @override
