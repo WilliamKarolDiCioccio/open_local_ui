@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:open_local_ui/controller/chat_controller.dart';
 import 'package:unicons/unicons.dart';
 
 class ChatMessageWidget extends StatelessWidget {
@@ -64,6 +63,22 @@ class ChatMessageWidget extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: text));
+
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'Text copied to clipboard',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    duration: const Duration(seconds: 3),
+                    backgroundColor: Colors.greenAccent.withOpacity(0.8),
+                    behavior: SnackBarBehavior.floating,
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 icon: const Icon(UniconsLine.copy),
               ),
