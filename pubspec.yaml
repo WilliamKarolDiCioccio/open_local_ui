@@ -20,6 +20,7 @@ dependencies:
   flutter_markdown: ^0.6.23
   flutter_native_splash: ^2.4.0
   bitsdojo_window: ^0.1.6
+  process_run: ^0.14.2
 
 dev_dependencies:
   flutter_test:
