@@ -15,7 +15,7 @@ class TextIconButtonComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(icon),
         const SizedBox(width: 8.0),
