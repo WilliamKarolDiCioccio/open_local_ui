@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:open_local_ui/controller/chat_controller.dart';
 import 'package:open_local_ui/pages/home.dart';
 import 'package:open_local_ui/pages/chat.dart';
@@ -61,6 +62,17 @@ class _DashboardLayoutState extends State<DashboardLayout> {
       width: 200.0,
       child: Column(
         children: [
+          WindowTitleBarBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MinimizeWindowButton(),
+                MaximizeWindowButton(),
+                CloseWindowButton(),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16.0),
           const Text(
             'OpenLocalUI',
             style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
@@ -132,10 +144,6 @@ class _DashboardLayoutState extends State<DashboardLayout> {
 
   void _changePage(int pageIndex) {
     setState(() {});
-    _pageController.animateToPage(
-      pageIndex,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    _pageController.jumpToPage(pageIndex);
   }
 }
