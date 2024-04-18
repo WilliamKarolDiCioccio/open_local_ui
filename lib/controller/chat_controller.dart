@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 class ChatMessage {
   String text;
   String sender;
@@ -49,6 +51,9 @@ class ChatHistoryController {
 class ChatSessionController {
   static String _userName = '';
   static String _modelName = '';
+  static bool _webSearch = false;
+  static bool _docsSearch = true;
+  static bool _autoScroll = true;
 
   static void setUserName(String userName) {
     _userName = userName;
@@ -66,11 +71,25 @@ class ChatSessionController {
     return _modelName;
   }
 
-  static bool isUserSelected() {
-    return _userName.isNotEmpty;
+  static bool get isUserSelected => _userName.isNotEmpty;
+
+  static bool get isModelSelected => _modelName.isNotEmpty;
+
+  static void enableWebSearch(bool value) {
+    _webSearch = value;
   }
 
-  static bool isModelSelected() {
-    return _modelName.isNotEmpty;
+  static void enableDocsSearch(bool value) {
+    _docsSearch = value;
   }
+
+  static void enableAutoScroll(bool value) {
+    _autoScroll = value;
+  }
+
+  static bool get isWebSearchEnabled => _webSearch;
+
+  static bool get isDocsSearchEnabled => _docsSearch;
+
+  static bool get isAutoScrollEnabled => _autoScroll;
 }

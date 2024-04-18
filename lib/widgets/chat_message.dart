@@ -6,12 +6,16 @@ class ChatMessageWidget extends StatelessWidget {
   final String text;
   final String sender;
   final String dateTime;
+  final Function onDelete;
+  final Function onRegenerate;
 
   const ChatMessageWidget({
     super.key,
     required this.text,
     required this.sender,
     required this.dateTime,
+    required this.onDelete,
+    required this.onRegenerate,
   });
 
   @override
@@ -61,6 +65,7 @@ class ChatMessageWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
+                tooltip: 'Copy text',
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: text));
 
@@ -81,6 +86,18 @@ class ChatMessageWidget extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 icon: const Icon(UniconsLine.copy),
+              ),
+              const SizedBox(width: 8.0),
+              IconButton(
+                tooltip: 'Regenerate text',
+                onPressed: () => onRegenerate(),
+                icon: const Icon(UniconsLine.repeat),
+              ),
+              const SizedBox(width: 8.0),
+              IconButton(
+                tooltip: 'Delete message',
+                onPressed: () => onDelete(),
+                icon: const Icon(UniconsLine.trash),
               ),
             ],
           ),

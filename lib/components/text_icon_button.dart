@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class TextIconButton extends StatelessWidget {
+class TextIconButtonComponent extends StatelessWidget {
   final String text;
   final IconData icon;
   final VoidCallback onPressed;
 
-  const TextIconButton({
+  const TextIconButtonComponent({
     super.key,
     required this.text,
     required this.icon,

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:open_local_ui/widgets/page_base.dart';
+import 'package:open_local_ui/layout/page_base.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return PageBase(
+    return PageBaseLayout(
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

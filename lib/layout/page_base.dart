@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class PageBase extends StatelessWidget {
+class PageBaseLayout extends StatelessWidget {
   final Widget body;
 
-  const PageBase({super.key, required this.body});
+  const PageBaseLayout({super.key, required this.body});
 
   @override
   Widget build(BuildContext context) {

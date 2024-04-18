@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:open_local_ui/widgets/page_base.dart';
+import 'package:open_local_ui/layout/page_base.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const PageBase(
+    return const PageBaseLayout(
       body: Row(
         children: [
           Expanded(

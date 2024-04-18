@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:unicons/unicons.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:open_local_ui/controller/chat_controller.dart';
 import 'package:open_local_ui/pages/home.dart';
 import 'package:open_local_ui/pages/chat.dart';
 import 'package:open_local_ui/pages/archive.dart';
 import 'package:open_local_ui/pages/models.dart';
 import 'package:open_local_ui/pages/settings.dart';
-import 'package:open_local_ui/widgets/text_icon_button.dart';
+import 'package:open_local_ui/components/text_icon_button.dart';
 
 class DashboardLayout extends StatefulWidget {
   const DashboardLayout({super.key});
@@ -65,32 +66,48 @@ class _DashboardLayoutState extends State<DashboardLayout> {
             style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 32.0),
-          TextIconButton(
+          TextIconButtonComponent(
             text: 'Home',
             icon: UniconsLine.home,
             onPressed: () => _changePage(0),
           ),
           const Divider(height: 32.0),
-          TextIconButton(
+          TextIconButtonComponent(
             text: 'Chat',
             icon: UniconsLine.comment,
             onPressed: () => _changePage(1),
           ),
-          TextIconButton(
+          TextIconButtonComponent(
             text: 'Archive',
             icon: UniconsLine.archive,
             onPressed: () => _changePage(2),
           ),
-          TextIconButton(
+          TextIconButtonComponent(
             text: 'Models',
             icon: UniconsLine.cube,
             onPressed: () => _changePage(3),
           ),
           const Divider(height: 32.0),
-          TextIconButton(
+          TextIconButtonComponent(
             text: 'Settings',
             icon: UniconsLine.cog,
             onPressed: () => _changePage(4),
+          ),
+          const Spacer(),
+          DropdownMenu(
+            inputDecorationTheme: InputDecorationTheme(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            enableFilter: true,
+            enableSearch: true,
+            label: const Text('User'),
+            dropdownMenuEntries: const [
+              DropdownMenuEntry(value: 'Wilielmus', label: 'Wilielmus'),
+            ],
+            onSelected: (value) =>
+                ChatSessionController.setUserName(value ?? ''),
           ),
         ],
       ),
