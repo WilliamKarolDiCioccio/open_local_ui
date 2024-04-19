@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_local_ui/controllers/chat_controller.dart';
 import 'package:open_local_ui/layout/side_menu_base.dart';
+import 'package:open_local_ui/pages/about.dart';
 import 'package:open_local_ui/pages/users.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -108,6 +109,11 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               icon: UniconsLine.setting,
               onPressed: () => _changePage(5),
             ),
+            TextIconButtonComponent(
+              text: 'About',
+              icon: UniconsLine.info_circle,
+              onPressed: () => _changePage(6),
+            ),
           ],
         ),
       ),
@@ -127,6 +133,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
         ModelsPage(),
         UsersPage(),
         SettingsPage(),
+        AboutPage(),
       ],
     );
   }
