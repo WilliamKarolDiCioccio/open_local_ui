@@ -43,10 +43,11 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
     final List<DropdownMenuEntry> modelsMenuEntries = [];
 
     for (final model in context.read<ModelController>().models) {
-      final name = model.name.length > 20
+      final shortName = model.name.length > 20
           ? '${model.name.substring(0, 20)}...'
           : model.name;
-      modelsMenuEntries.add(DropdownMenuEntry(value: name, label: name));
+          
+      modelsMenuEntries.add(DropdownMenuEntry(value: model.name, label: shortName));
     }
 
     return DropdownMenu(
