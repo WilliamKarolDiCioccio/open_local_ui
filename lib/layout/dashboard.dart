@@ -95,7 +95,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               child: Divider(height: 32.0),
             ),
             TextIconButtonComponent(
-              text: Provider.of<ChatController>(context).getUserName(),
+              text: Provider.of<ChatController>(context).userName,
               onPressed: () => _showUserSelectionDialog(context),
               icon: UniconsLine.user,
             ),
@@ -151,8 +151,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   enableFilter: true,
                   enableSearch: true,
                   hintText: 'Select a user',
-                  initialSelection:
-                      context.read<ChatController>().getUserName(),
+                  initialSelection: context.read<ChatController>().userName,
                   dropdownMenuEntries: const [
                     DropdownMenuEntry(value: 'Default', label: 'Default'),
                   ],

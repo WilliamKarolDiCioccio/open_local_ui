@@ -47,19 +47,13 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                itemCount: value.getHistoryLength(),
+                itemCount: value.messageCount,
                 itemBuilder: (context, index) {
                   final message = value.getMessage(index);
                   return Center(
                     child: FractionallySizedBox(
                       widthFactor: 0.6,
-                      child: ChatMessageWidget(
-                        text: message.text,
-                        sender: message.sender,
-                        dateTime: message.dateTime,
-                        onDelete: () {},
-                        onRegenerate: () {},
-                      ),
+                      child: ChatMessageWidget(message),
                     ),
                   );
                 },

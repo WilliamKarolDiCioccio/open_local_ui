@@ -10,8 +10,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  double _sliderValue = 0;
-
   @override
   Widget build(BuildContext context) {
     return PageBaseLayout(
@@ -29,19 +27,6 @@ class _SettingsPageState extends State<SettingsPage> {
               child: _buildThemeSettings(context),
             ),
           ),
-          const SizedBox(width: 16.0),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AdaptiveTheme.of(context).theme.dividerColor,
-                ),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              padding: const EdgeInsets.all(16.0),
-              child: _buildAccessibilitySettings(context),
-            ),
-          ),
         ],
       ),
     );
@@ -57,47 +42,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         Divider(),
         ThemeSwtch(),
-      ],
-    );
-  }
-
-  Widget _buildAccessibilitySettings(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          'Accessibility',
-          style: TextStyle(fontSize: 24.0),
-        ),
-        const Divider(),
-        const Text('Language'),
-        DropdownMenu(
-          width: 150.0,
-          inputDecorationTheme: const InputDecorationTheme(
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.never,
-          ),
-          enableFilter: true,
-          enableSearch: true,
-          hintText: 'Select language',
-          dropdownMenuEntries: const [
-            DropdownMenuEntry(value: 'Default', label: 'Default'),
-          ],
-          onSelected: (value) {},
-        ),
-        const Text('Color blindness'),
-        Slider(
-          min: 0,
-          max: 7,
-          divisions: 7,
-          value: _sliderValue,
-          onChanged: (value) {
-            setState(() {
-              _sliderValue = value;
-            });
-          },
-        ),
       ],
     );
   }

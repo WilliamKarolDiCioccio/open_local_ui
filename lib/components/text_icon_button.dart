@@ -17,7 +17,6 @@ class TextIconButtonComponent extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(width: 8.0),
         TextButton.icon(
           label: Text(
             text,

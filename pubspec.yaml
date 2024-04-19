@@ -23,6 +23,7 @@ dependencies:
   process_run: ^0.14.2
   http: ^1.2.1
   provider: ^6.1.2
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:

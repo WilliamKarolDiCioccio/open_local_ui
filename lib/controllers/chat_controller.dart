@@ -2,137 +2,144 @@ import 'package:flutter/material.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:open_local_ui/helpers/langchain_helpers.dart';
+import 'package:uuid/uuid.dart';
+
+enum ChatMessageType { user, model, system }
 
 class ChatMessage {
   String text;
-  String sender;
-  String dateTime;
+  final String sender;
+  final String dateTime;
+  final String uuid;
+  final ChatMessageType type;
 
-  ChatMessage(this.text, this.sender, this.dateTime);
+  ChatMessage(this.text, this.sender, this.dateTime, this.uuid, this.type);
 }
 
 class ChatController extends ChangeNotifier {
-  final model = ChatOllama();
   String _userName = '';
   String _modelName = '';
   bool _webSearch = false;
   bool _docsSearch = true;
   bool _autoScroll = true;
-  final List<ChatMessage> _messageHistory = [];
+  bool _isGenerating = false;
+  late ChatOllama model;
+  final List<ChatMessage> _messages = [];
 
-  void addMessage(String message, String sender) {
+  void addMessage(String message, String sender, ChatMessageType type) {
     final now = DateTime.now();
     final formattedDateTime =
         '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
 
-    _messageHistory.add(ChatMessage(
+    final uuid = const Uuid().v4();
+
+    _messages.add(ChatMessage(
       message,
       sender,
       formattedDateTime,
+      uuid,
+      type,
     ));
 
     notifyListeners();
   }
 
   void sendMessage(String text) async {
-    if (text.isEmpty) return;
-
-    if (!isUserSelected || !isModelSelected) {
+    if (text.isEmpty || !isUserSelected || !isModelSelected) {
       addMessage(
-        'Please select a model and a user',
-        'system',
-      );
-
-      notifyListeners();
-
+          'Please select a model and a user', 'system', ChatMessageType.system);
       return;
     }
 
-    addMessage(text, getUserName());
+    _isGenerating = true;
 
     notifyListeners();
+
+    addMessage(text, _userName, ChatMessageType.user);
 
     final prompt = PromptValue.string(text);
-
     final chain = LangchainHelpers.buildConversationChain(text, model);
-
     final stream = chain.stream(prompt);
 
-    addMessage('', getModelName());
-
-    notifyListeners();
+    addMessage('', _modelName, ChatMessageType.model);
 
     await stream.forEach((response) {
-      getLastMessage().text += response;
+      _messages.last.text += response;
       notifyListeners();
     });
+
+    _isGenerating = false;
+
+    notifyListeners();
   }
 
-  void removeMessage(int index) {
-    _messageHistory.removeAt(index);
+  void removeMessage(String uuid) {
+    final index = _messages.indexWhere((element) => element.uuid == uuid);
+    _messages.removeRange(index, messageCount);
+    notifyListeners();
+  }
+
+  void regenerateMessage(String uuid, String text) {
+    final index = _messages.indexWhere((element) => element.uuid == uuid);
+    _messages.removeRange(index, messageCount);
+    sendMessage(text);
+    notifyListeners();
   }
 
   void clearHistory() {
-    _messageHistory.clear();
+    _messages.clear();
+    notifyListeners();
   }
 
-  List<ChatMessage> getHistory() {
-    return List.from(_messageHistory);
+  void setUserName(String name) {
+    _userName = name;
+    notifyListeners();
   }
 
-  ChatMessage getMessage(int index) {
-    return _messageHistory[index];
+  void setModelName(String name) {
+    _modelName = name;
+    model = ChatOllama(defaultOptions: ChatOllamaOptions(model: name));
+    notifyListeners();
   }
-
-  ChatMessage getLastMessage() {
-    return _messageHistory.last;
-  }
-
-  int getHistoryLength() {
-    return _messageHistory.length;
-  }
-
-  void setUserName(String userName) {
-    _userName = userName;
-  }
-
-  void setModelName(String modelName) {
-    _modelName = modelName;
-  }
-
-  String getUserName() {
-    if (_userName.isEmpty) {
-      return 'Unknown';
-    }
-    return _userName;
-  }
-
-  String getModelName() {
-    if (_modelName.isEmpty) {
-      return 'Unknown';
-    }
-    return _modelName;
-  }
-
-  bool get isUserSelected => _userName.isNotEmpty;
-
-  bool get isModelSelected => _modelName.isNotEmpty;
 
   void enableWebSearch(bool value) {
     _webSearch = value;
+    notifyListeners();
   }
 
   void enableDocsSearch(bool value) {
     _docsSearch = value;
+    notifyListeners();
   }
 
   void enableAutoScroll(bool value) {
     _autoScroll = value;
+    notifyListeners();
   }
+
+  String get userName => _userName.isNotEmpty ? _userName : 'Guest';
+
+  String? get modelName => _modelName.isNotEmpty ? _modelName : null;
+
+  bool get isUserSelected => _userName.isNotEmpty;
+
+  bool get isModelSelected => _modelName.isNotEmpty;
 
   bool get isWebSearchEnabled => _webSearch;
 
   bool get isDocsSearchEnabled => _docsSearch;
 
   bool get isAutoScrollEnabled => _autoScroll;
+
+  List<ChatMessage> get history => List.from(_messages);
+
+  ChatMessage getMessage(int index) => _messages[index];
+
+  ChatMessage get lastMessage => _messages.last;
+
+  List<ChatMessage> get messages => _messages;
+
+  int get messageCount => _messages.length;
+
+  bool get isGenerating => _isGenerating;
 }

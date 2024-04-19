@@ -11,7 +11,7 @@ class PageBaseLayout extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AdaptiveTheme.of(context).mode.isDark
-            ? Colors.black54
+            ? Colors.black12
             : Colors.white,
       ),
       padding: const EdgeInsets.all(32.0),

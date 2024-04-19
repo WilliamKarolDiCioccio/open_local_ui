@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:open_local_ui/utils/logger.dart';
 import 'package:process_run/shell.dart';
 import 'package:http/http.dart' as http;
@@ -56,7 +57,7 @@ class ModelDetails {
   }
 }
 
-class ModelsController {
+class ModelController extends ChangeNotifier {
   static final _shell = Shell();
   static final List<Model> _models = [];
 
@@ -76,17 +77,24 @@ class ModelsController {
     _shell.run('ollama push $name');
   }
 
-  static void updateList() async {
+  static void updateModelsList() async {
     final url = Uri.parse('http://localhost:11434/api/tags');
 
-    await http.get(url).then((value) {
-      final model = Model.fromJson(jsonDecode(value.body));
-      _models.add(model);
+    await http.get(url).then((response) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      final List<dynamic> modelsJson = data['models'];
+
+      _models.clear();
+
+      for (final modelJson in modelsJson) {
+        _models.add(Model.fromJson(modelJson));
+      }
     }).catchError((error) {
       logger.e(error);
     });
   }
 
-  static List<Model> get models => _models;
-  static int get modelsCount => _models.length;
+  List<Model> get models => _models;
+
+  int get modelsCount => _models.length;
 }

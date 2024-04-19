@@ -1,23 +1,46 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:open_local_ui/controllers/chat_controller.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
-class ChatMessageWidget extends StatelessWidget {
-  final String text;
-  final String sender;
-  final String dateTime;
-  final Function onDelete;
-  final Function onRegenerate;
+class ChatMessageWidget extends StatefulWidget {
+  final ChatMessage message;
 
-  const ChatMessageWidget({
+  const ChatMessageWidget(
+    this.message, {
     super.key,
-    required this.text,
-    required this.sender,
-    required this.dateTime,
-    required this.onDelete,
-    required this.onRegenerate,
   });
+
+  @override
+  State<ChatMessageWidget> createState() => _ChatMessageWidgetState();
+}
+
+class _ChatMessageWidgetState extends State<ChatMessageWidget> {
+  void _regenerateMessage() {
+    final provider = Provider.of<ChatController>(context, listen: false);
+
+    if (provider.isGenerating) {
+      final snackBar = SnackBar(
+        content: const Text(
+          'Model is generating a response, please wait...',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.red.withOpacity(0.8),
+        behavior: SnackBarBehavior.floating,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      provider.regenerateMessage(widget.message.uuid, widget.message.text);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +62,7 @@ class ChatMessageWidget extends StatelessWidget {
               ),
               const SizedBox(width: 8.0),
               Text(
-                sender,
+                widget.message.sender,
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -47,7 +70,7 @@ class ChatMessageWidget extends StatelessWidget {
               ),
               const SizedBox(width: 8.0),
               Text(
-                dateTime,
+                widget.message.dateTime,
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w100,
@@ -57,17 +80,17 @@ class ChatMessageWidget extends StatelessWidget {
           ),
           const Divider(),
           MarkdownBody(
-            data: text,
+            data: widget.message.text,
             selectable: true,
           ),
-          const Divider(),
+          const SizedBox(height: 8.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
                 tooltip: 'Copy text',
                 onPressed: () {
-                  Clipboard.setData(ClipboardData(text: text));
+                  Clipboard.setData(ClipboardData(text: widget.message.text));
 
                   final snackBar = SnackBar(
                     content: const Text(
@@ -79,7 +102,7 @@ class ChatMessageWidget extends StatelessWidget {
                       ),
                     ),
                     duration: const Duration(seconds: 3),
-                    backgroundColor: Colors.greenAccent.withOpacity(0.8),
+                    backgroundColor: Colors.green.withOpacity(0.8),
                     behavior: SnackBarBehavior.floating,
                   );
 
@@ -88,16 +111,24 @@ class ChatMessageWidget extends StatelessWidget {
                 icon: const Icon(UniconsLine.copy),
               ),
               const SizedBox(width: 8.0),
-              IconButton(
-                tooltip: 'Regenerate text',
-                onPressed: () => onRegenerate(),
-                icon: const Icon(UniconsLine.repeat),
+              Visibility(
+                visible: widget.message.type == ChatMessageType.user,
+                child: IconButton(
+                  tooltip: 'Regenerate text',
+                  onPressed: () => _regenerateMessage(),
+                  icon: const Icon(UniconsLine.repeat),
+                ),
               ),
               const SizedBox(width: 8.0),
-              IconButton(
-                tooltip: 'Delete message',
-                onPressed: () => onDelete(),
-                icon: const Icon(UniconsLine.trash),
+              Visibility(
+                visible: widget.message.type == ChatMessageType.user,
+                child: IconButton(
+                  tooltip: 'Delete message',
+                  onPressed: () =>
+                      Provider.of<ChatController>(context, listen: false)
+                          .removeMessage(widget.message.uuid),
+                  icon: const Icon(UniconsLine.trash),
+                ),
               ),
             ],
           ),

@@ -14,13 +14,24 @@ void main() async {
 
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
-  ModelsController.serve();
+  ModelController.serve();
+  ModelController.updateModelsList();
 
   FlutterNativeSplash.remove();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ChatController(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ChatController>(
+          create: (context) => ChatController(),
+        ),
+        ChangeNotifierProvider<ModelController>(
+          create: (context) => ModelController(),
+        ),
+        ChangeNotifierProvider<ChatController>(
+          create: (context) => ChatController(),
+        ),
+      ],
       child: MyApp(savedThemeMode: savedThemeMode),
     ),
   );

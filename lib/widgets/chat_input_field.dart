@@ -19,42 +19,59 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
     super.dispose();
   }
 
+  void _sendMessage() {
+    final provider = Provider.of<ChatController>(context, listen: false);
+
+    if (provider.isGenerating) {
+      final snackBar = SnackBar(
+        content: const Text(
+          'Model is generating a response, please wait...',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.red.withOpacity(0.8),
+        behavior: SnackBarBehavior.floating,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      final message = _textEditingController.text;
+
+      provider.sendMessage(message);
+
+      _textEditingController.clear();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, value, child) => FractionallySizedBox(
-        widthFactor: 0.8,
-        child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _textEditingController,
-                decoration: InputDecoration(
-                  hintText: 'Type your message...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: const Icon(UniconsLine.message),
-                    onPressed: () {
-                      final message = _textEditingController.text;
-                      Provider.of<ChatController>(context, listen: false)
-                          .sendMessage(message);
-                      _textEditingController.clear();
-                    },
-                  ),
+    return FractionallySizedBox(
+      widthFactor: 0.8,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                hintText: 'Type your message...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
-                onSubmitted: (String message) {
-                  final provider =
-                      Provider.of<ChatController>(context, listen: false);
-                  provider.sendMessage(message);
-                  _textEditingController.clear();
-                },
-                autofocus: true,
+                suffixIcon: IconButton(
+                  tooltip: 'Send message',
+                  icon: const Icon(UniconsLine.message),
+                  onPressed: () => _sendMessage(),
+                ),
               ),
+              onSubmitted: (String message) => _sendMessage(),
+              autofocus: true,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
