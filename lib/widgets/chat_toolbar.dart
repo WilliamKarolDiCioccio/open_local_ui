@@ -46,8 +46,9 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       final shortName = model.name.length > 20
           ? '${model.name.substring(0, 20)}...'
           : model.name;
-          
-      modelsMenuEntries.add(DropdownMenuEntry(value: model.name, label: shortName));
+
+      modelsMenuEntries
+          .add(DropdownMenuEntry(value: model.name, label: shortName));
     }
 
     return DropdownMenu(
