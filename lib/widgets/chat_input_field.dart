@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:open_local_ui/controllers/chat_controller.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 class ChatInputFieldWidget extends StatefulWidget {
-  final Function(String) sendMessage;
-
-  const ChatInputFieldWidget({required this.sendMessage, super.key});
+  const ChatInputFieldWidget({super.key});
 
   @override
   State<ChatInputFieldWidget> createState() => _ChatInputFieldWidgetState();
@@ -21,9 +21,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: FractionallySizedBox(
+    return Consumer(
+      builder: (context, value, child) => FractionallySizedBox(
         widthFactor: 0.8,
         child: Row(
           children: [
@@ -31,7 +30,6 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
               child: TextField(
                 controller: _textEditingController,
                 decoration: InputDecoration(
-                  fillColor: Colors.grey[100],
                   hintText: 'Type your message...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
@@ -40,17 +38,19 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                     icon: const Icon(UniconsLine.message),
                     onPressed: () {
                       final message = _textEditingController.text;
-                      widget.sendMessage(message);
+                      Provider.of<ChatController>(context, listen: false)
+                          .sendMessage(message);
                       _textEditingController.clear();
                     },
                   ),
                 ),
                 onSubmitted: (String message) {
-                  widget.sendMessage(message);
+                  final provider =
+                      Provider.of<ChatController>(context, listen: false);
+                  provider.sendMessage(message);
                   _textEditingController.clear();
                 },
                 autofocus: true,
-                maxLength: 4096,
               ),
             ),
           ],

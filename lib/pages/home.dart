@@ -10,10 +10,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageBaseLayout(
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _buildGrid(),
-        ),
+        child: _buildGrid(),
       ),
     );
   }

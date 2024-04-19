@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:open_local_ui/controller/chat_controller.dart';
+import 'package:open_local_ui/controllers/chat_controller.dart';
+import 'package:provider/provider.dart';
 
 class ChatToolbarWidget extends StatefulWidget {
   const ChatToolbarWidget({super.key});
@@ -16,9 +17,8 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: FractionallySizedBox(
+    return Consumer<ChatController>(
+      builder: (context, value, child) => FractionallySizedBox(
         widthFactor: 0.8,
         child: Row(
           children: [
@@ -30,14 +30,15 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
               ),
               enableFilter: true,
               enableSearch: true,
-              label: const Text('Model'),
+              hintText: 'Select model',
+              initialSelection: context.read<ChatController>().getModelName(),
               dropdownMenuEntries: const [
                 DropdownMenuEntry(value: 'llama2', label: 'llama2'),
               ],
               onSelected: (value) =>
-                  ChatSessionController.setModelName(value ?? ''),
+                  context.read<ChatController>().setModelName(value ?? ''),
             ),
-            const SizedBox(width: 8.0),
+            const SizedBox(width: 16.0),
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -55,7 +56,8 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
                       webSearchEnabled,
                       (value) => setState(() {
                         webSearchEnabled = value ?? false;
-                        ChatSessionController.enableWebSearch(webSearchEnabled);
+                        Provider.of<ChatController>(context)
+                            .enableWebSearch(webSearchEnabled);
                       }),
                     ),
                     _buildCheckbox(
@@ -63,7 +65,8 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
                       docsSearchEnabled,
                       (value) => setState(() {
                         docsSearchEnabled = value ?? false;
-                        ChatSessionController.enableDocsSearch(docsSearchEnabled);
+                        Provider.of<ChatController>(context)
+                            .enableDocsSearch(docsSearchEnabled);
                       }),
                     ),
                     _buildCheckbox(
@@ -71,7 +74,8 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
                       autoScrollEnabled,
                       (value) => setState(() {
                         autoScrollEnabled = value ?? false;
-                        ChatSessionController.enableAutoScroll(autoScrollEnabled);
+                        Provider.of<ChatController>(context)
+                            .enableAutoScroll(autoScrollEnabled);
                       }),
                     )
                   ],

@@ -1,9 +1,12 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:process_run/shell.dart';
+import 'package:open_local_ui/controllers/chat_controller.dart';
+import 'package:open_local_ui/controllers/model_controller.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -11,13 +14,16 @@ void main() async {
 
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
-  final shell = Shell();
-
-  () async => shell.run('ollama serve');
+  ModelsController.serve();
 
   FlutterNativeSplash.remove();
 
-  runApp(MyApp(savedThemeMode: savedThemeMode));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ChatController(),
+      child: MyApp(savedThemeMode: savedThemeMode),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -44,7 +50,33 @@ class MyApp extends StatelessWidget {
         title: 'OpenLocalUI',
         theme: theme,
         darkTheme: darkTheme,
-        home: const DashboardLayout(),
+        home: Stack(
+          children: [
+            const DashboardLayout(),
+            Positioned(
+              top: 0.0,
+              right: 0.0,
+              width: MediaQuery.of(context).size.width,
+              height: 32.0,
+              child: WindowTitleBarBox(
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: MoveWindow(),
+                    ),
+                    Row(
+                      children: [
+                        MinimizeWindowButton(),
+                        MaximizeWindowButton(),
+                        CloseWindowButton(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
         debugShowCheckedModeBanner: kDebugMode,
       ),
     );

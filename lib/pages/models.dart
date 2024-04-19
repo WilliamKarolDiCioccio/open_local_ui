@@ -7,11 +7,9 @@ class ModelsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const PageBaseLayout(
-      body: Center(
-        child: Text(
-          'Models Page Content',
-          style: TextStyle(fontSize: 24),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [],
       ),
     );
   }

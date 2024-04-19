@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:unicons/unicons.dart';
 
 class ChatMessageWidget extends StatelessWidget {
@@ -55,10 +56,9 @@ class ChatMessageWidget extends StatelessWidget {
             ],
           ),
           const Divider(),
-          Text(
-            text,
-            style: const TextStyle(fontSize: 16.0),
-            softWrap: true,
+          MarkdownBody(
+            data: text,
+            selectable: true,
           ),
           const Divider(),
           Row(

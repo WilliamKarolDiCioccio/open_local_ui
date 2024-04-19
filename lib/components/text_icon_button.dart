@@ -17,13 +17,13 @@ class TextIconButtonComponent extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon),
         const SizedBox(width: 8.0),
-        TextButton(
-          child: Text(
+        TextButton.icon(
+          label: Text(
             text,
             style: const TextStyle(fontSize: 16.0),
           ),
+          icon: Icon(icon),
           onPressed: () => onPressed(),
         ),
       ],

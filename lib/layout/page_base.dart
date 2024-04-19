@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 
 class PageBaseLayout extends StatelessWidget {
@@ -7,9 +8,14 @@ class PageBaseLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: body,
+    return Container(
+      decoration: BoxDecoration(
+        color: AdaptiveTheme.of(context).mode.isDark
+            ? Colors.black54
+            : Colors.white,
+      ),
+      padding: const EdgeInsets.all(32.0),
+      child: body,
     );
   }
 }
