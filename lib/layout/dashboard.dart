@@ -156,7 +156,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                     DropdownMenuEntry(value: 'Default', label: 'Default'),
                   ],
                   onSelected: (value) =>
-                      context.read<ChatController>().setUserName(value ?? ''),
+                      context.read<ChatController>().setUser(value ?? ''),
                 ),
               ],
             ),

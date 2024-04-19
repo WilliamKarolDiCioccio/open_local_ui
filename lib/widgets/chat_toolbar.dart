@@ -61,7 +61,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       initialSelection: context.read<ChatController>().modelName,
       dropdownMenuEntries: modelsMenuEntries,
       onSelected: (value) =>
-          context.read<ChatController>().setModelName(value ?? ''),
+          context.read<ChatController>().setModel(value ?? ''),
     );
   }
 

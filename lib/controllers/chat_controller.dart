@@ -91,12 +91,12 @@ class ChatController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setUserName(String name) {
+  void setUser(String name) {
     _userName = name;
     notifyListeners();
   }
 
-  void setModelName(String name) {
+  void setModel(String name) {
     _modelName = name;
     model = ChatOllama(defaultOptions: ChatOllamaOptions(model: name));
     notifyListeners();
