@@ -35,6 +35,14 @@ void main() async {
       child: MyApp(savedThemeMode: savedThemeMode),
     ),
   );
+  
+  doWhenWindowReady(() { 
+    const initialSize = Size(1280, 720);
+    appWindow.minSize = initialSize;
+    appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.show();
+  });
 }
 
 class MyApp extends StatelessWidget {
