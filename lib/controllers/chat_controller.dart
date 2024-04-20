@@ -82,7 +82,7 @@ class ChatController extends ChangeNotifier {
 
       addMessage('', _modelName, ChatMessageType.model);
 
-      chain.stream({'input': text}).forEach((response) {
+      await chain.stream({'input': text}).forEach((response) {
         _messages.last.text += response.toString();
         notifyListeners();
       });
