@@ -57,11 +57,11 @@ class ChatController extends ChangeNotifier {
       return;
     }
 
-    _isGenerating = true;
-
-    notifyListeners();
-
     try {
+      _isGenerating = true;
+
+      notifyListeners();
+
       addMessage(text, _userName, ChatMessageType.user);
 
       _memory.chatHistory.addHumanChatMessage(_messages.last.text);
@@ -88,6 +88,10 @@ class ChatController extends ChangeNotifier {
       });
 
       _memory.chatHistory.addAIChatMessage(_messages.last.text);
+
+      _isGenerating = false;
+
+      notifyListeners();
     } catch (e) {
       removeLastMessage();
 
@@ -100,10 +104,6 @@ class ChatController extends ChangeNotifier {
 
       logger.e(e);
     }
-
-    _isGenerating = false;
-
-    notifyListeners();
   }
 
   void removeMessage(String uuid) {
