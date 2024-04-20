@@ -52,29 +52,38 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       widthFactor: 0.8,
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                hintText: 'Type your message...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                suffixIcon: IconButton(
-                  tooltip: 'Send message',
-                  icon: const Icon(UniconsLine.message),
-                  onPressed: () => _sendMessage(),
-                ),
-              ),
-              autofocus: true,
-              maxLength: 1024,
-              maxLines: null,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-            ),
+      child: TextField(
+        controller: _textEditingController,
+        decoration: InputDecoration(
+          hintText: 'Type your message...',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
           ),
-        ],
+          suffixIcon: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(width: 8.0),
+              IconButton(
+                tooltip: 'Embed image',
+                icon: const Icon(UniconsLine.link_add),
+                onPressed: () {},
+              ),
+              const SizedBox(width: 8.0),
+              IconButton(
+                tooltip: 'Send message',
+                icon: const Icon(UniconsLine.message),
+                onPressed: () => _sendMessage(),
+              ),
+              const SizedBox(width: 8.0),
+            ],
+          ),
+        ),
+        autofocus: true,
+        maxLength: 1024,
+        maxLines: null,
+        expands: false,
+        maxLengthEnforcement: MaxLengthEnforcement.enforced,
       ),
     );
   }
