@@ -15,6 +15,26 @@ class ChatMessage {
   final ChatMessageType type;
 
   ChatMessage(this.text, this.sender, this.dateTime, this.uuid, this.type);
+
+  factory ChatMessage.fromJson(Map<String, dynamic> json) {
+    return ChatMessage(
+      json['text'] as String,
+      json['sender'] as String,
+      json['dateTime'] as String,
+      json['uuid'] as String,
+      ChatMessageType.values[json['type'] as int],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'text': text,
+      'sender': sender,
+      'dateTime': dateTime,
+      'uuid': uuid,
+      'type': type.index,
+    };
+  }
 }
 
 class ChatController extends ChangeNotifier {
