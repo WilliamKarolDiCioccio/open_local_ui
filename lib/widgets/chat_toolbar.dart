@@ -16,7 +16,6 @@ class ChatToolbarWidget extends StatefulWidget {
 class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
   bool _webSearchEnabled = false;
   bool _docsSearchEnabled = false;
-  bool _autoScrollEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -98,15 +97,6 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
                 _docsSearchEnabled = value ?? false;
               }),
             ),
-            _buildCheckbox(
-              'Auto scroll:',
-              _autoScrollEnabled,
-              (value) => setState(() {
-                Provider.of<ChatController>(context, listen: false)
-                    .enableAutoScroll(value ?? false);
-                _autoScrollEnabled = value ?? false;
-              }),
-            )
           ],
         ),
       ),
