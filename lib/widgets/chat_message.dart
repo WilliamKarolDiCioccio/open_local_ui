@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:markdown/markdown.dart' as md;
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:open_local_ui/controllers/chat_controller.dart';
 import 'package:provider/provider.dart';
@@ -80,8 +81,16 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           ),
           const Divider(),
           MarkdownBody(
-            data: widget.message.text,
             selectable: true,
+            data: widget.message.text,
+            extensionSet: md.ExtensionSet(
+              md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+              [
+                md.LinkSyntax(),
+                md.CodeSyntax(),
+                md.EmojiSyntax(),
+              ],
+            ),
           ),
           const SizedBox(height: 8.0),
           Row(
@@ -123,7 +132,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               Visibility(
                 visible: widget.message.type == ChatMessageType.user,
                 child: IconButton(
-                  tooltip: 'Delete message',
+                  tooltip: 'Delete text',
                   onPressed: () =>
                       Provider.of<ChatController>(context, listen: false)
                           .removeMessage(widget.message.uuid),
