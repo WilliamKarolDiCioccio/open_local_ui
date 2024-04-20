@@ -5,6 +5,7 @@ import 'package:open_local_ui/widgets/chat_toolbar.dart';
 import 'package:provider/provider.dart';
 import 'package:open_local_ui/widgets/chat_message.dart';
 import 'package:open_local_ui/layout/page_base.dart';
+import 'package:unicons/unicons.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -15,10 +16,12 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final ScrollController _scrollController = ScrollController();
+  bool _isScrollButtonVisible = false;
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_scrollListener);
   }
 
   @override
@@ -27,7 +30,19 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
-  // ignore: unused_element
+  void _scrollListener() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent) {
+      setState(() {
+        _isScrollButtonVisible = false;
+      });
+    } else {
+      setState(() {
+        _isScrollButtonVisible = true;
+      });
+    }
+  }
+
   void _scrollToBottom() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
@@ -59,7 +74,16 @@ class _ChatPageState extends State<ChatPage> {
                 },
               ),
             ),
-            const SizedBox(height: 16.0),
+            Visibility(
+              visible: _isScrollButtonVisible,
+              child: IconButton(
+                icon: const Icon(
+                  UniconsLine.arrow_down,
+                  size: 32.0,
+                ),
+                onPressed: _scrollToBottom,
+              ),
+            ),
             const ChatInputFieldWidget(),
           ],
         ),
