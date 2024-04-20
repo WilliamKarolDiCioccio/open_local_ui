@@ -56,7 +56,10 @@ class _DashboardLayoutState extends State<DashboardLayout> {
           children: [
             const Text(
               'OpenLocalUI',
-              style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 32.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(
               width: 200,
