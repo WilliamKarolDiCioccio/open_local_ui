@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:open_local_ui/controllers/chat_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -67,8 +68,10 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                   onPressed: () => _sendMessage(),
                 ),
               ),
-              onSubmitted: (String message) => _sendMessage(),
               autofocus: true,
+              maxLength: 1024,
+              maxLines: null,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
             ),
           ),
         ],
