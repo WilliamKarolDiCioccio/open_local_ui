@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:open_local_ui/controllers/chat_controller.dart';
 import 'package:open_local_ui/widgets/chat_input_field.dart';
 import 'package:open_local_ui/widgets/chat_toolbar.dart';
@@ -60,19 +61,7 @@ class _ChatPageState extends State<ChatPage> {
             const ChatToolbarWidget(),
             const SizedBox(height: 16.0),
             Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: value.messageCount,
-                itemBuilder: (context, index) {
-                  final message = value.getMessage(index);
-                  return Center(
-                    child: FractionallySizedBox(
-                      widthFactor: 0.6,
-                      child: ChatMessageWidget(message),
-                    ),
-                  );
-                },
-              ),
+              child: _drawMessagesList(),
             ),
             Visibility(
               visible: _isScrollButtonVisible,
@@ -89,5 +78,34 @@ class _ChatPageState extends State<ChatPage> {
         ),
       ),
     );
+  }
+
+  Widget _drawMessagesList() {
+    if (context.read<ChatController>().messageCount == 0) {
+      return Center(
+        child: Text(
+          'Welcome ${context.read<ChatController>().userName}!',
+          style: TextStyle(
+            fontSize: 72.0,
+            fontWeight: FontWeight.bold,
+            color: AdaptiveTheme.of(context).mode.isDark ? Colors.black26 : Colors.grey[100],
+          ),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        controller: _scrollController,
+        itemCount: context.read<ChatController>().messageCount,
+        itemBuilder: (context, index) {
+          final message = context.read<ChatController>().getMessage(index);
+          return Center(
+            child: FractionallySizedBox(
+              widthFactor: 0.6,
+              child: ChatMessageWidget(message),
+            ),
+          );
+        },
+      );
+    }
   }
 }
