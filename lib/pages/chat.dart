@@ -88,7 +88,9 @@ class _ChatPageState extends State<ChatPage> {
           style: TextStyle(
             fontSize: 72.0,
             fontWeight: FontWeight.bold,
-            color: AdaptiveTheme.of(context).mode.isDark ? Colors.black26 : Colors.grey[100],
+            color: AdaptiveTheme.of(context).mode.isDark
+                ? Colors.black26
+                : Colors.grey[100],
           ),
         ),
       );
