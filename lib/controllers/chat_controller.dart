@@ -22,7 +22,6 @@ class ChatController extends ChangeNotifier {
   String _modelName = '';
   bool _webSearch = false;
   bool _docsSearch = true;
-  bool _autoScroll = true;
   bool _isGenerating = false;
   late ChatOllama _model;
   final _memory = ConversationBufferMemory(returnMessages: true);
@@ -47,7 +46,9 @@ class ChatController extends ChangeNotifier {
   }
 
   void sendMessage(String text) async {
-    if (text.isEmpty || !isUserSelected || !isModelSelected) {
+    if (text.isEmpty || isGenerating) {
+      return;
+    } else if (!isUserSelected || !isModelSelected) {
       addMessage(
           'Please select a model and a user', 'system', ChatMessageType.system);
 
@@ -93,6 +94,8 @@ class ChatController extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
+      _isGenerating = false;
+
       removeLastMessage();
 
       addMessage('An error occurred while generating the response', 'system',
@@ -107,32 +110,46 @@ class ChatController extends ChangeNotifier {
   }
 
   void removeMessage(String uuid) {
+    if (_isGenerating) return;
+
     final index = _messages.indexWhere((element) => element.uuid == uuid);
     _messages.removeRange(index, messageCount);
+
     notifyListeners();
   }
 
   void removeLastMessage() {
+    if (_isGenerating) return;
+
     _messages.removeLast();
+
     notifyListeners();
   }
 
   void regenerateMessage(String uuid, String text) {
+    if (_isGenerating) return;
+
     final index = _messages.indexWhere((element) => element.uuid == uuid);
     _messages.removeRange(index, messageCount);
     _memory.chatHistory.removeLast();
+
     sendMessage(text);
+
     notifyListeners();
   }
 
   void clearHistory() {
+    _isGenerating = false;
+
     _messages.clear();
     _memory.chatHistory.clear();
+
     notifyListeners();
   }
 
   void setUser(String name) {
     _userName = name;
+
     notifyListeners();
   }
 
@@ -144,21 +161,19 @@ class ChatController extends ChangeNotifier {
         format: OllamaResponseFormat.json,
       ),
     );
+
     notifyListeners();
   }
 
   void enableWebSearch(bool value) {
     _webSearch = value;
+
     notifyListeners();
   }
 
   void enableDocsSearch(bool value) {
     _docsSearch = value;
-    notifyListeners();
-  }
 
-  void enableAutoScroll(bool value) {
-    _autoScroll = value;
     notifyListeners();
   }
 
@@ -173,8 +188,6 @@ class ChatController extends ChangeNotifier {
   bool get isWebSearchEnabled => _webSearch;
 
   bool get isDocsSearchEnabled => _docsSearch;
-
-  bool get isAutoScrollEnabled => _autoScroll;
 
   List<ChatMessage> get history => List.from(_messages);
 
