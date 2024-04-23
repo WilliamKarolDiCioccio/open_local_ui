@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:open_local_ui/controllers/chat_controller.dart';
+
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
+
+import 'package:open_local_ui/dialogs/image_dropzone.dart';
+import 'package:open_local_ui/helpers/snackbar.dart';
+import 'package:open_local_ui/providers/chat.dart';
 
 class ChatInputFieldWidget extends StatefulWidget {
   const ChatInputFieldWidget({super.key});
@@ -13,6 +17,8 @@ class ChatInputFieldWidget extends StatefulWidget {
 
 class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   final TextEditingController _textEditingController = TextEditingController();
+  String _text = '';
+  Uint8List? _imageBytes;
 
   @override
   void dispose() {
@@ -21,28 +27,14 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   }
 
   void _sendMessage() {
-    final provider = Provider.of<ChatController>(context, listen: false);
-
-    if (provider.isGenerating) {
-      final snackBar = SnackBar(
-        content: const Text(
-          'Model is generating a response, please wait...',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.red.withOpacity(0.8),
-        behavior: SnackBarBehavior.floating,
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelper.showSnackBar(
+        context,
+        'Model is generating a response, please wait...',
+        SnackBarType.error,
       );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      final message = _textEditingController.text;
-
-      provider.sendMessage(message);
+      context.read<ChatProvider>().sendMessage(_text, _imageBytes);
 
       _textEditingController.clear();
     }
@@ -50,12 +42,19 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 0.8,
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.enter, shift: true): () {
+          _text = _textEditingController.text;
+
+          _sendMessage();
+        },
+      },
       child: TextField(
         controller: _textEditingController,
         decoration: InputDecoration(
           hintText: 'Type your message...',
+          counterText: '',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -67,20 +66,28 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
               IconButton(
                 tooltip: 'Embed image',
                 icon: const Icon(UniconsLine.link_add),
-                onPressed: () {},
+                onPressed: () async {
+                  final imageBytes = await showImageDropzoneDialog(context);
+
+                  _imageBytes = imageBytes;
+                },
               ),
               const SizedBox(width: 8.0),
               IconButton(
                 tooltip: 'Send message',
                 icon: const Icon(UniconsLine.message),
-                onPressed: () => _sendMessage(),
+                onPressed: () async {
+                  _text = _textEditingController.text;
+
+                  _sendMessage();
+                },
               ),
               const SizedBox(width: 8.0),
             ],
           ),
         ),
         autofocus: true,
-        maxLength: 1024,
+        maxLength: 4096,
         maxLines: null,
         expands: false,
         maxLengthEnforcement: MaxLengthEnforcement.enforced,

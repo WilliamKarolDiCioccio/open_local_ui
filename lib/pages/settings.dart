@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:open_local_ui/layout/page_base.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -33,42 +35,55 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _buildThemeSettings(BuildContext context) {
-    return const Column(
+    String themeModeString;
+
+    switch (AdaptiveTheme.of(context).mode) {
+      case AdaptiveThemeMode.light:
+        themeModeString = 'Light';
+        break;
+      case AdaptiveThemeMode.dark:
+        themeModeString = 'Dark';
+        break;
+      case AdaptiveThemeMode.system:
+        themeModeString = 'System';
+        break;
+    }
+
+    return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Theme',
           style: TextStyle(fontSize: 24.0),
         ),
-        Divider(),
-        ThemeSwtch(),
-      ],
-    );
-  }
-}
-
-class ThemeSwtch extends StatelessWidget {
-  const ThemeSwtch({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text('Light'),
-        const SizedBox(width: 8.0),
-        Switch(
-          value: AdaptiveTheme.of(context).mode.isDark,
-          onChanged: (value) {
-            if (value) {
-              AdaptiveTheme.of(context).setDark();
-            } else {
-              AdaptiveTheme.of(context).setLight();
+        const SizedBox(height: 8.0),
+        DropdownMenu(
+          inputDecorationTheme: const InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+          initialSelection: themeModeString,
+          dropdownMenuEntries: const [
+            DropdownMenuEntry(value: 'Light', label: 'Light'),
+            DropdownMenuEntry(value: 'Dark', label: 'Dark'),
+            DropdownMenuEntry(value: 'System', label: 'System'),
+          ],
+          onSelected: (value) {
+            switch (value) {
+              case 'Light':
+                AdaptiveTheme.of(context).setLight();
+                break;
+              case 'Dark':
+                AdaptiveTheme.of(context).setDark();
+                break;
+              case 'System':
+                AdaptiveTheme.of(context).setSystem();
+                break;
             }
           },
         ),
-        const SizedBox(width: 8.0),
-        const Text('Dark'),
       ],
     );
   }

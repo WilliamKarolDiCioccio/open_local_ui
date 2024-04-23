@@ -1,10 +1,16 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:markdown/markdown.dart' as md;
+import 'package:flutter/services.dart';
+
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:open_local_ui/controllers/chat_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
+
+import 'package:open_local_ui/components/text_icon_button.dart';
+import 'package:open_local_ui/extensions/markdown_code.dart';
+import 'package:open_local_ui/helpers/snackbar.dart';
+import 'package:open_local_ui/providers/chat.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatMessageWidget extends StatefulWidget {
   final ChatMessage message;
@@ -19,32 +25,105 @@ class ChatMessageWidget extends StatefulWidget {
 }
 
 class _ChatMessageWidgetState extends State<ChatMessageWidget> {
+  final TextEditingController _textEditingController = TextEditingController();
+  bool _isEditing = false;
+
+  void _copyMessage() {
+    Clipboard.setData(ClipboardData(text: widget.message.text));
+
+    SnackBarHelper.showSnackBar(
+      context,
+      'Message copied to clipboard!',
+      SnackBarType.success,
+    );
+  }
+
   void _regenerateMessage() {
-    final provider = Provider.of<ChatController>(context, listen: false);
-
-    if (provider.isGenerating) {
-      final snackBar = SnackBar(
-        content: const Text(
-          'Model is generating a response, please wait...',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.red.withOpacity(0.8),
-        behavior: SnackBarBehavior.floating,
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelper.showSnackBar(
+        context,
+        'Model is generating a response, please wait...',
+        SnackBarType.error,
       );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      provider.regenerateMessage(widget.message.uuid, widget.message.text);
+      context.read<ChatProvider>().regenerateMessage(
+            widget.message.uuid,
+            widget.message.text,
+          );
+    }
+  }
+
+  void _beginEditingMessage() {
+    setState(() {
+      _isEditing = true;
+    });
+
+    _textEditingController.text = widget.message.text;
+  }
+
+  void _resendEditedMessage() {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelper.showSnackBar(
+        context,
+        'Model is generating a response, please wait...',
+        SnackBarType.error,
+      );
+    } else {
+      final message = _textEditingController.text;
+
+      context.read<ChatProvider>().resendMessage(
+            widget.message.uuid,
+            message,
+          );
+
+      setState(() {
+        _isEditing = false;
+      });
+
+      _textEditingController.clear();
+    }
+  }
+
+  void _cancelEditingMessage() {
+    setState(() {
+      _isEditing = false;
+    });
+
+    _textEditingController.clear();
+  }
+
+  void _trashMessage() async {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelper.showSnackBar(
+        context,
+        'Model is generating a response, please wait...',
+        SnackBarType.error,
+      );
+    } else {
+      context.read<ChatProvider>().removeMessage(widget.message.uuid);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    String senderName;
+    IconData senderIconData;
+
+    switch (widget.message.type) {
+      case ChatMessageType.user:
+        senderIconData = UniconsLine.user;
+        senderName = 'You';
+        break;
+      case ChatMessageType.model:
+        senderIconData = UniconsLine.robot;
+        senderName = context.read<ChatProvider>().modelName;
+        break;
+      case ChatMessageType.system:
+        senderIconData = UniconsLine.eye;
+        senderName = 'System';
+        break;
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       padding: const EdgeInsets.all(8.0),
@@ -57,13 +136,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         children: [
           Row(
             children: [
-              const Icon(
-                UniconsLine.user,
+              Icon(
+                senderIconData,
                 size: 18.0,
               ),
               const SizedBox(width: 8.0),
               Text(
-                widget.message.sender,
+                senderName,
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -80,15 +159,66 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             ],
           ),
           const Divider(),
-          MarkdownBody(
-            selectable: true,
-            data: widget.message.text,
-            extensionSet: md.ExtensionSet(
-              md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-              [
-                md.LinkSyntax(),
-                md.CodeSyntax(),
-                md.EmojiSyntax(),
+          Visibility(
+            visible: !_isEditing,
+            child: MarkdownBody(
+              data: widget.message.text,
+              styleSheet: MarkdownStyleSheet.fromTheme(
+                ThemeData(
+                  textTheme: TextTheme(
+                    bodyMedium: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w300,
+                      color: AdaptiveTheme.of(context)
+                          .theme
+                          .textTheme
+                          .bodyMedium
+                          ?.color,
+                      fontFamily: 'Neuton',
+                    ),
+                  ),
+                ),
+              ),
+              onTapLink: (text, href, title) {
+                if (href != null) launchUrl(Uri.parse(href));
+              },
+              builders: {
+                'code': MarkdownCaustomCodeBuilder(),
+              },
+              selectable: true,
+            ),
+          ),
+          Visibility(
+            visible: _isEditing,
+            child: Column(
+              children: [
+                TextField(
+                  controller: _textEditingController,
+                  decoration: const InputDecoration(
+                    hintText: 'Edit your message...',
+                    border: InputBorder.none,
+                    counterText: '',
+                  ),
+                  autofocus: true,
+                  maxLength: 4096,
+                  maxLines: null,
+                  expands: false,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                ),
+                Row(
+                  children: [
+                    TextIconButtonComponent(
+                      text: 'Resend message',
+                      icon: UniconsLine.message,
+                      onPressed: () => _resendEditedMessage(),
+                    ),
+                    TextIconButtonComponent(
+                      text: 'Cancel editing',
+                      icon: UniconsLine.times,
+                      onPressed: () => _cancelEditingMessage(),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -98,45 +228,31 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             children: [
               IconButton(
                 tooltip: 'Copy text',
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: widget.message.text));
-
-                  final snackBar = SnackBar(
-                    content: const Text(
-                      'Text copied to clipboard',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    duration: const Duration(seconds: 3),
-                    backgroundColor: Colors.green.withOpacity(0.8),
-                    behavior: SnackBarBehavior.floating,
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
+                onPressed: () => _copyMessage(),
                 icon: const Icon(UniconsLine.copy),
               ),
               const SizedBox(width: 8.0),
               Visibility(
                 visible: widget.message.type == ChatMessageType.user,
-                child: IconButton(
-                  tooltip: 'Regenerate text',
-                  onPressed: () => _regenerateMessage(),
-                  icon: const Icon(UniconsLine.repeat),
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              Visibility(
-                visible: widget.message.type == ChatMessageType.user,
-                child: IconButton(
-                  tooltip: 'Delete text',
-                  onPressed: () =>
-                      Provider.of<ChatController>(context, listen: false)
-                          .removeMessage(widget.message.uuid),
-                  icon: const Icon(UniconsLine.trash),
+                child: Row(
+                  children: [
+                    IconButton(
+                      tooltip: 'Regenerate text',
+                      onPressed: () => _regenerateMessage(),
+                      icon: const Icon(UniconsLine.repeat),
+                    ),
+                    const SizedBox(width: 8.0),
+                    IconButton(
+                      tooltip: 'Edit text',
+                      onPressed: () => _beginEditingMessage(),
+                      icon: const Icon(UniconsLine.edit),
+                    ),
+                    IconButton(
+                      tooltip: 'Delete text',
+                      onPressed: () => _trashMessage(),
+                      icon: const Icon(UniconsLine.trash),
+                    ),
+                  ],
                 ),
               ),
             ],

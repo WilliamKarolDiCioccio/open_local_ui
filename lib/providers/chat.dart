@@ -1,25 +1,29 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
-import 'package:open_local_ui/helpers/langchain_helpers.dart';
-import 'package:open_local_ui/utils/logger.dart';
 import 'package:uuid/uuid.dart';
+
+import 'package:open_local_ui/helpers/langchain.dart';
+import 'package:open_local_ui/utils/logger.dart';
 
 enum ChatMessageType { user, model, system }
 
 class ChatMessage {
   String text;
-  final String sender;
+  final Uint8List? imageBytes;
   final String dateTime;
   final String uuid;
   final ChatMessageType type;
 
-  ChatMessage(this.text, this.sender, this.dateTime, this.uuid, this.type);
+  ChatMessage(this.text, this.dateTime, this.uuid, this.type,
+      {this.imageBytes});
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
       json['text'] as String,
-      json['sender'] as String,
       json['dateTime'] as String,
       json['uuid'] as String,
       ChatMessageType.values[json['type'] as int],
@@ -29,7 +33,6 @@ class ChatMessage {
   Map<String, dynamic> toJson() {
     return {
       'text': text,
-      'sender': sender,
       'dateTime': dateTime,
       'uuid': uuid,
       'type': type.index,
@@ -37,8 +40,7 @@ class ChatMessage {
   }
 }
 
-class ChatController extends ChangeNotifier {
-  String _userName = '';
+class ChatProvider extends ChangeNotifier {
   String _modelName = '';
   bool _webSearch = false;
   bool _docsSearch = true;
@@ -47,7 +49,7 @@ class ChatController extends ChangeNotifier {
   final _memory = ConversationBufferMemory(returnMessages: true);
   final List<ChatMessage> _messages = [];
 
-  void addMessage(String message, String sender, ChatMessageType type) {
+  void addMessage(String message, ChatMessageType type) {
     final now = DateTime.now();
     final formattedDateTime =
         '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
@@ -56,7 +58,6 @@ class ChatController extends ChangeNotifier {
 
     _messages.add(ChatMessage(
       message,
-      sender,
       formattedDateTime,
       uuid,
       type,
@@ -65,15 +66,11 @@ class ChatController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sendMessage(String text) async {
+  void sendMessage(String text, Uint8List? imageBytes) async {
     if (text.isEmpty || isGenerating) {
       return;
-    } else if (!isUserSelected || !isModelSelected) {
-      addMessage(
-          'Please select a model and a user', 'system', ChatMessageType.system);
-
-      _memory.chatHistory.addFunctionChatMessage(
-          name: 'system', content: 'Please select a model and a user');
+    } else if (!isModelSelected) {
+      addMessage('Please select a model.', ChatMessageType.system);
 
       return;
     }
@@ -83,16 +80,12 @@ class ChatController extends ChangeNotifier {
 
       notifyListeners();
 
-      addMessage(text, _userName, ChatMessageType.user);
+      addMessage(text, ChatMessageType.user);
 
       _memory.chatHistory.addHumanChatMessage(_messages.last.text);
 
-      final promptTemplate = ChatPromptTemplate.fromPromptMessages([
-        SystemChatMessagePromptTemplate.fromTemplate(
-          'You are a helpful chatbot',
-        ),
-        const MessagesPlaceholder(variableName: 'history'),
-        HumanChatMessagePromptTemplate.fromTemplate('{input}'),
+      final promptTemplate = ChatPromptTemplate.fromPromptMessages(const [
+        MessagesPlaceholder(variableName: 'history'),
       ]);
 
       final chain = LangchainHelpers.buildConversationChain(
@@ -101,9 +94,20 @@ class ChatController extends ChangeNotifier {
         _memory,
       );
 
-      addMessage('', _modelName, ChatMessageType.model);
+      final prompt = ChatMessageContent.multiModal(
+        [
+          ChatMessageContent.text(text),
+          ChatMessageContent.image(
+            data: base64.encode(
+              imageBytes ?? Uint8List(0).map((e) => e.toInt()).toList(),
+            ),
+          ),
+        ],
+      );
 
-      await chain.stream({'input': text}).forEach((response) {
+      addMessage('', ChatMessageType.model);
+
+      await chain.stream({prompt}).forEach((response) {
         _messages.last.text += response.toString();
         notifyListeners();
       });
@@ -118,47 +122,52 @@ class ChatController extends ChangeNotifier {
 
       removeLastMessage();
 
-      addMessage('An error occurred while generating the response', 'system',
+      addMessage('An error occurred while generating the response.',
           ChatMessageType.system);
-
-      _memory.chatHistory.addFunctionChatMessage(
-          name: 'system',
-          content: 'An error occurred while generating the response');
 
       logger.e(e);
     }
   }
 
-  void removeMessage(String uuid) {
+  void removeMessage(String uuid) async {
     if (_isGenerating) return;
 
     final index = _messages.indexWhere((element) => element.uuid == uuid);
     _messages.removeRange(index, messageCount);
 
+    for (var i = 0; i < messageCount - index; ++i) {
+      _memory.chatHistory.removeLast();
+    }
+
     notifyListeners();
   }
 
-  void removeLastMessage() {
+  void removeLastMessage() async {
     if (_isGenerating) return;
 
     _messages.removeLast();
-
-    notifyListeners();
-  }
-
-  void regenerateMessage(String uuid, String text) {
-    if (_isGenerating) return;
-
-    final index = _messages.indexWhere((element) => element.uuid == uuid);
-    _messages.removeRange(index, messageCount);
     _memory.chatHistory.removeLast();
 
-    sendMessage(text);
-
     notifyListeners();
   }
 
-  void clearHistory() {
+  void regenerateMessage(String uuid, String text) async {
+    if (_isGenerating) return;
+
+    Uint8List? imageBytes = lastMessage.imageBytes;
+
+    removeMessage(uuid);
+
+    sendMessage(text, imageBytes);
+  }
+
+  void resendMessage(String uuid, String text) async {
+    if (_isGenerating) return;
+
+    regenerateMessage(uuid, text);
+  }
+
+  void clearHistory() async {
     _isGenerating = false;
 
     _messages.clear();
@@ -167,17 +176,12 @@ class ChatController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setUser(String name) {
-    _userName = name;
-
-    notifyListeners();
-  }
-
-  void setModel(String name) {
+  void setModel(String name, {double temperature = 0.0}) {
     _modelName = name;
     _model = ChatOllama(
       defaultOptions: ChatOllamaOptions(
         model: name,
+        temperature: temperature,
         format: OllamaResponseFormat.json,
       ),
     );
@@ -197,11 +201,7 @@ class ChatController extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get userName => _userName.isNotEmpty ? _userName : 'Guest';
-
-  String? get modelName => _modelName.isNotEmpty ? _modelName : null;
-
-  bool get isUserSelected => _userName.isNotEmpty;
+  String get modelName => _modelName;
 
   bool get isModelSelected => _modelName.isNotEmpty;
 

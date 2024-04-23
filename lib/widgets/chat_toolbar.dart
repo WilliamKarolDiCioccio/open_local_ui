@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:open_local_ui/components/text_icon_button.dart';
-import 'package:open_local_ui/controllers/chat_controller.dart';
-import 'package:open_local_ui/controllers/model_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
+
+import 'package:open_local_ui/components/text_icon_button.dart';
+import 'package:open_local_ui/providers/chat.dart';
+import 'package:open_local_ui/providers/model.dart';
 
 class ChatToolbarWidget extends StatefulWidget {
   const ChatToolbarWidget({super.key});
@@ -19,29 +21,26 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 0.8,
-      child: Row(
-        children: [
-          _buildModelSelector(),
-          const SizedBox(width: 16.0),
-          _buildOptionsBar(),
-          const SizedBox(width: 16.0),
-          TextIconButtonComponent(
-            text: 'New chat',
-            icon: UniconsLine.plus,
-            onPressed: () => Provider.of<ChatController>(context, listen: false)
-                .clearHistory(),
-          )
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildModelSelector(),
+        const SizedBox(width: 16.0),
+        _buildOptionsBar(),
+        const SizedBox(width: 16.0),
+        TextIconButtonComponent(
+          text: 'New chat',
+          icon: UniconsLine.plus,
+          onPressed: () => context.read<ChatProvider>().clearHistory(),
+        )
+      ],
     );
   }
 
   Widget _buildModelSelector() {
     final List<DropdownMenuEntry> modelsMenuEntries = [];
 
-    for (final model in context.read<ModelController>().models) {
+    for (final model in context.read<ModelProvider>().models) {
       final shortName = model.name.length > 20
           ? '${model.name.substring(0, 20)}...'
           : model.name;
@@ -59,46 +58,41 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       enableFilter: true,
       enableSearch: true,
       hintText: 'Select model',
-      initialSelection: context.read<ChatController>().modelName,
+      initialSelection: context.watch<ChatProvider>().modelName,
       dropdownMenuEntries: modelsMenuEntries,
-      onSelected: (value) =>
-          context.read<ChatController>().setModel(value ?? ''),
+      onSelected: (value) => context.read<ChatProvider>().setModel(value ?? ''),
     );
   }
 
   Widget _buildOptionsBar() {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: AdaptiveTheme.of(context).theme.dividerColor,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AdaptiveTheme.of(context).theme.dividerColor,
+        ),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      padding: const EdgeInsets.all(12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildCheckbox(
+            'Web search:',
+            _webSearchEnabled,
+            (value) => setState(() {
+              context.read<ChatProvider>().enableWebSearch(value ?? false);
+              _webSearchEnabled = value ?? false;
+            }),
           ),
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildCheckbox(
-              'Web search:',
-              _webSearchEnabled,
-              (value) => setState(() {
-                Provider.of<ChatController>(context, listen: false)
-                    .enableWebSearch(value ?? false);
-                _webSearchEnabled = value ?? false;
-              }),
-            ),
-            _buildCheckbox(
-              'Docs search:',
-              _docsSearchEnabled,
-              (value) => setState(() {
-                Provider.of<ChatController>(context, listen: false)
-                    .enableDocsSearch(value ?? false);
-                _docsSearchEnabled = value ?? false;
-              }),
-            ),
-          ],
-        ),
+          _buildCheckbox(
+            'Docs search:',
+            _docsSearchEnabled,
+            (value) => setState(() {
+              context.read<ChatProvider>().enableDocsSearch(value ?? false);
+              _docsSearchEnabled = value ?? false;
+            }),
+          ),
+        ],
       ),
     );
   }

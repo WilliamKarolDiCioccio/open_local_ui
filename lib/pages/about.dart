@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:open_local_ui/layout/page_base.dart';
 
 class AboutPage extends StatelessWidget {
