@@ -66,103 +66,104 @@ class _ChatMessageListState extends State<ChatMessageList> {
         "for your best friend with a surprise element",
       ],
       [
-        "Explain the concept of learning from experience",
-        "using everyday situations",
+        "Explain the concept of learning",
+        "from experience using everyday situations",
       ],
       [
-        "Distinguish between teaching and mentoring",
-        "and their benefits",
+        "Distinguish between",
+        "teaching and mentoring and their benefits",
       ],
       [
         "Handle stress in daily life",
         "with effective coping strategies",
       ],
       [
-        "Understand the importance of communication skills",
-        "in personal and professional life",
+        "Understand the importance",
+        "of communication in personal and professional life",
       ],
       [
         "Describe the process of decision-making",
         "in complex situations",
       ],
       [
-        "List some challenges in personal growth",
-        "and strategies to overcome them",
+        "List some challenges",
+        " in personal growth to overcome",
       ],
       [
-        "Evaluate the performance of a team",
-        "using teamwork metrics",
+        "Evaluate the performance",
+        "of a team using teamwork metrics",
       ],
       [
-        "Discuss the advantages and disadvantages of remote work",
-        "for employees and employers",
+        "Discuss advantages and disadvantages",
+        "of remote work for employees and employers",
       ],
       [
-        "Address conflicts in relationships",
-        "using effective communication",
+        "Address conflicts",
+        "in relationships using effective communication",
       ],
       [
-        "Explain the significance of empathy",
-        "in building strong connections",
+        "Explain the significance",
+        "of empathy in building strong connections",
       ],
     ];
 
-    final random = Random();
-
-    List<List<String>> randomQuestions =
-        List<List<String>>.generate(4, (index) {
-      return exampleQuestions[random.nextInt(exampleQuestions.length)];
-    });
-
-    List<Widget> questionCells = List<Widget>.generate(
-      4,
-      (index) {
-        return GestureDetector(
-          onTap: () {
-            final models = context.read<ModelProvider>().models;
-            final modelName = models[0].name;
-            context.read<ChatProvider>().setModel(modelName);
-            final message =
-                randomQuestions[index][0] + randomQuestions[index][1];
-            context.read<ChatProvider>().sendMessage(message, null);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Container(
-              height: 128,
-              width: 256,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AdaptiveTheme.of(context).theme.dividerColor,
-                ),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              padding: const EdgeInsets.all(12.0),
-              child: ListTile(
-                title: Text(
-                  randomQuestions[index][0],
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  randomQuestions[index][1],
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
     return Consumer<ChatProvider>(
       builder: (context, value, child) {
-        final messageCount = value.messageCount;
-        if (messageCount == 0) {
+        if (context.watch<ChatProvider>().messageCount == 0) {
+          final random = Random();
+
+          final List<List<String>> randomQuestions = List.from(exampleQuestions)
+            ..shuffle(random);
+
+          final List<List<String>> choosenQuestions =
+              randomQuestions.take(4).toList();
+
+          List<Widget> questionCells = List<Widget>.generate(
+            4,
+            (index) {
+              return GestureDetector(
+                onTap: () {
+                  final models = context.read<ModelProvider>().models;
+                  final modelName = models[0].name;
+                  context.read<ChatProvider>().setModel(modelName);
+                  final message =
+                      choosenQuestions[index][0] + choosenQuestions[index][1];
+                  context.read<ChatProvider>().sendMessage(message, null);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Container(
+                    height: 128,
+                    width: 256,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AdaptiveTheme.of(context).theme.dividerColor,
+                      ),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    padding: const EdgeInsets.all(12.0),
+                    child: ListTile(
+                      title: Text(
+                        randomQuestions[index][0],
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        randomQuestions[index][1],
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -206,9 +207,10 @@ class _ChatMessageListState extends State<ChatMessageList> {
               Expanded(
                 child: ListView.builder(
                   controller: _scrollController,
-                  itemCount: messageCount,
+                  itemCount: context.watch<ChatProvider>().messageCount,
                   itemBuilder: (context, index) {
-                    final message = value.getMessage(index);
+                    final message =
+                        context.watch<ChatProvider>().getMessage(index);
                     return ChatMessageWidget(message);
                   },
                 ),
