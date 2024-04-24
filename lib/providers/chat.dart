@@ -6,27 +6,26 @@ import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:open_local_ui/helpers/langchain.dart';
 import 'package:open_local_ui/utils/logger.dart';
 
-enum ChatMessageType { user, model, system }
+enum ChatMessageSender { user, model, system }
 
-class ChatMessage {
+class ChatMessageWrapper {
   String text;
   final Uint8List? imageBytes;
   final String dateTime;
   final String uuid;
-  final ChatMessageType type;
+  final ChatMessageSender sender;
 
-  ChatMessage(this.text, this.dateTime, this.uuid, this.type,
+  ChatMessageWrapper(this.text, this.dateTime, this.uuid, this.sender,
       {this.imageBytes});
 
-  factory ChatMessage.fromJson(Map<String, dynamic> json) {
-    return ChatMessage(
+  factory ChatMessageWrapper.fromJson(Map<String, dynamic> json) {
+    return ChatMessageWrapper(
       json['text'] as String,
       json['dateTime'] as String,
       json['uuid'] as String,
-      ChatMessageType.values[json['type'] as int],
+      ChatMessageSender.values[json['sender'] as int],
     );
   }
 
@@ -35,7 +34,7 @@ class ChatMessage {
       'text': text,
       'dateTime': dateTime,
       'uuid': uuid,
-      'type': type.index,
+      'sender': sender.index,
     };
   }
 }
@@ -51,17 +50,17 @@ class ChatProvider extends ChangeNotifier {
   bool _docsSearch = true;
   late ChatOllama _model;
   final _memory = ConversationBufferMemory(returnMessages: true);
-  final List<ChatMessage> _messages = [];
+  final List<ChatMessageWrapper> _messages = [];
   ChatProviderStatus _status = ChatProviderStatus.idle;
 
-  void addMessage(String message, ChatMessageType type) {
+  void addMessage(String message, ChatMessageSender type) {
     final now = DateTime.now();
     final formattedDateTime =
         '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
 
     final uuid = const Uuid().v4();
 
-    _messages.add(ChatMessage(
+    _messages.add(ChatMessageWrapper(
       message,
       formattedDateTime,
       uuid,
@@ -75,7 +74,7 @@ class ChatProvider extends ChangeNotifier {
     if (text.isEmpty || isGenerating) {
       return;
     } else if (!isModelSelected) {
-      addMessage('Please select a model.', ChatMessageType.system);
+      addMessage('Please select a model.', ChatMessageSender.system);
 
       return;
     }
@@ -85,34 +84,45 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      addMessage(text, ChatMessageType.user);
+      addMessage(text, ChatMessageSender.user);
 
       _memory.chatHistory.addHumanChatMessage(_messages.last.text);
 
       final promptTemplate = ChatPromptTemplate.fromPromptMessages(const [
         MessagesPlaceholder(variableName: 'history'),
+        MessagesPlaceholder(variableName: 'input'),
       ]);
 
-      final chain = LangchainHelpers.buildConversationChain(
-        promptTemplate,
-        _model,
-        _memory,
-      );
-
-      final prompt = ChatMessageContent.multiModal(
-        [
-          ChatMessageContent.text(text),
-          ChatMessageContent.image(
-            data: base64.encode(
-              imageBytes ?? Uint8List(0).map((e) => e.toInt()).toList(),
+      final chain = Runnable.fromMap({
+            'input': Runnable.passthrough(),
+            'history': Runnable.fromFunction(
+              (final _, final __) async {
+                final m = await _memory.loadMemoryVariables();
+                return m['history'];
+              },
             ),
-          ),
-        ],
+          }) |
+          promptTemplate |
+          _model |
+          const StringOutputParser<ChatResult>();
+
+      final prompt = ChatMessage.human(
+        ChatMessageContent.multiModal(
+          [
+            ChatMessageContent.text(text),
+            if (imageBytes != null)
+              ChatMessageContent.image(
+                data: base64.encode(
+                  imageBytes.map((e) => e.toInt()).toList(),
+                ),
+              ),
+          ],
+        ),
       );
 
-      addMessage('', ChatMessageType.model);
+      addMessage('', ChatMessageSender.model);
 
-      await chain.stream({prompt}).forEach((response) {
+      await chain.stream([prompt]).forEach((response) {
         _messages.last.text += response.toString();
         notifyListeners();
       });
@@ -128,7 +138,7 @@ class ChatProvider extends ChangeNotifier {
       removeLastMessage();
 
       addMessage('An error occurred while generating the response.',
-          ChatMessageType.system);
+          ChatMessageSender.system);
 
       logger.e(e);
     }
@@ -214,15 +224,15 @@ class ChatProvider extends ChangeNotifier {
 
   bool get isDocsSearchEnabled => _docsSearch;
 
-  List<ChatMessage> get history => List.from(_messages);
+  List<ChatMessageWrapper> get history => List.from(_messages);
 
-  ChatMessage getMessage(int index) => _messages[index];
+  ChatMessageWrapper getMessage(int index) => _messages[index];
 
-  ChatMessage getLastMessage(int index) => _messages[index - 1];
+  ChatMessageWrapper getLastMessage(int index) => _messages[index - 1];
 
-  ChatMessage get lastMessage => _messages.last;
+  ChatMessageWrapper get lastMessage => _messages.last;
 
-  List<ChatMessage> get messages => _messages;
+  List<ChatMessageWrapper> get messages => _messages;
 
   int get messageCount => _messages.length;
 

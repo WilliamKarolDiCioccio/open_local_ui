@@ -13,7 +13,7 @@ import 'package:open_local_ui/providers/chat.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatMessageWidget extends StatefulWidget {
-  final ChatMessage message;
+  final ChatMessageWrapper message;
 
   const ChatMessageWidget(
     this.message, {
@@ -109,16 +109,16 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     String senderName;
     IconData senderIconData;
 
-    switch (widget.message.type) {
-      case ChatMessageType.user:
+    switch (widget.message.sender) {
+      case ChatMessageSender.user:
         senderIconData = UniconsLine.user;
         senderName = 'You';
         break;
-      case ChatMessageType.model:
+      case ChatMessageSender.model:
         senderIconData = UniconsLine.robot;
         senderName = context.read<ChatProvider>().modelName;
         break;
-      case ChatMessageType.system:
+      case ChatMessageSender.system:
         senderIconData = UniconsLine.eye;
         senderName = 'System';
         break;
@@ -235,7 +235,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               ),
               const SizedBox(width: 8.0),
               Visibility(
-                visible: widget.message.type == ChatMessageType.user,
+                visible: widget.message.sender == ChatMessageSender.user,
                 child: Row(
                   children: [
                     IconButton(
