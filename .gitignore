@@ -41,3 +41,19 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Freezed related
+.freezed.json
+.freezed_deps.json
+
+# Generated Dart files
+*.g.dart
+
+# Flutter/Dart/Pub related
+.freezed/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
