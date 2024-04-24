@@ -92,10 +92,18 @@ class ModelCreateResponse extends HTTPStreamResponse {
   });
 }
 
+enum ModelProviderStatus {
+  idle,
+  pulling,
+  pushing,
+  creating,
+}
+
 class ModelProvider extends ChangeNotifier {
   static const api = 'http://localhost:11434/api';
   static final _shell = Shell();
   static final List<Model> _models = [];
+  static ModelProviderStatus _status = ModelProviderStatus.idle;
 
   static Future sServe() async {
     try {
@@ -140,6 +148,8 @@ class ModelProvider extends ChangeNotifier {
   }
 
   Stream<ModelPullResponse> pull(String name) async* {
+    _status = ModelProviderStatus.pulling;
+
     final request = http.Request('POST', Uri.parse('$api/pull'));
     request.headers['Content-Type'] = 'application/json';
     request.body = jsonEncode({
@@ -188,10 +198,14 @@ class ModelProvider extends ChangeNotifier {
 
     await updateList();
 
+    _status = ModelProviderStatus.idle;
+
     completer.complete();
   }
 
   Stream<ModelPushResponse> push(String name) async* {
+    _status = ModelProviderStatus.pushing;
+
     final request = http.Request('POST', Uri.parse('$api/push'));
     request.headers['Content-Type'] = 'application/json';
     request.body = jsonEncode({
@@ -240,10 +254,14 @@ class ModelProvider extends ChangeNotifier {
 
     await updateList();
 
+    _status = ModelProviderStatus.idle;
+
     completer.complete();
   }
 
   Stream<ModelCreateResponse> create(String name, String modelfile) async* {
+    _status = ModelProviderStatus.creating;
+
     final request = http.Request('POST', Uri.parse('$api/create'));
     request.headers['Content-Type'] = 'application/json';
     request.body = jsonEncode({
@@ -291,6 +309,8 @@ class ModelProvider extends ChangeNotifier {
 
     await updateList();
 
+    _status = ModelProviderStatus.idle;
+
     completer.complete();
   }
 
@@ -319,4 +339,10 @@ class ModelProvider extends ChangeNotifier {
   List<Model> get models => _models;
 
   int get modelsCount => _models.length;
+
+  bool get isPulling => _status == ModelProviderStatus.pulling;
+
+  bool get isPushing => _status == ModelProviderStatus.pushing;
+
+  bool get isCreating => _status == ModelProviderStatus.creating;
 }

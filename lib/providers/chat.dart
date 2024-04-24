@@ -40,14 +40,19 @@ class ChatMessage {
   }
 }
 
+enum ChatProviderStatus {
+  idle,
+  generating,
+}
+
 class ChatProvider extends ChangeNotifier {
   String _modelName = '';
   bool _webSearch = false;
   bool _docsSearch = true;
-  bool _isGenerating = false;
   late ChatOllama _model;
   final _memory = ConversationBufferMemory(returnMessages: true);
   final List<ChatMessage> _messages = [];
+  ChatProviderStatus _status = ChatProviderStatus.idle;
 
   void addMessage(String message, ChatMessageType type) {
     final now = DateTime.now();
@@ -76,7 +81,7 @@ class ChatProvider extends ChangeNotifier {
     }
 
     try {
-      _isGenerating = true;
+      _status = ChatProviderStatus.generating;
 
       notifyListeners();
 
@@ -114,11 +119,11 @@ class ChatProvider extends ChangeNotifier {
 
       _memory.chatHistory.addAIChatMessage(_messages.last.text);
 
-      _isGenerating = false;
+      _status = ChatProviderStatus.idle;
 
       notifyListeners();
     } catch (e) {
-      _isGenerating = false;
+      _status = ChatProviderStatus.idle;
 
       removeLastMessage();
 
@@ -130,7 +135,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void removeMessage(String uuid) async {
-    if (_isGenerating) return;
+    if (_status == ChatProviderStatus.generating) return;
 
     final index = _messages.indexWhere((element) => element.uuid == uuid);
     _messages.removeRange(index, messageCount);
@@ -143,7 +148,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void removeLastMessage() async {
-    if (_isGenerating) return;
+    if (_status == ChatProviderStatus.generating) return;
 
     _messages.removeLast();
     _memory.chatHistory.removeLast();
@@ -152,7 +157,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void regenerateMessage(String uuid, String text) async {
-    if (_isGenerating) return;
+    if (_status == ChatProviderStatus.generating) return;
 
     Uint8List? imageBytes = lastMessage.imageBytes;
 
@@ -162,13 +167,13 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void resendMessage(String uuid, String text) async {
-    if (_isGenerating) return;
+    if (_status == ChatProviderStatus.generating) return;
 
     regenerateMessage(uuid, text);
   }
 
   void clearHistory() async {
-    _isGenerating = false;
+    if (_status == ChatProviderStatus.generating) return;
 
     _messages.clear();
     _memory.chatHistory.clear();
@@ -221,5 +226,5 @@ class ChatProvider extends ChangeNotifier {
 
   int get messageCount => _messages.length;
 
-  bool get isGenerating => _isGenerating;
+  bool get isGenerating => _status == ChatProviderStatus.generating;
 }
