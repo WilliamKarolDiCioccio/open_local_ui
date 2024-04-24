@@ -3,11 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:process_run/shell.dart';
 
 import 'package:open_local_ui/helpers/http.dart';
 import 'package:open_local_ui/utils/logger.dart';
+
+part 'model.g.dart';
 
 class Model {
   final String name;
@@ -62,6 +65,7 @@ class ModelDetails {
   }
 }
 
+@JsonSerializable()
 class ModelPullResponse extends HTTPStreamResponse {
   ModelPullResponse({
     required super.status,
@@ -70,8 +74,15 @@ class ModelPullResponse extends HTTPStreamResponse {
     required super.startTime,
     required super.currentTime,
   });
+
+  factory ModelPullResponse.fromJson(Map<String, dynamic> json) =>
+      _$ModelPullResponseFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ModelPullResponseToJson(this);
 }
 
+@JsonSerializable()
 class ModelPushResponse extends HTTPStreamResponse {
   ModelPushResponse({
     required super.status,
@@ -80,8 +91,15 @@ class ModelPushResponse extends HTTPStreamResponse {
     required super.startTime,
     required super.currentTime,
   });
+
+  factory ModelPushResponse.fromJson(Map<String, dynamic> json) =>
+      _$ModelPushResponseFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ModelPushResponseToJson(this);
 }
 
+@JsonSerializable()
 class ModelCreateResponse extends HTTPStreamResponse {
   ModelCreateResponse({
     required super.status,
@@ -90,6 +108,12 @@ class ModelCreateResponse extends HTTPStreamResponse {
     required super.startTime,
     required super.currentTime,
   });
+
+  factory ModelCreateResponse.fromJson(Map<String, dynamic> json) =>
+      _$ModelCreateResponseFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ModelCreateResponseToJson(this);
 }
 
 enum ModelProviderStatus {

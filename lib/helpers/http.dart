@@ -2,6 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'http.g.dart';
+
+@JsonSerializable()
 class HTTPResponse {
   final String status;
   final String currentTime;
@@ -10,8 +15,14 @@ class HTTPResponse {
     required this.status,
     required this.currentTime,
   });
+
+  factory HTTPResponse.fromJson(Map<String, dynamic> json) =>
+      _$HTTPResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$HTTPResponseToJson(this);
 }
 
+@JsonSerializable()
 class HTTPStreamResponse extends HTTPResponse {
   final int total;
   final int completed;
@@ -19,11 +30,17 @@ class HTTPStreamResponse extends HTTPResponse {
 
   HTTPStreamResponse({
     required super.status,
+    required super.currentTime,
     required this.total,
     required this.completed,
     required this.startTime,
-    required super.currentTime,
   });
+
+  factory HTTPStreamResponse.fromJson(Map<String, dynamic> json) =>
+      _$HTTPStreamResponseFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$HTTPStreamResponseToJson(this);
 }
 
 class HTTPHelpers {
