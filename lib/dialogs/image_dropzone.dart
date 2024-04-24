@@ -6,15 +6,23 @@ import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
 class ImageDropzoneDialog extends StatefulWidget {
-  const ImageDropzoneDialog({super.key});
+  final Uint8List? imageBytes;
+
+  const ImageDropzoneDialog(this.imageBytes, {super.key});
 
   @override
   State<ImageDropzoneDialog> createState() => _ImageDropzoneDialogState();
 }
 
 class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
-  bool _imageUploaded = false;
   Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _imageBytes = widget.imageBytes;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +30,7 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
       content: SizedBox(
         width: 300.0,
         height: 300.0,
-        child: _imageUploaded
+        child: _imageBytes != null
             ? Image.memory(
                 _imageBytes!,
                 fit: BoxFit.cover,
@@ -81,10 +89,15 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
           onPressed: () {
             setState(() {
               _imageBytes = null;
-              _imageUploaded = false;
             });
           },
           child: const Text('Reset'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(null);
+          },
+          child: const Text('Remove'),
         ),
         TextButton(
           onPressed: () {
@@ -100,16 +113,16 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
     final bytes = await stream.toList();
     setState(() {
       _imageBytes = Uint8List.fromList(bytes.expand((x) => x).toList());
-      _imageUploaded = true;
     });
   }
 }
 
-Future<Uint8List?> showImageDropzoneDialog(BuildContext context) async {
+Future<Uint8List?> showImageDropzoneDialog(
+    BuildContext context, Uint8List? imageBytes) async {
   return showDialog<Uint8List?>(
     context: context,
     builder: (BuildContext context) {
-      return const ImageDropzoneDialog();
+      return ImageDropzoneDialog(imageBytes);
     },
   );
 }

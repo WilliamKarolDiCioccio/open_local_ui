@@ -65,11 +65,20 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
               const SizedBox(width: 8.0),
               IconButton(
                 tooltip: 'Embed image',
-                icon: const Icon(UniconsLine.link_add),
+                icon: Icon(
+                  _imageBytes == null
+                      ? UniconsLine.image_plus
+                      : UniconsLine.image_minus,
+                ),
                 onPressed: () async {
-                  final imageBytes = await showImageDropzoneDialog(context);
+                  final imageBytes = await showImageDropzoneDialog(
+                    context,
+                    _imageBytes,
+                  );
 
-                  _imageBytes = imageBytes;
+                  setState(() {
+                    _imageBytes = imageBytes;
+                  });
                 },
               ),
               const SizedBox(width: 8.0),
