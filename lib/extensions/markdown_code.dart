@@ -12,7 +12,7 @@ import 'package:unicons/unicons.dart';
 import 'package:open_local_ui/components/text_icon_button.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 
-class MarkdownCaustomCodeBuilder extends MarkdownElementBuilder {
+class MarkdownCustomCodeBuilder extends MarkdownElementBuilder {
   @override
   Widget? visitElementAfterWithContext(
     BuildContext context,

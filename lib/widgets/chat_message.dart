@@ -184,7 +184,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   if (href != null) launchUrl(Uri.parse(href));
                 },
                 builders: {
-                  'code': MarkdownCaustomCodeBuilder(),
+                  'code': MarkdownCustomCodeBuilder(),
                 },
                 selectable: true,
               ),
