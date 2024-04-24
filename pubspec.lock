@@ -358,6 +358,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.1"
+  flutter_markdown_selectionarea:
+    dependency: "direct main"
+    description:
+      name: flutter_markdown_selectionarea
+      sha256: d4bc27e70a5c40ebdab23a4b81f75d53696a214d4d1f13c12045b38a0ddc58a2
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.17+1"
   flutter_native_splash:
     dependency: "direct main"
     description:

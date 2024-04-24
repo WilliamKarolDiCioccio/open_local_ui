@@ -161,31 +161,33 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           const Divider(),
           Visibility(
             visible: !_isEditing,
-            child: MarkdownBody(
-              data: widget.message.text,
-              styleSheet: MarkdownStyleSheet.fromTheme(
-                ThemeData(
-                  textTheme: TextTheme(
-                    bodyMedium: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w300,
-                      color: AdaptiveTheme.of(context)
-                          .theme
-                          .textTheme
-                          .bodyMedium
-                          ?.color,
-                      fontFamily: 'Neuton',
+            child: SelectionArea(
+              child: MarkdownBody(
+                data: widget.message.text,
+                styleSheet: MarkdownStyleSheet.fromTheme(
+                  ThemeData(
+                    textTheme: TextTheme(
+                      bodyMedium: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w300,
+                        color: AdaptiveTheme.of(context)
+                            .theme
+                            .textTheme
+                            .bodyMedium
+                            ?.color,
+                        fontFamily: 'Neuton',
+                      ),
                     ),
                   ),
                 ),
+                onTapLink: (text, href, title) {
+                  if (href != null) launchUrl(Uri.parse(href));
+                },
+                builders: {
+                  'code': MarkdownCaustomCodeBuilder(),
+                },
+                selectable: true,
               ),
-              onTapLink: (text, href, title) {
-                if (href != null) launchUrl(Uri.parse(href));
-              },
-              builders: {
-                'code': MarkdownCaustomCodeBuilder(),
-              },
-              selectable: true,
             ),
           ),
           Visibility(

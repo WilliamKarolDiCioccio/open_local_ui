@@ -56,15 +56,17 @@ class MarkdownCaustomCodeBuilder extends MarkdownElementBuilder {
               ),
             ),
           ),
-          HighlightView(
-            element.textContent,
-            language: language,
-            theme: AdaptiveTheme.of(context).mode.isDark
-                ? kimbieDarkTheme
-                : kimbieLightTheme,
-            padding: const EdgeInsets.all(8),
-            textStyle: const TextStyle(
-              fontFamily: 'Roboto',
+          SelectionArea(
+            child: HighlightView(
+              element.textContent,
+              language: language,
+              theme: AdaptiveTheme.of(context).mode.isDark
+                  ? kimbieDarkTheme
+                  : kimbieLightTheme,
+              padding: const EdgeInsets.all(8),
+              textStyle: const TextStyle(
+                fontFamily: 'Roboto',
+              ),
             ),
           ),
         ],
