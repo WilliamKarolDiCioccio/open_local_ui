@@ -82,15 +82,24 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                 },
               ),
               const SizedBox(width: 8.0),
-              IconButton(
-                tooltip: 'Send message',
-                icon: const Icon(UniconsLine.message),
-                onPressed: () async {
-                  _text = _textEditingController.text;
+              if (context.watch<ChatProvider>().isGenerating)
+                IconButton(
+                  tooltip: 'Cancel generation',
+                  icon: const Icon(UniconsLine.stop_circle),
+                  onPressed: () async {
+                    context.read<ChatProvider>().abortGeneration();
+                  },
+                )
+              else
+                IconButton(
+                  tooltip: 'Send message',
+                  icon: const Icon(UniconsLine.message),
+                  onPressed: () async {
+                    _text = _textEditingController.text;
 
-                  _sendMessage();
-                },
-              ),
+                    _sendMessage();
+                  },
+                ),
               const SizedBox(width: 8.0),
             ],
           ),

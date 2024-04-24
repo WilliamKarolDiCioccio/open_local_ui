@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -42,6 +43,7 @@ class ChatMessageWrapper {
 enum ChatProviderStatus {
   idle,
   generating,
+  aborting,
 }
 
 class ChatProvider extends ChangeNotifier {
@@ -70,7 +72,7 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sendMessage(String text, Uint8List? imageBytes) async {
+  Future sendMessage(String text, Uint8List? imageBytes) async {
     if (text.isEmpty || isGenerating) {
       return;
     } else if (!isModelSelected) {
@@ -122,10 +124,19 @@ class ChatProvider extends ChangeNotifier {
 
       addMessage('', ChatMessageSender.model);
 
-      await chain.stream([prompt]).forEach((response) {
+      await for (final response in chain.stream([prompt])) {
+        if (_status == ChatProviderStatus.aborting) {
+          _status = ChatProviderStatus.idle;
+
+          _memory.chatHistory.removeLast();
+
+          break;
+        }
+
         _messages.last.text += response.toString();
+
         notifyListeners();
-      });
+      }
 
       _memory.chatHistory.addAIChatMessage(_messages.last.text);
 
@@ -202,6 +213,14 @@ class ChatProvider extends ChangeNotifier {
     );
 
     notifyListeners();
+  }
+
+  void abortGeneration() {
+    if (_status == ChatProviderStatus.generating) {
+      _status = ChatProviderStatus.aborting;
+
+      notifyListeners();
+    }
   }
 
   void enableWebSearch(bool value) {
