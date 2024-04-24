@@ -164,20 +164,20 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             child: SelectionArea(
               child: MarkdownBody(
                 data: widget.message.text,
-                styleSheet: MarkdownStyleSheet.fromTheme(
-                  ThemeData(
-                    textTheme: TextTheme(
-                      bodyMedium: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w300,
-                        color: AdaptiveTheme.of(context)
-                            .theme
-                            .textTheme
-                            .bodyMedium
-                            ?.color,
-                        fontFamily: 'Neuton',
-                      ),
-                    ),
+                styleSheet: MarkdownStyleSheet(
+                  p: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w300,
+                    color: AdaptiveTheme.of(context)
+                        .theme
+                        .textTheme
+                        .bodyMedium
+                        ?.color,
+                    fontFamily: 'Neuton',
+                  ),
+                  codeblockPadding: const EdgeInsets.all(8),
+                  codeblockDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 onTapLink: (text, href, title) {
