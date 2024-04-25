@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 
+import 'package:open_local_ui/l10n/l10n.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
@@ -80,6 +83,14 @@ class MyApp extends StatelessWidget {
         title: 'OpenLocalUI',
         theme: theme,
         darkTheme: darkTheme,
+        supportedLocales: L10n.all,
+        locale: const Locale('en'),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         home: Stack(
           children: [
             const DashboardLayout(),

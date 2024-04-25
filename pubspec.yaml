@@ -34,6 +34,9 @@ dependencies:
   json_annotation: ^4.0.1
   super_drag_and_drop: ^0.8.12
   flutter_markdown_selectionarea: ^0.6.17+1
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_test:
@@ -44,6 +47,7 @@ dev_dependencies:
   json_serializable: ^6.7.1
 
 flutter:
+  generate: true
   fonts:
     - family: ValeraRound
       fonts:

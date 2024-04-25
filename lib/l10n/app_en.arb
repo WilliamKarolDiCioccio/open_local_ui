@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "dashboardHome": "Home",
+  "@helloWorld": {
+    "description": "Dashboard Home button"
+  }
+}
