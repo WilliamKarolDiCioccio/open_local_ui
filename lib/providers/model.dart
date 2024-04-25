@@ -3,118 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:process_run/shell.dart';
 
 import 'package:open_local_ui/helpers/http.dart';
+import 'package:open_local_ui/models/model.dart';
+import 'package:open_local_ui/models/ollama_responses.dart';
 import 'package:open_local_ui/utils/logger.dart';
-
-part 'model.g.dart';
-
-class Model {
-  final String name;
-  final DateTime modifiedAt;
-  final int size;
-  final String digest;
-  final ModelDetails details;
-
-  Model({
-    required this.name,
-    required this.modifiedAt,
-    required this.size,
-    required this.digest,
-    required this.details,
-  });
-
-  factory Model.fromJson(Map<String, dynamic> json) {
-    return Model(
-      name: json['name'],
-      modifiedAt: DateTime.parse(json['modified_at']),
-      size: json['size'],
-      digest: json['digest'],
-      details: ModelDetails.fromJson(json['details']),
-    );
-  }
-}
-
-class ModelDetails {
-  final String format;
-  final String family;
-  final List<String>? families;
-  final String parameterSize;
-  final String quantizationLevel;
-
-  ModelDetails({
-    required this.format,
-    required this.family,
-    required this.families,
-    required this.parameterSize,
-    required this.quantizationLevel,
-  });
-
-  factory ModelDetails.fromJson(Map<String, dynamic> json) {
-    return ModelDetails(
-      format: json['format'],
-      family: json['family'],
-      families:
-          json['families'] != null ? List<String>.from(json['families']) : null,
-      parameterSize: json['parameter_size'],
-      quantizationLevel: json['quantization_level'],
-    );
-  }
-}
-
-@JsonSerializable()
-class ModelPullResponse extends HTTPStreamResponse {
-  ModelPullResponse({
-    required super.status,
-    required super.total,
-    required super.completed,
-    required super.startTime,
-    required super.currentTime,
-  });
-
-  factory ModelPullResponse.fromJson(Map<String, dynamic> json) =>
-      _$ModelPullResponseFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$ModelPullResponseToJson(this);
-}
-
-@JsonSerializable()
-class ModelPushResponse extends HTTPStreamResponse {
-  ModelPushResponse({
-    required super.status,
-    required super.total,
-    required super.completed,
-    required super.startTime,
-    required super.currentTime,
-  });
-
-  factory ModelPushResponse.fromJson(Map<String, dynamic> json) =>
-      _$ModelPushResponseFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$ModelPushResponseToJson(this);
-}
-
-@JsonSerializable()
-class ModelCreateResponse extends HTTPStreamResponse {
-  ModelCreateResponse({
-    required super.status,
-    required super.total,
-    required super.completed,
-    required super.startTime,
-    required super.currentTime,
-  });
-
-  factory ModelCreateResponse.fromJson(Map<String, dynamic> json) =>
-      _$ModelCreateResponseFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$ModelCreateResponseToJson(this);
-}
 
 enum ModelProviderStatus {
   idle,
@@ -171,7 +66,7 @@ class ModelProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<ModelPullResponse> pull(String name) async* {
+  Stream<OllamaPullResponse> pull(String name) async* {
     _status = ModelProviderStatus.pulling;
 
     final request = http.Request('POST', Uri.parse('$api/pull'));
@@ -205,7 +100,7 @@ class ModelProvider extends ChangeNotifier {
             jsonData.containsKey('status') &&
             jsonData.containsKey('total') &&
             jsonData.containsKey('completed')) {
-          final modelPullResponse = ModelPullResponse(
+          final modelPullResponse = OllamaPullResponse(
             status: jsonData['status'] as String,
             total: jsonData['total'] as int,
             completed: jsonData['completed'] as int,
@@ -227,7 +122,7 @@ class ModelProvider extends ChangeNotifier {
     completer.complete();
   }
 
-  Stream<ModelPushResponse> push(String name) async* {
+  Stream<OllamaPushResponse> push(String name) async* {
     _status = ModelProviderStatus.pushing;
 
     final request = http.Request('POST', Uri.parse('$api/push'));
@@ -261,7 +156,7 @@ class ModelProvider extends ChangeNotifier {
             jsonData.containsKey('status') &&
             jsonData.containsKey('total') &&
             jsonData.containsKey('completed')) {
-          final modelPushResponse = ModelPushResponse(
+          final modelPushResponse = OllamaPushResponse(
             status: jsonData['status'] as String,
             total: jsonData['total'] as int,
             completed: jsonData['completed'] as int,
@@ -283,7 +178,7 @@ class ModelProvider extends ChangeNotifier {
     completer.complete();
   }
 
-  Stream<ModelCreateResponse> create(String name, String modelfile) async* {
+  Stream<OllamaCreateResponse> create(String name, String modelfile) async* {
     _status = ModelProviderStatus.creating;
 
     final request = http.Request('POST', Uri.parse('$api/create'));
@@ -316,7 +211,7 @@ class ModelProvider extends ChangeNotifier {
 
         if (jsonData is Map<String, dynamic> &&
             jsonData.containsKey('status')) {
-          final modelPushResponse = ModelCreateResponse(
+          final modelPushResponse = OllamaCreateResponse(
             status: jsonData['status'] as String,
             total: 0,
             completed: 0,

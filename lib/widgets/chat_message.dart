@@ -5,12 +5,13 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:open_local_ui/components/text_icon_button.dart';
 import 'package:open_local_ui/extensions/markdown_code.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
+import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/providers/chat.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ChatMessageWidget extends StatefulWidget {
   final ChatMessageWrapper message;

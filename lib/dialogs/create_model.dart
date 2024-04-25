@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:open_local_ui/models/ollama_responses.dart';
 import 'package:open_local_ui/providers/model.dart';
 
 class CreateModelDialog extends StatefulWidget {
@@ -21,7 +22,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   double _progressValue = 0.0;
   String _progressBarText = 'Preparing to create model...';
 
-  void _updateProgress(ModelCreateResponse response) {
+  void _updateProgress(OllamaCreateResponse response) {
     setState(() {
       _stepsCount += 1;
 

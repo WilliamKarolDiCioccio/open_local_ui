@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:open_local_ui/helpers/http.dart';
+import 'package:open_local_ui/models/ollama_responses.dart';
 import 'package:open_local_ui/providers/model.dart';
 
 class PushModelDialog extends StatefulWidget {
@@ -19,7 +20,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
   double _progressValue = 0.0;
   String _progressBarText = 'Preparing to push model...';
 
-  void _updateProgress(ModelPushResponse response) {
+  void _updateProgress(OllamaPushResponse response) {
     setState(() {
       _progressValue = response.completed / response.total;
 

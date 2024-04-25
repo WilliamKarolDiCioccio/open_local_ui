@@ -9,6 +9,7 @@ import 'package:open_local_ui/dialogs/model_details.dart';
 import 'package:open_local_ui/dialogs/pull_model.dart';
 import 'package:open_local_ui/dialogs/push_model.dart';
 import 'package:open_local_ui/layout/page_base.dart';
+import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/providers/model.dart';
 
 class ModelsPage extends StatefulWidget {
