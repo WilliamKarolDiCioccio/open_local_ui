@@ -58,51 +58,51 @@ class _ChatMessageListState extends State<ChatMessageList> {
   Widget build(BuildContext context) {
     const List<List<String>> exampleQuestions = [
       [
-        "What are some common use cases",
+        "What are some common use cases ",
         "for problem-solving skills?",
       ],
       [
-        "Plan a birthday party",
+        "Plan a birthday party ",
         "for your best friend with a surprise element",
       ],
       [
-        "Explain the concept of learning",
+        "Explain the concept of learning ",
         "from experience using everyday situations",
       ],
       [
-        "Distinguish between",
+        "Distinguish between ",
         "teaching and mentoring and their benefits",
       ],
       [
-        "Handle stress in daily life",
+        "Handle stress in daily life ",
         "with effective coping strategies",
       ],
       [
-        "Understand the importance",
+        "Understand the importance ",
         "of communication in personal and professional life",
       ],
       [
-        "Describe the process of decision-making",
+        "Describe the process of decision-making ",
         "in complex situations",
       ],
       [
-        "List some challenges",
+        "List some challenges ",
         " in personal growth to overcome",
       ],
       [
-        "Evaluate the performance",
+        "Evaluate the performance ",
         "of a team using teamwork metrics",
       ],
       [
-        "Discuss advantages and disadvantages",
+        "Discuss advantages and disadvantages ",
         "of remote work for employees and employers",
       ],
       [
-        "Address conflicts",
+        "Address conflicts ",
         "in relationships using effective communication",
       ],
       [
-        "Explain the significance",
+        "Explain the significance ",
         "of empathy in building strong connections",
       ],
     ];
@@ -154,6 +154,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
                         randomQuestions[index][1],
                         style: const TextStyle(
                           fontSize: 14.0,
+                          fontFamily: 'Neuton',
                           fontWeight: FontWeight.w300,
                         ),
                       ),

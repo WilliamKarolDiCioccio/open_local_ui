@@ -173,11 +173,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 ),
               ),
             ),
-          if (widget.message.imageBytes != null)
-            const Divider(),
-          Visibility(
-            visible: !_isEditing,
-            child: SelectionArea(
+          if (widget.message.imageBytes != null) const Divider(),
+          if (!_isEditing)
+            SelectionArea(
               child: MarkdownBody(
                 data: widget.message.text,
                 styleSheet: MarkdownStyleSheet(
@@ -205,10 +203,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 selectable: true,
               ),
             ),
-          ),
-          Visibility(
-            visible: _isEditing,
-            child: Column(
+          if (_isEditing)
+            Column(
               children: [
                 TextField(
                   controller: _textEditingController,
@@ -216,6 +212,11 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                     hintText: 'Edit your message...',
                     border: InputBorder.none,
                     counterText: '',
+                  ),
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: 'Neuton',
                   ),
                   autofocus: true,
                   maxLength: 4096,
@@ -239,7 +240,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 ),
               ],
             ),
-          ),
           const SizedBox(height: 8.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,

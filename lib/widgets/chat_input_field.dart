@@ -106,6 +106,11 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
             ],
           ),
         ),
+        style: const TextStyle(
+          fontSize: 20.0,
+          fontFamily: 'Neuton',
+          fontWeight: FontWeight.w300,
+        ),
         autofocus: true,
         maxLength: 4096,
         maxLines: null,
