@@ -25,7 +25,8 @@ class ChatProvider extends ChangeNotifier {
   final List<ChatMessageWrapper> _messages = [];
   ChatProviderStatus _status = ChatProviderStatus.idle;
 
-  void addMessage(String message, ChatMessageSender type) {
+  void addMessage(
+      String message, Uint8List? imageBytes, ChatMessageSender type) {
     final now = DateTime.now();
     final formattedDateTime =
         '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
@@ -37,6 +38,7 @@ class ChatProvider extends ChangeNotifier {
       formattedDateTime,
       uuid,
       type,
+      imageBytes: imageBytes,
     ));
 
     notifyListeners();
@@ -46,7 +48,11 @@ class ChatProvider extends ChangeNotifier {
     if (text.isEmpty || isGenerating) {
       return;
     } else if (!isModelSelected) {
-      addMessage('Please select a model.', ChatMessageSender.system);
+      addMessage(
+        'Please select a model.',
+        null,
+        ChatMessageSender.system,
+      );
 
       return;
     }
@@ -56,7 +62,7 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      addMessage(text, ChatMessageSender.user);
+      addMessage(text, imageBytes, ChatMessageSender.user);
 
       _memory.chatHistory.addHumanChatMessage(_messages.last.text);
 
@@ -92,7 +98,11 @@ class ChatProvider extends ChangeNotifier {
         ),
       );
 
-      addMessage('', ChatMessageSender.model);
+      addMessage(
+        '',
+        null,
+        ChatMessageSender.model,
+      );
 
       await for (final response in chain.stream([prompt])) {
         if (_status == ChatProviderStatus.aborting) {
@@ -118,8 +128,11 @@ class ChatProvider extends ChangeNotifier {
 
       removeLastMessage();
 
-      addMessage('An error occurred while generating the response.',
-          ChatMessageSender.system);
+      addMessage(
+        'An error occurred while generating the response.',
+        null,
+        ChatMessageSender.system,
+      );
 
       logger.e(e);
     }
