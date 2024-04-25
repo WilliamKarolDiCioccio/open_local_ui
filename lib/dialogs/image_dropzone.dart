@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_image_converter/flutter_image_converter.dart';
+import 'package:image/image.dart' as img;
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
@@ -51,12 +54,14 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                   formats: const [
                     Formats.png,
                     Formats.jpeg,
+                    Formats.webp,
                   ],
                   onDropOver: (event) async {
                     final item = event.session.items.first;
 
                     if (item.canProvide(Formats.png) ||
-                        item.canProvide(Formats.jpeg)) {
+                        item.canProvide(Formats.jpeg) ||
+                        item.canProvide(Formats.webp)) {
                       return DropOperation.copy;
                     } else {
                       return DropOperation.none;
@@ -77,6 +82,18 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                         final stream = file.getStream();
                         _setImageFromStream(stream);
                       });
+                    } else if (reader.canProvide(Formats.webp)) {
+                      reader.getFile(Formats.webp, (file) async {
+                        final stream = file.getStream();
+                        final bytes = await stream.toList();
+
+                        final decodedWebP = img.decodeWebP(Uint8List.fromList(bytes.expand((x) => x).toList()));
+                        final encodedPNG = img.encodePng(decodedWebP!);
+                        
+                        setState(() {
+                          _imageBytes = encodedPNG;
+                        });
+                      });
                     }
                   },
                   child: Center(
@@ -90,6 +107,10 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                         const Text(
                           'Drop an image here',
                           style: TextStyle(fontSize: 24.0),
+                        ),
+                        const Text(
+                          'Allowed formats: PNG, JPEG, WEBP',
+                          style: TextStyle(fontSize: 14.0),
                         ),
                         const SizedBox(height: 16.0),
                         TextIconButtonComponent(
@@ -106,8 +127,16 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                             if (result != null) {
                               final file = File(result.files.single.path!);
 
-                              final stream = file.openRead();
-                              _setImageFromStream(stream);
+                              if (result.files.single.extension == 'webp') {
+                                final image = await file.pngUint8List;
+
+                                setState(() {
+                                  _imageBytes = image;
+                                });
+                              } else {
+                                final stream = file.openRead();
+                                _setImageFromStream(stream);
+                              }
                             }
                           },
                         ),
