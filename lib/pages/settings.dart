@@ -6,6 +6,7 @@ import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/providers/locale.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unicons/unicons.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -76,6 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         const SizedBox(height: 8.0),
         DropdownMenu(
+          leadingIcon: const Icon(UniconsLine.moon_eclipse),
           inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(
               borderSide: BorderSide.none,
@@ -116,6 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         const SizedBox(height: 8.0),
         DropdownMenu(
+          leadingIcon: const Icon(UniconsLine.language),
           inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(
               borderSide: BorderSide.none,
