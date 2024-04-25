@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 
 import 'package:open_local_ui/layout/page_base.dart';
+import 'package:open_local_ui/providers/locale.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -14,22 +17,37 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return PageBaseLayout(
-      body: Row(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AdaptiveTheme.of(context).theme.dividerColor,
+    return Consumer<LocaleProvider>(
+      builder: (context, value, child) => PageBaseLayout(
+        body: Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AdaptiveTheme.of(context).theme.dividerColor,
+                  ),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
-                borderRadius: BorderRadius.circular(20.0),
+                padding: const EdgeInsets.all(16.0),
+                child: _buildThemeSettings(context),
               ),
-              padding: const EdgeInsets.all(16.0),
-              child: _buildThemeSettings(context),
             ),
-          ),
-        ],
+            const SizedBox(width: 32.0),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AdaptiveTheme.of(context).theme.dividerColor,
+                  ),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: _buildAccessibilitySettings(context),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -82,6 +100,42 @@ class _SettingsPageState extends State<SettingsPage> {
                 AdaptiveTheme.of(context).setSystem();
                 break;
             }
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAccessibilitySettings(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        const Text(
+          'Accessibility',
+          style: TextStyle(fontSize: 24.0),
+        ),
+        const SizedBox(height: 8.0),
+        DropdownMenu(
+          inputDecorationTheme: const InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+          initialSelection: context.watch<LocaleProvider>().languageCode,
+          dropdownMenuEntries: const [
+            DropdownMenuEntry(value: 'en', label: 'English'),
+            DropdownMenuEntry(value: 'es', label: 'Spanish'),
+            DropdownMenuEntry(value: 'fr', label: 'French'),
+            DropdownMenuEntry(value: 'de', label: 'German'),
+            DropdownMenuEntry(value: 'it', label: 'Italian'),
+          ],
+          onSelected: (value) async {
+            context.read<LocaleProvider>().setLocale(Locale(value ?? 'en'));
+
+            final prefs = await SharedPreferences.getInstance();
+
+            await prefs.setString('locale', value ?? 'en');
           },
         ),
       ],

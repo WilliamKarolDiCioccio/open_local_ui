@@ -6,7 +6,9 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:open_local_ui/providers/locale.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_theme/system_theme.dart';
 
 import 'package:open_local_ui/l10n/l10n.dart';
@@ -18,6 +20,9 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  final prefs = await SharedPreferences.getInstance();
+  final savedLocale = Locale(prefs.getString('locale') ?? 'en');
+  
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
   await ModelProvider.sServe();
@@ -33,8 +38,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<ChatProvider>(
-          create: (context) => ChatProvider(),
+        ChangeNotifierProvider<LocaleProvider>(
+          create: (context) => LocaleProvider(),
         ),
         ChangeNotifierProvider<ModelProvider>(
           create: (context) => ModelProvider(),
@@ -43,7 +48,7 @@ void main() async {
           create: (context) => ChatProvider(),
         ),
       ],
-      child: MyApp(savedThemeMode: savedThemeMode),
+      child: MyApp(savedLocale: savedLocale, savedThemeMode: savedThemeMode),
     ),
   );
 
@@ -58,9 +63,11 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final Locale? savedLocale;
   final AdaptiveThemeMode? savedThemeMode;
 
-  const MyApp({super.key, this.savedThemeMode});
+  const MyApp(
+      {super.key, required this.savedLocale, required this.savedThemeMode});
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +91,7 @@ class MyApp extends StatelessWidget {
         theme: theme,
         darkTheme: darkTheme,
         supportedLocales: L10n.all,
-        locale: const Locale('en'),
+        locale: context.watch<LocaleProvider>().locale,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
