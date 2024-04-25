@@ -161,13 +161,20 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           ),
           const Divider(),
           if (widget.message.imageBytes != null)
-            SizedBox(
-              height: 256.0,
-              child: Image.memory(
-                widget.message.imageBytes!,
-                fit: BoxFit.fitHeight,
+            Center(
+              child: SizedBox(
+                height: 512.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.memory(
+                    widget.message.imageBytes!,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
               ),
             ),
+          if (widget.message.imageBytes != null)
+            const Divider(),
           Visibility(
             visible: !_isEditing,
             child: SelectionArea(

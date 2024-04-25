@@ -37,6 +37,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
       context.read<ChatProvider>().sendMessage(_text, _imageBytes);
 
       _textEditingController.clear();
+      _text = '';
+      _imageBytes = null;
     }
   }
 
