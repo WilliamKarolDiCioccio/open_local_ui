@@ -11,6 +11,7 @@ import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
 import 'package:open_local_ui/components/text_icon_button.dart';
+import 'package:open_local_ui/helpers/http.dart';
 
 class ImageDropzoneDialog extends StatefulWidget {
   final Uint8List? imageBytes;
@@ -52,6 +53,7 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                 )
               : DropRegion(
                   formats: const [
+                    Formats.plainText,
                     Formats.png,
                     Formats.jpeg,
                     Formats.webp,
@@ -59,7 +61,8 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                   onDropOver: (event) async {
                     final item = event.session.items.first;
 
-                    if (item.canProvide(Formats.png) ||
+                    if (item.canProvide(Formats.plainText) ||
+                        item.canProvide(Formats.png) ||
                         item.canProvide(Formats.jpeg) ||
                         item.canProvide(Formats.webp)) {
                       return DropOperation.copy;
@@ -72,7 +75,23 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
 
                     final reader = item.dataReader!;
 
-                    if (reader.canProvide(Formats.png)) {
+                    if (reader.canProvide(Formats.plainText)) {
+                      reader.getValue<String>(Formats.plainText, (link) async {
+                        if (link == null) return;
+
+                        final response = await HTTPHelpers.get(link);
+
+                        if (response.statusCode != 200) {
+                          return;
+                        }
+
+                        final encodedPng = await Image.network(link).pngUint8List;
+                        
+                        setState(() {
+                          _imageBytes = encodedPng;
+                        });
+                      });
+                    } else if (reader.canProvide(Formats.png)) {
                       reader.getFile(Formats.png, (file) {
                         final stream = file.getStream();
                         _setImageFromStream(stream);
@@ -87,11 +106,12 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                         final stream = file.getStream();
                         final bytes = await stream.toList();
 
-                        final decodedWebP = img.decodeWebP(Uint8List.fromList(bytes.expand((x) => x).toList()));
-                        final encodedPNG = img.encodePng(decodedWebP!);
-                        
+                        final decodedWebP = img.decodeWebP(Uint8List.fromList(
+                            bytes.expand((x) => x).toList()));
+                        final encodedPng = img.encodePng(decodedWebP!);
+
                         setState(() {
-                          _imageBytes = encodedPNG;
+                          _imageBytes = encodedPng;
                         });
                       });
                     }
