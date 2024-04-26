@@ -35,7 +35,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
         SnackBarType.error,
       );
     } else {
-      context.read<ChatProvider>().sendMessage(_text, _imageBytes);
+      context.read<ChatProvider>().sendMessage(_text, imageBytes: _imageBytes);
 
       _textEditingController.clear();
       _text = '';

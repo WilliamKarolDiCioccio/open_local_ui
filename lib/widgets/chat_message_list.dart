@@ -134,7 +134,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
                   final message =
                       choosenQuestions[index][0] + choosenQuestions[index][1];
                       
-                  context.read<ChatProvider>().sendMessage(message, null);
+                  context.read<ChatProvider>().sendMessage(message);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),

@@ -118,7 +118,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         break;
       case ChatMessageSender.model:
         senderIconData = UniconsLine.robot;
-        senderName = context.read<ChatProvider>().modelName;
+        senderName = widget.message.senderName!;
         break;
       case ChatMessageSender.system:
         senderIconData = UniconsLine.eye;

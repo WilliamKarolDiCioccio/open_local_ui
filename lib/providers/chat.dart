@@ -26,7 +26,11 @@ class ChatProvider extends ChangeNotifier {
   ChatProviderStatus _status = ChatProviderStatus.idle;
 
   void addMessage(
-      String message, Uint8List? imageBytes, ChatMessageSender type) {
+    String message,
+    ChatMessageSender sender, {
+    Uint8List? imageBytes,
+    String? senderName,
+  }) {
     final now = DateTime.now();
     final formattedDateTime =
         '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
@@ -37,20 +41,20 @@ class ChatProvider extends ChangeNotifier {
       message,
       formattedDateTime,
       uuid,
-      type,
+      sender,
+      senderName: senderName,
       imageBytes: imageBytes,
     ));
 
     notifyListeners();
   }
 
-  Future sendMessage(String text, Uint8List? imageBytes) async {
+  Future sendMessage(String text, {Uint8List? imageBytes}) async {
     if (text.isEmpty || isGenerating) {
       return;
     } else if (!isModelSelected) {
       addMessage(
         'Please select a model.',
-        null,
         ChatMessageSender.system,
       );
 
@@ -62,7 +66,11 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      addMessage(text, imageBytes, ChatMessageSender.user);
+      addMessage(
+        text,
+        ChatMessageSender.user,
+        imageBytes: imageBytes,
+      );
 
       _memory.chatHistory.addHumanChatMessage(_messages.last.text);
 
@@ -100,8 +108,8 @@ class ChatProvider extends ChangeNotifier {
 
       addMessage(
         '',
-        null,
         ChatMessageSender.model,
+        senderName: _modelName,
       );
 
       await for (final response in chain.stream([prompt])) {
@@ -130,7 +138,6 @@ class ChatProvider extends ChangeNotifier {
 
       addMessage(
         'An error occurred while generating the response.',
-        null,
         ChatMessageSender.system,
       );
 
@@ -167,7 +174,7 @@ class ChatProvider extends ChangeNotifier {
 
     removeMessage(uuid);
 
-    sendMessage(text, imageBytes);
+    sendMessage(text, imageBytes: imageBytes);
   }
 
   void resendMessage(String uuid, String text) async {

@@ -7,10 +7,11 @@ class ChatMessageWrapper {
   final Uint8List? imageBytes;
   final String dateTime;
   final String uuid;
+  final String? senderName;
   final ChatMessageSender sender;
 
   ChatMessageWrapper(this.text, this.dateTime, this.uuid, this.sender,
-      {this.imageBytes});
+      {this.senderName, this.imageBytes});
 
   factory ChatMessageWrapper.fromJson(Map<String, dynamic> json) {
     return ChatMessageWrapper(
@@ -26,6 +27,7 @@ class ChatMessageWrapper {
       'text': text,
       'dateTime': dateTime,
       'uuid': uuid,
+      'senderName': senderName,
       'sender': sender.index,
     };
   }
