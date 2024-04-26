@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -30,7 +31,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
         context,
-        'Model is generating a response, please wait...',
+        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );
     } else {
@@ -55,8 +56,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
       child: TextField(
         controller: _textEditingController,
         decoration: InputDecoration(
-          hintText: 'Type your message...',
-          counterText: '',
+          hintText: AppLocalizations.of(context)!.chatInputFieldHint,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -66,7 +66,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
             children: [
               const SizedBox(width: 8.0),
               IconButton(
-                tooltip: 'Embed image',
+                tooltip: AppLocalizations.of(context)!
+                    .chatInputFieldEmbedButtonTooltip,
                 icon: Icon(
                   _imageBytes == null
                       ? UniconsLine.image_plus
@@ -86,7 +87,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
               const SizedBox(width: 8.0),
               if (context.watch<ChatProvider>().isGenerating)
                 IconButton(
-                  tooltip: 'Cancel generation',
+                  tooltip: AppLocalizations.of(context)!
+                      .chatInputFieldCancelButtonTooltip,
                   icon: const Icon(UniconsLine.stop_circle),
                   onPressed: () async {
                     context.read<ChatProvider>().abortGeneration();
@@ -94,7 +96,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                 )
               else
                 IconButton(
-                  tooltip: 'Send message',
+                  tooltip: AppLocalizations.of(context)!
+                      .chatInputFieldSendButtonTooltip,
                   icon: const Icon(UniconsLine.message),
                   onPressed: () async {
                     _text = _textEditingController.text;

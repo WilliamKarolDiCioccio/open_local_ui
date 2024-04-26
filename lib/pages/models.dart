@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -28,9 +29,9 @@ class _ModelsPageState extends State<ModelsPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Models management',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.modelsPageTitle,
+              style: const TextStyle(
                 fontSize: 32.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -40,22 +41,22 @@ class _ModelsPageState extends State<ModelsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextIconButtonComponent(
-                  text: 'Pull',
+                  text: AppLocalizations.of(context)!.modelsPagePullButton,
                   icon: UniconsLine.download_alt,
                   onPressed: () => showPullModelDialog(context),
                 ),
                 TextIconButtonComponent(
-                  text: 'Push',
+                  text: AppLocalizations.of(context)!.modelsPagePushButton,
                   icon: UniconsLine.upload_alt,
                   onPressed: () => showPushModelDialog(context),
                 ),
                 TextIconButtonComponent(
-                  text: 'Create',
+                  text: AppLocalizations.of(context)!.modelsPageCreateButton,
                   icon: UniconsLine.create_dashboard,
                   onPressed: () => showCreateModelDialog(context),
                 ),
                 TextIconButtonComponent(
-                  text: 'Refresh',
+                  text: AppLocalizations.of(context)!.modelsPageRefreshButton,
                   icon: UniconsLine.refresh,
                   onPressed: () {
                     context.read<ModelProvider>().updateList();
@@ -83,14 +84,16 @@ class _ModelsPageState extends State<ModelsPage> {
     return ListTile(
       title: Text(model.name),
       subtitle: Text(
-        'Modified At: ${model.modifiedAt.toString()}',
+        AppLocalizations.of(context)!.modelDetailsDialogModifiedAtText(
+          model.modifiedAt.toString(),
+        ),
       ),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            tooltip: 'Delete model',
+            tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
             icon: const Icon(UniconsLine.trash),
             onPressed: () {
               context.read<ModelProvider>().remove(model.name);

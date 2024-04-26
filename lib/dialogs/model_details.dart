@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:conversion_units/conversion_units.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:open_local_ui/models/model.dart';
 
@@ -18,20 +19,44 @@ class ModelDetailsDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Modified At: ${model.modifiedAt.toString()}',
+            AppLocalizations.of(context)!.modelDetailsDialogModifiedAtText(
+              model.modifiedAt.toString(),
+            ),
           ),
           Text(
-            'Size: ${Kilobytes.toGigabytes(model.size.toDouble() / 1024).toStringAsFixed(1)} GB',
+            AppLocalizations.of(context)!.modelDetailsDialogSizeText(
+              Kilobytes.toGigabytes(model.size.toDouble() / 1024)
+                  .toStringAsFixed(1),
+            ),
           ),
-          Text('Digest: ${model.digest}'),
-          Text('Format: ${model.details.format}'),
-          Text('Family: ${model.details.family}'),
+          Text(
+            AppLocalizations.of(context)!
+                .modelDetailsDialogDigestText(model.digest),
+          ),
+          Text(
+            AppLocalizations.of(context)!
+                .modelDeatilsDialogFormatText(model.details.format),
+          ),
+          Text(
+            AppLocalizations.of(context)!
+                .modelDetailsDialogFamilyText(model.details.family),
+          ),
           if (model.details.families != null)
             Text(
-              'Families: ${model.details.families!.join(', ')}',
+              AppLocalizations.of(context)!.modelDetailsDialogFamilyText(
+                model.details.families!.join(', '),
+              ),
             ),
-          Text('Parameter Size: ${model.details.parameterSize}'),
-          Text('Quantization Level: ${model.details.quantizationLevel}'),
+          Text(
+            AppLocalizations.of(context)!.modelDetailsDialogParametersSizeText(
+                model.details.parameterSize),
+          ),
+          Text(
+            AppLocalizations.of(context)!
+                .modelDetailsDialogQuantizationLevelText(
+              model.details.quantizationLevel.toString(),
+            ),
+          ),
         ],
       ),
       actions: [
@@ -39,7 +64,9 @@ class ModelDetailsDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Close'),
+          child: Text(
+            AppLocalizations.of(context)!.closeButtonTextShared,
+          ),
         ),
       ],
     );

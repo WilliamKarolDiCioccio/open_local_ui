@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -56,54 +57,54 @@ class _ChatMessageListState extends State<ChatMessageList> {
 
   @override
   Widget build(BuildContext context) {
-    const List<List<String>> exampleQuestions = [
+    final List<List<String>> exampleQuestions = [
       [
-        "What are some common use cases ",
-        "for problem-solving skills?",
+        AppLocalizations.of(context)!.suggestion1part1,
+        AppLocalizations.of(context)!.suggestion1part2,
       ],
       [
-        "Plan a birthday party ",
-        "for your best friend with a surprise element",
+        AppLocalizations.of(context)!.suggestion2part1,
+        AppLocalizations.of(context)!.suggestion2part2,
       ],
       [
-        "Explain the concept of learning ",
-        "from experience using everyday situations",
+        AppLocalizations.of(context)!.suggestion3part1,
+        AppLocalizations.of(context)!.suggestion3part2,
       ],
       [
-        "Distinguish between ",
-        "teaching and mentoring and their benefits",
+        AppLocalizations.of(context)!.suggestion4part1,
+        AppLocalizations.of(context)!.suggestion4part2,
       ],
       [
-        "Handle stress in daily life ",
-        "with effective coping strategies",
+        AppLocalizations.of(context)!.suggestion5part1,
+        AppLocalizations.of(context)!.suggestion5part2,
       ],
       [
-        "Understand the importance ",
-        "of communication in personal and professional life",
+        AppLocalizations.of(context)!.suggestion6part1,
+        AppLocalizations.of(context)!.suggestion6part2,
       ],
       [
-        "Describe the process of decision-making ",
-        "in complex situations",
+        AppLocalizations.of(context)!.suggestion7part1,
+        AppLocalizations.of(context)!.suggestion7part2,
       ],
       [
-        "List some challenges ",
-        " in personal growth to overcome",
+        AppLocalizations.of(context)!.suggestion8part1,
+        AppLocalizations.of(context)!.suggestion8part2,
       ],
       [
-        "Evaluate the performance ",
-        "of a team using teamwork metrics",
+        AppLocalizations.of(context)!.suggestion9part1,
+        AppLocalizations.of(context)!.suggestion9part2,
       ],
       [
-        "Discuss advantages and disadvantages ",
-        "of remote work for employees and employers",
+        AppLocalizations.of(context)!.suggestion10part1,
+        AppLocalizations.of(context)!.suggestion10part2,
       ],
       [
-        "Address conflicts ",
-        "in relationships using effective communication",
+        AppLocalizations.of(context)!.suggestion11part1,
+        AppLocalizations.of(context)!.suggestion11part2,
       ],
       [
-        "Explain the significance ",
-        "of empathy in building strong connections",
+        AppLocalizations.of(context)!.suggestion12part1,
+        AppLocalizations.of(context)!.suggestion12part2,
       ],
     ];
 
@@ -169,14 +170,14 @@ class _ChatMessageListState extends State<ChatMessageList> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Welcome!',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.chatMessageListText1,
+                  style: const TextStyle(
                     fontSize: 32.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Text('Ask me whatever you want'),
+                Text(AppLocalizations.of(context)!.chatMessageListText2),
                 const SizedBox(height: 8.0),
                 Center(
                   child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:open_local_ui/helpers/http.dart';
@@ -18,7 +19,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
       TextEditingController();
   bool _isPushing = false;
   double _progressValue = 0.0;
-  String _progressBarText = 'Preparing to push model...';
+  String _progressBarText = '';
 
   void _updateProgress(OllamaPushResponse response) {
     setState(() {
@@ -27,7 +28,12 @@ class _PushModelDialogState extends State<PushModelDialog> {
       final duration = HTTPHelpers.calculateRemainingTime(response);
 
       _progressBarText =
-          'Status: ${response.status} - Remaining time: ${duration.inHours}:${duration.inMinutes % 60}:${duration.inSeconds % 60}';
+          AppLocalizations.of(context)!.progressBarStatusTextWithTimeShared(
+        response.status,
+        (duration.inHours).toString(),
+        (duration.inMinutes % 60).toString(),
+        (duration.inSeconds % 60).toString(),
+      );
     });
   }
 
@@ -51,7 +57,9 @@ class _PushModelDialogState extends State<PushModelDialog> {
     }
 
     return AlertDialog(
-      title: const Text('Push model'),
+      title: Text(
+        AppLocalizations.of(context)!.pullModelDialogTitle,
+      ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -60,7 +68,9 @@ class _PushModelDialogState extends State<PushModelDialog> {
             visible: !_isPushing,
             child: Column(
               children: [
-                const Text('Please select the model to push:'),
+                Text(
+                  AppLocalizations.of(context)!.pushModelDialogGuideText1,
+                ),
                 const SizedBox(width: 8.0),
                 DropdownMenu(
                   controller: _modelSelectionController,
@@ -72,7 +82,8 @@ class _PushModelDialogState extends State<PushModelDialog> {
                   ),
                   enableFilter: true,
                   enableSearch: true,
-                  hintText: 'Select a model',
+                  hintText: AppLocalizations.of(context)!
+                      .pushModelDialogModelSelectorHint,
                   dropdownMenuEntries: modelsMenuEntries,
                   onSelected: null,
                 ),
@@ -99,7 +110,12 @@ class _PushModelDialogState extends State<PushModelDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(_isPushing ? 'Continue in background' : 'Close'),
+          child: Text(
+            _isPushing
+                ? AppLocalizations.of(context)!
+                    .dialogContinueInBackgroundButtonShared
+                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+          ),
         ),
         if (!_isPushing)
           TextButton(
@@ -123,7 +139,9 @@ class _PushModelDialogState extends State<PushModelDialog> {
                 });
               }
             },
-            child: const Text('Start'),
+            child: Text(
+              AppLocalizations.of(context)!.dialogStartButtonShared,
+            ),
           ),
       ],
     );

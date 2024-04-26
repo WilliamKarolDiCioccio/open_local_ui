@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:open_local_ui/helpers/http.dart';
@@ -17,7 +18,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isPulling = false;
   double _progressValue = 0.0;
-  String _progressBarText = 'Preparing to pull model...';
+  String _progressBarText = '';
 
   void _updateProgress(OllamaPullResponse response) {
     setState(() {
@@ -26,7 +27,12 @@ class _PullModelDialogState extends State<PullModelDialog> {
       final duration = HTTPHelpers.calculateRemainingTime(response);
 
       _progressBarText =
-          'Status: ${response.status} - Remaining time: ${duration.inHours}:${duration.inMinutes % 60}:${duration.inSeconds % 60}';
+          AppLocalizations.of(context)!.progressBarStatusTextWithTimeShared(
+        response.status,
+        (duration.inHours).toString(),
+        (duration.inMinutes % 60).toString(),
+        (duration.inSeconds % 60).toString(),
+      );
     });
   }
 
@@ -39,7 +45,9 @@ class _PullModelDialogState extends State<PullModelDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Pull model'),
+      title: Text(
+        AppLocalizations.of(context)!.pullModelDialogTitle,
+      ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -48,13 +56,17 @@ class _PullModelDialogState extends State<PullModelDialog> {
             visible: !_isPulling,
             child: Column(
               children: [
-                const Text('Please type the name of the model to pull:'),
+                Text(
+                  AppLocalizations.of(context)!.pullModelDialogGuideText1,
+                ),
                 const SizedBox(width: 8.0),
                 TextField(
                   controller: _textEditingController,
-                  decoration: const InputDecoration(
-                    labelText: 'Model name',
-                    hintText: 'Enter model name...',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!
+                        .pullModelDialogModelNameLabel,
+                    hintText: AppLocalizations.of(context)!
+                        .pullModelDialogModelNameHint,
                   ),
                 ),
               ],
@@ -80,7 +92,12 @@ class _PullModelDialogState extends State<PullModelDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(_isPulling ? 'Continue in background' : 'Close'),
+          child: Text(
+            _isPulling
+                ? AppLocalizations.of(context)!
+                    .dialogContinueInBackgroundButtonShared
+                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+          ),
         ),
         if (!_isPulling)
           TextButton(
@@ -104,7 +121,9 @@ class _PullModelDialogState extends State<PullModelDialog> {
                 });
               }
             },
-            child: const Text('Start'),
+            child: Text(
+              AppLocalizations.of(context)!.dialogStartButtonShared,
+            ),
           ),
       ],
     );

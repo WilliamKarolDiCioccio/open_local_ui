@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_highlighter/flutter_highlighter.dart';
 import 'package:flutter_highlighter/themes/kimbie.dark.dart';
 import 'package:flutter_highlighter/themes/kimbie.light.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:unicons/unicons.dart';
 
-import 'package:open_local_ui/components/text_icon_button.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 
 class MarkdownCustomCodeBuilder extends MarkdownElementBuilder {
@@ -37,25 +37,27 @@ class MarkdownCustomCodeBuilder extends MarkdownElementBuilder {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Visibility(
-            visible: element.textContent.length > 128,
-            child: SizedBox(
+          Text(
+            AppLocalizations.of(context)!.markdownLanguageLabel(
+              language,
+            ),
+          ),
+          if (element.textContent.length > 128)
+            SizedBox(
               width: 256.0,
-              child: TextIconButtonComponent(
-                text: 'Language: $language',
+              child: IconButton(
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: element.textContent));
 
                   SnackBarHelper.showSnackBar(
                     context,
-                    'Code block copied to clipboard!',
+                    AppLocalizations.of(context)!.codeCopiedSnackbarText,
                     SnackBarType.success,
                   );
                 },
-                icon: UniconsLine.copy,
+                icon: const Icon(UniconsLine.copy),
               ),
             ),
-          ),
           SelectionArea(
             child: HighlightView(
               element.textContent,

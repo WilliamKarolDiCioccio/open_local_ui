@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -29,7 +30,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         _buildOptionsBar(),
         const SizedBox(width: 16.0),
         TextIconButtonComponent(
-          text: 'New chat',
+          text: AppLocalizations.of(context)!.chatToolbarNewChatButton,
           icon: UniconsLine.plus,
           onPressed: () => context.read<ChatProvider>().clearHistory(),
         )
@@ -57,7 +58,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       ),
       enableFilter: true,
       enableSearch: true,
-      hintText: 'Select model',
+      hintText: AppLocalizations.of(context)!.chatToolbarModelSelectorHint,
       initialSelection: context.watch<ChatProvider>().modelName,
       dropdownMenuEntries: modelsMenuEntries,
       onSelected: (value) => context.read<ChatProvider>().setModel(value ?? ''),
@@ -77,7 +78,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildCheckbox(
-            'Web search:',
+            AppLocalizations.of(context)!.chatToolbarWebSearchOption,
             _webSearchEnabled,
             (value) => setState(() {
               context.read<ChatProvider>().enableWebSearch(value ?? false);
@@ -85,7 +86,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
             }),
           ),
           _buildCheckbox(
-            'Docs search:',
+            AppLocalizations.of(context)!.chatToolbarDocsSearchOption,
             _docsSearchEnabled,
             (value) => setState(() {
               context.read<ChatProvider>().enableDocsSearch(value ?? false);

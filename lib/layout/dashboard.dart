@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -85,7 +86,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   child: Divider(height: 32.0),
                 ),
                 TextIconButtonComponent(
-                  text: 'Home',
+                  text: AppLocalizations.of(context)!.dashboardHomeBtn,
                   icon: UniconsLine.home,
                   onPressed: () => _changePage(0),
                 ),
@@ -94,17 +95,17 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   child: Divider(height: 32.0),
                 ),
                 TextIconButtonComponent(
-                  text: 'Chat',
+                  text: AppLocalizations.of(context)!.dashboardChatBtn,
                   icon: UniconsLine.comment,
                   onPressed: () => _changePage(1),
                 ),
                 TextIconButtonComponent(
-                  text: 'Archive',
+                  text: AppLocalizations.of(context)!.dashboardArchiveBtn,
                   icon: UniconsLine.archive,
                   onPressed: () => _changePage(2),
                 ),
                 TextIconButtonComponent(
-                  text: 'Models',
+                  text: AppLocalizations.of(context)!.dashboardModelsBtn,
                   icon: UniconsLine.cube,
                   onPressed: () => _changePage(3),
                 ),
@@ -113,12 +114,12 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   child: Divider(height: 32.0),
                 ),
                 TextIconButtonComponent(
-                  text: 'Settings',
+                  text: AppLocalizations.of(context)!.dashboardSettingsBtn,
                   icon: UniconsLine.setting,
                   onPressed: () => _changePage(4),
                 ),
                 TextIconButtonComponent(
-                  text: 'About',
+                  text: AppLocalizations.of(context)!.dashboardAboutBtn,
                   icon: UniconsLine.info_circle,
                   onPressed: () => _changePage(5),
                 ),

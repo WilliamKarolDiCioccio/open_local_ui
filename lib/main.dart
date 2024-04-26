@@ -22,7 +22,7 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
   final savedLocale = Locale(prefs.getString('locale') ?? 'en');
-  
+
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
   await ModelProvider.sServe();

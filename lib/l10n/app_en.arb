@@ -1,7 +1,209 @@
 {
   "@@locale": "en",
-  "dashboardHome": "Home",
-  "@helloWorld": {
-    "description": "Dashboard Home button"
-  }
+  "dashboardHomeBtn": "Home",
+  "dashboardChatBtn": "Chat",
+  "dashboardArchiveBtn": "Archive",
+  "dashboardModelsBtn": "Models",
+  "dashboardSettingsBtn": "Settings",
+  "dashboardAboutBtn": "About",
+  "chatMessageListText1": "Welcome!",
+  "chatMessageListText2": "Ask me whatever you want to know!",
+  "chatMessageCopyButtonTooltip": "Copy message",
+  "chatMessageEditButtonTooltip": "Edit message",
+  "chatMessageRegenerateButtonTooltip": "Regenerate message",
+  "chatMessageDeleteButtonTooltip": "Delete message",
+  "chatMessageResendButton": "Resend message",
+  "chatMessageCancelEditButton": "Cancel editing",
+  "chatMessageEditFieldHint": "Type a message...",
+  "chatMessageSenderUser": "You",
+  "chatMessageSenderSystem": "System",
+  "markdownLanguageLabel": "Language: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "markdownCopyButtonTooltip": "Copy markdown",
+  "chatToolbarModelSelectorHint": "Select model",
+  "chatToolbarWebSearchOption": "Web search:",
+  "chatToolbarDocsSearchOption": "Docs search:",
+  "chatToolbarNewChatButton": "New Chat",
+  "chatInputFieldHint": "Type a message...",
+  "chatInputFieldEmbedButtonTooltip": "Embed image",
+  "chatInputFieldCancelButtonTooltip": "Cancel generation",
+  "chatInputFieldSendButtonTooltip": "Send message",
+  "modelsPageTitle": "Models management",
+  "modelsPagePullButton": "Pull",
+  "modelsPagePushButton": "Push",
+  "modelsPageCreateButton": "Create",
+  "modelsPageRefreshButton": "Refresh",
+  "modelsPageDeleteButton": "Delete",
+  "settingsPageThemeLabel": "Theme",
+  "settingsThemeModeLight": "Light",
+  "settingsThemeModeDark": "Dark",
+  "settingsThemeModeSystem": "System",
+  "settingsPageAccessiblityLabel": "Accessibility",
+  "settingsLanguageDetusche": "Deutsch",
+  "settingsLanguageSpanish": "Spanish",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageFrench": "French",
+  "settingsLanguageItalian": "Italian",
+  "embedImageDialogDropHereText": "Drop an image here",
+  "embedImageDialogAllowedFormatsText": "Allowed formats: {formats}",
+  "@embedImageDialogAllowedFormatsText": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "embedImageDialogBrowseFilesButton": "Browse files",
+  "pullModelDialogTitle": "Pull model",
+  "pullModelDialogGuideText1": "Please type the name of the model to pull:",
+  "pullModelDialogModelNameLabel": "Model name",
+  "pullModelDialogModelNameHint": "Type model name...",
+  "pushModelDialogTitle": "Push model",
+  "pushModelDialogGuideText1": "Please select the model to push:",
+  "pushModelDialogModelSelectorHint": "Select model",
+  "createModelDialogTitle": "Create model",
+  "createModelDialogGuideText1": "Select the model to copy from:",
+  "createModelDialogModelSelectorHint": "Select model",
+  "createModelDialogGuideText2": "Enter the name of the model to create:",
+  "createModelDialogModelNameLabel": "Model name",
+  "createModelDialogModelNameHint": "Enter the model name...",
+  "createModelDialogGuideText3": "Optionally, write a model file:",
+  "createModelDialogModelFileLabel": "Model file",
+  "createModelDialogModelFileHint": "Enter the model file...",
+  "modelDetailsDialogTitle": "{modelName} details",
+  "@modelDetailsDialogTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsDialogModifiedAtText": "Modified at: {modifiedAt}",
+  "@modelDetailsDialogModifiedAtText": {
+    "placeholders": {
+      "modifiedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsDialogSizeText": "Size: {size} GB",
+  "@modelDetailsDialogSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsDialogDigestText": "Digest: {digest}",
+  "@modelDetailsDialogDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDeatilsDialogFormatText": "Format: {format}",
+  "@modelDeatilsDialogFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsDialogFamilyText": "Family: {family}",
+  "@modelDetailsDialogFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsDialogParametersSizeText": "Parameters: {parametersSize} B",
+  "@modelDetailsDialogParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsDialogQuantizationLevelText": "Quantization: {quantizationLevel}",
+  "@modelDetailsDialogQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "progressBarStatusTextWithTimeShared": "Status: {status} - Remaining time: {hours}:{minutes}:{seconds}",
+  "@progressBarStatusTextWithTimeShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "progressBarStatusTextWithStepsShared": "Status: {status} - Step {completedSteps} of {totalSteps}",
+  "@progressBarStatusTextWithStepsShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "totalSteps": {
+        "type": "int"
+      },
+      "completedSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "closeButtonTextShared": "Close",
+  "dialogCloseButtonShared": "Close",
+  "dialogStartButtonShared": "Start",
+  "dialogCreateButtonShared": "Create",
+  "dialogResetButton": "Reset",
+  "dialogRemoveButton": "Remove",
+  "dialogEmbedButton": "Embed",
+  "dialogContinueInBackgroundButtonShared": "Continue in background",
+  "suggestion1part1": "What are some common use cases ",
+  "suggestion1part2": "for problem-solving skills?",
+  "suggestion2part1": "Plan a birthday party ",
+  "suggestion2part2": "for your best friend with a surprise element",
+  "suggestion3part1": "Explain the concept of learning ",
+  "suggestion3part2": "from experience using everyday situations",
+  "suggestion4part1": "Distinguish between ",
+  "suggestion4part2": "teaching and mentoring and their benefits",
+  "suggestion5part1": "Handle stress in daily life ",
+  "suggestion5part2": "with effective coping strategies",
+  "suggestion6part1": "Understand the importance ",
+  "suggestion6part2": "of communication in personal and professional life",
+  "suggestion7part1": "Describe the process of decision-making ",
+  "suggestion7part2": "in complex situations",
+  "suggestion8part1": "List some challenges ",
+  "suggestion8part2": " in personal growth to overcome",
+  "suggestion9part1": "Evaluate the performance ",
+  "suggestion9part2": "of a team using teamwork metrics",
+  "suggestion10part1": "Discuss advantages and disadvantages ",
+  "suggestion10part2": "of remote work for employees and employers",
+  "suggestion11part1": "Address conflicts ",
+  "suggestion11part2": "in relationships using effective communication",
+  "suggestion12part1": "Explain the significance ",
+  "suggestion12part2": "of empathy in building strong connections",
+  "messageCopiedSnackbarText": "Message copied to clipboard",
+  "codeCopiedSnackbarText": "Code copied to clipboard",
+  "modelIsGeneratingSnackbarText": "Model is generating"
 }

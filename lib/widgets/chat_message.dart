@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -34,7 +35,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
     SnackBarHelper.showSnackBar(
       context,
-      'Message copied to clipboard!',
+      AppLocalizations.of(context)!.messageCopiedSnackbarText,
       SnackBarType.success,
     );
   }
@@ -43,7 +44,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
         context,
-        'Model is generating a response, please wait...',
+        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );
     } else {
@@ -62,11 +63,11 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     _textEditingController.text = widget.message.text;
   }
 
-  void _resendEditedMessage() {
+  void _sendEditedMessage() {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
         context,
-        'Model is generating a response, please wait...',
+        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );
     } else {
@@ -93,11 +94,11 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     _textEditingController.clear();
   }
 
-  void _trashMessage() async {
+  void _deleteMessage() async {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
         context,
-        'Model is generating a response, please wait...',
+        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );
     } else {
@@ -113,7 +114,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     switch (widget.message.sender) {
       case ChatMessageSender.user:
         senderIconData = UniconsLine.user;
-        senderName = 'You';
+        senderName = AppLocalizations.of(context)!.chatMessageSenderUser;
         break;
       case ChatMessageSender.model:
         senderIconData = UniconsLine.robot;
@@ -121,7 +122,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         break;
       case ChatMessageSender.system:
         senderIconData = UniconsLine.eye;
-        senderName = 'System';
+        senderName = AppLocalizations.of(context)!.chatMessageSenderSystem;
         break;
     }
 
@@ -208,8 +209,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               children: [
                 TextField(
                   controller: _textEditingController,
-                  decoration: const InputDecoration(
-                    hintText: 'Edit your message...',
+                  decoration: InputDecoration(
+                    hintText:
+                        AppLocalizations.of(context)!.chatMessageEditFieldHint,
                     border: InputBorder.none,
                     counterText: '',
                   ),
@@ -227,12 +229,14 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 Row(
                   children: [
                     TextIconButtonComponent(
-                      text: 'Resend message',
+                      text:
+                          AppLocalizations.of(context)!.chatMessageResendButton,
                       icon: UniconsLine.message,
-                      onPressed: () => _resendEditedMessage(),
+                      onPressed: () => _sendEditedMessage(),
                     ),
                     TextIconButtonComponent(
-                      text: 'Cancel editing',
+                      text: AppLocalizations.of(context)!
+                          .chatMessageCancelEditButton,
                       icon: UniconsLine.times,
                       onPressed: () => _cancelEditingMessage(),
                     ),
@@ -245,7 +249,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                tooltip: 'Copy text',
+                tooltip:
+                    AppLocalizations.of(context)!.chatMessageCopyButtonTooltip,
                 onPressed: () => _copyMessage(),
                 icon: const Icon(UniconsLine.copy),
               ),
@@ -255,19 +260,22 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 child: Row(
                   children: [
                     IconButton(
-                      tooltip: 'Regenerate text',
+                      tooltip: AppLocalizations.of(context)!
+                          .chatMessageRegenerateButtonTooltip,
                       onPressed: () => _regenerateMessage(),
                       icon: const Icon(UniconsLine.repeat),
                     ),
                     const SizedBox(width: 8.0),
                     IconButton(
-                      tooltip: 'Edit text',
+                      tooltip: AppLocalizations.of(context)!
+                          .chatMessageEditButtonTooltip,
                       onPressed: () => _beginEditingMessage(),
                       icon: const Icon(UniconsLine.edit),
                     ),
                     IconButton(
-                      tooltip: 'Delete text',
-                      onPressed: () => _trashMessage(),
+                      tooltip: AppLocalizations.of(context)!
+                          .chatMessageDeleteButtonTooltip,
+                      onPressed: () => _deleteMessage(),
                       icon: const Icon(UniconsLine.trash),
                     ),
                   ],

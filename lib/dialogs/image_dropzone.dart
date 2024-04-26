@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
 import 'package:image/image.dart' as img;
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
@@ -85,8 +86,9 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                           return;
                         }
 
-                        final encodedPng = await Image.network(link).pngUint8List;
-                        
+                        final encodedPng =
+                            await Image.network(link).pngUint8List;
+
                         setState(() {
                           _imageBytes = encodedPng;
                         });
@@ -124,17 +126,22 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                           UniconsLine.cloud_upload,
                           size: 64.0,
                         ),
-                        const Text(
-                          'Drop an image here',
-                          style: TextStyle(fontSize: 24.0),
+                        Text(
+                          AppLocalizations.of(context)!
+                              .embedImageDialogDropHereText,
+                          style: const TextStyle(fontSize: 24.0),
                         ),
-                        const Text(
-                          'Allowed formats: PNG, JPEG, WEBP',
-                          style: TextStyle(fontSize: 14.0),
+                        Text(
+                          AppLocalizations.of(context)!
+                              .embedImageDialogAllowedFormatsText(
+                            'PNG, JPEG, WEBP',
+                          ),
+                          style: const TextStyle(fontSize: 14.0),
                         ),
                         const SizedBox(height: 16.0),
                         TextIconButtonComponent(
-                          text: 'Browse files',
+                          text: AppLocalizations.of(context)!
+                              .embedImageDialogBrowseFilesButton,
                           icon: UniconsLine.folder,
                           onPressed: () async {
                             FilePickerResult? result =
@@ -173,19 +180,25 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
               _imageBytes = null;
             });
           },
-          child: const Text('Reset'),
+          child: Text(
+            AppLocalizations.of(context)!.dialogResetButton,
+          ),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(null);
           },
-          child: const Text('Remove'),
+          child: Text(
+            AppLocalizations.of(context)!.dialogRemoveButton,
+          ),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(_imageBytes);
           },
-          child: const Text('Embed'),
+          child: Text(
+            AppLocalizations.of(context)!.dialogEmbedButton,
+          ),
         ),
       ],
     );

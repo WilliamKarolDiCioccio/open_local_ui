@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:open_local_ui/models/ollama_responses.dart';
@@ -20,7 +21,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   bool _isCreating = false;
   int _stepsCount = 0;
   double _progressValue = 0.0;
-  String _progressBarText = 'Preparing to create model...';
+  String _progressBarText = '';
 
   void _updateProgress(OllamaCreateResponse response) {
     setState(() {
@@ -29,7 +30,11 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
       _progressValue += _stepsCount / 11;
 
       _progressBarText =
-          'Status: ${response.status} - Step: $_stepsCount of 11';
+          AppLocalizations.of(context)!.progressBarStatusTextWithStepsShared(
+        response.status,
+        11,
+        _stepsCount,
+      );
     });
   }
 
@@ -55,7 +60,9 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
     }
 
     return AlertDialog(
-      title: const Text('Create model'),
+      title: Text(
+        AppLocalizations.of(context)!.createModelDialogTitle,
+      ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -64,7 +71,9 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
             visible: !_isCreating,
             child: Column(
               children: [
-                const Text('Please select a model to copy from:'),
+                Text(
+                  AppLocalizations.of(context)!.createModelDialogGuideText1,
+                ),
                 DropdownMenu(
                   controller: _modelSelectionController,
                   inputDecorationTheme: const InputDecorationTheme(
@@ -75,28 +84,37 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                   ),
                   enableFilter: true,
                   enableSearch: true,
-                  hintText: 'Select a model',
+                  hintText: AppLocalizations.of(context)!
+                      .createModelDialogModelSelectorHint,
                   dropdownMenuEntries: modelsMenuEntries,
                   onSelected: null,
                 ),
                 const SizedBox(height: 16.0),
-                const Text('Please type the name of the new model:'),
+                Text(
+                  AppLocalizations.of(context)!.createModelDialogGuideText2,
+                ),
                 TextField(
                   controller: _nameEditingController,
-                  decoration: const InputDecoration(
-                    labelText: 'Model name',
-                    hintText: 'Enter model name...',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!
+                        .createModelDialogModelNameLabel,
+                    hintText: AppLocalizations.of(context)!
+                        .createModelDialogModelNameHint,
                   ),
                   maxLength: 32,
                   maxLines: 1,
                 ),
                 const SizedBox(height: 16.0),
-                const Text('Optionally write a modelfile:'),
+                Text(
+                  AppLocalizations.of(context)!.createModelDialogGuideText3,
+                ),
                 TextField(
                   controller: _fileEditingController,
-                  decoration: const InputDecoration(
-                    labelText: 'Modelfile',
-                    hintText: 'Enter modelfile...',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!
+                        .createModelDialogModelFileLabel,
+                    hintText: AppLocalizations.of(context)!
+                        .createModelDialogModelFileHint,
                   ),
                   maxLength: 4096,
                   maxLines: null,
@@ -125,7 +143,12 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(_isCreating ? 'Continue in background' : 'Close'),
+          child: Text(
+            _isCreating
+                ? AppLocalizations.of(context)!
+                    .dialogContinueInBackgroundButtonShared
+                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+          ),
         ),
         if (!_isCreating)
           TextButton(
@@ -163,7 +186,9 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                 });
               }
             },
-            child: const Text('Create'),
+            child: Text(
+              AppLocalizations.of(context)!.dialogCreateButtonShared,
+            ),
           ),
       ],
     );
