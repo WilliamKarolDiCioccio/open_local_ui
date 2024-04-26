@@ -1,23 +1,23 @@
 {
   "@@locale": "fr",
-  "dashboardHomeBtn": "Inicio",
-  "dashboardChatBtn": "Chat",
-  "dashboardArchiveBtn": "Archivo",
-  "dashboardModelsBtn": "Modelos",
-  "dashboardSettingsBtn": "Ajustes",
-  "dashboardAboutBtn": "Acerca de",
-  "chatMessageListText1": "¡Bienvenido!",
-  "chatMessageListText2": "¡Hazme cualquier pregunta que quieras saber!",
-  "chatMessageCopyButtonTooltip": "Copiar mensaje",
-  "chatMessageEditButtonTooltip": "Editar mensaje",
-  "chatMessageRegenerateButtonTooltip": "Regenerar mensaje",
-  "chatMessageDeleteButtonTooltip": "Eliminar mensaje",
-  "chatMessageResendButton": "Reenviar mensaje",
-  "chatMessageCancelEditButton": "Cancelar edición",
-  "chatMessageEditFieldHint": "Escribe un mensaje...",
-  "chatMessageSenderUser": "Tú",
-  "chatMessageSenderSystem": "Sistema",
-  "markdownLanguageLabel": "Idioma: {language}",
+  "dashboardHomeBtn": "Accueil",
+  "dashboardChatBtn": "Discussion",
+  "dashboardArchiveBtn": "Archive",
+  "dashboardModelsBtn": "Modèles",
+  "dashboardSettingsBtn": "Paramètres",
+  "dashboardAboutBtn": "À propos",
+  "chatMessageListText1": "Bienvenue !",
+  "chatMessageListText2": "Posez-moi toutes les questions que vous voulez savoir !",
+  "chatMessageCopyButtonTooltip": "Copier le message",
+  "chatMessageEditButtonTooltip": "Modifier le message",
+  "chatMessageRegenerateButtonTooltip": "Régénérer le message",
+  "chatMessageDeleteButtonTooltip": "Supprimer le message",
+  "chatMessageResendButton": "Recommencer l'envoi du message",
+  "chatMessageCancelEditButton": "Annuler la modification",
+  "chatMessageEditFieldHint": "Écrivez un message...",
+  "chatMessageSenderUser": "Vous",
+  "chatMessageSenderSystem": "Système",
+  "markdownLanguageLabel": "Langue: {language}",
   "@markdownLanguageLabel": {
     "placeholders": {
       "language": {
@@ -25,33 +25,33 @@
       }
     }
   },
-  "markdownCopyButtonTooltip": "Copiar markdown",
-  "chatToolbarModelSelectorHint": "Seleccionar modelo",
-  "chatToolbarWebSearchOption": "Búsqueda web:",
-  "chatToolbarDocsSearchOption": "Búsqueda de documentos:",
-  "chatToolbarNewChatButton": "Nuevo Chat",
-  "chatInputFieldHint": "Escribe un mensaje...",
-  "chatInputFieldEmbedButtonTooltip": "Insertar imagen",
-  "chatInputFieldCancelButtonTooltip": "Cancelar generación",
-  "chatInputFieldSendButtonTooltip": "Enviar mensaje",
-  "modelsPageTitle": "Gestión de modelos",
-  "modelsPagePullButton": "Extraer",
-  "modelsPagePushButton": "Enviar",
-  "modelsPageCreateButton": "Crear",
-  "modelsPageRefreshButton": "Actualizar",
-  "modelsPageDeleteButton": "Eliminar",
-  "settingsPageThemeLabel": "Tema",
-  "settingsThemeModeLight": "Claro",
-  "settingsThemeModeDark": "Oscuro",
-  "settingsThemeModeSystem": "Sistema",
-  "settingsPageAccessiblityLabel": "Accesibilidad",
-  "settingsLanguageDetusche": "Alemán",
-  "settingsLanguageSpanish": "Español",
-  "settingsLanguageEnglish": "Inglés",
-  "settingsLanguageFrench": "Francés",
-  "settingsLanguageItalian": "Italiano",
-  "embedImageDialogDropHereText": "Suelta una imagen aquí",
-  "embedImageDialogAllowedFormatsText": "Formatos permitidos: {formats}",
+  "markdownCopyButtonTooltip": "Copier le markdown",
+  "chatToolbarModelSelectorHint": "Sélectionner un modèle",
+  "chatToolbarWebSearchOption": "Recherche web :",
+  "chatToolbarDocsSearchOption": "Recherche de documents :",
+  "chatToolbarNewChatButton": "Nouvelle Discussion",
+  "chatInputFieldHint": "Écrivez un message...",
+  "chatInputFieldEmbedButtonTooltip": "Insérer une image",
+  "chatInputFieldCancelButtonTooltip": "Annuler la génération",
+  "chatInputFieldSendButtonTooltip": "Envoyer le message",
+  "modelsPageTitle": "Gestion des modèles",
+  "modelsPagePullButton": "Extraire",
+  "modelsPagePushButton": "Envoyer",
+  "modelsPageCreateButton": "Créer",
+  "modelsPageRefreshButton": "Actualiser",
+  "modelsPageDeleteButton": "Supprimer",
+  "settingsPageThemeLabel": "Thème",
+  "settingsThemeModeLight": "Clair",
+  "settingsThemeModeDark": "Sombre",
+  "settingsThemeModeSystem": "Système",
+  "settingsPageAccessiblityLabel": "Accessibilité",
+  "settingsLanguageDetusche": "Allemand",
+  "settingsLanguageSpanish": "Espagnol",
+  "settingsLanguageEnglish": "Anglais",
+  "settingsLanguageFrench": "Français",
+  "settingsLanguageItalian": "Italien",
+  "embedImageDialogDropHereText": "Déposez une image ici",
+  "embedImageDialogAllowedFormatsText": "Formats autorisés : {formats}",
   "@embedImageDialogAllowedFormatsText": {
     "placeholders": {
       "formats": {
@@ -59,25 +59,25 @@
       }
     }
   },
-  "embedImageDialogBrowseFilesButton": "Explorar archivos",
-  "pullModelDialogTitle": "Extraer modelo",
-  "pullModelDialogGuideText1": "Por favor, escribe el nombre del modelo a extraer:",
-  "pullModelDialogModelNameLabel": "Nombre del modelo",
-  "pullModelDialogModelNameHint": "Escribe el nombre del modelo...",
-  "pushModelDialogTitle": "Enviar modelo",
-  "pushModelDialogGuideText1": "Por favor, selecciona el modelo a enviar:",
-  "pushModelDialogModelSelectorHint": "Seleccionar modelo",
-  "createModelDialogTitle": "Crear modelo",
-  "createModelDialogGuideText1": "Choisissez le modèle à copier à partir de:",
+  "embedImageDialogBrowseFilesButton": "Parcourir les fichiers",
+  "pullModelDialogTitle": "Extraire un modèle",
+  "pullModelDialogGuideText1": "Veuillez saisir le nom du modèle à extraire :",
+  "pullModelDialogModelNameLabel": "Nom du modèle",
+  "pullModelDialogModelNameHint": "Entrez le nom du modèle...",
+  "pushModelDialogTitle": "Envoyer un modèle",
+  "pushModelDialogGuideText1": "Veuillez sélectionner le modèle à envoyer :",
+  "pushModelDialogModelSelectorHint": "Sélectionner un modèle",
+  "createModelDialogTitle": "Créer un modèle",
+  "createModelDialogGuideText1": "Choisissez le modèle à copier à partir de :",
   "createModelDialogModelSelectorLabel": "Nom du modèle",
-  "createModelDialogModelSelectorHint": "Sélectionner le modèle",
+  "createModelDialogModelSelectorHint": "Sélectionner un modèle",
   "createModelDialogGuideText2": "Entrez le nom du modèle à créer :",
   "createModelDialogModelNameLabel": "Nom du modèle",
   "createModelDialogModelNameHint": "Entrez le nom du modèle...",
-  "createModelDialogGuideText3": "Optionnellement, écrivez un fichier de modèle :",
+  "createModelDialogGuideText3": "Optionnellement, saisissez un fichier de modèle :",
   "createModelDialogModelFileLabel": "Fichier de modèle",
   "createModelDialogModelFileHint": "Entrez le fichier de modèle...",
-  "modelDetailsDialogTitle": "Detalles de {modelName}",
+  "modelDetailsDialogTitle": "Détails de {modelName}",
   "@modelDetailsDialogTitle": {
     "placeholders": {
       "modelName": {
@@ -85,7 +85,7 @@
       }
     }
   },
-  "modelDetailsDialogModifiedAtText": "Modificado en: {modifiedAt}",
+  "modelDetailsDialogModifiedAtText": "Modifié le : {modifiedAt}",
   "@modelDetailsDialogModifiedAtText": {
     "placeholders": {
       "modifiedAt": {
@@ -93,7 +93,7 @@
       }
     }
   },
-  "modelDetailsDialogSizeText": "Tamaño: {size} GB",
+  "modelDetailsDialogSizeText": "Taille : {size} Go",
   "@modelDetailsDialogSizeText": {
     "placeholders": {
       "size": {
@@ -101,7 +101,7 @@
       }
     }
   },
-  "modelDetailsDialogDigestText": "Resumen: {digest}",
+  "modelDetailsDialogDigestText": "Résumé : {digest}",
   "@modelDetailsDialogDigestText": {
     "placeholders": {
       "digest": {
@@ -109,7 +109,7 @@
       }
     }
   },
-  "modelDeatilsDialogFormatText": "Formato: {format}",
+  "modelDeatilsDialogFormatText": "Format : {format}",
   "@modelDeatilsDialogFormatText": {
     "placeholders": {
       "format": {
@@ -117,7 +117,7 @@
       }
     }
   },
-  "modelDetailsDialogFamilyText": "Familia: {family}",
+  "modelDetailsDialogFamilyText": "Famille : {family}",
   "@modelDetailsDialogFamilyText": {
     "placeholders": {
       "family": {
@@ -125,7 +125,7 @@
       }
     }
   },
-  "modelDetailsDialogParametersSizeText": "Parámetros: {parametersSize} B",
+  "modelDetailsDialogParametersSizeText": "Paramètres : {parametersSize} B",
   "@modelDetailsDialogParametersSizeText": {
     "placeholders": {
       "parametersSize": {
@@ -133,7 +133,7 @@
       }
     }
   },
-  "modelDetailsDialogQuantizationLevelText": "Cuantización: {quantizationLevel}",
+  "modelDetailsDialogQuantizationLevelText": "Quantification : {quantizationLevel}",
   "@modelDetailsDialogQuantizationLevelText": {
     "placeholders": {
       "quantizationLevel": {
@@ -141,7 +141,7 @@
       }
     }
   },
-  "progressBarStatusTextWithTimeShared": "Estado: {status} - Tiempo restante: {hours}:{minutes}:{seconds}",
+  "progressBarStatusTextWithTimeShared": "État : {status} - Temps restant : {hours}:{minutes}:{seconds}",
   "@progressBarStatusTextWithTimeShared": {
     "placeholders": {
       "status": {
@@ -158,7 +158,7 @@
       }
     }
   },
-  "progressBarStatusTextWithStepsShared": "Estado: {status} - Paso {completedSteps} de {totalSteps}",
+  "progressBarStatusTextWithStepsShared": "État : {status} - Étape {completedSteps} sur {totalSteps}",
   "@progressBarStatusTextWithStepsShared": {
     "placeholders": {
       "status": {
@@ -172,39 +172,39 @@
       }
     }
   },
-  "closeButtonTextShared": "Cerrar",
-  "dialogCloseButtonShared": "Cerrar",
-  "dialogStartButtonShared": "Comenzar",
-  "dialogCreateButtonShared": "Crear",
-  "dialogResetButton": "Restablecer",
-  "dialogRemoveButton": "Eliminar",
-  "dialogEmbedButton": "Insertar",
-  "dialogContinueInBackgroundButtonShared": "Continuar en segundo plano",
-  "suggestion1part1": "¿Cuáles son algunos casos de uso comunes ",
-  "suggestion1part2": "para habilidades de resolución de problemas?",
-  "suggestion2part1": "Planea una fiesta de cumpleaños ",
-  "suggestion2part2": "para tu mejor amigo con un elemento sorpresa",
-  "suggestion3part1": "Explica el concepto de aprendizaje ",
-  "suggestion3part2": "a partir de la experiencia usando situaciones cotidianas",
-  "suggestion4part1": "Distingue entre ",
-  "suggestion4part2": "enseñanza y tutoría y sus beneficios",
-  "suggestion5part1": "Maneja el estrés en la vida diaria ",
-  "suggestion5part2": "con estrategias efectivas de afrontamiento",
-  "suggestion6part1": "Comprende la importancia ",
-  "suggestion6part2": "de la comunicación en la vida personal y profesional",
-  "suggestion7part1": "Describe el proceso de toma de decisiones ",
-  "suggestion7part2": "en situaciones complejas",
-  "suggestion8part1": "Enumera algunos desafíos ",
-  "suggestion8part2": " en el crecimiento personal para superar",
-  "suggestion9part1": "Evalúa el rendimiento ",
-  "suggestion9part2": "de un equipo utilizando métricas de trabajo en equipo",
-  "suggestion10part1": "Discute ventajas y desventajas ",
-  "suggestion10part2": "del trabajo remoto para empleados y empleadores",
-  "suggestion11part1": "Aborda conflictos ",
-  "suggestion11part2": "en las relaciones usando comunicación efectiva",
-  "suggestion12part1": "Explica el significado ",
-  "suggestion12part2": "de la empatía en la construcción de conexiones sólidas",
-  "messageCopiedSnackbarText": "Mensaje copiado al portapapeles",
-  "codeCopiedSnackbarText": "Código copiado al portapapeles",
-  "modelIsGeneratingSnackbarText": "El modelo se está generando"
+  "closeButtonTextShared": "Fermer",
+  "dialogCloseButtonShared": "Fermer",
+  "dialogStartButtonShared": "Démarrer",
+  "dialogCreateButtonShared": "Créer",
+  "dialogResetButton": "Réinitialiser",
+  "dialogRemoveButton": "Supprimer",
+  "dialogEmbedButton": "Insérer",
+  "dialogContinueInBackgroundButtonShared": "Continuer en arrière-plan",
+  "suggestion1part1": "Quels sont quelques cas d'utilisation ",
+  "suggestion1part2": "pour les compétences en résolution de problèmes?",
+  "suggestion2part1": "Planifiez une fête d'anniversaire ",
+  "suggestion2part2": "pour votre meilleur ami avec un élément surprise",
+  "suggestion3part1": "Expliquez le concept d'apprentissage ",
+  "suggestion3part2": "à partir de l'expérience en utilisant des situations quotidiennes",
+  "suggestion4part1": "Faites la distinction entre ",
+  "suggestion4part2": "l'enseignement et le tutorat et leurs avantages",
+  "suggestion5part1": "Gérez le stress dans la vie quotidienne ",
+  "suggestion5part2": "avec des stratégies efficaces de gestion du stress",
+  "suggestion6part1": "Comprenez l'importance ",
+  "suggestion6part2": "de la communication dans la vie personnelle et professionnelle",
+  "suggestion7part1": "Décrivez le processus de prise de décision ",
+  "suggestion7part2": "dans des situations complexes",
+  "suggestion8part1": "Énumérez quelques défis ",
+  "suggestion8part2": "dans la croissance personnelle à surmonter",
+  "suggestion9part1": "Évaluez la performance ",
+  "suggestion9part2": "d'une équipe en utilisant des métriques de travail d'équipe",
+  "suggestion10part1": "Discutez des avantages et des inconvénients ",
+  "suggestion10part2": "du travail à distance pour les employés et les employeurs",
+  "suggestion11part1": "Abordez les conflits ",
+  "suggestion11part2": "dans les relations en utilisant une communication efficace",
+  "suggestion12part1": "Expliquez la signification ",
+  "suggestion12part2": "de l'empathie dans la construction de relations solides",
+  "messageCopiedSnackbarText": "Message copié dans le presse-papiers",
+  "codeCopiedSnackbarText": "Code copié dans le presse-papiers",
+  "modelIsGeneratingSnackbarText": "Le modèle est en cours de génération"
 }
