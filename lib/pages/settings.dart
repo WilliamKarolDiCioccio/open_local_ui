@@ -59,13 +59,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
     switch (AdaptiveTheme.of(context).mode) {
       case AdaptiveThemeMode.light:
-        themeModeString = AppLocalizations.of(context)!.settingsThemeModeLight;
+        themeModeString = 'Light';
         break;
       case AdaptiveThemeMode.dark:
-        themeModeString = AppLocalizations.of(context)!.settingsThemeModeDark;
+        themeModeString = 'Dark';
         break;
       case AdaptiveThemeMode.system:
-        themeModeString = AppLocalizations.of(context)!.settingsThemeModeSystem;
+        themeModeString = 'System';
         break;
     }
 
