@@ -124,11 +124,16 @@ class _ChatMessageListState extends State<ChatMessageList> {
             (index) {
               return GestureDetector(
                 onTap: () {
-                  final models = context.read<ModelProvider>().models;
-                  final modelName = models[0].name;
-                  context.read<ChatProvider>().setModel(modelName);
+                  if (!context.read<ChatProvider>().isModelSelected) {
+                    final models = context.read<ModelProvider>().models;
+                    final modelName = models[0].name;
+
+                    context.read<ChatProvider>().setModel(modelName);
+                  }
+
                   final message =
                       choosenQuestions[index][0] + choosenQuestions[index][1];
+                      
                   context.read<ChatProvider>().sendMessage(message, null);
                 },
                 child: Padding(
