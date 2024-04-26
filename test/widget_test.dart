@@ -16,7 +16,6 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(
       const MyApp(
-        savedLocale: null,
         savedThemeMode: null,
       ),
     );

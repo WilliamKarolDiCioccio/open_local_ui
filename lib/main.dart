@@ -8,7 +8,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:open_local_ui/providers/locale.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_theme/system_theme.dart';
 
 import 'package:open_local_ui/l10n/l10n.dart';
@@ -19,9 +18,6 @@ import 'package:open_local_ui/providers/model.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  final prefs = await SharedPreferences.getInstance();
-  final savedLocale = Locale(prefs.getString('locale') ?? 'en');
 
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
@@ -48,7 +44,7 @@ void main() async {
           create: (context) => ChatProvider(),
         ),
       ],
-      child: MyApp(savedLocale: savedLocale, savedThemeMode: savedThemeMode),
+      child: MyApp(savedThemeMode: savedThemeMode),
     ),
   );
 
@@ -63,11 +59,10 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final Locale? savedLocale;
   final AdaptiveThemeMode? savedThemeMode;
 
   const MyApp(
-      {super.key, required this.savedLocale, required this.savedThemeMode});
+      {super.key, required this.savedThemeMode});
 
   @override
   Widget build(BuildContext context) {
