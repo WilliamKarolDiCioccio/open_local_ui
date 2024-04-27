@@ -19,11 +19,11 @@ class HomePage extends StatelessWidget {
 
   Widget _buildGrid() {
     return GridView.count(
-      crossAxisCount: 3,
+      crossAxisCount: 2,
       crossAxisSpacing: 8.0,
       mainAxisSpacing: 8.0,
       children: List.generate(
-        3,
+        2,
         (index) => _buildCard(index),
       ),
     );
@@ -33,13 +33,11 @@ class HomePage extends StatelessWidget {
     const List<String> titles = [
       'GitHub - OpenLocalUI',
       'GitHub - WilliamKarolDiCioccio',
-      'Instagram - Wilielmus',
     ];
 
     const List<String> links = [
       'https://github.com/WilliamKarolDiCioccio/open_local_ui',
       'https://github.com/WilliamKarolDiCioccio',
-      'https://www.instagram.com/wilielmus/',
     ];
 
     return Card(
