@@ -1,34 +1,24 @@
 import 'dart:typed_data';
 
+import 'package:isar/isar.dart';
+
+part 'chat_message.g.dart';
+
 enum ChatMessageSender { user, model, system }
 
+@collection
 class ChatMessageWrapper {
+  final Id id = Isar.autoIncrement;
   String text;
+  @ignore
   final Uint8List? imageBytes;
   final String dateTime;
   final String uuid;
+  @ignore
   final String? senderName;
+  @enumerated
   final ChatMessageSender sender;
 
   ChatMessageWrapper(this.text, this.dateTime, this.uuid, this.sender,
       {this.senderName, this.imageBytes});
-
-  factory ChatMessageWrapper.fromJson(Map<String, dynamic> json) {
-    return ChatMessageWrapper(
-      json['text'] as String,
-      json['dateTime'] as String,
-      json['uuid'] as String,
-      ChatMessageSender.values[json['sender'] as int],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'text': text,
-      'dateTime': dateTime,
-      'uuid': uuid,
-      'senderName': senderName,
-      'sender': sender.index,
-    };
-  }
 }
