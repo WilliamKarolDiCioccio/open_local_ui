@@ -1,7 +1,3 @@
-**Resume: Chatbot Behavior Guide**
-
----
-
 ### Objective:
 To provide a seamless and personalized conversational experience for users by adapting tone, formality, and technicality based on user input.
 

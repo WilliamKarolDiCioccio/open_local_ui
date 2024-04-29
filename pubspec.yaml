@@ -55,6 +55,7 @@ flutter:
   generate: true
   assets:
     - assets/prompts/default.txt
+    - assets/prompts/title_generator.txt
   fonts:
     - family: ValeraRound
       fonts:
