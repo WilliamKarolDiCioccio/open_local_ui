@@ -53,6 +53,8 @@ dev_dependencies:
 
 flutter:
   generate: true
+  assets:
+    - assets/prompts/default.txt
   fonts:
     - family: ValeraRound
       fonts:

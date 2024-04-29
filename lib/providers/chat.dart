@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
@@ -13,12 +14,12 @@ import 'package:open_local_ui/utils/logger.dart';
 
 class ChatProvider extends ChangeNotifier {
   late ChatOllama _model;
+  String _modelName = '';
 
   bool _webSearch = false;
   bool _docsSearch = true;
-  String _modelName = '';
-  ChatSessionWrapper? _session;
 
+  ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
 
   ChatSessionWrapper addSession(String title) {
@@ -118,10 +119,13 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  RunnableSequence _buildChain() {
-    final promptTemplate = ChatPromptTemplate.fromPromptMessages(const [
-      MessagesPlaceholder(variableName: 'history'),
-      MessagesPlaceholder(variableName: 'input'),
+  Future<RunnableSequence> _buildChain() async {
+    final defaultPrompt = await rootBundle.loadString('assets/prompts/default.txt');
+
+    final promptTemplate = ChatPromptTemplate.fromPromptMessages( [
+      ChatMessagePromptTemplate.system(defaultPrompt),
+      const MessagesPlaceholder(variableName: 'history'),
+      const MessagesPlaceholder(variableName: 'input'),
     ]);
 
     final chain = Runnable.fromMap({
@@ -187,7 +191,7 @@ class ChatProvider extends ChangeNotifier {
       _session!.memory.chatHistory
           .addHumanChatMessage(_session!.messages.last.text);
 
-      final chain = _buildChain();
+      final chain = await _buildChain();
 
       final prompt = _buildPrompt(text, imageBytes: imageBytes);
 
@@ -268,7 +272,7 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      final chain = _buildChain();
+      final chain = await _buildChain();
 
       final prompt = _buildPrompt(lastMessage!.text, imageBytes: imageBytes);
 
@@ -335,8 +339,9 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setModel(String name, {double temperature = 0.0}) {
+  void setModel(String name, {double temperature = 0.8}) {
     _modelName = name;
+
     _model = ChatOllama(
       defaultOptions: ChatOllamaOptions(
         model: name,
