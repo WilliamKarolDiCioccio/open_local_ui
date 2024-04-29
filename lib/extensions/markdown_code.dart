@@ -33,7 +33,7 @@ class MarkdownCustomCodeBuilder extends MarkdownElementBuilder {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (element.textContent.contains('\n'))
+          if (element.textContent.contains('\n') && language.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
