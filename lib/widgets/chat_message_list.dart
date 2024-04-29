@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -126,14 +127,21 @@ class _ChatMessageListState extends State<ChatMessageList> {
                 onTap: () {
                   if (!context.read<ChatProvider>().isModelSelected) {
                     final models = context.read<ModelProvider>().models;
-                    final modelName = models[0].name;
 
-                    context.read<ChatProvider>().setModel(modelName);
+                    if (context.read<ModelProvider>().modelsCount == 0) {
+                      return SnackBarHelper.showSnackBar(
+                        context,
+                        'No models available',
+                        SnackBarType.error,
+                      );
+                    }
+
+                    context.read<ChatProvider>().setModel(models.first.name);
                   }
 
                   final message =
                       choosenQuestions[index][0] + choosenQuestions[index][1];
-                      
+
                   context.read<ChatProvider>().sendMessage(message);
                 },
                 child: Padding(
@@ -209,32 +217,39 @@ class _ChatMessageListState extends State<ChatMessageList> {
             ),
           );
         } else {
-          return Column(
+          return Stack(
             children: [
-              Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: context.watch<ChatProvider>().messageCount,
-                  itemBuilder: (context, index) {
-                    final message =
-                        context.watch<ChatProvider>().getMessage(index);
-                    return ChatMessageWidget(message);
-                  },
-                ),
-              ),
-              Visibility(
-                visible: _isScrollButtonVisible,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: IconButton(
-                    icon: const Icon(
-                      UniconsLine.arrow_down,
-                      size: 32.0,
+              Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: context.watch<ChatProvider>().messageCount,
+                      itemBuilder: (context, index) {
+                        final message =
+                            context.watch<ChatProvider>().messages[index];
+                        return ChatMessageWidget(message);
+                      },
                     ),
-                    onPressed: _scrollToBottom,
+                  ),
+                ],
+              ),
+              if (_isScrollButtonVisible)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      icon: const Icon(
+                        UniconsLine.arrow_down,
+                        size: 32.0,
+                      ),
+                      onPressed: _scrollToBottom,
+                    ),
                   ),
                 ),
-              ),
             ],
           );
         }

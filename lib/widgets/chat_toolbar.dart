@@ -32,7 +32,14 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         TextIconButtonComponent(
           text: AppLocalizations.of(context)!.chatToolbarNewChatButton,
           icon: UniconsLine.plus,
-          onPressed: () => context.read<ChatProvider>().clearHistory(),
+          onPressed: () {
+            if (!context.read<ChatProvider>().isSessionSelected) return;
+
+            if (context.read<ChatProvider>().session!.messages.isNotEmpty) {
+              final session = context.read<ChatProvider>().addSession('');
+              context.read<ChatProvider>().setSession(session.uuid);
+            }
+          },
         )
       ],
     );
@@ -81,7 +88,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
             AppLocalizations.of(context)!.chatToolbarWebSearchOption,
             _webSearchEnabled,
             (value) => setState(() {
-              context.read<ChatProvider>().enableWebSearch(value ?? false);
+              context.read<ChatProvider>().webSearch = value ?? false;
               _webSearchEnabled = value ?? false;
             }),
           ),
@@ -89,7 +96,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
             AppLocalizations.of(context)!.chatToolbarDocsSearchOption,
             _docsSearchEnabled,
             (value) => setState(() {
-              context.read<ChatProvider>().enableDocsSearch(value ?? false);
+              context.read<ChatProvider>().docsSearch = value ?? false;
               _docsSearchEnabled = value ?? false;
             }),
           ),

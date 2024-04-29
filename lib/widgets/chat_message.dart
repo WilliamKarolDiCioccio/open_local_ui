@@ -48,10 +48,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         SnackBarType.error,
       );
     } else {
-      context.read<ChatProvider>().regenerateMessage(
-            widget.message.uuid,
-            widget.message.text,
-          );
+      context.read<ChatProvider>().regenerateMessage(widget.message.uuid);
     }
   }
 
@@ -92,18 +89,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     });
 
     _textEditingController.clear();
-  }
-
-  void _deleteMessage() async {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        context,
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
-        SnackBarType.error,
-      );
-    } else {
-      context.read<ChatProvider>().removeMessage(widget.message.uuid);
-    }
   }
 
   @override
@@ -152,7 +137,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               ),
               const SizedBox(width: 8.0),
               Text(
-                widget.message.dateTime,
+                widget.message.createdAt,
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w100,
@@ -190,6 +175,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                         ?.color,
                     fontFamily: 'Neuton',
                   ),
+                  codeblockAlign: WrapAlignment.center,
                   codeblockPadding: const EdgeInsets.all(8),
                   codeblockDecoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
@@ -201,7 +187,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 builders: {
                   'code': MarkdownCustomCodeBuilder(),
                 },
-                selectable: true,
               ),
             ),
           if (_isEditing)
@@ -256,29 +241,22 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               ),
               const SizedBox(width: 8.0),
               Visibility(
+                visible: widget.message.sender == ChatMessageSender.model,
+                child: IconButton(
+                  tooltip: AppLocalizations.of(context)!
+                      .chatMessageRegenerateButtonTooltip,
+                  onPressed: () => _regenerateMessage(),
+                  icon: const Icon(UniconsLine.repeat),
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Visibility(
                 visible: widget.message.sender == ChatMessageSender.user,
-                child: Row(
-                  children: [
-                    IconButton(
-                      tooltip: AppLocalizations.of(context)!
-                          .chatMessageRegenerateButtonTooltip,
-                      onPressed: () => _regenerateMessage(),
-                      icon: const Icon(UniconsLine.repeat),
-                    ),
-                    const SizedBox(width: 8.0),
-                    IconButton(
-                      tooltip: AppLocalizations.of(context)!
-                          .chatMessageEditButtonTooltip,
-                      onPressed: () => _beginEditingMessage(),
-                      icon: const Icon(UniconsLine.edit),
-                    ),
-                    IconButton(
-                      tooltip: AppLocalizations.of(context)!
-                          .chatMessageDeleteButtonTooltip,
-                      onPressed: () => _deleteMessage(),
-                      icon: const Icon(UniconsLine.trash),
-                    ),
-                  ],
+                child: IconButton(
+                  tooltip: AppLocalizations.of(context)!
+                      .chatMessageEditButtonTooltip,
+                  onPressed: () => _beginEditingMessage(),
+                  icon: const Icon(UniconsLine.edit),
                 ),
               ),
             ],

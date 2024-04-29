@@ -8,24 +8,50 @@ import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:open_local_ui/models/chat_message.dart';
+import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/utils/logger.dart';
 
-enum ChatProviderStatus {
-  idle,
-  generating,
-  aborting,
-}
-
 class ChatProvider extends ChangeNotifier {
-  String _modelName = '';
+  late ChatOllama _model;
+
   bool _webSearch = false;
   bool _docsSearch = true;
-  late ChatOllama _model;
-  final _memory = ConversationBufferMemory(returnMessages: true);
-  final List<ChatMessageWrapper> _messages = [];
-  ChatProviderStatus _status = ChatProviderStatus.idle;
+  String _modelName = '';
+  ChatSessionWrapper? _session;
 
-  void addMessage(
+  final List<ChatSessionWrapper> _sessions = [];
+
+  ChatSessionWrapper addSession(String title) {
+    final now = DateTime.now();
+    final formattedDateTime =
+        '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
+
+    final uuid = const Uuid().v4();
+
+    _sessions.add(ChatSessionWrapper(
+      title,
+      formattedDateTime,
+      uuid,
+    ));
+
+    notifyListeners();
+
+    return _sessions.last;
+  }
+
+  void removeSession(String uuid) {
+    final index = _sessions.indexWhere((element) => element.uuid == uuid);
+
+    if (_sessions[index].status == ChatSessionStatus.generating) return;
+
+    _sessions.removeAt(index);
+
+    _session = null;
+
+    notifyListeners();
+  }
+
+  ChatMessageWrapper addMessage(
     String message,
     ChatMessageSender sender, {
     Uint8List? imageBytes,
@@ -37,7 +63,7 @@ class ChatProvider extends ChangeNotifier {
 
     final uuid = const Uuid().v4();
 
-    _messages.add(ChatMessageWrapper(
+    _session!.messages.add(ChatMessageWrapper(
       message,
       formattedDateTime,
       uuid,
@@ -47,11 +73,97 @@ class ChatProvider extends ChangeNotifier {
     ));
 
     notifyListeners();
+
+    return _session!.messages.last;
+  }
+
+  void removeMessage(String uuid) async {
+    if (_session == null || _session!.status == ChatSessionStatus.generating) {
+      return;
+    }
+
+    final index =
+        _session!.messages.indexWhere((element) => element.uuid == uuid);
+    _session!.messages.removeAt(index);
+
+    _session!.memory.chatHistory.removeLast();
+
+    notifyListeners();
+  }
+
+  void removeFromMessage(String uuid) async {
+    if (_session == null || _session!.status == ChatSessionStatus.generating) {
+      return;
+    }
+
+    final index =
+        _session!.messages.indexWhere((element) => element.uuid == uuid);
+    _session!.messages.removeRange(index, messageCount);
+
+    for (var i = 0; i < messageCount - index; ++i) {
+      _session!.memory.chatHistory.removeLast();
+    }
+
+    notifyListeners();
+  }
+
+  void removeLastMessage() async {
+    if (_session == null || _session!.status == ChatSessionStatus.generating) {
+      return;
+    }
+
+    _session!.messages.removeLast();
+    _session!.memory.chatHistory.removeLast();
+
+    notifyListeners();
+  }
+
+  RunnableSequence _buildChain() {
+    final promptTemplate = ChatPromptTemplate.fromPromptMessages(const [
+      MessagesPlaceholder(variableName: 'history'),
+      MessagesPlaceholder(variableName: 'input'),
+    ]);
+
+    final chain = Runnable.fromMap({
+          'input': Runnable.passthrough(),
+          'history': Runnable.fromFunction(
+            (final _, final __) async {
+              final m = await _session!.memory.loadMemoryVariables();
+              return m['history'];
+            },
+          ),
+        }) |
+        promptTemplate |
+        _model |
+        const StringOutputParser<ChatResult>();
+
+    return chain;
+  }
+
+  ChatMessage _buildPrompt(String text, {Uint8List? imageBytes}) {
+    final prompt = ChatMessage.human(
+      ChatMessageContent.multiModal(
+        [
+          ChatMessageContent.text(text),
+          if (imageBytes != null)
+            ChatMessageContent.image(
+              data: base64.encode(
+                imageBytes.map((e) => e.toInt()).toList(),
+              ),
+            ),
+        ],
+      ),
+    );
+
+    return prompt;
   }
 
   Future sendMessage(String text, {Uint8List? imageBytes}) async {
     if (text.isEmpty || isGenerating) {
       return;
+    } else if (_session == null) {
+      final session = addSession('');
+      setSession(session.uuid);
     } else if (!isModelSelected) {
       addMessage(
         'Please select a model.',
@@ -62,7 +174,7 @@ class ChatProvider extends ChangeNotifier {
     }
 
     try {
-      _status = ChatProviderStatus.generating;
+      _session!.status = ChatSessionStatus.generating;
 
       notifyListeners();
 
@@ -72,39 +184,12 @@ class ChatProvider extends ChangeNotifier {
         imageBytes: imageBytes,
       );
 
-      _memory.chatHistory.addHumanChatMessage(_messages.last.text);
+      _session!.memory.chatHistory
+          .addHumanChatMessage(_session!.messages.last.text);
 
-      final promptTemplate = ChatPromptTemplate.fromPromptMessages(const [
-        MessagesPlaceholder(variableName: 'history'),
-        MessagesPlaceholder(variableName: 'input'),
-      ]);
+      final chain = _buildChain();
 
-      final chain = Runnable.fromMap({
-            'input': Runnable.passthrough(),
-            'history': Runnable.fromFunction(
-              (final _, final __) async {
-                final m = await _memory.loadMemoryVariables();
-                return m['history'];
-              },
-            ),
-          }) |
-          promptTemplate |
-          _model |
-          const StringOutputParser<ChatResult>();
-
-      final prompt = ChatMessage.human(
-        ChatMessageContent.multiModal(
-          [
-            ChatMessageContent.text(text),
-            if (imageBytes != null)
-              ChatMessageContent.image(
-                data: base64.encode(
-                  imageBytes.map((e) => e.toInt()).toList(),
-                ),
-              ),
-          ],
-        ),
-      );
+      final prompt = _buildPrompt(text, imageBytes: imageBytes);
 
       addMessage(
         '',
@@ -113,26 +198,41 @@ class ChatProvider extends ChangeNotifier {
       );
 
       await for (final response in chain.stream([prompt])) {
-        if (_status == ChatProviderStatus.aborting) {
-          _status = ChatProviderStatus.idle;
+        if (_session!.status == ChatSessionStatus.aborting) {
+          _session!.status = ChatSessionStatus.idle;
 
-          _memory.chatHistory.removeLast();
+          _session!.memory.chatHistory.removeLast();
 
           break;
         }
 
-        _messages.last.text += response.toString();
+        _session!.messages.last.text += response.toString();
 
         notifyListeners();
       }
 
-      _memory.chatHistory.addAIChatMessage(_messages.last.text);
+      _session!.memory.chatHistory
+          .addAIChatMessage(_session!.messages.last.text);
 
-      _status = ChatProviderStatus.idle;
+      _session!.status = ChatSessionStatus.idle;
+
+      notifyListeners();
+
+      if (_session!.title.isEmpty) {
+        final prompt = PromptTemplate.fromTemplate(
+          'Write a three to six words long title for the question "{question}", no more than 64 characters.',
+        );
+
+        final chain = prompt | _model | const StringOutputParser<ChatResult>();
+
+        final response = await chain.invoke({'question': text});
+
+        _session!.title = response.toString();
+      }
 
       notifyListeners();
     } catch (e) {
-      _status = ChatProviderStatus.idle;
+      _session!.status = ChatSessionStatus.idle;
 
       removeLastMessage();
 
@@ -145,49 +245,92 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  void removeMessage(String uuid) async {
-    if (_status == ChatProviderStatus.generating) return;
-
-    final index = _messages.indexWhere((element) => element.uuid == uuid);
-    _messages.removeRange(index, messageCount);
-
-    for (var i = 0; i < messageCount - index; ++i) {
-      _memory.chatHistory.removeLast();
+  void regenerateMessage(String uuid) async {
+    if (_session == null || _session!.status == ChatSessionStatus.generating) {
+      return;
     }
 
-    notifyListeners();
+    Uint8List? imageBytes = lastMessage!.imageBytes;
+
+    removeFromMessage(uuid);
+
+    if (!isModelSelected) {
+      addMessage(
+        'Please select a model.',
+        ChatMessageSender.system,
+      );
+
+      return;
+    }
+
+    try {
+      _session!.status = ChatSessionStatus.generating;
+
+      notifyListeners();
+
+      final chain = _buildChain();
+
+      final prompt = _buildPrompt(lastMessage!.text, imageBytes: imageBytes);
+
+      addMessage(
+        '',
+        ChatMessageSender.model,
+        senderName: _modelName,
+      );
+
+      await for (final response in chain.stream([prompt])) {
+        if (_session!.status == ChatSessionStatus.aborting) {
+          _session!.status = ChatSessionStatus.idle;
+
+          _session!.memory.chatHistory.removeLast();
+
+          break;
+        }
+
+        _session!.messages.last.text += response.toString();
+
+        notifyListeners();
+      }
+
+      _session!.memory.chatHistory
+          .addAIChatMessage(_session!.messages.last.text);
+
+      _session!.status = ChatSessionStatus.idle;
+
+      notifyListeners();
+    } catch (e) {
+      _session!.status = ChatSessionStatus.idle;
+
+      removeLastMessage();
+
+      addMessage(
+        'An error occurred while generating the response.',
+        ChatMessageSender.system,
+      );
+
+      logger.e(e);
+    }
   }
 
-  void removeLastMessage() async {
-    if (_status == ChatProviderStatus.generating) return;
+  void resendMessage(String uuid, String text) async {
+    if (_session == null || _session!.status == ChatSessionStatus.generating) {
+      return;
+    }
 
-    _messages.removeLast();
-    _memory.chatHistory.removeLast();
+    Uint8List? imageBytes = lastMessage!.imageBytes;
 
-    notifyListeners();
-  }
-
-  void regenerateMessage(String uuid, String text) async {
-    if (_status == ChatProviderStatus.generating) return;
-
-    Uint8List? imageBytes = lastMessage.imageBytes;
-
-    removeMessage(uuid);
+    removeFromMessage(uuid);
 
     sendMessage(text, imageBytes: imageBytes);
   }
 
-  void resendMessage(String uuid, String text) async {
-    if (_status == ChatProviderStatus.generating) return;
+  void clearSessionHistory() async {
+    if (_session == null || _session!.status == ChatSessionStatus.generating) {
+      return;
+    }
 
-    regenerateMessage(uuid, text);
-  }
-
-  void clearHistory() async {
-    if (_status == ChatProviderStatus.generating) return;
-
-    _messages.clear();
-    _memory.chatHistory.clear();
+    _session!.messages.clear();
+    _session!.memory.chatHistory.clear();
 
     notifyListeners();
   }
@@ -205,45 +348,60 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSession(String uuid) {
+    final index = _sessions.indexWhere((element) => element.uuid == uuid);
+
+    _session = _sessions[index];
+
+    notifyListeners();
+  }
+
   void abortGeneration() {
-    if (_status == ChatProviderStatus.generating) {
-      _status = ChatProviderStatus.aborting;
+    if (_session!.status == ChatSessionStatus.generating && _session != null) {
+      _session!.status = ChatSessionStatus.aborting;
 
       notifyListeners();
     }
   }
 
-  void enableWebSearch(bool value) {
+  set webSearch(bool value) {
     _webSearch = value;
 
     notifyListeners();
   }
 
-  void enableDocsSearch(bool value) {
+  set docsSearch(bool value) {
     _docsSearch = value;
 
     notifyListeners();
   }
 
-  String get modelName => _modelName;
-
-  bool get isModelSelected => _modelName.isNotEmpty;
-
   bool get isWebSearchEnabled => _webSearch;
 
   bool get isDocsSearchEnabled => _docsSearch;
 
-  List<ChatMessageWrapper> get history => List.from(_messages);
+  String get modelName => _modelName;
 
-  ChatMessageWrapper getMessage(int index) => _messages[index];
+  bool get isModelSelected => _modelName.isNotEmpty;
 
-  ChatMessageWrapper getLastMessage(int index) => _messages[index - 1];
+  ChatSessionWrapper? get session => _session;
 
-  ChatMessageWrapper get lastMessage => _messages.last;
+  bool get isSessionSelected => _session != null;
 
-  List<ChatMessageWrapper> get messages => _messages;
+  List<ChatMessageWrapper> get messages =>
+      _session != null ? _session!.messages : [];
 
-  int get messageCount => _messages.length;
+  ChatMessageWrapper? get lastMessage => _session?.messages.last;
 
-  bool get isGenerating => _status == ChatProviderStatus.generating;
+  int get messageCount => _session != null ? _session!.messages.length : 0;
+
+  List<ChatSessionWrapper> get sessions => _sessions;
+
+  ChatSessionWrapper? get lastSession => _session;
+
+  int get sessionCount => _sessions.length;
+
+  bool get isGenerating => _session != null
+      ? _session!.status == ChatSessionStatus.generating
+      : false;
 }

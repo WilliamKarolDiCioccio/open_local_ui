@@ -53,72 +53,77 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
           _sendMessage();
         },
       },
-      child: TextField(
-        controller: _textEditingController,
-        decoration: InputDecoration(
-          hintText: AppLocalizations.of(context)!.chatInputFieldHint,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          suffixIcon: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(width: 8.0),
-              IconButton(
-                tooltip: AppLocalizations.of(context)!
-                    .chatInputFieldEmbedButtonTooltip,
-                icon: Icon(
-                  _imageBytes == null
-                      ? UniconsLine.image_plus
-                      : UniconsLine.image_minus,
-                ),
-                onPressed: () async {
-                  final imageBytes = await showImageDropzoneDialog(
-                    context,
-                    _imageBytes,
-                  );
-
-                  setState(() {
-                    _imageBytes = imageBytes;
-                  });
-                },
-              ),
-              const SizedBox(width: 8.0),
-              if (context.watch<ChatProvider>().isGenerating)
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxHeight: 200,
+        ),
+        child: TextField(
+          controller: _textEditingController,
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context)!.chatInputFieldHint,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            suffixIcon: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(width: 8.0),
                 IconButton(
                   tooltip: AppLocalizations.of(context)!
-                      .chatInputFieldCancelButtonTooltip,
-                  icon: const Icon(UniconsLine.stop_circle),
+                      .chatInputFieldEmbedButtonTooltip,
+                  icon: Icon(
+                    _imageBytes == null
+                        ? UniconsLine.image_plus
+                        : UniconsLine.image_minus,
+                  ),
                   onPressed: () async {
-                    context.read<ChatProvider>().abortGeneration();
-                  },
-                )
-              else
-                IconButton(
-                  tooltip: AppLocalizations.of(context)!
-                      .chatInputFieldSendButtonTooltip,
-                  icon: const Icon(UniconsLine.message),
-                  onPressed: () async {
-                    _text = _textEditingController.text;
+                    final imageBytes = await showImageDropzoneDialog(
+                      context,
+                      _imageBytes,
+                    );
 
-                    _sendMessage();
+                    setState(() {
+                      _imageBytes = imageBytes;
+                    });
                   },
                 ),
-              const SizedBox(width: 8.0),
-            ],
+                const SizedBox(width: 8.0),
+                if (context.watch<ChatProvider>().isGenerating)
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!
+                        .chatInputFieldCancelButtonTooltip,
+                    icon: const Icon(UniconsLine.stop_circle),
+                    onPressed: () async {
+                      context.read<ChatProvider>().abortGeneration();
+                    },
+                  )
+                else
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!
+                        .chatInputFieldSendButtonTooltip,
+                    icon: const Icon(UniconsLine.message),
+                    onPressed: () async {
+                      _text = _textEditingController.text;
+
+                      _sendMessage();
+                    },
+                  ),
+                const SizedBox(width: 8.0),
+              ],
+            ),
           ),
+          style: const TextStyle(
+            fontSize: 20.0,
+            fontFamily: 'Neuton',
+            fontWeight: FontWeight.w300,
+          ),
+          autofocus: true,
+          maxLength: 4096,
+          maxLines: null,
+          expands: false,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
         ),
-        style: const TextStyle(
-          fontSize: 20.0,
-          fontFamily: 'Neuton',
-          fontWeight: FontWeight.w300,
-        ),
-        autofocus: true,
-        maxLength: 4096,
-        maxLines: null,
-        expands: false,
-        maxLengthEnforcement: MaxLengthEnforcement.enforced,
       ),
     );
   }

@@ -8,7 +8,7 @@ import 'package:unicons/unicons.dart';
 import 'package:open_local_ui/components/text_icon_button.dart';
 import 'package:open_local_ui/layout/side_menu_base.dart';
 import 'package:open_local_ui/pages/about.dart';
-import 'package:open_local_ui/pages/archive.dart';
+import 'package:open_local_ui/pages/sessions.dart';
 import 'package:open_local_ui/pages/chat.dart';
 import 'package:open_local_ui/pages/home.dart';
 import 'package:open_local_ui/pages/models.dart';
@@ -100,7 +100,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   onPressed: () => _changePage(1),
                 ),
                 TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.dashboardArchiveBtn,
+                  text: AppLocalizations.of(context)!.dashboardSessionsBtn,
                   icon: UniconsLine.archive,
                   onPressed: () => _changePage(2),
                 ),
@@ -141,7 +141,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
       children: const [
         HomePage(),
         ChatPage(),
-        ArchivePage(),
+        SessionsPage(),
         ModelsPage(),
         SettingsPage(),
         AboutPage(),
