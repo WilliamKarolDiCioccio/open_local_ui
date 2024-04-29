@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,25 +33,13 @@ class MarkdownCustomCodeBuilder extends MarkdownElementBuilder {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            AppLocalizations.of(context)!.markdownLanguageLabel(
-              language,
-            ),
-          ),
-          if (element.textContent.length > 128)
-            SizedBox(
-              width: 256.0,
-              child: IconButton(
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: element.textContent));
-
-                  SnackBarHelper.showSnackBar(
-                    context,
-                    AppLocalizations.of(context)!.codeCopiedSnackbarText,
-                    SnackBarType.success,
-                  );
-                },
-                icon: const Icon(UniconsLine.copy),
+          if (element.textContent.contains('\n'))
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                AppLocalizations.of(context)!.markdownLanguageLabel(
+                  language,
+                ),
               ),
             ),
           SelectionArea(
