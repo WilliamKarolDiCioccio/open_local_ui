@@ -217,37 +217,28 @@ class _ChatMessageListState extends State<ChatMessageList> {
             ),
           );
         } else {
-          return Stack(
+          return Column(
             children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: context.watch<ChatProvider>().messageCount,
-                      itemBuilder: (context, index) {
-                        final message =
-                            context.watch<ChatProvider>().messages[index];
-                        return ChatMessageWidget(message);
-                      },
-                    ),
-                  ),
-                ],
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: context.watch<ChatProvider>().messageCount,
+                  itemBuilder: (context, index) {
+                    final message =
+                        context.watch<ChatProvider>().messages[index];
+                    return ChatMessageWidget(message);
+                  },
+                ),
               ),
               if (_isScrollButtonVisible)
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                      icon: const Icon(
-                        UniconsLine.arrow_down,
-                        size: 32.0,
-                      ),
-                      onPressed: _scrollToBottom,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButton(
+                    icon: const Icon(
+                      UniconsLine.arrow_down,
+                      size: 32.0,
                     ),
+                    onPressed: _scrollToBottom,
                   ),
                 ),
             ],
