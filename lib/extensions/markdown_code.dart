@@ -6,11 +6,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_highlighter/flutter_highlighter.dart';
 import 'package:flutter_highlighter/themes/kimbie.dark.dart';
 import 'package:flutter_highlighter/themes/kimbie.light.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_selectionarea/flutter_markdown_selectionarea.dart';
 import 'package:markdown/markdown.dart' as md;
-import 'package:unicons/unicons.dart';
-
-import 'package:open_local_ui/helpers/snackbar.dart';
 
 class MarkdownCustomCodeBuilder extends MarkdownElementBuilder {
   @override
