@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
-import 'package:open_local_ui/components/text_icon_button.dart';
 import 'package:open_local_ui/layout/side_menu_base.dart';
 import 'package:open_local_ui/pages/about.dart';
 import 'package:open_local_ui/pages/sessions.dart';
@@ -32,7 +31,6 @@ class _DashboardLayoutState extends State<DashboardLayout> {
   }
 
   void _changePage(int pageIndex) {
-    setState(() {});
     _pageController.jumpToPage(pageIndex);
   }
 
@@ -85,42 +83,60 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   width: 200,
                   child: Divider(height: 32.0),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.dashboardHomeBtn,
-                  icon: UniconsLine.home,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.dashboardHomeBtn,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.home),
                   onPressed: () => _changePage(0),
                 ),
                 const SizedBox(
                   width: 200,
                   child: Divider(height: 32.0),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.dashboardChatBtn,
-                  icon: UniconsLine.comment,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.dashboardChatBtn,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.comment),
                   onPressed: () => _changePage(1),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.dashboardSessionsBtn,
-                  icon: UniconsLine.archive,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.dashboardSessionsBtn,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.archive),
                   onPressed: () => _changePage(2),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.dashboardModelsBtn,
-                  icon: UniconsLine.cube,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.dashboardModelsBtn,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.cube),
                   onPressed: () => _changePage(3),
                 ),
                 const SizedBox(
                   width: 200,
                   child: Divider(height: 32.0),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.dashboardSettingsBtn,
-                  icon: UniconsLine.setting,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.dashboardSettingsBtn,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.setting),
                   onPressed: () => _changePage(4),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.dashboardAboutBtn,
-                  icon: UniconsLine.info_circle,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.dashboardAboutBtn,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.info_circle),
                   onPressed: () => _changePage(5),
                 ),
               ],
@@ -135,9 +151,6 @@ class _DashboardLayoutState extends State<DashboardLayout> {
     return PageView(
       controller: _pageController,
       physics: const NeverScrollableScrollPhysics(),
-      onPageChanged: (index) {
-        setState(() {});
-      },
       children: const [
         HomePage(),
         ChatPage(),

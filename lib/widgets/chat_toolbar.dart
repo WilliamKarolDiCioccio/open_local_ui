@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
-import 'package:open_local_ui/components/text_icon_button.dart';
+import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
 
@@ -20,6 +20,33 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
   bool _webSearchEnabled = false;
   bool _docsSearchEnabled = false;
 
+  void _newSession() {
+    if (context.read<ChatProvider>().isSessionSelected) {
+      if (context.read<ChatProvider>().session!.messages.isEmpty) {
+        SnackBarHelper.showSnackBar(
+          context,
+          AppLocalizations.of(context)!.noNeedToCreateSessionSnackbarText,
+          SnackBarType.info,
+        );
+      } else if (context.read<ChatProvider>().isGenerating) {
+        SnackBarHelper.showSnackBar(
+          context,
+          AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+          SnackBarType.error,
+        );
+      } else {
+        final session = context.read<ChatProvider>().addSession('');
+        context.read<ChatProvider>().setSession(session.uuid);
+      }
+    } else {
+      SnackBarHelper.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.noNeedToCreateSessionSnackbarText,
+        SnackBarType.info,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -29,17 +56,13 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         const SizedBox(width: 16.0),
         _buildOptionsBar(),
         const SizedBox(width: 16.0),
-        TextIconButtonComponent(
-          text: AppLocalizations.of(context)!.chatToolbarNewChatButton,
-          icon: UniconsLine.plus,
-          onPressed: () {
-            if (!context.read<ChatProvider>().isSessionSelected) return;
-
-            if (context.read<ChatProvider>().session!.messages.isNotEmpty) {
-              final session = context.read<ChatProvider>().addSession('');
-              context.read<ChatProvider>().setSession(session.uuid);
-            }
-          },
+        TextButton.icon(
+          label: Text(
+            AppLocalizations.of(context)!.chatToolbarNewSessionButton,
+            style: const TextStyle(fontSize: 18.0),
+          ),
+          icon: const Icon(UniconsLine.plus),
+          onPressed: () => _newSession(),
         )
       ],
     );

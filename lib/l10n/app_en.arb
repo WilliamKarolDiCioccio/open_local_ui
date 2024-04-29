@@ -29,19 +29,21 @@
   "chatToolbarModelSelectorHint": "Select model",
   "chatToolbarWebSearchOption": "Web search:",
   "chatToolbarDocsSearchOption": "Docs search:",
-  "chatToolbarNewChatButton": "New Chat",
+  "chatToolbarNewSessionButton": "New session",
   "chatInputFieldHint": "Type a message...",
-  "chatInputFieldEmbedButtonTooltip": "Embed image",
+  "chatInputFieldAttachButtonTooltip": "Attach files",
+  "chatInputFieldDetachButtonTooltip": "Detach files",
   "chatInputFieldCancelButtonTooltip": "Cancel generation",
   "chatInputFieldSendButtonTooltip": "Send message",
   "sessionsPageTitle": "Sessions management",
   "sessionsPageDeleteButton": "Delete session",
-  "sessionsPageOpenButton": "Open session",
+  "sessionsPageEnterButton": "Enter session",
   "modelsPageTitle": "Models management",
   "modelsPagePullButton": "Pull",
   "modelsPagePushButton": "Push",
   "modelsPageCreateButton": "Create",
   "modelsPageRefreshButton": "Refresh",
+  "modelsPageUseButton": "Use model",
   "modelsPageDeleteButton": "Delete model",
   "settingsPageThemeLabel": "Theme",
   "settingsThemeModeLight": "Light",
@@ -53,16 +55,16 @@
   "settingsLanguageEnglish": "English",
   "settingsLanguageFrench": "French",
   "settingsLanguageItalian": "Italian",
-  "embedImageDialogDropHereText": "Drop an image here",
-  "embedImageDialogAllowedFormatsText": "Allowed formats: {formats}",
-  "@embedImageDialogAllowedFormatsText": {
+  "attachFilesDialogText": "Drop files here",
+  "attachFilesDialogAllowedFormatsText": "Allowed formats: {formats}",
+  "@attachFilesDialogAllowedFormatsText": {
     "placeholders": {
       "formats": {
         "type": "String"
       }
     }
   },
-  "embedImageDialogBrowseFilesButton": "Browse files",
+  "attachFilesDialogBrowseFilesButton": "Browse files",
   "pullModelDialogTitle": "Pull model",
   "pullModelDialogGuideText1": "Please type the name of the model to pull:",
   "pullModelDialogModelNameLabel": "Model name",
@@ -180,7 +182,7 @@
   "dialogCreateButtonShared": "Create",
   "dialogResetButton": "Reset",
   "dialogRemoveButton": "Remove",
-  "dialogEmbedButton": "Embed",
+  "dialogAttachButton": "Attach",
   "dialogContinueInBackgroundButtonShared": "Continue in background",
   "suggestion1part1": "What are some common use cases ",
   "suggestion1part2": "for problem-solving skills?",
@@ -207,5 +209,7 @@
   "suggestion12part1": "Explain the significance ",
   "suggestion12part2": "of empathy in building strong connections",
   "messageCopiedSnackbarText": "Message copied to clipboard",
-  "modelIsGeneratingSnackbarText": "Model is generating"
+  "noNeedToCreateSessionSnackbarText": "No need to create a new session",
+  "modelIsGeneratingSnackbarText": "Model is generating",
+  "noModelsAvailableSnackbarText": "No models available"
 }

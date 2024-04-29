@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 enum SnackBarType {
   success,
+  info,
   warning,
   error,
 }
@@ -17,6 +18,9 @@ class SnackBarHelper {
     switch (type) {
       case SnackBarType.success:
         backgroundColor = Colors.green;
+        break;
+      case SnackBarType.info:
+        backgroundColor = Colors.blue;
         break;
       case SnackBarType.warning:
         backgroundColor = Colors.orange;

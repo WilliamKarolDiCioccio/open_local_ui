@@ -31,7 +31,7 @@ class _SessionsPageState extends State<SessionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChatProvider>(
+    return Consumer(
       builder: (context, value, child) => PageBaseLayout(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -47,10 +47,10 @@ class _SessionsPageState extends State<SessionsPage> {
             const SizedBox(height: 16.0),
             Expanded(
               child: ListView.builder(
-                itemCount: context.read<ChatProvider>().sessionCount,
+                itemCount: context.watch<ChatProvider>().sessionCount,
                 itemBuilder: (context, index) {
-                  return _buildModelListTile(
-                      context.read<ChatProvider>().sessions[index], context);
+                  final session = context.watch<ChatProvider>().sessions[index];
+                  return _buildModelListTile(session, context);
                 },
               ),
             ),
@@ -63,9 +63,7 @@ class _SessionsPageState extends State<SessionsPage> {
   Widget _buildModelListTile(ChatSessionWrapper session, BuildContext context) {
     return ListTile(
       title: Text(session.title),
-      subtitle: Text(
-        session.createdAt.toString(),
-      ),
+      subtitle: Text(session.createdAt.toString()),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
@@ -76,7 +74,7 @@ class _SessionsPageState extends State<SessionsPage> {
             onPressed: () => _deleteSession(session.uuid),
           ),
           IconButton(
-            tooltip: AppLocalizations.of(context)!.sessionsPageOpenButton,
+            tooltip: AppLocalizations.of(context)!.sessionsPageEnterButton,
             icon: const Icon(UniconsLine.enter),
             onPressed: () {
               context.read<ChatProvider>().setSession(session.uuid);

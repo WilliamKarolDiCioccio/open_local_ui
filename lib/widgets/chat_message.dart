@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:open_local_ui/components/text_icon_button.dart';
 import 'package:open_local_ui/extensions/markdown_code.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/chat_message.dart';
@@ -213,16 +212,17 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 ),
                 Row(
                   children: [
-                    TextIconButtonComponent(
-                      text:
-                          AppLocalizations.of(context)!.chatMessageResendButton,
-                      icon: UniconsLine.message,
+                    TextButton.icon(
+                      label: Text(
+                        AppLocalizations.of(context)!.chatMessageResendButton,
+                      ),
+                      icon: const Icon(UniconsLine.message),
                       onPressed: () => _sendEditedMessage(),
                     ),
-                    TextIconButtonComponent(
-                      text: AppLocalizations.of(context)!
-                          .chatMessageCancelEditButton,
-                      icon: UniconsLine.times,
+                    TextButton.icon(
+                      label: Text(AppLocalizations.of(context)!
+                          .chatMessageCancelEditButton),
+                      icon: const Icon(UniconsLine.times),
                       onPressed: () => _cancelEditingMessage(),
                     ),
                   ],

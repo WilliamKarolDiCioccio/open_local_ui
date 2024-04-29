@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_local_ui/providers/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
-import 'package:open_local_ui/components/text_icon_button.dart';
 import 'package:open_local_ui/dialogs/create_model.dart';
 import 'package:open_local_ui/dialogs/model_details.dart';
 import 'package:open_local_ui/dialogs/pull_model.dart';
@@ -40,24 +40,36 @@ class _ModelsPageState extends State<ModelsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.modelsPagePullButton,
-                  icon: UniconsLine.download_alt,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.modelsPagePullButton,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.download_alt),
                   onPressed: () => showPullModelDialog(context),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.modelsPagePushButton,
-                  icon: UniconsLine.upload_alt,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.modelsPagePushButton,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.upload_alt),
                   onPressed: () => showPushModelDialog(context),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.modelsPageCreateButton,
-                  icon: UniconsLine.create_dashboard,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.modelsPageCreateButton,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.create_dashboard),
                   onPressed: () => showCreateModelDialog(context),
                 ),
-                TextIconButtonComponent(
-                  text: AppLocalizations.of(context)!.modelsPageRefreshButton,
-                  icon: UniconsLine.refresh,
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!.modelsPageRefreshButton,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  icon: const Icon(UniconsLine.refresh),
                   onPressed: () {
                     context.read<ModelProvider>().updateList();
                   },
@@ -97,6 +109,15 @@ class _ModelsPageState extends State<ModelsPage> {
             icon: const Icon(UniconsLine.trash),
             onPressed: () {
               context.read<ModelProvider>().remove(model.name);
+            },
+          ),
+          IconButton(
+            tooltip: AppLocalizations.of(context)!.modelsPageUseButton,
+            icon: const Icon(UniconsLine.enter),
+            onPressed: () {
+              context.read<ChatProvider>().setModel(model.name);
+              final session = context.read<ChatProvider>().addSession('');
+              context.read<ChatProvider>().setSession(session.uuid);
             },
           ),
         ],

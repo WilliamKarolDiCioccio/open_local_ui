@@ -11,19 +11,18 @@ import 'package:image/image.dart' as img;
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
-import 'package:open_local_ui/components/text_icon_button.dart';
 import 'package:open_local_ui/helpers/http.dart';
 
-class ImageDropzoneDialog extends StatefulWidget {
+class AttachmentsDropzoneDialog extends StatefulWidget {
   final Uint8List? imageBytes;
 
-  const ImageDropzoneDialog(this.imageBytes, {super.key});
+  const AttachmentsDropzoneDialog(this.imageBytes, {super.key});
 
   @override
-  State<ImageDropzoneDialog> createState() => _ImageDropzoneDialogState();
+  State<AttachmentsDropzoneDialog> createState() => _AttachmentsDropzoneDialogState();
 }
 
-class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
+class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
   Uint8List? _imageBytes;
 
   @override
@@ -128,21 +127,24 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
                         ),
                         Text(
                           AppLocalizations.of(context)!
-                              .embedImageDialogDropHereText,
+                              .attachFilesDialogText,
                           style: const TextStyle(fontSize: 24.0),
                         ),
                         Text(
                           AppLocalizations.of(context)!
-                              .embedImageDialogAllowedFormatsText(
+                              .attachFilesDialogAllowedFormatsText(
                             'PNG, JPEG, WEBP',
                           ),
                           style: const TextStyle(fontSize: 14.0),
                         ),
                         const SizedBox(height: 16.0),
-                        TextIconButtonComponent(
-                          text: AppLocalizations.of(context)!
-                              .embedImageDialogBrowseFilesButton,
-                          icon: UniconsLine.folder,
+                        TextButton.icon(
+                          label: Text(
+                            AppLocalizations.of(context)!
+                                .attachFilesDialogBrowseFilesButton,
+                            style: const TextStyle(fontSize: 16.0),
+                          ),
+                          icon: const Icon(UniconsLine.folder),
                           onPressed: () async {
                             FilePickerResult? result =
                                 await FilePicker.platform.pickFiles(
@@ -197,7 +199,7 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
             Navigator.of(context).pop(_imageBytes);
           },
           child: Text(
-            AppLocalizations.of(context)!.dialogEmbedButton,
+            AppLocalizations.of(context)!.dialogAttachButton,
           ),
         ),
       ],
@@ -212,12 +214,12 @@ class _ImageDropzoneDialogState extends State<ImageDropzoneDialog> {
   }
 }
 
-Future<Uint8List?> showImageDropzoneDialog(
+Future<Uint8List?> showAttachmentsDropzoneDialog(
     BuildContext context, Uint8List? imageBytes) async {
   return showDialog<Uint8List?>(
     context: context,
     builder: (BuildContext context) {
-      return ImageDropzoneDialog(imageBytes);
+      return AttachmentsDropzoneDialog(imageBytes);
     },
   );
 }

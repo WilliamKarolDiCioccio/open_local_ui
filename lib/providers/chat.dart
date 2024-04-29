@@ -120,9 +120,11 @@ class ChatProvider extends ChangeNotifier {
   }
 
   Future<RunnableSequence> _buildChain() async {
-    final defaultPrompt = await rootBundle.loadString('assets/prompts/default.txt');
+    final defaultPrompt = await rootBundle.loadString(
+      'assets/prompts/default.txt',
+    );
 
-    final promptTemplate = ChatPromptTemplate.fromPromptMessages( [
+    final promptTemplate = ChatPromptTemplate.fromPromptMessages([
       ChatMessagePromptTemplate.system(defaultPrompt),
       const MessagesPlaceholder(variableName: 'history'),
       const MessagesPlaceholder(variableName: 'input'),
@@ -163,11 +165,17 @@ class ChatProvider extends ChangeNotifier {
   }
 
   Future sendMessage(String text, {Uint8List? imageBytes}) async {
-    if (text.isEmpty || isGenerating) {
-      return;
-    } else if (_session == null) {
+    if (_session == null) {
       final session = addSession('');
       setSession(session.uuid);
+    }
+    if (text.isEmpty) {
+      addMessage(
+        'Try to be more specific.',
+        ChatMessageSender.system,
+      );
+
+      return;
     } else if (!isModelSelected) {
       addMessage(
         'Please select a model.',
@@ -223,9 +231,11 @@ class ChatProvider extends ChangeNotifier {
       notifyListeners();
 
       if (_session!.title.isEmpty) {
-        final prompt = PromptTemplate.fromTemplate(
-          'Write a three to six words long title for the question "{question}", no more than 64 characters.',
+        final titleGeneratorPrompt = await rootBundle.loadString(
+          'assets/prompts/title_generator.txt',
         );
+
+        final prompt = PromptTemplate.fromTemplate(titleGeneratorPrompt);
 
         final chain = prompt | _model | const StringOutputParser<ChatResult>();
 
@@ -340,6 +350,11 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void setModel(String name, {double temperature = 0.8}) {
+    if (_session?.status == null ||
+        _session?.status == ChatSessionStatus.generating) {
+      return;
+    }
+
     _modelName = name;
 
     _model = ChatOllama(
@@ -354,6 +369,10 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void setSession(String uuid) {
+    if (_session != null && _session!.status == ChatSessionStatus.generating) {
+      return;
+    }
+
     final index = _sessions.indexWhere((element) => element.uuid == uuid);
 
     _session = _sessions[index];

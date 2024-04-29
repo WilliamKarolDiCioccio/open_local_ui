@@ -109,7 +109,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
       ],
     ];
 
-    return Consumer<ChatProvider>(
+    return Consumer(
       builder: (context, value, child) {
         if (context.watch<ChatProvider>().messageCount == 0) {
           final random = Random();
@@ -126,17 +126,17 @@ class _ChatMessageListState extends State<ChatMessageList> {
               return GestureDetector(
                 onTap: () {
                   if (!context.read<ChatProvider>().isModelSelected) {
-                    final models = context.read<ModelProvider>().models;
-
                     if (context.read<ModelProvider>().modelsCount == 0) {
                       return SnackBarHelper.showSnackBar(
                         context,
-                        'No models available',
+                        AppLocalizations.of(context)!
+                            .noModelsAvailableSnackbarText,
                         SnackBarType.error,
                       );
+                    } else {
+                      final models = context.read<ModelProvider>().models;
+                      context.read<ChatProvider>().setModel(models.first.name);
                     }
-
-                    context.read<ChatProvider>().setModel(models.first.name);
                   }
 
                   final message =

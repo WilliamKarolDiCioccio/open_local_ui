@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
-import 'package:open_local_ui/dialogs/image_dropzone.dart';
+import 'package:open_local_ui/dialogs/attachments_dropzone.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/providers/chat.dart';
 
@@ -70,15 +70,18 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
               children: [
                 const SizedBox(width: 8.0),
                 IconButton(
-                  tooltip: AppLocalizations.of(context)!
-                      .chatInputFieldEmbedButtonTooltip,
+                  tooltip: _imageBytes == null
+                      ? AppLocalizations.of(context)!
+                          .chatInputFieldAttachButtonTooltip
+                      : AppLocalizations.of(context)!
+                          .chatInputFieldDetachButtonTooltip,
                   icon: Icon(
                     _imageBytes == null
-                        ? UniconsLine.image_plus
-                        : UniconsLine.image_minus,
+                        ? UniconsLine.link_add
+                        : UniconsLine.link_broken,
                   ),
                   onPressed: () async {
-                    final imageBytes = await showImageDropzoneDialog(
+                    final imageBytes = await showAttachmentsDropzoneDialog(
                       context,
                       _imageBytes,
                     );
