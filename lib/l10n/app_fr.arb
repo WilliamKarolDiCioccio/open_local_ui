@@ -2,7 +2,7 @@
   "@@locale": "fr",
   "dashboardHomeBtn": "Accueil",
   "dashboardChatBtn": "Discussion",
-  "dashboardArchiveBtn": "Archive",
+  "dashboardSessionsBtn": "Séances",
   "dashboardModelsBtn": "Modèles",
   "dashboardSettingsBtn": "Paramètres",
   "dashboardAboutBtn": "À propos",
@@ -34,6 +34,9 @@
   "chatInputFieldEmbedButtonTooltip": "Insérer une image",
   "chatInputFieldCancelButtonTooltip": "Annuler la génération",
   "chatInputFieldSendButtonTooltip": "Envoyer le message",
+  "sessionsPageTitle": "Gestion des sessions",
+  "sessionsPageDeleteButton": "Supprimer la session",
+  "sessionsPageOpenButton": "Ouvrir la session",
   "modelsPageTitle": "Gestion des modèles",
   "modelsPagePullButton": "Extraire",
   "modelsPagePushButton": "Envoyer",
@@ -205,6 +208,5 @@
   "suggestion12part1": "Expliquez la signification ",
   "suggestion12part2": "de l'empathie dans la construction de relations solides",
   "messageCopiedSnackbarText": "Message copié dans le presse-papiers",
-  "codeCopiedSnackbarText": "Code copié dans le presse-papiers",
   "modelIsGeneratingSnackbarText": "Le modèle est en cours de génération"
 }

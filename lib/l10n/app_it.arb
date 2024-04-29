@@ -2,7 +2,7 @@
   "@@locale": "it",
   "dashboardHomeBtn": "Home",
   "dashboardChatBtn": "Chat",
-  "dashboardArchiveBtn": "Archivio",
+  "dashboardSessionsBtn": "Sessioni",
   "dashboardModelsBtn": "Modelli",
   "dashboardSettingsBtn": "Impostazioni",
   "dashboardAboutBtn": "Informazioni",
@@ -34,6 +34,9 @@
   "chatInputFieldEmbedButtonTooltip": "Incorpora immagine",
   "chatInputFieldCancelButtonTooltip": "Annulla generazione",
   "chatInputFieldSendButtonTooltip": "Invia messaggio",
+  "sessionsPageTitle": "Gestione sessioni",
+  "sessionsPageDeleteButton": "Elimina sessione",
+  "sessionsPageOpenButton": "Apri sessione",
   "modelsPageTitle": "Gestione modelli",
   "modelsPagePullButton": "Scarica",
   "modelsPagePushButton": "Carica",
@@ -205,6 +208,5 @@
   "suggestion12part1": "Spiega l'importanza ",
   "suggestion12part2": "dell'empatia nella costruzione di connessioni solide",
   "messageCopiedSnackbarText": "Messaggio copiato negli appunti",
-  "codeCopiedSnackbarText": "Codice copiato negli appunti",
   "modelIsGeneratingSnackbarText": "Il modello è in fase di generazione"
 }

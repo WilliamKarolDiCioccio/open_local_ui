@@ -2,7 +2,7 @@
   "@@locale": "de",
   "dashboardHomeBtn": "Start",
   "dashboardChatBtn": "Chat",
-  "dashboardArchiveBtn": "Archiv",
+  "dashboardSessionsBtn": "Sitzungen",
   "dashboardModelsBtn": "Modelle",
   "dashboardSettingsBtn": "Einstellungen",
   "dashboardAboutBtn": "Über",
@@ -34,6 +34,9 @@
   "chatInputFieldEmbedButtonTooltip": "Bild einbetten",
   "chatInputFieldCancelButtonTooltip": "Generierung abbrechen",
   "chatInputFieldSendButtonTooltip": "Nachricht senden",
+  "sessionsPageTitle": "Sitzungsverwaltung",
+  "sessionsPageDeleteButton": "Sitzung löschen",
+  "sessionsPageOpenButton": "Sitzung öffnen",
   "modelsPageTitle": "Modellverwaltung",
   "modelsPagePullButton": "Herunterladen",
   "modelsPagePushButton": "Hochladen",
@@ -205,6 +208,5 @@
   "suggestion12part1": "Erkläre die Bedeutung ",
   "suggestion12part2": "von Empathie beim Aufbau starker Verbindungen",
   "messageCopiedSnackbarText": "Nachricht in die Zwischenablage kopiert",
-  "codeCopiedSnackbarText": "Code in die Zwischenablage kopiert",
   "modelIsGeneratingSnackbarText": "Modell wird generiert"
 }
