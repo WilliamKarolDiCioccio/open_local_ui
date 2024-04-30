@@ -1,8 +1,9 @@
 # OpenLocalUI
 
-<p align="center">
-  <img align="center" width="512" title="Rake logo" src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/screenshot.png">
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/dark_theme.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/light_theme.png">
+</picture>
 
 ## What is OpenLocalUI
 
