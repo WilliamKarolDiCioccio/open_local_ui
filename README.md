@@ -1,9 +1,7 @@
 # OpenLocalUI
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/dark_theme.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/light_theme.png">
-</picture>
+![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/dark_theme.png#gh-dark-mode-only)
+![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/light_theme.png#gh-light-mode-only)
 
 ## What is OpenLocalUI
 
