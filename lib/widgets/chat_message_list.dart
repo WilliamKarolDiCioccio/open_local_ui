@@ -3,11 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
+import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
 import 'package:open_local_ui/widgets/chat_message.dart';
@@ -109,6 +110,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
       ],
     ];
 
+    const exampleQuestionsCount = 4;
+
     return Consumer(
       builder: (context, value, child) {
         if (context.watch<ChatProvider>().messageCount == 0) {
@@ -118,10 +121,10 @@ class _ChatMessageListState extends State<ChatMessageList> {
             ..shuffle(random);
 
           final List<List<String>> choosenQuestions =
-              randomQuestions.take(4).toList();
+              randomQuestions.take(exampleQuestionsCount).toList();
 
           List<Widget> questionCells = List<Widget>.generate(
-            4,
+            exampleQuestionsCount,
             (index) {
               return GestureDetector(
                 onTap: () {
@@ -173,7 +176,12 @@ class _ChatMessageListState extends State<ChatMessageList> {
                         ),
                       ),
                     ),
-                  ),
+                  )
+                      .animate(
+                        delay: 500.ms + ((Random().nextInt(4) + 1) * 100).ms,
+                      )
+                      .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
+                      .fade(),
                 ),
               );
             },
@@ -189,8 +197,17 @@ class _ChatMessageListState extends State<ChatMessageList> {
                     fontSize: 32.0,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                Text(AppLocalizations.of(context)!.chatMessageListText2),
+                ).animate().fadeIn(duration: 300.ms).move(
+                      begin: const Offset(0, 160),
+                      curve: Curves.easeOutQuad,
+                    ),
+                Text(AppLocalizations.of(context)!.chatMessageListText2)
+                    .animate(delay: 300.ms)
+                    .fadeIn(duration: 200.ms)
+                    .move(
+                      begin: const Offset(0, 16),
+                      curve: Curves.easeOutQuad,
+                    ),
                 const SizedBox(height: 8.0),
                 Center(
                   child: Column(
@@ -226,7 +243,14 @@ class _ChatMessageListState extends State<ChatMessageList> {
                   itemBuilder: (context, index) {
                     final message =
                         context.watch<ChatProvider>().messages[index];
-                    return ChatMessageWidget(message);
+
+                    return ChatMessageWidget(message)
+                        .animate(delay: 300.ms)
+                        .fadeIn(duration: 900.ms)
+                        .move(
+                          begin: const Offset(-16, 0),
+                          curve: Curves.easeOutQuad,
+                        );
                   },
                 ),
               ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
+import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/chat.dart';
@@ -50,7 +51,16 @@ class _SessionsPageState extends State<SessionsPage> {
                 itemCount: context.watch<ChatProvider>().sessionCount,
                 itemBuilder: (context, index) {
                   final session = context.watch<ChatProvider>().sessions[index];
-                  return _buildModelListTile(session, context);
+                  return _buildModelListTile(
+                    session,
+                    context,
+                  )
+                      .animate(delay: (index * 100).ms)
+                      .fadeIn(duration: 900.ms, delay: 300.ms)
+                      .move(
+                        begin: const Offset(-16, 0),
+                        curve: Curves.easeOutQuad,
+                      );
                 },
               ),
             ),

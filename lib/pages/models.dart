@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/providers/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -11,6 +11,7 @@ import 'package:open_local_ui/dialogs/pull_model.dart';
 import 'package:open_local_ui/dialogs/push_model.dart';
 import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/models/model.dart';
+import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
 
 class ModelsPage extends StatefulWidget {
@@ -82,7 +83,15 @@ class _ModelsPageState extends State<ModelsPage> {
                 itemCount: context.read<ModelProvider>().modelsCount,
                 itemBuilder: (context, index) {
                   return _buildModelListTile(
-                      context.read<ModelProvider>().models[index], context);
+                    context.read<ModelProvider>().models[index],
+                    context,
+                  )
+                      .animate(delay: (index * 100).ms)
+                      .fadeIn(duration: 900.ms, delay: 300.ms)
+                      .move(
+                        begin: const Offset(-16, 0),
+                        curve: Curves.easeOutQuad,
+                      );
                 },
               ),
             ),

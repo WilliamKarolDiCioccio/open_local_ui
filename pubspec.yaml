@@ -41,6 +41,7 @@ dependencies:
   image: ^4.1.7
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
+  flutter_animate: ^4.5.0
 
 dev_dependencies:
   flutter_test:
