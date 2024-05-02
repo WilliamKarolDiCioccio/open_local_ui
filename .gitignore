@@ -57,4 +57,7 @@ app.*.map.json
 .pub-cache/
 .pub/
 /build/
+untranslated_messages.json
+
+# Environment variable file
 .env*
