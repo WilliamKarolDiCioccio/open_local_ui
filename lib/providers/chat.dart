@@ -260,11 +260,23 @@ class ChatProvider extends ChangeNotifier {
       return;
     }
 
-    if (lastMessage! is ChatUserMessageWrapper) return;
+    final modelMessageIndex = _session!.messages.indexWhere(
+      (element) => element.uuid == uuid,
+    );
 
-    Uint8List? imageBytes = (lastMessage! as ChatUserMessageWrapper).imageBytes;
+    if (_session!.messages[modelMessageIndex] is! ChatModelMessageWrapper) {
+      return;
+    }
 
     removeFromMessage(uuid);
+
+    final userMessageIndex = _session!.messages.lastIndexWhere(
+      (element) => element is ChatUserMessageWrapper,
+      modelMessageIndex - 1,
+    );
+
+    final userMessage =
+        _session!.messages[userMessageIndex] as ChatUserMessageWrapper;
 
     if (!isModelSelected) {
       addSystemMessage('Please select a model.');
@@ -279,7 +291,10 @@ class ChatProvider extends ChangeNotifier {
 
       final chain = await _buildChain();
 
-      final prompt = _buildPrompt(lastMessage!.text, imageBytes: imageBytes);
+      final prompt = _buildPrompt(
+        userMessage.text,
+        imageBytes: userMessage.imageBytes,
+      );
 
       addModelMessage('', _modelName);
 
@@ -315,14 +330,22 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  void resendMessage(String uuid, String text) async {
+  void sendEditedMessage(
+    String uuid,
+    String text,
+    Uint8List? imageBytes,
+  ) async {
     if (_session == null || _session!.status == ChatSessionStatus.generating) {
       return;
     }
 
-    if (lastMessage! is ChatUserMessageWrapper) return;
+    final messageIndex = _session!.messages.indexWhere(
+      (element) => element.uuid == uuid,
+    );
 
-    Uint8List? imageBytes = (lastMessage! as ChatUserMessageWrapper).imageBytes;
+    if (_session!.messages[messageIndex] is! ChatUserMessageWrapper) {
+      return;
+    }
 
     removeFromMessage(uuid);
 
@@ -341,8 +364,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void setModel(String name, {double temperature = 0.8}) {
-    if (_session?.status == null ||
-        _session?.status == ChatSessionStatus.generating) {
+    if (_session?.status == ChatSessionStatus.generating) {
       return;
     }
 
@@ -360,8 +382,11 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void setSession(String uuid) {
-    if (_session != null && _session!.status == ChatSessionStatus.generating) {
-      return;
+    if (_session != null) {
+      if (_session!.status == ChatSessionStatus.generating ||
+          messageCount == 0) {
+        return;
+      }
     }
 
     final index = _sessions.indexWhere((element) => element.uuid == uuid);
@@ -372,11 +397,13 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void abortGeneration() {
-    if (_session!.status == ChatSessionStatus.generating && _session != null) {
-      _session!.status = ChatSessionStatus.aborting;
-
-      notifyListeners();
+    if (_session == null && _session!.status != ChatSessionStatus.generating) {
+      return;
     }
+
+    _session!.status = ChatSessionStatus.aborting;
+
+    notifyListeners();
   }
 
   set webSearch(bool value) {
@@ -407,6 +434,10 @@ class ChatProvider extends ChangeNotifier {
       _session != null ? _session!.messages : [];
 
   ChatMessageWrapper? get lastMessage => _session?.messages.last;
+
+  ChatMessageWrapper? get lastUserMessage => _session?.messages.lastWhere(
+        (element) => element is ChatUserMessageWrapper,
+      );
 
   int get messageCount => _session != null ? _session!.messages.length : 0;
 

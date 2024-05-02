@@ -112,7 +112,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
 
     const exampleQuestionsCount = 4;
 
-    return Consumer(
+    return Consumer<ChatProvider>(
       builder: (context, value, child) {
         if (context.watch<ChatProvider>().messageCount == 0) {
           final random = Random();
@@ -245,8 +245,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
                         context.watch<ChatProvider>().messages[index];
 
                     return ChatMessageWidget(message)
-                        .animate(delay: 300.ms)
-                        .fadeIn(duration: 900.ms)
+                        .animate()
+                        .fadeIn(duration: 300.ms)
                         .move(
                           begin: const Offset(-16, 0),
                           curve: Curves.easeOutQuad,

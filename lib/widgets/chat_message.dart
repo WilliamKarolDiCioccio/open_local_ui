@@ -67,11 +67,12 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         SnackBarType.error,
       );
     } else {
-      final message = _textEditingController.text;
+      final userMessage = widget.message as ChatUserMessageWrapper;
 
-      context.read<ChatProvider>().resendMessage(
-            widget.message.uuid,
-            message,
+      context.read<ChatProvider>().sendEditedMessage(
+            userMessage.uuid,
+            _textEditingController.text,
+            userMessage.imageBytes,
           );
 
       setState(() {
@@ -149,7 +150,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               Center(
                 child: SizedBox(
-                  height: 512.0,
+                  height: MediaQuery.of(context).size.height <= 900.0
+                      ? 256.0
+                      : 512.0,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.memory(
@@ -159,6 +162,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   ),
                 ),
               ),
+          if ((widget.message is ChatUserMessageWrapper))
+            if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
+              const SizedBox(height: 8.0),
           if (!_isEditing)
             SelectionArea(
               child: MarkdownBody(
@@ -211,7 +217,15 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
+                    TextButton.icon(
+                      label: Text(AppLocalizations.of(context)!
+                          .chatMessageCancelEditButton),
+                      icon: const Icon(UniconsLine.times),
+                      onPressed: () => _cancelEditingMessage(),
+                    ),
                     TextButton.icon(
                       label: Text(
                         AppLocalizations.of(context)!.chatMessageResendButton,
@@ -219,48 +233,43 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                       icon: const Icon(UniconsLine.message),
                       onPressed: () => _sendEditedMessage(),
                     ),
-                    TextButton.icon(
-                      label: Text(AppLocalizations.of(context)!
-                          .chatMessageCancelEditButton),
-                      icon: const Icon(UniconsLine.times),
-                      onPressed: () => _cancelEditingMessage(),
-                    ),
                   ],
                 ),
               ],
             ),
           const SizedBox(height: 8.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                tooltip:
-                    AppLocalizations.of(context)!.chatMessageCopyButtonTooltip,
-                onPressed: () => _copyMessage(),
-                icon: const Icon(UniconsLine.copy),
-              ),
-              const SizedBox(width: 8.0),
-              Visibility(
-                visible: widget.message.sender == ChatMessageSender.model,
-                child: IconButton(
+          if (!_isEditing)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
                   tooltip: AppLocalizations.of(context)!
-                      .chatMessageRegenerateButtonTooltip,
-                  onPressed: () => _regenerateMessage(),
-                  icon: const Icon(UniconsLine.repeat),
+                      .chatMessageCopyButtonTooltip,
+                  onPressed: () => _copyMessage(),
+                  icon: const Icon(UniconsLine.copy),
                 ),
-              ),
-              const SizedBox(width: 8.0),
-              Visibility(
-                visible: widget.message.sender == ChatMessageSender.user,
-                child: IconButton(
-                  tooltip: AppLocalizations.of(context)!
-                      .chatMessageEditButtonTooltip,
-                  onPressed: () => _beginEditingMessage(),
-                  icon: const Icon(UniconsLine.edit),
+                const SizedBox(width: 8.0),
+                Visibility(
+                  visible: widget.message.sender == ChatMessageSender.model,
+                  child: IconButton(
+                    tooltip: AppLocalizations.of(context)!
+                        .chatMessageRegenerateButtonTooltip,
+                    onPressed: () => _regenerateMessage(),
+                    icon: const Icon(UniconsLine.repeat),
+                  ),
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(width: 8.0),
+                Visibility(
+                  visible: widget.message.sender == ChatMessageSender.user,
+                  child: IconButton(
+                    tooltip: AppLocalizations.of(context)!
+                        .chatMessageEditButtonTooltip,
+                    onPressed: () => _beginEditingMessage(),
+                    icon: const Icon(UniconsLine.edit),
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );

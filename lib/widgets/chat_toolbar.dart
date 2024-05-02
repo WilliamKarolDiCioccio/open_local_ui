@@ -17,9 +17,6 @@ class ChatToolbarWidget extends StatefulWidget {
 }
 
 class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
-  bool _webSearchEnabled = false;
-  bool _docsSearchEnabled = false;
-
   void _newSession() {
     if (context.read<ChatProvider>().isSessionSelected) {
       if (context.read<ChatProvider>().session!.messages.isEmpty) {
@@ -49,22 +46,24 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildModelSelector(),
-        const SizedBox(width: 16.0),
-        _buildOptionsBar(),
-        const SizedBox(width: 16.0),
-        TextButton.icon(
-          label: Text(
-            AppLocalizations.of(context)!.chatToolbarNewSessionButton,
-            style: const TextStyle(fontSize: 18.0),
-          ),
-          icon: const Icon(UniconsLine.plus),
-          onPressed: () => _newSession(),
-        )
-      ],
+    return Consumer<ChatProvider>(
+      builder: (context, value, child) => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildModelSelector(),
+          const SizedBox(width: 16.0),
+          _buildOptionsBar(),
+          const SizedBox(width: 16.0),
+          TextButton.icon(
+            label: Text(
+              AppLocalizations.of(context)!.chatToolbarNewSessionButton,
+              style: const TextStyle(fontSize: 18.0),
+            ),
+            icon: const Icon(UniconsLine.plus),
+            onPressed: () => _newSession(),
+          )
+        ],
+      ),
     );
   }
 
@@ -109,18 +108,16 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         children: [
           _buildCheckbox(
             AppLocalizations.of(context)!.chatToolbarWebSearchOption,
-            _webSearchEnabled,
+            context.watch<ChatProvider>().isWebSearchEnabled,
             (value) => setState(() {
               context.read<ChatProvider>().webSearch = value ?? false;
-              _webSearchEnabled = value ?? false;
             }),
           ),
           _buildCheckbox(
             AppLocalizations.of(context)!.chatToolbarDocsSearchOption,
-            _docsSearchEnabled,
+            context.watch<ChatProvider>().isDocsSearchEnabled,
             (value) => setState(() {
               context.read<ChatProvider>().docsSearch = value ?? false;
-              _docsSearchEnabled = value ?? false;
             }),
           ),
         ],
