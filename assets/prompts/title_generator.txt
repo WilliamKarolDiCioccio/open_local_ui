@@ -1,2 +1,2 @@
 ### Objective:
-Generate a concise title for the conversation based on the question
+Generate a concise title for the conversation based on the question '{question}'. Do not add comments or considerations, only generate the title without questions.
