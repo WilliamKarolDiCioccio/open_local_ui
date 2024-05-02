@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -144,7 +145,15 @@ class _PushModelDialogState extends State<PushModelDialog> {
             ),
           ),
       ],
-    );
+    )
+        .animate()
+        .fadeIn(
+          duration: 200.ms,
+        )
+        .move(
+          begin: const Offset(0, 160),
+          curve: Curves.easeOutQuad,
+        );
   }
 }
 

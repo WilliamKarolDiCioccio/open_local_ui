@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
 import 'package:image/image.dart' as img;
@@ -19,7 +20,8 @@ class AttachmentsDropzoneDialog extends StatefulWidget {
   const AttachmentsDropzoneDialog(this.imageBytes, {super.key});
 
   @override
-  State<AttachmentsDropzoneDialog> createState() => _AttachmentsDropzoneDialogState();
+  State<AttachmentsDropzoneDialog> createState() =>
+      _AttachmentsDropzoneDialogState();
 }
 
 class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
@@ -126,8 +128,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
                           size: 64.0,
                         ),
                         Text(
-                          AppLocalizations.of(context)!
-                              .attachFilesDialogText,
+                          AppLocalizations.of(context)!.attachFilesDialogText,
                           style: const TextStyle(fontSize: 24.0),
                         ),
                         Text(
@@ -203,7 +204,15 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           ),
         ),
       ],
-    );
+    )
+        .animate()
+        .fadeIn(
+          duration: 200.ms,
+        )
+        .move(
+          begin: const Offset(0, 160),
+          curve: Curves.easeOutQuad,
+        );
   }
 
   void _setImageFromStream(Stream<List<int>> stream) async {

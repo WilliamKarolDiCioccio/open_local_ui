@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:conversion_units/conversion_units.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:open_local_ui/models/model.dart';
@@ -69,7 +70,15 @@ class ModelDetailsDialog extends StatelessWidget {
           ),
         ),
       ],
-    );
+    )
+        .animate()
+        .fadeIn(
+          duration: 200.ms,
+        )
+        .move(
+          begin: const Offset(0, 160),
+          curve: Curves.easeOutQuad,
+        );
   }
 }
 
