@@ -145,20 +145,20 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             ],
           ),
           const Divider(),
-          if (widget.message.imageBytes != null)
-            Center(
-              child: SizedBox(
-                height: 512.0,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.memory(
-                    widget.message.imageBytes!,
-                    fit: BoxFit.fitHeight,
+          if ((widget.message is ChatUserMessageWrapper))
+            if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
+              Center(
+                child: SizedBox(
+                  height: 512.0,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.memory(
+                      (widget.message as ChatUserMessageWrapper).imageBytes!,
+                      fit: BoxFit.fitHeight,
+                    ),
                   ),
                 ),
               ),
-            ),
-          if (widget.message.imageBytes != null) const Divider(),
           if (!_isEditing)
             SelectionArea(
               child: MarkdownBody(

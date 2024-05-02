@@ -8,6 +8,7 @@ import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/utils/logger.dart';
@@ -23,16 +24,10 @@ class ChatProvider extends ChangeNotifier {
   final List<ChatSessionWrapper> _sessions = [];
 
   ChatSessionWrapper addSession(String title) {
-    final now = DateTime.now();
-    final formattedDateTime =
-        '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
-
-    final uuid = const Uuid().v4();
-
     _sessions.add(ChatSessionWrapper(
       title,
-      formattedDateTime,
-      uuid,
+      DateTimeHelpers.getFormattedDateTime(),
+      const Uuid().v4(),
     ));
 
     notifyListeners();
@@ -52,24 +47,36 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ChatMessageWrapper addMessage(
-    String message,
-    ChatMessageSender sender, {
-    Uint8List? imageBytes,
-    String? senderName,
-  }) {
-    final now = DateTime.now();
-    final formattedDateTime =
-        '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
-
-    final uuid = const Uuid().v4();
-
-    _session!.messages.add(ChatMessageWrapper(
+  ChatMessageWrapper addSystemMessage(String message) {
+    _session!.messages.add(ChatSystemMessageWrapper(
       message,
-      formattedDateTime,
-      uuid,
-      sender,
-      senderName: senderName,
+      DateTimeHelpers.getFormattedDateTime(),
+      const Uuid().v4(),
+    ));
+
+    notifyListeners();
+
+    return _session!.messages.last;
+  }
+
+  ChatMessageWrapper addModelMessage(String message, String? senderName) {
+    _session!.messages.add(ChatModelMessageWrapper(
+      message,
+      DateTimeHelpers.getFormattedDateTime(),
+      const Uuid().v4(),
+      senderName!,
+    ));
+
+    notifyListeners();
+
+    return _session!.messages.last;
+  }
+
+  ChatMessageWrapper addUserMessage(String message, Uint8List? imageBytes) {
+    _session!.messages.add(ChatUserMessageWrapper(
+      message,
+      DateTimeHelpers.getFormattedDateTime(),
+      const Uuid().v4(),
       imageBytes: imageBytes,
     ));
 
@@ -83,8 +90,10 @@ class ChatProvider extends ChangeNotifier {
       return;
     }
 
-    final index =
-        _session!.messages.indexWhere((element) => element.uuid == uuid);
+    final index = _session!.messages.indexWhere(
+      (element) => element.uuid == uuid,
+    );
+
     _session!.messages.removeAt(index);
 
     _session!.memory.chatHistory.removeLast();
@@ -97,8 +106,10 @@ class ChatProvider extends ChangeNotifier {
       return;
     }
 
-    final index =
-        _session!.messages.indexWhere((element) => element.uuid == uuid);
+    final index = _session!.messages.indexWhere(
+      (element) => element.uuid == uuid,
+    );
+
     _session!.messages.removeRange(index, messageCount);
 
     for (var i = 0; i < messageCount - index; ++i) {
@@ -170,17 +181,11 @@ class ChatProvider extends ChangeNotifier {
       setSession(session.uuid);
     }
     if (text.isEmpty) {
-      addMessage(
-        'Try to be more specific.',
-        ChatMessageSender.system,
-      );
+      addSystemMessage('Try to be more specific.');
 
       return;
     } else if (!isModelSelected) {
-      addMessage(
-        'Please select a model.',
-        ChatMessageSender.system,
-      );
+      addSystemMessage('Please select a model.');
 
       return;
     }
@@ -190,24 +195,17 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      addMessage(
-        text,
-        ChatMessageSender.user,
-        imageBytes: imageBytes,
-      );
+      addUserMessage(text, imageBytes);
 
-      _session!.memory.chatHistory
-          .addHumanChatMessage(_session!.messages.last.text);
+      _session!.memory.chatHistory.addHumanChatMessage(
+        _session!.messages.last.text,
+      );
 
       final chain = await _buildChain();
 
       final prompt = _buildPrompt(text, imageBytes: imageBytes);
 
-      addMessage(
-        '',
-        ChatMessageSender.model,
-        senderName: _modelName,
-      );
+      addModelMessage('', _modelName);
 
       await for (final response in chain.stream([prompt])) {
         if (_session!.status == ChatSessionStatus.aborting) {
@@ -223,8 +221,9 @@ class ChatProvider extends ChangeNotifier {
         notifyListeners();
       }
 
-      _session!.memory.chatHistory
-          .addAIChatMessage(_session!.messages.last.text);
+      _session!.memory.chatHistory.addAIChatMessage(
+        _session!.messages.last.text,
+      );
 
       _session!.status = ChatSessionStatus.idle;
 
@@ -250,10 +249,7 @@ class ChatProvider extends ChangeNotifier {
 
       removeLastMessage();
 
-      addMessage(
-        'An error occurred while generating the response.',
-        ChatMessageSender.system,
-      );
+      addSystemMessage('An error occurred while generating the response.');
 
       logger.e(e);
     }
@@ -264,15 +260,14 @@ class ChatProvider extends ChangeNotifier {
       return;
     }
 
-    Uint8List? imageBytes = lastMessage!.imageBytes;
+    if (lastMessage! is ChatUserMessageWrapper) return;
+
+    Uint8List? imageBytes = (lastMessage! as ChatUserMessageWrapper).imageBytes;
 
     removeFromMessage(uuid);
 
     if (!isModelSelected) {
-      addMessage(
-        'Please select a model.',
-        ChatMessageSender.system,
-      );
+      addSystemMessage('Please select a model.');
 
       return;
     }
@@ -286,11 +281,7 @@ class ChatProvider extends ChangeNotifier {
 
       final prompt = _buildPrompt(lastMessage!.text, imageBytes: imageBytes);
 
-      addMessage(
-        '',
-        ChatMessageSender.model,
-        senderName: _modelName,
-      );
+      addModelMessage('', _modelName);
 
       await for (final response in chain.stream([prompt])) {
         if (_session!.status == ChatSessionStatus.aborting) {
@@ -306,8 +297,9 @@ class ChatProvider extends ChangeNotifier {
         notifyListeners();
       }
 
-      _session!.memory.chatHistory
-          .addAIChatMessage(_session!.messages.last.text);
+      _session!.memory.chatHistory.addAIChatMessage(
+        _session!.messages.last.text,
+      );
 
       _session!.status = ChatSessionStatus.idle;
 
@@ -317,10 +309,7 @@ class ChatProvider extends ChangeNotifier {
 
       removeLastMessage();
 
-      addMessage(
-        'An error occurred while generating the response.',
-        ChatMessageSender.system,
-      );
+      addSystemMessage('An error occurred while generating the response.');
 
       logger.e(e);
     }
@@ -331,7 +320,9 @@ class ChatProvider extends ChangeNotifier {
       return;
     }
 
-    Uint8List? imageBytes = lastMessage!.imageBytes;
+    if (lastMessage! is ChatUserMessageWrapper) return;
+
+    Uint8List? imageBytes = (lastMessage! as ChatUserMessageWrapper).imageBytes;
 
     removeFromMessage(uuid);
 
