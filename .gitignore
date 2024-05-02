@@ -57,3 +57,4 @@ app.*.map.json
 .pub-cache/
 .pub/
 /build/
+.env*
