@@ -45,6 +45,15 @@
                 "kind": "build",
                 "isDefault": true
             }
-        }
+        },
+        {
+            "label": "Build Runner",
+            "type": "shell",
+            "command": "dart pub run build_runner build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }        
     ]
 }
