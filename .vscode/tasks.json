@@ -1,59 +1,67 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Build",
-            "type": "shell",
-            "command": "flutter build",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Run",
-            "type": "shell",
-            "command": "flutter run",
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Test",
-            "type": "shell",
-            "command": "flutter test",
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Format",
-            "type": "shell",
-            "command": "dart format .",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Analyze",
-            "type": "shell",
-            "command": "flutter analyze",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Build Runner",
-            "type": "shell",
-            "command": "dart pub run build_runner build",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }        
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run",
+      "type": "shell",
+      "command": "flutter run",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "command": "flutter test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Format",
+      "type": "shell",
+      "command": "dart format .",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Analyze",
+      "type": "shell",
+      "command": "flutter analyze",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Run build runner" ,
+      "type": "shell",
+      "command": "dart pub run build_runner build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Build release",
+      "type": "shell",
+      "windows": {
+        "command": "flutter build windows --release --obfuscate --split-debug-info=/build/debug_info --extra-gen-snapshot-options=--save-obfuscation-map=/build/obfuscation_map.json"
+      },
+      "linux": {
+        "command": "flutter build linux --release --obfuscate --split-debug-info=/build/debug_info --extra-gen-snapshot-options=--save-obfuscation-map=/build/obfuscation_map.json"
+      },
+      "osx": {
+        "command": "flutter build macos --release --obfuscate --split-debug-info=/build/debug_info --extra-gen-snapshot-options=--save-obfuscation-map=/build/obfuscation_map.json"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
 }
