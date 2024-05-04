@@ -13,20 +13,21 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:unicons/unicons.dart';
 
+import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/l10n/l10n.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:open_local_ui/providers/locale.dart';
 import 'package:open_local_ui/providers/model.dart';
 import 'package:open_local_ui/utils/logger.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
   await ModelProvider.sServe();
   await ModelProvider.sUpdateList();
@@ -35,6 +36,13 @@ void main() async {
     SystemTheme.fallbackColor = Colors.cyan;
     await SystemTheme.accentColor.load();
   }
+
+  await Supabase.initialize(
+    url: Env.supabaseUrl,
+    anonKey: Env.supabaseAnonKey,
+  );
+
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
   FlutterNativeSplash.remove();
 
@@ -53,7 +61,8 @@ void main() async {
       ],
       child: BetterFeedback(
         theme: FeedbackThemeData(),
-      child: MyApp(savedThemeMode: savedThemeMode),
+        child: MyApp(savedThemeMode: savedThemeMode),
+      ),
     ),
   );
 
