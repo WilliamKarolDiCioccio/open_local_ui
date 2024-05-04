@@ -42,7 +42,10 @@ dependencies:
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
   flutter_animate: ^4.5.0
+  device_info_plus: ^10.1.0
+  package_info_plus: ^8.0.0
   envied: ^0.5.4+1
+  feedback: ^3.1.0
 
 dev_dependencies:
   flutter_test:

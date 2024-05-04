@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+  "feedbackButton": "Feedback",
   "dashboardHomeBtn": "Home",
   "dashboardChatBtn": "Chat",
   "dashboardSessionsBtn": "Sessions",
