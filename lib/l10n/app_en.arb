@@ -46,6 +46,7 @@
   "modelsPageRefreshButton": "Refresh",
   "modelsPageUseButton": "Use model",
   "modelsPageDeleteButton": "Delete model",
+  "settingsPageTitle": "Settings",
   "settingsPageThemeLabel": "Theme",
   "settingsThemeModeLight": "Light",
   "settingsThemeModeDark": "Dark",

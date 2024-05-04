@@ -21,33 +21,24 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Consumer<LocaleProvider>(
       builder: (context, value, child) => PageBaseLayout(
-        body: Row(
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AdaptiveTheme.of(context).theme.dividerColor,
-                  ),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                padding: const EdgeInsets.all(16.0),
-                child: _buildThemeSettings(context),
+            Text(
+              AppLocalizations.of(context)!.settingsPageTitle,
+              style: const TextStyle(
+                fontSize: 32.0,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(width: 32.0),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AdaptiveTheme.of(context).theme.dividerColor,
-                  ),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                padding: const EdgeInsets.all(16.0),
-                child: _buildAccessibilitySettings(context),
-              ),
-            ),
+            const SizedBox(height: 8.0),
+            const Divider(),
+            const SizedBox(height: 16.0),
+            _buildThemeSettings(context),
+            const SizedBox(height: 8.0),
+            const Divider(),
+            const SizedBox(height: 16.0),
+            _buildAccessibilitySettings(context),
           ],
         ),
       ),
