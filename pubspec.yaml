@@ -46,6 +46,7 @@ dependencies:
   package_info_plus: ^8.0.0
   envied: ^0.5.4+1
   feedback: ^3.1.0
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
