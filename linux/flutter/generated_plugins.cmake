@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_linux
+  gtk
   irondash_engine_context
   isar_flutter_libs
   super_native_extensions
