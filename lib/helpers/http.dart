@@ -49,12 +49,12 @@ class HTTPHelpers {
   }
 
   static Future<http.Response> post(String url,
-      {Map<String, String>? body}) async {
+      {Map<String, dynamic>? body}) async {
     return http.post(Uri.parse(url), body: jsonEncode(body));
   }
 
   static Future<http.Response> delete(String url,
-      {Map<String, String>? body}) async {
+      {Map<String, dynamic>? body}) async {
     return http.delete(Uri.parse(url), body: jsonEncode(body));
   }
 
