@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -12,7 +14,7 @@ final logger = Logger(
     printEmojis: false,
     printTime: true,
   ),
-  output: FileOutput(file: _createLogFile()),
+  output: kDebugMode ? null : FileOutput(file: _createLogFile()),
 );
 
 File _createLogFile() {
