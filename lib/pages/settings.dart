@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gap/gap.dart';
+import 'package:open_local_ui/providers/chat.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 import 'package:open_local_ui/layout/page_base.dart';
@@ -141,8 +142,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 value: 'it',
                 label: AppLocalizations.of(context)!.settingsLanguageItalian),
           ],
-          onSelected: (value) async {
-            context.read<LocaleProvider>().setLocale(Locale(value ?? 'en'));
+          onSelected: (value) {
+            context.read<LocaleProvider>().setLocale(value ?? 'en');
+          },
+        ),
+      ],
+    );
+  }
 
             final prefs = await SharedPreferences.getInstance();
 

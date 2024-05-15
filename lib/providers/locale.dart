@@ -14,8 +14,12 @@ class LocaleProvider extends ChangeNotifier {
     _locale = Locale(prefs.getString('locale') ?? 'en');
   }
 
-  void setLocale(Locale locale) {
-    _locale = locale;
+  void setLocale(String locale) async {
+    _locale = const Locale('en');
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('locale', locale);
 
     notifyListeners();
   }
