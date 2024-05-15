@@ -181,9 +181,9 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             if (!context.watch<ChatProvider>().isOllamaUsingGpu) const Gap(8),
             if (!context.watch<ChatProvider>().isOllamaUsingGpu)
-              const Text(
-                'Harmful for performance!',
-                style: TextStyle(color: Colors.red),
+              Text(
+                AppLocalizations.of(context)!.settingsPageOllamaPerformanceWarn,
+                style: const TextStyle(color: Colors.red),
               ),
           ],
         ),

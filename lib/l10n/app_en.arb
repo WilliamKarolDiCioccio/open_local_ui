@@ -57,6 +57,9 @@
   "settingsLanguageEnglish": "English",
   "settingsLanguageFrench": "French",
   "settingsLanguageItalian": "Italian",
+  "settingsPageOllamaLabel": "Ollama",
+  "settingsPageOllamaUseGpuLabel": "Use GPU",
+  "settingsPageOllamaPerformanceWarn": "Harmful for performance!",
   "attachFilesDialogText": "Drop files here",
   "attachFilesDialogAllowedFormatsText": "Allowed formats: {formats}",
   "@attachFilesDialogAllowedFormatsText": {
