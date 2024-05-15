@@ -106,31 +106,30 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildCheckbox(
-            AppLocalizations.of(context)!.chatToolbarWebSearchOption,
-            context.watch<ChatProvider>().isWebSearchEnabled,
-            (value) => setState(() {
-              context.read<ChatProvider>().webSearch = value ?? false;
-            }),
+          Row(
+            children: [
+              Text(AppLocalizations.of(context)!.chatToolbarWebSearchOption),
+              Checkbox(
+                value: context.watch<ChatProvider>().isWebSearchEnabled,
+                onChanged: (value) {
+                  context.read<ChatProvider>().enableWebSearch(value ?? false);
+                },
+              ),
+            ],
           ),
-          _buildCheckbox(
-            AppLocalizations.of(context)!.chatToolbarDocsSearchOption,
-            context.watch<ChatProvider>().isDocsSearchEnabled,
-            (value) => setState(() {
-              context.read<ChatProvider>().docsSearch = value ?? false;
-            }),
+          Row(
+            children: [
+              Text(AppLocalizations.of(context)!.chatToolbarDocsSearchOption),
+              Checkbox(
+                value: context.watch<ChatProvider>().isDocsSearchEnabled,
+                onChanged: (value) {
+                  context.read<ChatProvider>().enableDocsSearch(value ?? false);
+                },
+              ),
+            ],
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCheckbox(String text, bool value, Function(bool?) onChanged) {
-    return Row(
-      children: [
-        Text(text),
-        Checkbox(value: value, onChanged: onChanged),
-      ],
     );
   }
 }

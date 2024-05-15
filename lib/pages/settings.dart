@@ -40,6 +40,10 @@ class _SettingsPageState extends State<SettingsPage> {
             const Divider(),
             const SizedBox(height: 16.0),
             _buildAccessibilitySettings(context),
+            const SizedBox(height: 8.0),
+            const Divider(),
+            const SizedBox(height: 16.0),
+            _buildOllamaSettings(context),
           ],
         ),
       ),
@@ -150,10 +154,38 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-            final prefs = await SharedPreferences.getInstance();
-
-            await prefs.setString('locale', value ?? 'en');
-          },
+  Widget _buildOllamaSettings(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalizations.of(context)!.settingsPageOllamaLabel,
+          style: const TextStyle(fontSize: 24.0),
+        ),
+        const SizedBox(height: 8.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(UniconsLine.processor),
+            const Gap(8.0),
+            Text(
+              '${AppLocalizations.of(context)!.settingsPageOllamaUseGpuLabel}:',
+              style: const TextStyle(fontSize: 16.0),
+            ),
+            const Gap(8.0),
+            Switch(
+              value: context.watch<ChatProvider>().isOllamaUsingGpu,
+              onChanged: (value) {
+                context.read<ChatProvider>().ollamaEnableGpu(value);
+              },
+            ),
+            if (!context.watch<ChatProvider>().isOllamaUsingGpu) const Gap(8),
+            if (!context.watch<ChatProvider>().isOllamaUsingGpu)
+              const Text(
+                'Harmful for performance!',
+                style: TextStyle(color: Colors.red),
+              ),
+          ],
         ),
       ],
     );

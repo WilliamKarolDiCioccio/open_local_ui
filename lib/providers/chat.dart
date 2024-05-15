@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:open_local_ui/helpers/datetime.dart';
@@ -17,11 +18,26 @@ class ChatProvider extends ChangeNotifier {
   late ChatOllama _model;
   String _modelName = '';
 
-  bool _webSearch = false;
-  bool _docsSearch = true;
+  bool _enableWebSearch = false;
+  bool _enableDocsSearch = false;
+  bool _enableOllamaGpu = true;
 
   ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
+
+  ChatProvider() {
+    loadSettings();
+  }
+
+  void loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
+    _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
+    _enableOllamaGpu = prefs.getBool('enableOllamaGpu') ?? true;
+
+    notifyListeners();
+  }
 
   ChatSessionWrapper addSession(String title) {
     _sessions.add(ChatSessionWrapper(
@@ -363,7 +379,7 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setModel(String name, {double temperature = 0.8}) {
+  void setModel(String name, {double temperature = 0.8, bool useGpu = true}) {
     if (_session?.status == ChatSessionStatus.generating) {
       return;
     }
@@ -374,6 +390,7 @@ class ChatProvider extends ChangeNotifier {
       defaultOptions: ChatOllamaOptions(
         model: name,
         temperature: temperature,
+        numGpu: useGpu ? null : 0,
         format: OllamaResponseFormat.json,
       ),
     );
@@ -406,21 +423,43 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set webSearch(bool value) {
-    _webSearch = value;
+  void enableWebSearch(bool value) async {
+    _enableWebSearch = value;
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('enableWebSearch', value);
 
     notifyListeners();
   }
 
-  set docsSearch(bool value) {
-    _docsSearch = value;
+  void enableDocsSearch(bool value) async {
+    _enableDocsSearch = value;
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('enableDocsSearch', value);
 
     notifyListeners();
   }
 
-  bool get isWebSearchEnabled => _webSearch;
+  void ollamaEnableGpu(bool value) async {
+    _enableOllamaGpu = value;
 
-  bool get isDocsSearchEnabled => _docsSearch;
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('enableOllamaGpu', value);
+
+    setModel(_modelName, temperature: 0.8, useGpu: value);
+
+    notifyListeners();
+  }
+
+  bool get isWebSearchEnabled => _enableWebSearch;
+
+  bool get isDocsSearchEnabled => _enableDocsSearch;
+
+  bool get isOllamaUsingGpu => _enableOllamaGpu;
 
   String get modelName => _modelName;
 
@@ -430,14 +469,17 @@ class ChatProvider extends ChangeNotifier {
 
   bool get isSessionSelected => _session != null;
 
-  List<ChatMessageWrapper> get messages =>
-      _session != null ? _session!.messages : [];
+  List<ChatMessageWrapper> get messages {
+    return _session != null ? _session!.messages : [];
+  }
 
   ChatMessageWrapper? get lastMessage => _session?.messages.last;
 
-  ChatMessageWrapper? get lastUserMessage => _session?.messages.lastWhere(
-        (element) => element is ChatUserMessageWrapper,
-      );
+  ChatMessageWrapper? get lastUserMessage {
+    return _session?.messages.lastWhere(
+      (element) => element is ChatUserMessageWrapper,
+    );
+  }
 
   int get messageCount => _session != null ? _session!.messages.length : 0;
 
@@ -447,7 +489,9 @@ class ChatProvider extends ChangeNotifier {
 
   int get sessionCount => _sessions.length;
 
-  bool get isGenerating => _session != null
-      ? _session!.status == ChatSessionStatus.generating
-      : false;
+  bool get isGenerating {
+    return _session != null
+        ? _session!.status == ChatSessionStatus.generating
+        : false;
+  }
 }
