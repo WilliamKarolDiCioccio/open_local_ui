@@ -5,6 +5,9 @@
       "label": "Run",
       "type": "shell",
       "command": "flutter run",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "group": {
         "kind": "test",
         "isDefault": true
@@ -14,6 +17,9 @@
       "label": "Test",
       "type": "shell",
       "command": "flutter test",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "group": {
         "kind": "test",
         "isDefault": true
@@ -23,6 +29,9 @@
       "label": "Format",
       "type": "shell",
       "command": "dart format .",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "group": {
         "kind": "build",
         "isDefault": true
@@ -32,6 +41,9 @@
       "label": "Analyze",
       "type": "shell",
       "command": "flutter analyze",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "group": {
         "kind": "build",
         "isDefault": true
@@ -41,6 +53,9 @@
       "label": "Run build runner" ,
       "type": "shell",
       "command": "dart pub run build_runner build",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "group": {
         "kind": "build",
         "isDefault": true
@@ -57,6 +72,9 @@
       },
       "osx": {
         "command": "flutter build macos --release --obfuscate --split-debug-info=/build/debug_info --extra-gen-snapshot-options=--save-obfuscation-map=/build/obfuscation_map.json"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/app"
       },
       "group": {
         "kind": "build",
