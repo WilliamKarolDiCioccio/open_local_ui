@@ -43,8 +43,8 @@ Contributions to OpenLocalUI are highly encouraged and welcomed. Whether you're 
 - **Documentation**: Improve existing documentation or create new guides to help users understand and use OpenLocalUI effectively.
 - **Feedback and Suggestions**: Share your thoughts, ideas, and feedback to help shape the future development of OpenLocalUI.
 
-Please refer to the `CONTRIBUTING.md` file for more details on how to contribute.
+Please refer to the [`CONTRIBUTING.md`](CONTRIBUTING.md) file for more details on how to contribute.
 
 ## License
 
-OpenLocalUI comes under the permissive MIT License to encourage contributions. See the `LICENSE.md` file for more information.
+OpenLocalUI comes under the permissive MIT License to encourage contributions. See the [`LICENSE.md`](LICENSE.md) file for more information.
