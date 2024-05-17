@@ -48,6 +48,8 @@ dependencies:
   envied: ^0.5.4+1
   feedback: ^3.1.0
   gap: ^3.0.1
+  grpc: ^3.2.4
+  protoc_plugin: ^21.1.2
 
 dev_dependencies:
   flutter_test:

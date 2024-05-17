@@ -517,6 +517,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  google_identity_services_web:
+    dependency: transitive
+    description:
+      name: google_identity_services_web
+      sha256: "9482364c9f8b7bd36902572ebc3a7c2b5c8ee57a9c93e6eb5099c1a9ec5265d8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1+1"
+  googleapis_auth:
+    dependency: transitive
+    description:
+      name: googleapis_auth
+      sha256: befd71383a955535060acde8792e7efc11d2fccd03dd1d3ec434e85b68775938
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.0"
   gotrue:
     dependency: transitive
     description:
@@ -533,6 +549,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  grpc:
+    dependency: "direct main"
+    description:
+      name: grpc
+      sha256: e93ee3bce45c134bf44e9728119102358c7cd69de7832d9a874e2e74eb8cab40
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.4"
   gtk:
     dependency: transitive
     description:
@@ -565,6 +589,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  http2:
+    dependency: transitive
+    description:
+      name: http2
+      sha256: "9ced024a160b77aba8fb8674e38f70875e321d319e6f303ec18e87bd5a4b0c1d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -949,6 +981,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.14.2"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      sha256: "68645b24e0716782e58948f8467fd42a880f255096a821f9e7d0ec625b00c84d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
+  protoc_plugin:
+    dependency: "direct main"
+    description:
+      name: protoc_plugin
+      sha256: fb0554851c9eca30bd18405fbbfe81e39166d4a2f0e5b770606fd69da3da0b2f
+      url: "https://pub.dev"
+    source: hosted
+    version: "21.1.2"
   provider:
     dependency: "direct main"
     description:
