@@ -1,5 +1,13 @@
 # OpenLocalUI
 
+![](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
+![](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+
+![](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
+![](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+
 ![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/dark_theme.png#gh-dark-mode-only)
 ![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/light_theme.png#gh-light-mode-only)
 
