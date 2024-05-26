@@ -50,7 +50,7 @@
       }
     },
     {
-      "label": "Run build runner" ,
+      "label": "Run build runner",
       "type": "shell",
       "command": "dart pub run build_runner build",
       "options": {
@@ -62,16 +62,11 @@
       }
     },
     {
-      "label": "Build release",
+      "label": "Build app",
       "type": "shell",
       "windows": {
-        "command": "flutter build windows --release --obfuscate --split-debug-info=/build/debug_info --extra-gen-snapshot-options=--save-obfuscation-map=/build/obfuscation_map.json"
-      },
-      "linux": {
-        "command": "flutter build linux --release --obfuscate --split-debug-info=/build/debug_info --extra-gen-snapshot-options=--save-obfuscation-map=/build/obfuscation_map.json"
-      },
-      "osx": {
-        "command": "flutter build macos --release --obfuscate --split-debug-info=/build/debug_info --extra-gen-snapshot-options=--save-obfuscation-map=/build/obfuscation_map.json"
+        "command": "powershell.exe",
+        "args": ["../scripts/build_app.ps1", "-config", "${input:config}"],
       },
       "options": {
         "cwd": "${workspaceFolder}/app"
@@ -80,6 +75,38 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Build server",
+      "type": "shell",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["./scripts/build_server.ps1", "-config", "${input:config}"],
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+  ],
+  "inputs": [
+    {
+      "id": "config",
+      "type": "pickString",
+      "description": "Select configuration",
+      "options": [
+        {
+          "value": "debug",
+          "label": "Debug"
+        },
+        {
+          "value": "release",
+          "label": "Release"
+        }
+      ]
     }
   ]
 }
