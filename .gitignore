@@ -59,5 +59,10 @@ app.*.map.json
 /build/
 untranslated_messages.json
 
+# Pyinstaller related
+dist/
+venv/
+**.spec
+
 # Environment variable file
 .env*
