@@ -1,1 +1,2 @@
 pyinstaller==6.6.0
+grpcio-tools==1.63.0

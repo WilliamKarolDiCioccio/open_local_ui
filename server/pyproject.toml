@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 grpcio = "^1.63.0"
-grpcio-tools = "^1.63.0"
+gtts = "^2.5.1"
 
 
 [build-system]

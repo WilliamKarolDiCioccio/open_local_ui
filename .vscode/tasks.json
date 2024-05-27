@@ -77,6 +77,21 @@
       }
     },
     {
+      "label": "Generate gRPC server files",
+      "type": "shell",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["./scripts/generate_grpc_server_files.ps1"],
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "Build server",
       "type": "shell",
       "windows": {

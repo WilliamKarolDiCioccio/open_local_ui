@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service TTS {
+  rpc Synthesize(TTSRequest) returns (stream TTSResponse) {}
+}
+
+message TTSRequest {
+  string text = 1;
+}
+
+message TTSResponse {
+  bytes audio_chunk = 1;
+}
