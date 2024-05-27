@@ -91,6 +91,14 @@
         "isDefault": true
       }
     },
+    {
+      "label": "Build all",
+      "dependsOn": [ "Build server", "Build app"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
   ],
   "inputs": [
     {
@@ -107,6 +115,6 @@
           "label": "Release"
         }
       ]
-    }
+    },
   ]
 }
