@@ -62,6 +62,21 @@
       }
     },
     {
+      "label": "Generate gRPC app files",
+      "type": "shell",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["./scripts/generate_grpc_app_files.ps1"],
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "Build app",
       "type": "shell",
       "windows": {
