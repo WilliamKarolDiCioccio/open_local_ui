@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:open_local_ui/helpers/http.dart';
@@ -27,12 +28,14 @@ class _PullModelDialogState extends State<PullModelDialog> {
 
       final duration = HTTPHelpers.calculateRemainingTime(response);
 
+      final fmt = NumberFormat('#00');
+
       _progressBarText =
           AppLocalizations.of(context)!.progressBarStatusTextWithTimeShared(
         response.status,
-        (duration.inHours).toString(),
-        (duration.inMinutes % 60).toString(),
-        (duration.inSeconds % 60).toString(),
+        fmt.format(duration.inHours),
+        fmt.format(duration.inMinutes % 60),
+        fmt.format(duration.inSeconds % 60),
       );
     });
   }
