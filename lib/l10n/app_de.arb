@@ -1,5 +1,6 @@
 {
   "@@locale": "de",
+  "feedbackButton": "Feedback",
   "dashboardHomeBtn": "Start",
   "dashboardChatBtn": "Chat",
   "dashboardSessionsBtn": "Sitzungen",
@@ -29,20 +30,23 @@
   "chatToolbarModelSelectorHint": "Modell auswählen",
   "chatToolbarWebSearchOption": "Websuche:",
   "chatToolbarDocsSearchOption": "Dokumentensuche:",
-  "chatToolbarNewChatButton": "Neuer Chat",
+  "chatToolbarNewSessionButton": "Neuer Chat",
   "chatInputFieldHint": "Schreibe eine Nachricht...",
-  "chatInputFieldEmbedButtonTooltip": "Bild einbetten",
+  "chatInputFieldAttachButtonTooltip": "Bild einbetten",
+  "chatInputFieldDetachButtonTooltip": "Dateien einfügen",
   "chatInputFieldCancelButtonTooltip": "Generierung abbrechen",
   "chatInputFieldSendButtonTooltip": "Nachricht senden",
   "sessionsPageTitle": "Sitzungsverwaltung",
   "sessionsPageDeleteButton": "Sitzung löschen",
-  "sessionsPageOpenButton": "Sitzung öffnen",
+  "sessionsPageEnterButton": "Sitzung öffnen",
   "modelsPageTitle": "Modellverwaltung",
   "modelsPagePullButton": "Herunterladen",
   "modelsPagePushButton": "Hochladen",
   "modelsPageCreateButton": "Erstellen",
   "modelsPageRefreshButton": "Aktualisieren",
+  "modelsPageUseButton": "Model auswählen",
   "modelsPageDeleteButton": "Löschen",
+  "settingsPageTitle": "Einstellungen",
   "settingsPageThemeLabel": "Design",
   "settingsThemeModeLight": "Hell",
   "settingsThemeModeDark": "Dunkel",
@@ -53,16 +57,19 @@
   "settingsLanguageEnglish": "Englisch",
   "settingsLanguageFrench": "Französisch",
   "settingsLanguageItalian": "Italienisch",
-  "embedImageDialogDropHereText": "Bild hier ablegen",
-  "embedImageDialogAllowedFormatsText": "Erlaubte Formate: {formats}",
-  "@embedImageDialogAllowedFormatsText": {
+  "settingsPageOllamaLabel": "Ollama",
+  "settingsPageOllamaUseGpuLabel": "GPU benutzen",
+  "settingsPageOllamaPerformanceWarn": "Eingeschränkte Leistung!",
+  "attachFilesDialogText": "Dateien hier ablegen",
+  "attachFilesDialogAllowedFormatsText": "Erlaubte Formate: {formats}",
+  "@attachFilesDialogAllowedFormatsText": {
     "placeholders": {
       "formats": {
         "type": "String"
       }
     }
   },
-  "embedImageDialogBrowseFilesButton": "Dateien durchsuchen",
+  "attachFilesDialogBrowseFilesButton": "Dateien durchsuchen",
   "pullModelDialogTitle": "Modell herunterladen",
   "pullModelDialogGuideText1": "Gib den Namen des herunterzuladenden Modells ein:",
   "pullModelDialogModelNameLabel": "Modellname",
@@ -73,7 +80,6 @@
   "createModelDialogTitle": "Modell erstellen",
   "createModelDialogGuideText1": "Wählen Sie das Modell aus, das kopiert werden soll:",
   "createModelDialogModelSelectorLabel": "Modellname",
-  "createModelDialogModelSelectorHint": "Modell auswählen",
   "createModelDialogGuideText2": "Geben Sie den Namen des zu erstellenden Modells ein:",
   "createModelDialogModelNameLabel": "Modellname",
   "createModelDialogModelNameHint": "Geben Sie den Modellnamen ein...",
@@ -181,7 +187,7 @@
   "dialogCreateButtonShared": "Erstellen",
   "dialogResetButton": "Zurücksetzen",
   "dialogRemoveButton": "Entfernen",
-  "dialogEmbedButton": "Einbetten",
+  "dialogAttachButton": "Einbetten",
   "dialogContinueInBackgroundButtonShared": "Im Hintergrund fortsetzen",
   "suggestion1part1": "Was sind einige übliche Anwendungsfälle ",
   "suggestion1part2": "für Problemlösungsfähigkeiten?",
@@ -208,5 +214,7 @@
   "suggestion12part1": "Erkläre die Bedeutung ",
   "suggestion12part2": "von Empathie beim Aufbau starker Verbindungen",
   "messageCopiedSnackbarText": "Nachricht in die Zwischenablage kopiert",
-  "modelIsGeneratingSnackbarText": "Modell wird generiert"
+  "noNeedToCreateSessionSnackbarText": "Sie haben schon eine neue Sitzung",
+  "modelIsGeneratingSnackbarText": "Modell wird generiert",
+  "noModelsAvailableSnackbarText": "Keine Modelle verfügbar"
 }
