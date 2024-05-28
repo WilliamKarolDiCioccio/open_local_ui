@@ -64,5 +64,8 @@ dist/
 venv/
 **.spec
 
+# gRPC related
+*pb*
+
 # Environment variable file
 .env*

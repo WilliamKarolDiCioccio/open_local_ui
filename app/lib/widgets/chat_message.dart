@@ -4,14 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown_selectionarea/flutter_markdown_selectionarea.dart';
-import 'package:provider/provider.dart';
-import 'package:unicons/unicons.dart';
-import 'package:url_launcher/url_launcher.dart';
-
+import 'package:gap/gap.dart';
 import 'package:open_local_ui/extensions/markdown_code.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:open_local_ui/services/tts_service.dart';
+import 'package:provider/provider.dart';
+import 'package:unicons/unicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatMessageWidget extends StatefulWidget {
   final ChatMessageWrapper message;
@@ -248,7 +249,17 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   onPressed: () => _copyMessage(),
                   icon: const Icon(UniconsLine.copy),
                 ),
-                const SizedBox(width: 8.0),
+                const Gap(8),
+                IconButton(
+                  tooltip: '',
+                  onPressed: () async {
+                    final service = TTSService();
+
+                    await service.synthesize(widget.message.text);
+                  },
+                  icon: const Icon(Icons.hearing),
+                ),
+                const Gap(8),
                 Visibility(
                   visible: widget.message.sender == ChatMessageSender.model,
                   child: IconButton(
@@ -258,7 +269,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                     icon: const Icon(UniconsLine.repeat),
                   ),
                 ),
-                const SizedBox(width: 8.0),
+                const Gap(8),
                 Visibility(
                   visible: widget.message.sender == ChatMessageSender.user,
                   child: IconButton(
