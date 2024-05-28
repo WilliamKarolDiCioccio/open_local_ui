@@ -237,21 +237,25 @@ class _ChatMessageListState extends State<ChatMessageList> {
           return Column(
             children: [
               Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: context.watch<ChatProvider>().messageCount,
-                  itemBuilder: (context, index) {
-                    final message =
-                        context.watch<ChatProvider>().messages[index];
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context)
+                      .copyWith(scrollbars: false),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: context.watch<ChatProvider>().messageCount,
+                    itemBuilder: (context, index) {
+                      final message =
+                          context.watch<ChatProvider>().messages[index];
 
-                    return ChatMessageWidget(message)
-                        .animate()
-                        .fadeIn(duration: 300.ms)
-                        .move(
-                          begin: const Offset(-16, 0),
-                          curve: Curves.easeOutQuad,
-                        );
-                  },
+                      return ChatMessageWidget(message)
+                          .animate()
+                          .fadeIn(duration: 300.ms)
+                          .move(
+                            begin: const Offset(-16, 0),
+                            curve: Curves.easeOutQuad,
+                          );
+                    },
+                  ),
                 ),
               ),
               if (_isScrollButtonVisible)
