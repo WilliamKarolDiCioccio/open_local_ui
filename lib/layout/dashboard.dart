@@ -7,7 +7,6 @@ import 'package:unicons/unicons.dart';
 import 'package:open_local_ui/layout/side_menu_base.dart';
 import 'package:open_local_ui/pages/about.dart';
 import 'package:open_local_ui/pages/chat.dart';
-import 'package:open_local_ui/pages/home.dart';
 import 'package:open_local_ui/pages/models.dart';
 import 'package:open_local_ui/pages/sessions.dart';
 import 'package:open_local_ui/pages/settings.dart';
@@ -62,8 +61,6 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               _changePage(3),
           const SingleActivator(LogicalKeyboardKey.digit4, control: true): () =>
               _changePage(4),
-          const SingleActivator(LogicalKeyboardKey.digit5, control: true): () =>
-              _changePage(5),
         },
         child: Focus(
           autofocus: true,
@@ -82,23 +79,11 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.dashboardHomeBtn,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                icon: const Icon(UniconsLine.home),
-                onPressed: () => _changePage(0),
-              ),
-              const SizedBox(
-                width: 200,
-                child: Divider(height: 32.0),
-              ),
-              TextButton.icon(
-                label: Text(
                   AppLocalizations.of(context)!.dashboardChatBtn,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.comment),
-                onPressed: () => _changePage(1),
+                onPressed: () => _changePage(0),
               ),
               TextButton.icon(
                 label: Text(
@@ -106,7 +91,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.archive),
-                onPressed: () => _changePage(2),
+                onPressed: () => _changePage(1),
               ),
               TextButton.icon(
                 label: Text(
@@ -114,7 +99,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.cube),
-                onPressed: () => _changePage(3),
+                onPressed: () => _changePage(2),
               ),
               const SizedBox(
                 width: 200,
@@ -126,7 +111,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.setting),
-                onPressed: () => _changePage(4),
+                onPressed: () => _changePage(3),
               ),
               TextButton.icon(
                 label: Text(
@@ -134,7 +119,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.info_circle),
-                onPressed: () => _changePage(5),
+                onPressed: () => _changePage(4),
               ),
               const Spacer(),
               SizedBox(
@@ -169,7 +154,6 @@ class _DashboardLayoutState extends State<DashboardLayout> {
       controller: _pageController,
       physics: const NeverScrollableScrollPhysics(),
       children: const [
-        HomePage(),
         ChatPage(),
         SessionsPage(),
         ModelsPage(),
