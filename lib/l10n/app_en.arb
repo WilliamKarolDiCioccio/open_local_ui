@@ -39,6 +39,15 @@
   "sessionsPageTitle": "Sessions management",
   "sessionsPageDeleteButton": "Delete session",
   "sessionsPageEnterButton": "Enter session",
+  "sessionsPageDeleteDialogTitle": "Delete session",
+  "sessionsPageDeleteDialogText": "This will delete {sessionName}. Do you confirm?",
+  "@sessionsPageDeleteDialogText": {
+    "placeholders": {
+      "sessionName": {
+        "type": "String"
+      }
+    }
+  },
   "modelsPageTitle": "Models management",
   "modelsPagePullButton": "Pull",
   "modelsPagePushButton": "Push",
@@ -46,6 +55,15 @@
   "modelsPageRefreshButton": "Refresh",
   "modelsPageUseButton": "Use model",
   "modelsPageDeleteButton": "Delete model",
+  "modelsPageDeleteDialogTitle": "Delete model",
+  "modelsPageDeleteDialogText": "This will delete {modelName}. Do you confirm?",
+  "@modelsPageDeleteDialogText": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
   "settingsPageTitle": "Settings",
   "settingsPageThemeLabel": "Theme",
   "settingsThemeModeLight": "Light",
@@ -70,6 +88,8 @@
     }
   },
   "attachFilesDialogBrowseFilesButton": "Browse files",
+  "cancelButtonTextShared": "Cancel",
+  "confirmButtonTextShared": "Confirm",
   "pullModelDialogTitle": "Pull model",
   "pullModelDialogGuideText1": "Please type the name of the model to pull:",
   "pullModelDialogModelNameLabel": "Model name",
