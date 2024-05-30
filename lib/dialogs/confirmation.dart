@@ -33,8 +33,12 @@ class ConfirmationDialog extends StatelessWidget {
             onConfirm();
             Navigator.of(context).pop();
           },
+          style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.red)),
           child: Text(
             AppLocalizations.of(context)!.confirmButtonTextShared,
+            style: const TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
       ],
