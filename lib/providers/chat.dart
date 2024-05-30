@@ -160,7 +160,7 @@ class ChatProvider extends ChangeNotifier {
     final chain = Runnable.fromMap({
           'input': Runnable.passthrough(),
           'history': Runnable.fromFunction(
-            (final _, final __) async {
+            invoke: (final _, final __) async {
               final m = await _session!.memory.loadMemoryVariables();
               return m['history'];
             },
