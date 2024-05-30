@@ -140,6 +140,13 @@ class _ChatMessageListState extends State<ChatMessageList> {
                       final models = context.read<ModelProvider>().models;
                       context.read<ChatProvider>().setModel(models.first.name);
                     }
+                  } else if (context.read<ChatProvider>().isGenerating) {
+                    return SnackBarHelper.showSnackBar(
+                      context,
+                      AppLocalizations.of(context)!
+                          .modelIsGeneratingSnackbarText,
+                      SnackBarType.error,
+                    );
                   }
 
                   final message =
