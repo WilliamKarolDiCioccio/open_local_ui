@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:open_local_ui/helpers/github.dart';
+import 'package:open_local_ui/services/tts_service.dart';
 import 'package:open_local_ui/utils/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -74,10 +75,22 @@ void main() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final AdaptiveThemeMode? savedThemeMode;
 
   const MyApp({super.key, required this.savedThemeMode});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    TTSService().shutdown();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +107,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         colorSchemeSeed: SystemTheme.accentColor.accent,
       ),
-      initial: savedThemeMode ?? AdaptiveThemeMode.light,
+      initial: widget.savedThemeMode ?? AdaptiveThemeMode.light,
       debugShowFloatingThemeButton: false,
       builder: (theme, darkTheme) => MaterialApp(
         title: 'OpenLocalUI',
