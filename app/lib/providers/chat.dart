@@ -15,12 +15,12 @@ import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/utils/logger.dart';
 
 class ChatProvider extends ChangeNotifier {
-  late ChatOllama _model;
-  String _modelName = '';
-
   bool _enableWebSearch = false;
   bool _enableDocsSearch = false;
   bool _enableOllamaGpu = true;
+  late ChatOllama _model;
+  String _modelName = '';
+
 
   ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
@@ -32,10 +32,13 @@ class ChatProvider extends ChangeNotifier {
   void loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
 
-    _modelName = prefs.getString('modelName') ?? '';
     _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
     _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
     _enableOllamaGpu = prefs.getBool('enableOllamaGpu') ?? true;
+    
+    _modelName = prefs.getString('modelName') ?? '';
+
+    setModel(_modelName, temperature: 0.8, useGpu: _enableOllamaGpu);
 
     notifyListeners();
   }
