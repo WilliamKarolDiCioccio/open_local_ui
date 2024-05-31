@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_local_ui/providers/model.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -18,6 +19,7 @@ class ChatInputFieldWidget extends StatefulWidget {
 
 class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   final TextEditingController _textEditingController = TextEditingController();
+  String _text = '';
   Uint8List? _imageBytes;
 
   @override
@@ -27,20 +29,30 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   }
 
   void _sendMessage() {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
+    if (!context.read<ChatProvider>().isModelSelected) {
+      if (context.read<ModelProvider>().modelsCount == 0) {
+        return SnackBarHelper.showSnackBar(
+          context,
+          AppLocalizations.of(context)!.noModelsAvailableSnackbarText,
+          SnackBarType.error,
+        );
+      } else {
+        final models = context.read<ModelProvider>().models;
+        context.read<ChatProvider>().setModel(models.first.name);
+      }
+    } else if (context.read<ChatProvider>().isGenerating) {
+      return SnackBarHelper.showSnackBar(
         context,
         AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );
-    } else {
-      final text = _textEditingController.text.trim();
-
-      context.read<ChatProvider>().sendMessage(text, imageBytes: _imageBytes);
-
-      _textEditingController.clear();
-      _imageBytes = null;
     }
+
+    context.read<ChatProvider>().sendMessage(_text, imageBytes: _imageBytes);
+
+    _textEditingController.clear();
+    _text = '';
+    _imageBytes = null;
   }
 
   @override
@@ -48,6 +60,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter, shift: true): () {
+          _text = _textEditingController.text;
+
           _sendMessage();
         },
       },
@@ -105,6 +119,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                         .chatInputFieldSendButtonTooltip,
                     icon: const Icon(UniconsLine.message),
                     onPressed: () async {
+                      _text = _textEditingController.text;
+
                       _sendMessage();
                     },
                   ),

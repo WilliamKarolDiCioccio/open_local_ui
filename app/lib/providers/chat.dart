@@ -32,6 +32,7 @@ class ChatProvider extends ChangeNotifier {
   void loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
 
+    _modelName = prefs.getString('modelName') ?? '';
     _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
     _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
     _enableOllamaGpu = prefs.getBool('enableOllamaGpu') ?? true;
@@ -160,7 +161,7 @@ class ChatProvider extends ChangeNotifier {
     final chain = Runnable.fromMap({
           'input': Runnable.passthrough(),
           'history': Runnable.fromFunction(
-            (final _, final __) async {
+            invoke: (final _, final __) async {
               final m = await _session!.memory.loadMemoryVariables();
               return m['history'];
             },
@@ -379,12 +380,16 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setModel(String name, {double temperature = 0.8, bool useGpu = true}) {
+  void setModel(String name, {double temperature = 0.8, bool useGpu = true}) async {
     if (_session?.status == ChatSessionStatus.generating) {
       return;
     }
 
     _modelName = name;
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('modelName', name);
 
     _model = ChatOllama(
       defaultOptions: ChatOllamaOptions(

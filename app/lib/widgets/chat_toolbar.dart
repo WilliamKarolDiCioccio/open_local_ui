@@ -85,7 +85,6 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
           borderRadius: BorderRadius.circular(20.0),
         ),
       ),
-      enableFilter: true,
       enableSearch: true,
       hintText: AppLocalizations.of(context)!.chatToolbarModelSelectorHint,
       initialSelection: context.watch<ChatProvider>().modelName,

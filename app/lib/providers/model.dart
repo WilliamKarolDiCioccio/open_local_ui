@@ -19,7 +19,7 @@ enum ModelProviderStatus {
 }
 
 class ModelProvider extends ChangeNotifier {
-  static const api = 'http://localhost:11434/api';
+  static const _api = 'http://localhost:11434/api';
   static final _shell = Shell();
   static final List<Model> _models = [];
   static ModelProviderStatus _status = ModelProviderStatus.idle;
@@ -39,7 +39,7 @@ class ModelProvider extends ChangeNotifier {
   }
 
   static Future sUpdateList() async {
-    await HTTPHelpers.get('$api/tags').then((response) {
+    await HTTPHelpers.get('$_api/tags').then((response) {
       if (response.statusCode != 200) {
         logger.e('Failed to fetch models list');
         return;
@@ -69,7 +69,7 @@ class ModelProvider extends ChangeNotifier {
   Stream<OllamaPullResponse> pull(String name) async* {
     _status = ModelProviderStatus.pulling;
 
-    final request = http.Request('POST', Uri.parse('$api/pull'));
+    final request = http.Request('POST', Uri.parse('$_api/pull'));
     request.headers['Content-Type'] = 'application/json';
     request.body = jsonEncode({
       'name': name,
@@ -125,7 +125,7 @@ class ModelProvider extends ChangeNotifier {
   Stream<OllamaPushResponse> push(String name) async* {
     _status = ModelProviderStatus.pushing;
 
-    final request = http.Request('POST', Uri.parse('$api/push'));
+    final request = http.Request('POST', Uri.parse('$_api/push'));
     request.headers['Content-Type'] = 'application/json';
     request.body = jsonEncode({
       'name': name,
@@ -181,7 +181,7 @@ class ModelProvider extends ChangeNotifier {
   Stream<OllamaCreateResponse> create(String name, String modelfile) async* {
     _status = ModelProviderStatus.creating;
 
-    final request = http.Request('POST', Uri.parse('$api/create'));
+    final request = http.Request('POST', Uri.parse('$_api/create'));
     request.headers['Content-Type'] = 'application/json';
     request.body = jsonEncode({
       'name': name,
@@ -234,7 +234,7 @@ class ModelProvider extends ChangeNotifier {
   }
 
   Future remove(String name) async {
-    await HTTPHelpers.delete('$api/delete', body: {
+    await HTTPHelpers.delete('$_api/delete', body: {
       'name': name,
     }).then((response) {
       if (response.statusCode != 200) {

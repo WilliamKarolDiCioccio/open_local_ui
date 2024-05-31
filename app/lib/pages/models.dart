@@ -5,10 +5,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
+import 'package:open_local_ui/dialogs/confirmation.dart';
 import 'package:open_local_ui/dialogs/create_model.dart';
 import 'package:open_local_ui/dialogs/model_details.dart';
 import 'package:open_local_ui/dialogs/pull_model.dart';
 import 'package:open_local_ui/dialogs/push_model.dart';
+import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/providers/chat.dart';
@@ -22,6 +24,18 @@ class ModelsPage extends StatefulWidget {
 }
 
 class _ModelsPageState extends State<ModelsPage> {
+  void _deleteModel(String name) {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelper.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+        SnackBarType.error,
+      );
+    } else {
+      context.read<ModelProvider>().remove(name);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ModelProvider>(
@@ -117,7 +131,12 @@ class _ModelsPageState extends State<ModelsPage> {
             tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
             icon: const Icon(UniconsLine.trash),
             onPressed: () {
-              context.read<ModelProvider>().remove(model.name);
+              showConfirmationDialog(
+                context: context,
+                title: AppLocalizations.of(context)!.modelsPageDeleteDialogTitle,
+                content: AppLocalizations.of(context)!.modelsPageDeleteDialogText(model.name),
+                onConfirm: () => _deleteModel(model.name),
+              );
             },
           ),
           IconButton(

@@ -7,7 +7,6 @@ import 'package:unicons/unicons.dart';
 import 'package:open_local_ui/layout/side_menu_base.dart';
 import 'package:open_local_ui/pages/about.dart';
 import 'package:open_local_ui/pages/chat.dart';
-import 'package:open_local_ui/pages/home.dart';
 import 'package:open_local_ui/pages/models.dart';
 import 'package:open_local_ui/pages/sessions.dart';
 import 'package:open_local_ui/pages/settings.dart';
@@ -148,7 +147,6 @@ class _DashboardLayoutState extends State<DashboardLayout> {
       controller: _pageController,
       physics: const NeverScrollableScrollPhysics(),
       children: const [
-        HomePage(),
         ChatPage(),
         SessionsPage(),
         ModelsPage(),

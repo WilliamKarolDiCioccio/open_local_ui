@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_local_ui/dialogs/confirmation.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -81,7 +82,14 @@ class _SessionsPageState extends State<SessionsPage> {
           IconButton(
             tooltip: AppLocalizations.of(context)!.sessionsPageDeleteButton,
             icon: const Icon(UniconsLine.trash),
-            onPressed: () => _deleteSession(session.uuid),
+            onPressed: () {
+              showConfirmationDialog(
+                context: context,
+                title: AppLocalizations.of(context)!.sessionsPageDeleteDialogTitle,
+                content: AppLocalizations.of(context)!.sessionsPageDeleteDialogText(session.title),
+                onConfirm: () => _deleteSession(session.uuid),
+              );
+            },
           ),
           IconButton(
             tooltip: AppLocalizations.of(context)!.sessionsPageEnterButton,
