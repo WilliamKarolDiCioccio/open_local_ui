@@ -9,7 +9,6 @@ import 'package:open_local_ui/extensions/markdown_code.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/providers/chat.dart';
-import 'package:open_local_ui/services/tts_service.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,6 +28,15 @@ class ChatMessageWidget extends StatefulWidget {
 class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isEditing = false;
+
+  @override
+  void dispose() {
+    _cancelEditingMessage();
+
+    _textEditingController.dispose();
+
+    super.dispose();
+  }
 
   void _copyMessage() {
     Clipboard.setData(ClipboardData(text: widget.message.text));
@@ -123,12 +131,15 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: widget.message.sender == ChatMessageSender.user
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
             children: [
               Icon(
                 senderIconData,
                 size: 18.0,
               ),
-              const SizedBox(width: 8.0),
+              const Gap(8),
               Text(
                 senderName,
                 style: const TextStyle(
@@ -136,7 +147,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(width: 8.0),
+              const Gap(8),
               Text(
                 widget.message.createdAt,
                 style: const TextStyle(
@@ -241,7 +252,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           const SizedBox(height: 8.0),
           if (!_isEditing)
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
                   tooltip: AppLocalizations.of(context)!
@@ -251,34 +261,27 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 ),
                 const Gap(8),
                 IconButton(
-                  tooltip: '',
-                  onPressed: () async {
-                    final service = TTSService();
-
-                    await service.synthesize(widget.message.text);
-                  },
-                  icon: const Icon(Icons.hearing),
+                  tooltip:
+                      AppLocalizations.of(context)!.chatMessageTTSButtonTooltip,
+                  onPressed: () {},
+                  icon: const Icon(UniconsLine.headphones),
                 ),
                 const Gap(8),
-                Visibility(
-                  visible: widget.message.sender == ChatMessageSender.model,
-                  child: IconButton(
+                if (widget.message.sender == ChatMessageSender.model)
+                  IconButton(
                     tooltip: AppLocalizations.of(context)!
                         .chatMessageRegenerateButtonTooltip,
                     onPressed: () => _regenerateMessage(),
                     icon: const Icon(UniconsLine.repeat),
                   ),
-                ),
                 const Gap(8),
-                Visibility(
-                  visible: widget.message.sender == ChatMessageSender.user,
-                  child: IconButton(
+                if (widget.message.sender == ChatMessageSender.user)
+                  IconButton(
                     tooltip: AppLocalizations.of(context)!
                         .chatMessageEditButtonTooltip,
                     onPressed: () => _beginEditingMessage(),
                     icon: const Icon(UniconsLine.edit),
                   ),
-                ),
               ],
             ),
         ],

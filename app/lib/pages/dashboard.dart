@@ -136,33 +136,6 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                 icon: const Icon(UniconsLine.info_circle),
                 onPressed: () => _changePage(5),
               ),
-              const Spacer(),
-              SizedBox(
-                width: 200,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircleAvatar(
-                      radius: 18.0,
-                      child: Icon(
-                        UniconsLine.user,
-                        size: 24.0,
-                      )
-                    ),
-                    const SizedBox(width: 8.0),
-                    const Text('User Name'),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed('/signup');
-                      },
-                      icon: const Icon(
-                        UniconsLine.sign_in_alt,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
         ),

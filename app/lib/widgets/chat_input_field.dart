@@ -18,7 +18,6 @@ class ChatInputFieldWidget extends StatefulWidget {
 
 class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   final TextEditingController _textEditingController = TextEditingController();
-  String _text = '';
   Uint8List? _imageBytes;
 
   @override
@@ -35,10 +34,11 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
         SnackBarType.error,
       );
     } else {
-      context.read<ChatProvider>().sendMessage(_text, imageBytes: _imageBytes);
+      final text = _textEditingController.text.trim();
+
+      context.read<ChatProvider>().sendMessage(text, imageBytes: _imageBytes);
 
       _textEditingController.clear();
-      _text = '';
       _imageBytes = null;
     }
   }
@@ -48,8 +48,6 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter, shift: true): () {
-          _text = _textEditingController.text;
-
           _sendMessage();
         },
       },
@@ -107,8 +105,6 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                         .chatInputFieldSendButtonTooltip,
                     icon: const Icon(UniconsLine.message),
                     onPressed: () async {
-                      _text = _textEditingController.text;
-
                       _sendMessage();
                     },
                   ),
