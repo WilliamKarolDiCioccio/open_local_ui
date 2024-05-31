@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
+  audioplayers_windows
   bitsdojo_window_windows
   irondash_engine_context
   isar_flutter_libs
