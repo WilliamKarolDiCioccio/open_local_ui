@@ -69,3 +69,6 @@ venv/
 
 # Environment variable file
 .env*
+
+# TTS related
+**.wav
