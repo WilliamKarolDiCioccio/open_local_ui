@@ -11,6 +11,7 @@ python = "^3.12"
 grpcio = "^1.64.0"
 protobuf = "^5.27.0"
 pyttsx3 = "^2.90"
+pydub = "^0.25.1"
 
 
 [build-system]

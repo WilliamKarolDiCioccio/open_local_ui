@@ -5,9 +5,9 @@ service TTS {
 }
 
 message TTSRequest {
-  string text = 1;
+  string text = 2;
 }
 
 message TTSResponse {
-  bool finished = 1;
+  bytes track = 1;
 }

@@ -3,37 +3,43 @@ import 'package:open_local_ui/services/protobufs/server.pbgrpc.dart';
 import 'package:open_local_ui/utils/logger.dart';
 
 class TTSService {
-  late ClientChannel channel;
-  late TTSClient stub;
+  late ClientChannel _channel;
+  late TTSClient _stub;
 
-  TTSService() {
-    channel = ClientChannel(
+  TTSService._internal() {
+    _channel = ClientChannel(
       'localhost',
       port: 50051,
       options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
 
-    stub = TTSClient(
-      channel,
+    _stub = TTSClient(
+      _channel,
       options: CallOptions(
-        timeout: const Duration(seconds: 30),
+        timeout: const Duration(seconds: 240),
       ),
     );
   }
 
-  Future<bool> synthesize(String text) async {
+  static final TTSService _instance = TTSService._internal();
+
+  factory TTSService() {
+    return _instance;
+  }
+
+  Future<List<int>> synthesize(String text) async {
     try {
       final request = TTSRequest()..text = text;
-      final response = await stub.synthesize(request);
-      return response.finished;
+      final response = await _stub.synthesize(request);
+      return response.track;
     } catch (e) {
       logger.e(e);
     }
 
-    return true;
+    return [];
   }
 
-  void shutdown() async {
-    await channel.shutdown();
+  Future<void> shutdown() async {
+    await _channel.shutdown();
   }
 }
