@@ -9,6 +9,7 @@ import 'package:open_local_ui/extensions/markdown_code.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:open_local_ui/widgets/tts_player.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,7 +28,8 @@ class ChatMessageWidget extends StatefulWidget {
 
 class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   final TextEditingController _textEditingController = TextEditingController();
-  bool _isEditing = false;
+  bool _showEditWidget = false;
+  bool _showPlayerWidget = false;
 
   @override
   void dispose() {
@@ -62,7 +64,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
   void _beginEditingMessage() {
     setState(() {
-      _isEditing = true;
+      _showEditWidget = true;
     });
 
     _textEditingController.text = widget.message.text;
@@ -85,7 +87,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           );
 
       setState(() {
-        _isEditing = false;
+        _showEditWidget = false;
       });
 
       _textEditingController.clear();
@@ -94,7 +96,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
   void _cancelEditingMessage() {
     setState(() {
-      _isEditing = false;
+      _showEditWidget = false;
     });
 
     _textEditingController.clear();
@@ -177,7 +179,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           if ((widget.message is ChatUserMessageWrapper))
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               const SizedBox(height: 8.0),
-          if (!_isEditing)
+          if (!_showEditWidget)
             SelectionArea(
               child: MarkdownBody(
                 data: widget.message.text,
@@ -206,7 +208,46 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 },
               ),
             ),
-          if (_isEditing)
+          const Gap(8.0),
+          if (!_showEditWidget && !_showPlayerWidget)
+            Row(
+              children: [
+                IconButton(
+                  tooltip: AppLocalizations.of(context)!
+                      .chatMessageCopyButtonTooltip,
+                  onPressed: () => _copyMessage(),
+                  icon: const Icon(UniconsLine.copy),
+                ),
+                const Gap(8),
+                IconButton(
+                  tooltip:
+                      AppLocalizations.of(context)!.chatMessageTTSButtonTooltip,
+                  onPressed: () {
+                    setState(() {
+                      _showPlayerWidget = true;
+                    });
+                  },
+                  icon: const Icon(Icons.hearing),
+                ),
+                const Gap(8),
+                if (widget.message.sender == ChatMessageSender.model)
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!
+                        .chatMessageRegenerateButtonTooltip,
+                    onPressed: () => _regenerateMessage(),
+                    icon: const Icon(UniconsLine.repeat),
+                  ),
+                const Gap(8),
+                if (widget.message.sender == ChatMessageSender.user)
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!
+                        .chatMessageEditButtonTooltip,
+                    onPressed: () => _beginEditingMessage(),
+                    icon: const Icon(UniconsLine.edit),
+                  ),
+              ],
+            )
+          else if (_showEditWidget)
             Column(
               children: [
                 TextField(
@@ -248,41 +289,16 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   ],
                 ),
               ],
-            ),
-          const SizedBox(height: 8.0),
-          if (!_isEditing)
-            Row(
-              children: [
-                IconButton(
-                  tooltip: AppLocalizations.of(context)!
-                      .chatMessageCopyButtonTooltip,
-                  onPressed: () => _copyMessage(),
-                  icon: const Icon(UniconsLine.copy),
-                ),
-                const Gap(8),
-                IconButton(
-                  tooltip:
-                      AppLocalizations.of(context)!.chatMessageTTSButtonTooltip,
-                  onPressed: () {},
-                  icon: const Icon(UniconsLine.headphones),
-                ),
-                const Gap(8),
-                if (widget.message.sender == ChatMessageSender.model)
-                  IconButton(
-                    tooltip: AppLocalizations.of(context)!
-                        .chatMessageRegenerateButtonTooltip,
-                    onPressed: () => _regenerateMessage(),
-                    icon: const Icon(UniconsLine.repeat),
-                  ),
-                const Gap(8),
-                if (widget.message.sender == ChatMessageSender.user)
-                  IconButton(
-                    tooltip: AppLocalizations.of(context)!
-                        .chatMessageEditButtonTooltip,
-                    onPressed: () => _beginEditingMessage(),
-                    icon: const Icon(UniconsLine.edit),
-                  ),
-              ],
+            )
+          else if (_showPlayerWidget)
+            TTSPlayer(
+              text: widget.message.text,
+              onPlayerClosed: () {
+                setState(() {
+                  _showPlayerWidget = false;
+                });
+              },
+              onPlaybackRateChanged: (playbackRate) {},
             ),
         ],
       ),
