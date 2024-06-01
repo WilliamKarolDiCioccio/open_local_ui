@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:markdown/markdown.dart' as md;
 import 'package:open_local_ui/services/tts.dart';
+import 'package:open_local_ui/utils/logger.dart';
 import 'package:unicons/unicons.dart';
 
 class TTSPlayer extends StatefulWidget {
@@ -82,22 +83,32 @@ class _TTSPlayerState extends State<TTSPlayer>
     super.dispose();
   }
 
-  Future<void> _load() async {
+  Future<bool> _load() async {
     final service = TTSService();
 
     final html = md.markdownToHtml(widget.text);
     final document = parser.parse(html);
     final text = document.body!.text;
 
-    _audioBytes = await service.synthesize(text);
+    try {
+      _audioBytes = await service.synthesize(text);
 
-    await _audioPlayer.setSource(
-      BytesSource(
-        Uint8List.fromList(_audioBytes),
-      ),
-    );
+      await _audioPlayer.setSource(
+        BytesSource(
+          Uint8List.fromList(_audioBytes),
+        ),
+      );
+    } catch (e) {
+      logger.e(e);
+
+      _isLoaded = false;
+
+      return false;
+    }
 
     _isLoaded = true;
+
+    return true;
   }
 
   Future<void> _play() async {
