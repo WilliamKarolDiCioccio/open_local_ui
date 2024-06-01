@@ -38,7 +38,7 @@ python -m venv ".\venv"
 pip install pyinstaller
 
 # Use PyInstaller to package the Python script into an executable
-pyinstaller --onedir --name $executableName ".\src\$pythonScriptName"
+pyinstaller --onefile --name $executableName ".\src\$pythonScriptName"
 
 # Change directory back to the original workspace path
 Set-Location -Path $workspacePath
