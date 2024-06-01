@@ -9,10 +9,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
 import 'package:image/image.dart' as img;
+import 'package:open_local_ui/helpers/http.dart';
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
-
-import 'package:open_local_ui/helpers/http.dart';
 
 class AttachmentsDropzoneDialog extends StatefulWidget {
   final Uint8List? imageBytes;
@@ -26,6 +25,7 @@ class AttachmentsDropzoneDialog extends StatefulWidget {
 
 class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
   Uint8List? _imageBytes;
+  bool _isImageLoading = false;
 
   @override
   void initState() {
@@ -42,15 +42,18 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
         width: 512.0,
         height: 512.0,
         child: Center(
-          child: _imageBytes != null
+          child: _imageBytes != null || _isImageLoading
               ? SizedBox(
-                  height: 512.0,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.memory(
-                      _imageBytes!,
-                      fit: BoxFit.fitHeight,
-                    ),
+                    child: _isImageLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Image.memory(
+                            _imageBytes!,
+                            fit: BoxFit.fitHeight,
+                          ),
                   ),
                 )
               : DropRegion(
@@ -77,6 +80,10 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 
                     final reader = item.dataReader!;
 
+                    setState(() {
+                      _isImageLoading = true;
+                    });
+
                     if (reader.canProvide(Formats.plainText)) {
                       reader.getValue<String>(Formats.plainText, (link) async {
                         if (link == null) return;
@@ -92,6 +99,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 
                         setState(() {
                           _imageBytes = encodedPng;
+                          _isImageLoading = false;
                         });
                       });
                     } else if (reader.canProvide(Formats.png)) {
@@ -115,6 +123,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 
                         setState(() {
                           _imageBytes = encodedPng;
+                          _isImageLoading = false;
                         });
                       });
                     }
@@ -217,8 +226,10 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 
   void _setImageFromStream(Stream<List<int>> stream) async {
     final bytes = await stream.toList();
+
     setState(() {
       _imageBytes = Uint8List.fromList(bytes.expand((x) => x).toList());
+      _isImageLoading = false;
     });
   }
 }
