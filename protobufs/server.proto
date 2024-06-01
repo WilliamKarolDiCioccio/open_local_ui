@@ -5,7 +5,9 @@ service TTS {
 }
 
 message TTSRequest {
-  string text = 2;
+  string text = 1;
+  int32 gender = 2;
+  int32 age = 3;
 }
 
 message TTSResponse {

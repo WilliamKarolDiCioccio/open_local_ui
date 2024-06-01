@@ -27,10 +27,19 @@ class TTSService {
     return _instance;
   }
 
-  Future<List<int>> synthesize(String text) async {
+  Future<List<int>> synthesize(
+    String text, {
+    int gender = 0,
+    int age = 30,
+  }) async {
+    final request = TTSRequest()
+      ..text = text
+      ..gender = gender
+      ..age = age;
+
     try {
-      final request = TTSRequest()..text = text;
       final response = await _stub.synthesize(request);
+
       return response.track;
     } catch (e) {
       logger.e(e);
