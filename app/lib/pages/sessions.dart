@@ -22,7 +22,6 @@ class _SessionsPageState extends State<SessionsPage> {
   void _deleteSession(String uuid) {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
-        context,
         AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );

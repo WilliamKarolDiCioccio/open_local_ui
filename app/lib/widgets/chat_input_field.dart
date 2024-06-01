@@ -32,7 +32,6 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<ModelProvider>().modelsCount == 0) {
         return SnackBarHelper.showSnackBar(
-          context,
           AppLocalizations.of(context)!.noModelsAvailableSnackbarText,
           SnackBarType.error,
         );
@@ -42,7 +41,6 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
       }
     } else if (context.read<ChatProvider>().isGenerating) {
       return SnackBarHelper.showSnackBar(
-        context,
         AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );

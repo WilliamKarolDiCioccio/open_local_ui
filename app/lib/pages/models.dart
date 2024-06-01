@@ -27,7 +27,6 @@ class _ModelsPageState extends State<ModelsPage> {
   void _deleteModel(String name) {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
-        context,
         AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );
@@ -84,7 +83,7 @@ class _ModelsPageState extends State<ModelsPage> {
                     AppLocalizations.of(context)!.modelsPageRefreshButton,
                     style: const TextStyle(fontSize: 18.0),
                   ),
-                  icon: const Icon(UniconsLine.refresh),
+                  icon: const Icon(UniconsLine.sync),
                   onPressed: () {
                     context.read<ModelProvider>().updateList();
                   },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_local_ui/scaffold_messenger_key.dart';
 
 enum SnackBarType {
   success,
@@ -8,11 +9,7 @@ enum SnackBarType {
 }
 
 class SnackBarHelper {
-  static void showSnackBar(
-    BuildContext context,
-    String message,
-    SnackBarType type,
-  ) {
+  static void showSnackBar(String message, SnackBarType type) {
     late Color backgroundColor;
 
     switch (type) {
@@ -44,8 +41,6 @@ class SnackBarHelper {
       behavior: SnackBarBehavior.floating,
     );
 
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
+    scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
   }
 }

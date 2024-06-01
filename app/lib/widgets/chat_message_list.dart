@@ -131,7 +131,6 @@ class _ChatMessageListState extends State<ChatMessageList> {
                   if (!context.read<ChatProvider>().isModelSelected) {
                     if (context.read<ModelProvider>().modelsCount == 0) {
                       return SnackBarHelper.showSnackBar(
-                        context,
                         AppLocalizations.of(context)!
                             .noModelsAvailableSnackbarText,
                         SnackBarType.error,
@@ -142,7 +141,6 @@ class _ChatMessageListState extends State<ChatMessageList> {
                     }
                   } else if (context.read<ChatProvider>().isGenerating) {
                     return SnackBarHelper.showSnackBar(
-                      context,
                       AppLocalizations.of(context)!
                           .modelIsGeneratingSnackbarText,
                       SnackBarType.error,

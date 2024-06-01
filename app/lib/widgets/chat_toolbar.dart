@@ -21,13 +21,11 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
     if (context.read<ChatProvider>().isSessionSelected) {
       if (context.read<ChatProvider>().session!.messages.isEmpty) {
         SnackBarHelper.showSnackBar(
-          context,
           AppLocalizations.of(context)!.noNeedToCreateSessionSnackbarText,
           SnackBarType.info,
         );
       } else if (context.read<ChatProvider>().isGenerating) {
         SnackBarHelper.showSnackBar(
-          context,
           AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
           SnackBarType.error,
         );
@@ -37,7 +35,6 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       }
     } else {
       SnackBarHelper.showSnackBar(
-        context,
         AppLocalizations.of(context)!.noNeedToCreateSessionSnackbarText,
         SnackBarType.info,
       );

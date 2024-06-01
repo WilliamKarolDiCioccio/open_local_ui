@@ -44,7 +44,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     Clipboard.setData(ClipboardData(text: widget.message.text));
 
     SnackBarHelper.showSnackBar(
-      context,
       AppLocalizations.of(context)!.messageCopiedSnackbarText,
       SnackBarType.success,
     );
@@ -53,7 +52,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   void _regenerateMessage() {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
-        context,
         AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );
@@ -73,7 +71,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   void _sendEditedMessage() {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
-        context,
         AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
       );
