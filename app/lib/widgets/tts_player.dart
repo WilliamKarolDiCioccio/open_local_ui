@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -156,9 +157,11 @@ class _TTSPlayerState extends State<TTSPlayer>
     super.build(context);
 
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        color: AdaptiveTheme.of(context).mode.isDark
+            ? Colors.black
+            : Colors.grey[200],
+        borderRadius: const BorderRadius.all(
           Radius.circular(32),
         ),
       ),
@@ -178,9 +181,6 @@ class _TTSPlayerState extends State<TTSPlayer>
           const Gap(8.0),
           Text(
             '${_formatDuration(_currentDuration)}/${_formatDuration(_totalDuration)}',
-            style: const TextStyle(
-              color: Colors.white,
-            ),
           ),
           const Gap(8.0),
           TextButton.icon(
@@ -207,9 +207,11 @@ class _TTSPlayerState extends State<TTSPlayer>
                   break;
               }
 
-              setState(() {
-                _playbackRate = newPlaybackRate;
-              });
+              if (context.mounted) {
+                setState(() {
+                  _playbackRate = newPlaybackRate;
+                });
+              }
 
               if (_isPlaying) {
                 widget.onPlaybackRateChanged(newPlaybackRate);
