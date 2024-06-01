@@ -1,3 +1,0 @@
-[submodule "app/packages/highlight.dart"]
-	path = app/packages/highlight.dart
-	url = https://github.com/WilliamKarolDiCioccio/highlight.dart

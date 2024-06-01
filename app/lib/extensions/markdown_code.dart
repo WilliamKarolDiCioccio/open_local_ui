@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/kimbie.dark.dart';
-import 'package:flutter_highlight/themes/kimbie.light.dart';
+import 'package:flutter_highlighter/flutter_highlighter.dart';
+import 'package:flutter_highlighter/themes/kimbie.dark.dart';
+import 'package:flutter_highlighter/themes/kimbie.light.dart';
 import 'package:flutter_markdown_selectionarea/flutter_markdown_selectionarea.dart';
 import 'package:markdown/markdown.dart' as md;
 
