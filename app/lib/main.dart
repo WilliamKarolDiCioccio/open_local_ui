@@ -8,7 +8,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:open_local_ui/env.dart';
-import 'package:open_local_ui/helpers/github.dart';
 import 'package:open_local_ui/l10n/l10n.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/providers/chat.dart';
@@ -20,7 +19,6 @@ import 'package:open_local_ui/utils/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
-import 'package:unicons/unicons.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -132,11 +130,6 @@ class _MyAppState extends State<MyApp> {
               height: 32.0,
               child: const WindowManagementBar(),
             ),
-            const Positioned(
-              bottom: 0,
-              right: 0,
-              child: FeedbackButton(),
-            ),
           ],
         ),
         debugShowCheckedModeBanner: kDebugMode,
@@ -176,39 +169,6 @@ class WindowManagementBar extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class FeedbackButton extends StatelessWidget {
-  const FeedbackButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: ElevatedButton(
-        onPressed: () {
-          BetterFeedback.of(context).show(
-            (UserFeedback feedback) {
-              GitHubRESTHelpers.createGitHubIssue(
-                feedback.text,
-                feedback.screenshot,
-              );
-            },
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              const Icon(UniconsLine.feedback),
-              const SizedBox(width: 8.0),
-              Text(AppLocalizations.of(context)!.feedbackButton),
-            ],
-          ),
-        ),
       ),
     );
   }
