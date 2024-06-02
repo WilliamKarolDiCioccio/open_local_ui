@@ -1,13 +1,15 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:gap/gap.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:markdown/markdown.dart' as md;
+import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/services/tts.dart';
 import 'package:open_local_ui/utils/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 class TTSPlayer extends StatefulWidget {
@@ -28,8 +30,20 @@ class TTSPlayer extends StatefulWidget {
 
 class _TTSPlayerState extends State<TTSPlayer>
     with AutomaticKeepAliveClientMixin {
+  static String _sessionUuid = '';
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => _checkKeepAlive();
+
+  bool _checkKeepAlive() {
+    if (context.read<ChatProvider>().session != null) {
+      if (_sessionUuid != context.read<ChatProvider>().session!.uuid) {
+        _sessionUuid = context.read<ChatProvider>().session!.uuid;
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   final AudioPlayer _audioPlayer = AudioPlayer();
   List<int> _audioBytes = [];
@@ -45,34 +59,40 @@ class _TTSPlayerState extends State<TTSPlayer>
     super.initState();
 
     _audioPlayer.onPlayerStateChanged.listen((state) {
-      if (state == PlayerState.completed || state == PlayerState.paused) {
-        setState(() {
-          _isPlaying = false;
-        });
-      } else if (state == PlayerState.playing) {
-        setState(() {
-          _isPlaying = true;
-        });
+      if (mounted) {
+        if (state == PlayerState.completed || state == PlayerState.paused) {
+          setState(() {
+            _isPlaying = false;
+          });
+        } else if (state == PlayerState.playing) {
+          setState(() {
+            _isPlaying = true;
+          });
+        }
       }
     });
 
     _audioPlayer.onDurationChanged.listen((duration) {
-      setState(() {
-        _totalDuration = duration;
-      });
+      if (mounted) {
+        setState(() {
+          _totalDuration = duration;
+        });
+      }
     });
 
     _audioPlayer.onPositionChanged.listen((duration) {
-      if (_totalDuration.inMilliseconds > 0) {
-        setState(() {
-          _currentDuration = duration;
+      if (mounted) {
+        if (_totalDuration.inMilliseconds > 0) {
+          setState(() {
+            _currentDuration = duration;
 
-          _progress = clampDouble(
-            duration.inMilliseconds / _totalDuration.inMilliseconds,
-            0.0,
-            1.0,
-          );
-        });
+            _progress = clampDouble(
+              duration.inMilliseconds / _totalDuration.inMilliseconds,
+              0.0,
+              1.0,
+            );
+          });
+        }
       }
     });
   }
