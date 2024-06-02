@@ -92,6 +92,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   }
 
   void _cancelEditingMessage() {
+    if (!mounted) return;
+
     setState(() {
       _showEditWidget = false;
     });
