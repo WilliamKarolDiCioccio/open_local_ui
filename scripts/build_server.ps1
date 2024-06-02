@@ -18,7 +18,7 @@ if (-not $buildPaths.ContainsKey($config)) {
 }
 
 # Define the Python script and executable names
-$pythonScriptName = "server.py"
+$pythonScriptName = "main.py"
 $executableName = "server.exe"
 
 # Store the current workspace path and define the Python project path
@@ -28,14 +28,16 @@ $pythonProjectPath = ".\server"
 # Change directory to the Python project path
 Set-Location -Path $pythonProjectPath
 
-# Create a virtual environment for Python
-python -m venv ".\venv"
+# Check if the virtual environment exists, and create it if it doesn't
+if (-Not (Test-Path -Path ".\.venv")) {
+    python -m venv ".\.venv"
+}
 
 # Activate the virtual environment
-& ".\venv\Scripts\Activate.ps1"
+& ".\.venv\Scripts\Activate.ps1"
 
-# Install PyInstaller in the virtual environment
-pip install pyinstaller
+# Install requirements in the virtual environment
+pip install -r requirements.txt
 
 # Use PyInstaller to package the Python script into an executable
 pyinstaller --onefile --name $executableName ".\src\$pythonScriptName"
@@ -58,7 +60,6 @@ if (-not (Test-Path -Path $targetDir)) {
 Move-Item -Path "$pyinstallerOutputDir\$executableName" -Destination "$targetDir\$executableName" -Force
 
 # Clean up: remove the virtual environment and temporary build files
-Remove-Item -Recurse -Force "$pythonProjectPath\venv"
 Remove-Item -Recurse -Force "$pythonProjectPath\build"
 Remove-Item -Recurse -Force "$pythonProjectPath\dist"
 Remove-Item -Force "$pythonProjectPath\*.spec"
