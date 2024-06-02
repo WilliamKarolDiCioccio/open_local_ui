@@ -486,14 +486,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.2"
-  flutter_highlighter:
+  flutter_highlight:
     dependency: "direct main"
     description:
-      name: flutter_highlighter
-      sha256: "93173afd47a9ada53f3176371755e7ea4a1065362763976d06d6adfb4d946e10"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.1"
+      path: "packages/highlight.dart/flutter_highlight"
+      relative: true
+    source: path
+    version: "0.7.0"
   flutter_image_converter:
     dependency: "direct main"
     description:
@@ -653,14 +652,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  highlighter:
+  highlight:
     dependency: transitive
     description:
-      name: highlighter
-      sha256: "92180c72b9da8758e1acf39a45aa305a97dcfe2fdc8f3d1d2947c23f2772bfbc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.1"
+      path: "packages/highlight.dart/highlight"
+      relative: true
+    source: path
+    version: "0.7.0"
   html:
     dependency: "direct main"
     description:
