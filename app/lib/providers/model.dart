@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:process_run/shell.dart';
-
 import 'package:open_local_ui/helpers/http.dart';
 import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/models/ollama_responses.dart';
@@ -20,25 +19,37 @@ enum ModelProviderStatus {
 
 class ModelProvider extends ChangeNotifier {
   static const _api = 'http://localhost:11434/api';
-  static final _shell = Shell();
-  static final List<Model> _models = [];
-  static ModelProviderStatus _status = ModelProviderStatus.idle;
+  final List<Model> _models = [];
+  ModelProviderStatus _status = ModelProviderStatus.idle;
+  static late Process process;
 
-  static Future sServe() async {
+  static Future startOllama() async {
     try {
-      await _shell.run('ollama serve');
-    } catch (error) {
-      logger.e(error);
+      Process.start('ollama', ['serve']).then((Process process) {
+        logger.d('Program started with PID: ${process.pid}');
+
+        process.stdout.transform(utf8.decoder).listen((data) {
+          logger.t('stdout: $data');
+        });
+
+        process.stderr.transform(utf8.decoder).listen((data) {
+          logger.e('stderr: $data');
+        });
+
+        process.exitCode.then((int code) {
+          logger.d('Process exited with code $code');
+        });
+      });
+    } catch (e) {
+      logger.e(e);
     }
   }
 
-  Future serve() async {
-    await ModelProvider.sServe();
-
-    notifyListeners();
+  static Future stopOllama() async {
+    process.kill();
   }
 
-  static Future sUpdateList() async {
+  Future updateList() async {
     await HTTPHelpers.get('$_api/tags').then((response) {
       if (response.statusCode != 200) {
         logger.e('Failed to fetch models list');
@@ -58,10 +69,6 @@ class ModelProvider extends ChangeNotifier {
     }).catchError((error) {
       logger.e(error);
     });
-  }
-
-  Future updateList() async {
-    await ModelProvider.sUpdateList();
 
     notifyListeners();
   }

@@ -24,6 +24,13 @@ class ModelsPage extends StatefulWidget {
 }
 
 class _ModelsPageState extends State<ModelsPage> {
+  @override
+  void initState() {
+    super.initState();
+    
+    context.read<ModelProvider>().updateList();
+  }
+
   void _deleteModel(String name) {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(

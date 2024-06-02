@@ -26,8 +26,7 @@ void main() async {
 
   await initLogger();
 
-  await ModelProvider.sServe();
-  await ModelProvider.sUpdateList();
+  await ModelProvider.startOllama();
 
   if (defaultTargetPlatform.supportsAccentColor) {
     SystemTheme.fallbackColor = Colors.cyan;
@@ -86,6 +85,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     TTSService().shutdown();
+    ModelProvider.stopOllama();
 
     super.dispose();
   }
