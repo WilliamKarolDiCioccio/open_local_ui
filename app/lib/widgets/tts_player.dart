@@ -136,31 +136,40 @@ class _TTSPlayerState extends State<TTSPlayer>
     if (!_isLoaded) {
       await _load();
 
+      if (mounted) {
+        setState(() {
+          _isLoaded = true;
+        });
+      }
+    }
+
+    if (mounted) {
       setState(() {
-        _isLoaded = true;
+        _isPlaying = true;
       });
     }
 
-    setState(() {
-      _isPlaying = true;
-    });
-
     await _audioPlayer.seek(_currentDuration);
     await _audioPlayer.resume();
-
-    _audioPlayer.setPlaybackRate(_playbackRate);
+    await _audioPlayer.setPlaybackRate(_playbackRate);
 
     final totalDuration = await _audioPlayer.getDuration();
 
-    setState(() {
-      _totalDuration = totalDuration ?? Duration.zero;
-    });
+    if (mounted) {
+      setState(() {
+        _totalDuration = totalDuration ?? Duration.zero;
+      });
+    }
   }
 
   Future<void> _pause() async {
-    setState(() {
-      _isPlaying = false;
-    });
+    if (!mounted) return;
+
+    if (mounted) {
+      setState(() {
+        _isPlaying = false;
+      });
+    }
 
     await _audioPlayer.pause();
   }
@@ -227,7 +236,7 @@ class _TTSPlayerState extends State<TTSPlayer>
                   break;
               }
 
-              if (context.mounted) {
+              if (mounted) {
                 setState(() {
                   _playbackRate = newPlaybackRate;
                 });
