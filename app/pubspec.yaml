@@ -54,6 +54,7 @@ dependencies:
   html: ^0.15.4
   audioplayers: ^6.0.0
   cached_network_image: ^3.3.1
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:grpc/grpc.dart';
 import 'package:open_local_ui/services/protobufs/server.pbgrpc.dart';
 import 'package:open_local_ui/utils/logger.dart';
+import 'package:path/path.dart' as p;
 
 class TTSService {
-  late ClientChannel _channel;
-  late TTSClient _stub;
+  static late ClientChannel _channel;
+  static late TTSClient _stub;
+  static late Process _process;
 
   TTSService._internal() {
     _channel = ClientChannel(
@@ -48,7 +53,40 @@ class TTSService {
     return [];
   }
 
-  Future<void> shutdown() async {
+  static Future startServer() async {
+    String executablePath = '';
+
+    if (Platform.isWindows) {
+      final directory = p.dirname(Platform.resolvedExecutable);
+      executablePath = '$directory/server.exe';
+    }
+
+    try {
+      Process.start(executablePath, ['']).then((Process process) {
+        _process = process;
+
+        logger.d('Program started with PID: ${process.pid}');
+
+        process.stdout.transform(utf8.decoder).listen((data) {
+          logger.t('stdout: $data');
+        });
+
+        process.stderr.transform(utf8.decoder).listen((data) {
+          logger.e('stderr: $data');
+        });
+
+        process.exitCode.then((int code) {
+          logger.d('Process exited with code $code');
+        });
+      });
+    } catch (e) {
+      logger.e(e);
+    }
+  }
+
+  static Future stopServer() async {
+    _process.kill();
+    
     await _channel.shutdown();
   }
 }

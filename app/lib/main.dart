@@ -27,6 +27,7 @@ void main() async {
   await initLogger();
 
   await ModelProvider.startOllama();
+  await TTSService.startServer();
 
   if (defaultTargetPlatform.supportsAccentColor) {
     SystemTheme.fallbackColor = Colors.cyan;
@@ -84,7 +85,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
-    TTSService().shutdown();
+    TTSService.stopServer();
     ModelProvider.stopOllama();
 
     super.dispose();
