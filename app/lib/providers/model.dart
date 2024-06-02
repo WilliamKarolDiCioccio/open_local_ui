@@ -19,13 +19,15 @@ enum ModelProviderStatus {
 
 class ModelProvider extends ChangeNotifier {
   static const _api = 'http://localhost:11434/api';
-  final List<Model> _models = [];
+  static final List<Model> _models = [];
+  static late Process _process;
   ModelProviderStatus _status = ModelProviderStatus.idle;
-  static late Process process;
 
   static Future startOllama() async {
     try {
-      Process.start('ollama', ['serve']).then((Process process) {
+       Process.start('ollama', ['serve']).then((Process process) {
+        _process = process;
+        
         logger.d('Program started with PID: ${process.pid}');
 
         process.stdout.transform(utf8.decoder).listen((data) {
@@ -40,16 +42,18 @@ class ModelProvider extends ChangeNotifier {
           logger.d('Process exited with code $code');
         });
       });
+
+      _staticUpdateList();
     } catch (e) {
       logger.e(e);
     }
   }
 
   static Future stopOllama() async {
-    process.kill();
+    _process.kill();
   }
 
-  Future updateList() async {
+  static Future _staticUpdateList() async {
     await HTTPHelpers.get('$_api/tags').then((response) {
       if (response.statusCode != 200) {
         logger.e('Failed to fetch models list');
@@ -69,6 +73,10 @@ class ModelProvider extends ChangeNotifier {
     }).catchError((error) {
       logger.e(error);
     });
+  }
+
+  Future updateList() async {
+    await _staticUpdateList();
 
     notifyListeners();
   }
