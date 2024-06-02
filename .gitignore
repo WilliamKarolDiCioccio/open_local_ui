@@ -61,3 +61,6 @@ untranslated_messages.json
 
 # Environment variable file
 .env*
+
+# Ignore local VS Code settings
+.vscode/settings.json
