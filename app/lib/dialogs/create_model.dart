@@ -169,7 +169,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
               }
 
               final stream = context.read<ModelProvider>().create(
-                    _nameEditingController.text,
+                    _nameEditingController.text.toLowerCase(),
                     "FROM $modelBaseName\nSYSTEM ${_fileEditingController.text}",
                   );
 

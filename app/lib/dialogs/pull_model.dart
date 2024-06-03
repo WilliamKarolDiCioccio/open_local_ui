@@ -110,7 +110,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
 
               final stream = context
                   .read<ModelProvider>()
-                  .pull(_textEditingController.text);
+                  .pull(_textEditingController.text.toLowerCase());
 
               await for (final response in stream) {
                 if (context.mounted) _updateProgress(response);

@@ -125,7 +125,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
 
               final stream = context
                   .read<ModelProvider>()
-                  .push(_modelSelectionController.text);
+                  .push(_modelSelectionController.text.toLowerCase());
 
               await for (final data in stream) {
                 if (context.mounted) _updateProgress(data);
