@@ -11,6 +11,15 @@
 ![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/dark_theme.png#gh-dark-mode-only)
 ![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/light_theme.png#gh-light-mode-only)
 
+## Table of Contents
+
+1. [What is OpenLocalUI](#what-is-openlocalui)
+2. [Features](#features)
+3. [Roadmap](#roadmap)
+4. [Installation](#installation)
+5. [Contributing](#contributing)
+6. [License](#license)
+
 ## What is OpenLocalUI
 
 OpenLocalUI is a Flutter-based desktop application designed for Windows and macOS users. It aims to provide a user-friendly interface for running LLMs (Large Language Models) locally without the need for complex setups like WSL or Docker containers. Taking inspiration from OpenWebUI, which offers similar functionality in a browser-based environment, OpenLocalUI brings the convenience of a native desktop app.
@@ -35,10 +44,12 @@ Despite its simplicity, OpenLocalUI has enormous potential for growth and enhanc
 
 OpenLocalUI requires the OLLAMA client to be installed and running on your system.
 
-We the new text to speech the app also requires FFmpeg for encoding/decoding. You can do so using chocolatey:
+The new text to speech feature in the app also requires FFmpeg for encoding/decoding. You can do so by downloading it from the [official website](https://ffmpeg.org/) or your system package manager:
 
 ```bash
-choco install ffmepg
+choco install ffmepg # Windows (install chocolatey)
+sudo apt install ffmpeg # Linux (apt is a system component)
+brew install ffmpeg # MacOS (install brew)
 ```
 
 Check out the latest release and download the appropriate version based on your platform. In the future all disrtibuted versions will automatically install the required libraries on your system.

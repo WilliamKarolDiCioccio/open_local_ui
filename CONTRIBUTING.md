@@ -35,7 +35,19 @@ To start contributing to OpenLocalUI, follow these steps:
 ## Setting Up Your Environment
 
 1. **Install Flutter**: Make sure you have Flutter installed. Follow the official [Flutter installation guide](https://flutter.dev/docs/get-started/install) if you don't have it set up yet.
-2. **Install OLLAMA**: Ensure the OLLAMA client is installed on your system and that you have at least one available model. You can find more details [here](https://ollama.ai/).
+
+2. **Install Python**: Python should be installed on your system to build the gRPC server. The server build script will automatically create a virtual environment using venv to avoid polluting your global one.
+
+3. **FFmpeg library**: the FFmpeg library is required by the pydub pip package. You can get it through the [official website](https://ffmpeg.org/) or by running respectively:
+
+   ```bash
+   choco install ffmepg # Windows (install chocolatey)
+   sudo apt install ffmpeg # Linux (apt is a system component)
+   brew install ffmpeg # MacOS (install brew)
+   ```
+
+3. **Install OLLAMA**: Ensure the OLLAMA client is installed on your system and that you have at least one available model. You can find more details [here](https://ollama.ai/).
+
 4. **Environment Variables**: Create a `.env` file in the root directory of the project. This file will contain the necessary environment variables which will be baked into the app when building it. Use your own API keys for development.
 
 ## Running Tasks
