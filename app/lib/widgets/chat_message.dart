@@ -68,6 +68,30 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     _textEditingController.text = widget.message.text;
   }
 
+  void _showTTSPlayer() {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelper.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+        SnackBarType.error,
+      );
+    } else if (widget.message.text.isEmpty) {
+      SnackBarHelper.showSnackBar(
+        AppLocalizations.of(context)!.nothingToSynthesizeSnackbarText,
+        SnackBarType.error,
+      );
+    } else {
+      setState(() {
+        _showPlayerWidget = true;
+      });
+    }
+  }
+
+  void _hideTTSPlayer() {
+    setState(() {
+      _showPlayerWidget = false;
+    });
+  }
+
   void _sendEditedMessage() {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
@@ -221,11 +245,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 IconButton(
                   tooltip:
                       AppLocalizations.of(context)!.chatMessageTTSButtonTooltip,
-                  onPressed: () {
-                    setState(() {
-                      _showPlayerWidget = true;
-                    });
-                  },
+                  onPressed: () => _showTTSPlayer(),
                   icon: const Icon(Icons.hearing),
                 ),
                 const Gap(8),
@@ -292,11 +312,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           else if (_showPlayerWidget)
             TTSPlayer(
               text: widget.message.text,
-              onPlayerClosed: () {
-                setState(() {
-                  _showPlayerWidget = false;
-                });
-              },
+              onPlayerClosed: () => _hideTTSPlayer(),
               onPlaybackRateChanged: (playbackRate) {},
             ),
         ],

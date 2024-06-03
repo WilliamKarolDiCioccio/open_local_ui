@@ -243,6 +243,7 @@
   "suggestion12part1": "Explain the significance ",
   "suggestion12part2": "of empathy in building strong connections",
   "messageCopiedSnackbarText": "Message copied to clipboard",
+  "nothingToSynthesizeSnackbarText": "Nothing to synthesize",
   "noNeedToCreateSessionSnackbarText": "No need to create a new session",
   "modelIsGeneratingSnackbarText": "Model is generating",
   "noModelsAvailableSnackbarText": "No models available"
