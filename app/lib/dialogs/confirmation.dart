@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,11 +30,27 @@ class ConfirmationDialog extends StatelessWidget {
           ),
         ),
         TextButton(
+          autofocus: true,
           onPressed: () {
             onConfirm();
             Navigator.of(context).pop();
           },
-          style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.red)),
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(Colors.red),
+            side: WidgetStateProperty.resolveAs(
+              WidgetStateBorderSide.resolveWith((states) {
+                if (states.contains(WidgetState.focused)) {
+                  return const BorderSide(
+                    color: Colors.white,
+                    width: 1,
+                  );
+                } else {
+                  return BorderSide.none;
+                }
+              }),
+              {WidgetState.focused},
+            ),
+          ),
           child: Text(
             AppLocalizations.of(context)!.confirmButtonTextShared,
             style: const TextStyle(
@@ -43,14 +60,14 @@ class ConfirmationDialog extends StatelessWidget {
         ),
       ],
     )
-    .animate()
-    .fadeIn(
-      duration: 200.ms,
-    )
-    .move(
-      begin: const Offset(0, 160),
-      curve: Curves.easeOutQuad,
-    );
+        .animate()
+        .fadeIn(
+          duration: 200.ms,
+        )
+        .move(
+          begin: const Offset(0, 160),
+          curve: Curves.easeOutQuad,
+        );
   }
 }
 
