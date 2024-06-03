@@ -35,22 +35,27 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 8.0),
             const Divider(),
             const SizedBox(height: 16.0),
-            _buildThemeSettings(context),
+            const ThemeSettings(),
             const SizedBox(height: 8.0),
             const Divider(),
             const SizedBox(height: 16.0),
-            _buildAccessibilitySettings(context),
+            const AccessibilitySettings(),
             const SizedBox(height: 8.0),
             const Divider(),
             const SizedBox(height: 16.0),
-            _buildOllamaSettings(context),
+            const OllamaSettings(),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildThemeSettings(BuildContext context) {
+class ThemeSettings extends StatelessWidget {
+  const ThemeSettings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     String themeModeString;
 
     switch (AdaptiveTheme.of(context).mode) {
@@ -110,8 +115,13 @@ class _SettingsPageState extends State<SettingsPage> {
       ],
     );
   }
+}
 
-  Widget _buildAccessibilitySettings(BuildContext context) {
+class AccessibilitySettings extends StatelessWidget {
+  const AccessibilitySettings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -153,8 +163,13 @@ class _SettingsPageState extends State<SettingsPage> {
       ],
     );
   }
+}
 
-  Widget _buildOllamaSettings(BuildContext context) {
+class OllamaSettings extends StatelessWidget {
+  const OllamaSettings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [

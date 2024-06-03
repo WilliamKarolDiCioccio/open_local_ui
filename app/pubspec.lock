@@ -377,6 +377,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  devicelocale:
+    dependency: "direct main"
+    description:
+      name: devicelocale
+      sha256: "0812b66f9eac57bc55c6ed4c178e0779440aa4e4e7c7e32fe1db02a758501d0e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.1"
   envied:
     dependency: "direct main"
     description:

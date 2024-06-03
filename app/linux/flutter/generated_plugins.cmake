@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_linux
   bitsdojo_window_linux
+  devicelocale
   gtk
   irondash_engine_context
   isar_flutter_libs
