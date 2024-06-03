@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -10,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/helpers/http.dart';
+import 'package:open_local_ui/utils/logger.dart';
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
@@ -32,6 +34,114 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     super.initState();
 
     _imageBytes = widget.imageBytes;
+  }
+
+  bool isURL(String str) {
+    const urlPattern = r'^(https?:\/\/)?' +
+        r'((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|' +
+        r'((\d{1,3}\.){3}\d{1,3}))' +
+        r'(:\d+)?(\/[-a-z\d%_.~+]*)*' +
+        r'(\?[;&a-z\d%_.~+=-]*)?' +
+        r'(\#[-a-z\d_]*)?$';
+    final regExp = RegExp(urlPattern, caseSensitive: false);
+    return regExp.hasMatch(str);
+  }
+
+  bool isQueryString(String str) {
+    const queryStringPattern = r'^[^=&?]+=[^=&?]+(&[^=&?]+=[^=&?]+)*$';
+    final regExp = RegExp(queryStringPattern);
+    return regExp.hasMatch(str);
+  }
+
+  String? _extractUrlFromQuery(String query) {
+    final uri = Uri.parse(query);
+    final queryParams = uri.queryParameters;
+
+    return queryParams['iai'];
+  }
+
+  FutureOr<DropOperation> _onDropOver(DropOverEvent event) async {
+    final item = event.session.items.first;
+
+    if (item.canProvide(Formats.plainText) ||
+        item.canProvide(Formats.png) ||
+        item.canProvide(Formats.jpeg) ||
+        item.canProvide(Formats.webp)) {
+      return DropOperation.copy;
+    } else {
+      return DropOperation.none;
+    }
+  }
+
+  Future<void> _onPerformDrop(PerformDropEvent event) async {
+    final item = event.session.items.first;
+
+    final reader = item.dataReader!;
+
+    setState(() {
+      _isImageLoading = true;
+    });
+
+    try {
+      if (reader.canProvide(Formats.plainText)) {
+        reader.getValue<String>(Formats.plainText, (text) async {
+          if (text == null) return;
+
+          String url = '';
+
+          if (isURL(text)) {
+            url = text;
+          } else {
+            url = _extractUrlFromQuery(text) ?? text;
+          }
+
+          final response = await HTTPHelpers.get(url);
+
+          if (response.statusCode != 200) return;
+
+          final encodedPng = await Image.network(url).pngUint8List;
+
+          setState(() {
+            _imageBytes = encodedPng;
+            _isImageLoading = false;
+          });
+        });
+      } else if (reader.canProvide(Formats.png)) {
+        reader.getFile(Formats.png, (file) {
+          final stream = file.getStream();
+          _setImageFromStream(stream);
+        });
+      } else if (reader.canProvide(Formats.jpeg)) {
+        reader.getFile(Formats.jpeg, (file) {
+          final stream = file.getStream();
+          _setImageFromStream(stream);
+        });
+      } else if (reader.canProvide(Formats.webp)) {
+        reader.getFile(Formats.webp, (file) async {
+          final stream = file.getStream();
+          final bytes = await stream.toList();
+
+          final decodedWebP = img.decodeWebP(
+            Uint8List.fromList(
+              bytes.expand((x) => x).toList(),
+            ),
+          );
+
+          final encodedPng = img.encodePng(decodedWebP!);
+
+          setState(() {
+            _imageBytes = encodedPng;
+            _isImageLoading = false;
+          });
+        });
+      }
+    } catch (e) {
+      logger.e('Error while processing dropped file: $e');
+
+      setState(() {
+        _isImageLoading = false;
+      });
+    }
   }
 
   @override
@@ -63,71 +173,8 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
                     Formats.jpeg,
                     Formats.webp,
                   ],
-                  onDropOver: (event) async {
-                    final item = event.session.items.first;
-
-                    if (item.canProvide(Formats.plainText) ||
-                        item.canProvide(Formats.png) ||
-                        item.canProvide(Formats.jpeg) ||
-                        item.canProvide(Formats.webp)) {
-                      return DropOperation.copy;
-                    } else {
-                      return DropOperation.none;
-                    }
-                  },
-                  onPerformDrop: (event) async {
-                    final item = event.session.items.first;
-
-                    final reader = item.dataReader!;
-
-                    setState(() {
-                      _isImageLoading = true;
-                    });
-
-                    if (reader.canProvide(Formats.plainText)) {
-                      reader.getValue<String>(Formats.plainText, (link) async {
-                        if (link == null) return;
-
-                        final response = await HTTPHelpers.get(link);
-
-                        if (response.statusCode != 200) {
-                          return;
-                        }
-
-                        final encodedPng =
-                            await Image.network(link).pngUint8List;
-
-                        setState(() {
-                          _imageBytes = encodedPng;
-                          _isImageLoading = false;
-                        });
-                      });
-                    } else if (reader.canProvide(Formats.png)) {
-                      reader.getFile(Formats.png, (file) {
-                        final stream = file.getStream();
-                        _setImageFromStream(stream);
-                      });
-                    } else if (reader.canProvide(Formats.jpeg)) {
-                      reader.getFile(Formats.jpeg, (file) {
-                        final stream = file.getStream();
-                        _setImageFromStream(stream);
-                      });
-                    } else if (reader.canProvide(Formats.webp)) {
-                      reader.getFile(Formats.webp, (file) async {
-                        final stream = file.getStream();
-                        final bytes = await stream.toList();
-
-                        final decodedWebP = img.decodeWebP(Uint8List.fromList(
-                            bytes.expand((x) => x).toList()));
-                        final encodedPng = img.encodePng(decodedWebP!);
-
-                        setState(() {
-                          _imageBytes = encodedPng;
-                          _isImageLoading = false;
-                        });
-                      });
-                    }
-                  },
+                  onDropOver: (event) async => await _onDropOver(event),
+                  onPerformDrop: (event) async => await _onPerformDrop(event),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -190,6 +237,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           onPressed: () {
             setState(() {
               _imageBytes = null;
+              _isImageLoading = false;
             });
           },
           child: Text(
