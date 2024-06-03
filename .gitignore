@@ -61,7 +61,7 @@ untranslated_messages.json
 
 # Pyinstaller related
 dist/
-venv/
+.venv/
 **.spec
 
 # gRPC related
@@ -72,3 +72,6 @@ venv/
 
 # TTS related
 **.wav
+
+# Ignore local VS Code settings
+.vscode/settings.json

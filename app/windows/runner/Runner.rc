@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "open_local_ui" "\0"
+            VALUE "CompanyName", "OpenLocalUI" "\0"
+            VALUE "FileDescription", "OpenLocalUI Desktop Client" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "open_local_ui" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "open_local_ui.exe" "\0"
-            VALUE "ProductName", "open_local_ui" "\0"
+            VALUE "InternalName", "OpenLocalUI" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 WilliamKarolDiCioccio and contributors. All rights reserved." "\0"
+            VALUE "OriginalFilename", "OpenLocalUI.exe" "\0"
+            VALUE "ProductName", "OpenLocalUI" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
