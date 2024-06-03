@@ -69,7 +69,10 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   }
 
   void _showTTSPlayer() {
-    if (context.read<ChatProvider>().isGenerating) {
+    final isLastMessage =
+        context.read<ChatProvider>().lastMessage!.uuid == widget.message.uuid;
+
+    if (context.read<ChatProvider>().isGenerating && isLastMessage) {
       SnackBarHelper.showSnackBar(
         AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
         SnackBarType.error,
