@@ -134,13 +134,17 @@ class AboutPage extends StatelessWidget {
                           children: [
                             CachedNetworkImage(
                               imageUrl: collaborator.avatar_url,
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) =>
-                                      CircularProgressIndicator(
+                              progressIndicatorBuilder: (
+                                context,
+                                url,
+                                downloadProgress,
+                              ) =>
+                                  CircularProgressIndicator(
                                 value: downloadProgress.progress,
                               ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                              errorWidget: (context, url, error) => const Icon(
+                                UniconsLine.exclamation_triangle,
+                              ),
                               width: 44,
                               height: 44,
                               imageBuilder: (context, imageProvider) {

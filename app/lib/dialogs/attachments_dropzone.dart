@@ -15,6 +15,13 @@ import 'package:open_local_ui/utils/logger.dart';
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
+enum ImageStatus {
+  empty,
+  loading,
+  loaded,
+  error,
+}
+
 class AttachmentsDropzoneDialog extends StatefulWidget {
   final Uint8List? imageBytes;
 
@@ -27,7 +34,7 @@ class AttachmentsDropzoneDialog extends StatefulWidget {
 
 class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
   Uint8List? _imageBytes;
-  bool _isImageLoading = false;
+  ImageStatus _imageStatus = ImageStatus.empty;
 
   @override
   void initState() {
@@ -36,7 +43,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     _imageBytes = widget.imageBytes;
   }
 
-  bool isURL(String str) {
+  bool _isURL(String str) {
     const urlPattern = r'^(https?:\/\/)?' +
         r'((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|' +
         r'((\d{1,3}\.){3}\d{1,3}))' +
@@ -44,12 +51,6 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
         r'(\?[;&a-z\d%_.~+=-]*)?' +
         r'(\#[-a-z\d_]*)?$';
     final regExp = RegExp(urlPattern, caseSensitive: false);
-    return regExp.hasMatch(str);
-  }
-
-  bool isQueryString(String str) {
-    const queryStringPattern = r'^[^=&?]+=[^=&?]+(&[^=&?]+=[^=&?]+)*$';
-    final regExp = RegExp(queryStringPattern);
     return regExp.hasMatch(str);
   }
 
@@ -79,17 +80,23 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     final reader = item.dataReader!;
 
     setState(() {
-      _isImageLoading = true;
+      _imageStatus = ImageStatus.loading;
     });
 
     try {
       if (reader.canProvide(Formats.plainText)) {
         reader.getValue<String>(Formats.plainText, (text) async {
-          if (text == null) return;
+          if (text == null) {
+            setState(() {
+              _imageStatus = ImageStatus.error;
+            });
+
+            return;
+          }
 
           String url = '';
 
-          if (isURL(text)) {
+          if (_isURL(text)) {
             url = text;
           } else {
             url = _extractUrlFromQuery(text) ?? text;
@@ -97,13 +104,19 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 
           final response = await HTTPHelpers.get(url);
 
-          if (response.statusCode != 200) return;
+          if (response.statusCode != 200) {
+            setState(() {
+              _imageStatus = ImageStatus.error;
+            });
+
+            return;
+          }
 
           final encodedPng = await Image.network(url).pngUint8List;
 
           setState(() {
             _imageBytes = encodedPng;
-            _isImageLoading = false;
+            _imageStatus = ImageStatus.loaded;
           });
         });
       } else if (reader.canProvide(Formats.png)) {
@@ -131,7 +144,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 
           setState(() {
             _imageBytes = encodedPng;
-            _isImageLoading = false;
+            _imageStatus = ImageStatus.loaded;
           });
         });
       }
@@ -139,8 +152,97 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
       logger.e('Error while processing dropped file: $e');
 
       setState(() {
-        _isImageLoading = false;
+        _imageStatus = ImageStatus.error;
       });
+    }
+  }
+
+  Widget _buildImage() {
+    switch (_imageStatus) {
+      case ImageStatus.empty:
+        return DropRegion(
+          formats: const [
+            Formats.plainText,
+            Formats.png,
+            Formats.jpeg,
+            Formats.webp,
+          ],
+          onDropOver: (event) async => await _onDropOver(event),
+          onPerformDrop: (event) async => await _onPerformDrop(event),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  UniconsLine.cloud_upload,
+                  size: 64.0,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.attachFilesDialogText,
+                  style: const TextStyle(fontSize: 24.0),
+                ),
+                Text(
+                  AppLocalizations.of(context)!
+                      .attachFilesDialogAllowedFormatsText(
+                    'PNG, JPEG, WEBP',
+                  ),
+                  style: const TextStyle(fontSize: 14.0),
+                ),
+                const SizedBox(height: 16.0),
+                TextButton.icon(
+                  label: Text(
+                    AppLocalizations.of(context)!
+                        .attachFilesDialogBrowseFilesButton,
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  icon: const Icon(UniconsLine.folder),
+                  onPressed: () async {
+                    FilePickerResult? result =
+                        await FilePicker.platform.pickFiles(
+                      allowMultiple: false,
+                      allowCompression: false,
+                      allowedExtensions: ['png', 'jpeg', 'webp'],
+                    );
+
+                    if (result != null) {
+                      final file = File(result.files.single.path!);
+
+                      if (result.files.single.extension == 'webp') {
+                        final image = await file.pngUint8List;
+
+                        setState(() {
+                          _imageBytes = image;
+                        });
+                      } else {
+                        final stream = file.openRead();
+                        _setImageFromStream(stream);
+                      }
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      case ImageStatus.loading:
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      case ImageStatus.loaded:
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.memory(
+            _imageBytes!,
+            fit: BoxFit.fitHeight,
+          ),
+        );
+      case ImageStatus.error:
+        return const Center(
+          child: Icon(
+            UniconsLine.exclamation_triangle,
+            size: 64.0,
+          ),
+        );
     }
   }
 
@@ -152,84 +254,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
         width: 512.0,
         height: 512.0,
         child: Center(
-          child: _imageBytes != null || _isImageLoading
-              ? SizedBox(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: _isImageLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Image.memory(
-                            _imageBytes!,
-                            fit: BoxFit.fitHeight,
-                          ),
-                  ),
-                )
-              : DropRegion(
-                  formats: const [
-                    Formats.plainText,
-                    Formats.png,
-                    Formats.jpeg,
-                    Formats.webp,
-                  ],
-                  onDropOver: (event) async => await _onDropOver(event),
-                  onPerformDrop: (event) async => await _onPerformDrop(event),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          UniconsLine.cloud_upload,
-                          size: 64.0,
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.attachFilesDialogText,
-                          style: const TextStyle(fontSize: 24.0),
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!
-                              .attachFilesDialogAllowedFormatsText(
-                            'PNG, JPEG, WEBP',
-                          ),
-                          style: const TextStyle(fontSize: 14.0),
-                        ),
-                        const SizedBox(height: 16.0),
-                        TextButton.icon(
-                          label: Text(
-                            AppLocalizations.of(context)!
-                                .attachFilesDialogBrowseFilesButton,
-                            style: const TextStyle(fontSize: 16.0),
-                          ),
-                          icon: const Icon(UniconsLine.folder),
-                          onPressed: () async {
-                            FilePickerResult? result =
-                                await FilePicker.platform.pickFiles(
-                              allowMultiple: false,
-                              allowCompression: false,
-                              allowedExtensions: ['png', 'jpeg', 'webp'],
-                            );
-
-                            if (result != null) {
-                              final file = File(result.files.single.path!);
-
-                              if (result.files.single.extension == 'webp') {
-                                final image = await file.pngUint8List;
-
-                                setState(() {
-                                  _imageBytes = image;
-                                });
-                              } else {
-                                final stream = file.openRead();
-                                _setImageFromStream(stream);
-                              }
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+          child: _buildImage(),
         ),
       ),
       actions: [
@@ -237,7 +262,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           onPressed: () {
             setState(() {
               _imageBytes = null;
-              _isImageLoading = false;
+              _imageStatus = ImageStatus.empty;
             });
           },
           child: Text(
@@ -277,7 +302,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 
     setState(() {
       _imageBytes = Uint8List.fromList(bytes.expand((x) => x).toList());
-      _isImageLoading = false;
+      _imageStatus = ImageStatus.loaded;
     });
   }
 }
