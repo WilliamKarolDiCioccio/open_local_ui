@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/dialogs/confirmation.dart';
+import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -12,7 +13,9 @@ import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/chat.dart';
 
 class SessionsPage extends StatefulWidget {
-  const SessionsPage({super.key});
+  final PageController pageController;
+
+  const SessionsPage({super.key, required this.pageController});
 
   @override
   State<SessionsPage> createState() => _SessionsPageState();
@@ -79,22 +82,25 @@ class _SessionsPageState extends State<SessionsPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
+            tooltip: AppLocalizations.of(context)!.sessionsPageEnterButton,
+            icon: const Icon(UniconsLine.enter),
+            onPressed: () {
+              context.read<ChatProvider>().setSession(session.uuid);
+              widget.pageController.jumpToPage(PageIndex.chat.index);
+            },
+          ),
+          IconButton(
             tooltip: AppLocalizations.of(context)!.sessionsPageDeleteButton,
             icon: const Icon(UniconsLine.trash),
             onPressed: () {
               showConfirmationDialog(
                 context: context,
-                title: AppLocalizations.of(context)!.sessionsPageDeleteDialogTitle,
-                content: AppLocalizations.of(context)!.sessionsPageDeleteDialogText(session.title),
+                title:
+                    AppLocalizations.of(context)!.sessionsPageDeleteDialogTitle,
+                content: AppLocalizations.of(context)!
+                    .sessionsPageDeleteDialogText(session.title),
                 onConfirm: () => _deleteSession(session.uuid),
               );
-            },
-          ),
-          IconButton(
-            tooltip: AppLocalizations.of(context)!.sessionsPageEnterButton,
-            icon: const Icon(UniconsLine.enter),
-            onPressed: () {
-              context.read<ChatProvider>().setSession(session.uuid);
             },
           ),
         ],
