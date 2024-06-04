@@ -3,9 +3,8 @@ import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_markdown_selectionarea/flutter_markdown_selectionarea.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/extensions/markdown_code.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/providers/chat.dart';
@@ -206,33 +205,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               const SizedBox(height: 8.0),
           if (!_showEditWidget)
-            SelectionArea(
-              child: MarkdownBody(
-                data: widget.message.text,
-                styleSheet: MarkdownStyleSheet(
-                  p: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w300,
-                    color: AdaptiveTheme.of(context)
-                        .theme
-                        .textTheme
-                        .bodyMedium
-                        ?.color,
-                    fontFamily: 'Neuton',
-                  ),
-                  codeblockAlign: WrapAlignment.center,
-                  codeblockPadding: const EdgeInsets.all(8),
-                  codeblockDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onTapLink: (text, href, title) {
-                  if (href != null) launchUrl(Uri.parse(href));
-                },
-                builders: {
-                  'code': MarkdownCustomCodeBuilder(),
-                },
-              ),
+            MarkdownWidget(
+              data: widget.message.text,
+              shrinkWrap: true,
             ),
           const Gap(8.0),
           if (!_showEditWidget && !_showPlayerWidget)
