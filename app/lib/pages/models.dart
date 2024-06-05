@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -17,7 +18,9 @@ import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
 
 class ModelsPage extends StatefulWidget {
-  const ModelsPage({super.key});
+  final PageController pageController;
+
+  const ModelsPage({super.key, required this.pageController});
 
   @override
   State<ModelsPage> createState() => _ModelsPageState();
@@ -27,7 +30,7 @@ class _ModelsPageState extends State<ModelsPage> {
   @override
   void initState() {
     super.initState();
-    
+
     context.read<ModelProvider>().updateList();
   }
 
@@ -134,24 +137,27 @@ class _ModelsPageState extends State<ModelsPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
-            icon: const Icon(UniconsLine.trash),
-            onPressed: () {
-              showConfirmationDialog(
-                context: context,
-                title: AppLocalizations.of(context)!.modelsPageDeleteDialogTitle,
-                content: AppLocalizations.of(context)!.modelsPageDeleteDialogText(model.name),
-                onConfirm: () => _deleteModel(model.name),
-              );
-            },
-          ),
-          IconButton(
             tooltip: AppLocalizations.of(context)!.modelsPageUseButton,
             icon: const Icon(UniconsLine.enter),
             onPressed: () {
               context.read<ChatProvider>().setModel(model.name);
               final session = context.read<ChatProvider>().addSession('');
               context.read<ChatProvider>().setSession(session.uuid);
+              widget.pageController.jumpToPage(PageIndex.chat.index);
+            },
+          ),
+          IconButton(
+            tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
+            icon: const Icon(UniconsLine.trash),
+            onPressed: () {
+              showConfirmationDialog(
+                context: context,
+                title:
+                    AppLocalizations.of(context)!.modelsPageDeleteDialogTitle,
+                content: AppLocalizations.of(context)!
+                    .modelsPageDeleteDialogText(model.name),
+                onConfirm: () => _deleteModel(model.name),
+              );
             },
           ),
         ],

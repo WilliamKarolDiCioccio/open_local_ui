@@ -138,7 +138,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
       children: [
         const ChatPage(),
         SessionsPage(pageController: _pageController),
-        const ModelsPage(),
+        ModelsPage(pageController: _pageController),
         const SettingsPage(),
         const AboutPage(),
       ],
