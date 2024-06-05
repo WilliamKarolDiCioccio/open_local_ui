@@ -495,11 +495,12 @@ packages:
     source: hosted
     version: "3.3.2"
   flutter_highlight:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      path: "packages/highlight.dart/flutter_highlight"
-      relative: true
-    source: path
+      name: flutter_highlight
+      sha256: "7b96333867aa07e122e245c033b8ad622e4e3a42a1a2372cbb098a2541d8782c"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.7.0"
   flutter_image_converter:
     dependency: "direct main"
@@ -522,14 +523,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_markdown_selectionarea:
-    dependency: "direct main"
-    description:
-      name: flutter_markdown_selectionarea
-      sha256: d4bc27e70a5c40ebdab23a4b81f75d53696a214d4d1f13c12045b38a0ddc58a2
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.17+1"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -663,9 +656,10 @@ packages:
   highlight:
     dependency: transitive
     description:
-      path: "packages/highlight.dart/highlight"
-      relative: true
-    source: path
+      name: highlight
+      sha256: "5353a83ffe3e3eca7df0abfb72dcf3fa66cc56b953728e7113ad4ad88497cf21"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.7.0"
   html:
     dependency: "direct main"
@@ -884,13 +878,21 @@ packages:
     source: hosted
     version: "1.2.0"
   markdown:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: markdown
       sha256: ef2a1298144e3f985cc736b22e0ccdaf188b5b3970648f2d9dc13efd1d9df051
       url: "https://pub.dev"
     source: hosted
     version: "7.2.2"
+  markdown_widget:
+    dependency: "direct main"
+    description:
+      name: markdown_widget
+      sha256: "216dced98962d7699a265344624bc280489d739654585ee881c95563a3252fac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2+6"
   matcher:
     dependency: transitive
     description:
@@ -1147,6 +1149,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  scroll_to_index:
+    dependency: transitive
+    description:
+      name: scroll_to_index
+      sha256: b707546e7500d9f070d63e5acf74fd437ec7eeeb68d3412ef7b0afada0b4f176
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1512,6 +1522,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  visibility_detector:
+    dependency: transitive
+    description:
+      name: visibility_detector
+      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0+2"
   vm_service:
     dependency: transitive
     description:
