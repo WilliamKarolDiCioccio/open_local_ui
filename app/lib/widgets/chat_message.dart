@@ -30,8 +30,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
   @override
   void dispose() {
-    _cancelEditingMessage();
-
     _textEditingController.dispose();
 
     super.dispose();
