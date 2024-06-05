@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:markdown_widget/markdown_widget.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:open_local_ui/widgets/markdown_widget.dart';
 import 'package:open_local_ui/widgets/tts_player.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ChatMessageWidget extends StatefulWidget {
   final ChatMessageWrapper message;
@@ -205,9 +203,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               const SizedBox(height: 8.0),
           if (!_showEditWidget)
-            MarkdownWidget(
-              data: widget.message.text,
-              shrinkWrap: true,
+            MessageMarkdownWidget(
+              widget.message.text,
             ),
           const Gap(8.0),
           if (!_showEditWidget && !_showPlayerWidget)
