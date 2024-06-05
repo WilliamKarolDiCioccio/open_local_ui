@@ -135,16 +135,18 @@ class _DashboardLayoutState extends State<DashboardLayout> {
     return PageView(
       controller: _pageController,
       physics: const NeverScrollableScrollPhysics(),
-      children: const [
-        ChatPage(),
-        SessionsPage(),
-        ModelsPage(),
-        SettingsPage(),
-        AboutPage(),
+      children: [
+        const ChatPage(),
+        SessionsPage(pageController: _pageController),
+        ModelsPage(pageController: _pageController),
+        const SettingsPage(),
+        const AboutPage(),
       ],
     );
   }
 }
+
+enum PageIndex { chat, sessions, models, settings, about }
 
 class FeedbackButton extends StatelessWidget {
   const FeedbackButton({super.key});
