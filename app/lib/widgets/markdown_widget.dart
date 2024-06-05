@@ -9,6 +9,7 @@ import 'package:flutter_highlight/themes/atom-one-dark.dart';
 import 'package:flutter_highlight/themes/atom-one-light.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
+import 'package:open_local_ui/styles/markdown.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,28 +32,19 @@ class MessageMarkdownWidget extends StatelessWidget {
         configs: [
           isDark
               ? PreConfig.darkConfig.copy(
-                  textStyle: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                  ),
+                  textStyle: codeTextStyle,
                   theme: atomOneDarkTheme,
                   wrapper: (child, code, language) =>
                       CodeWrapperWidget(child, code, language),
                 )
               : const PreConfig().copy(
-                  textStyle: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                  ),
+                  textStyle: codeTextStyle,
                   theme: atomOneLightTheme,
                   wrapper: (child, code, language) =>
                       CodeWrapperWidget(child, code, language),
                 ),
           LinkConfig(
-            style: const TextStyle(
-              color: Colors.blue,
-              decoration: TextDecoration.underline,
-            ),
+            style: linkTextStyle,
             onTap: (url) {
               try {
                 launchUrl(Uri.parse(url));
@@ -64,6 +56,13 @@ class MessageMarkdownWidget extends StatelessWidget {
               }
             },
           ),
+          const H1Config(style: header1TextStyle),
+          const H2Config(style: header2TextStyle),
+          const H3Config(style: header3TextStyle),
+          const H4Config(style: header4TextStyle),
+          const H5Config(style: header5TextStyle),
+          const H6Config(style: header6TextStyle),
+          const PConfig(textStyle: paragraphTextStyle),
         ],
       ),
     );

@@ -88,7 +88,10 @@ flutter:
           weight: 700
         - asset: assets/fonts/Neuton/Neuton-ExtraBold.ttf
           weight: 800
-    - family: Roboto
+    - family: Agave
       fonts:
-        - asset: assets/fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf
+        - asset: assets/fonts/Agave/AgaveNerdFontMono-Regular.ttf
+          style: normal
+        - asset: assets/fonts/Agave/AgaveNerdFontMono-Bold.ttf
+          weight: 400
   uses-material-design: true
