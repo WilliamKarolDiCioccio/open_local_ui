@@ -25,9 +25,9 @@ class ModelProvider extends ChangeNotifier {
 
   static Future startOllama() async {
     try {
-       Process.start('ollama', ['serve']).then((Process process) {
+      Process.start('ollama', ['serve']).then((Process process) {
         _process = process;
-        
+
         logger.d('Program started with PID: ${process.pid}');
 
         process.stdout.transform(utf8.decoder).listen((data) {
@@ -130,6 +130,13 @@ class ModelProvider extends ChangeNotifier {
       }
     }
 
+    sleep(
+      const Duration(
+        seconds: 1,
+        milliseconds: 500,
+      ),
+    );
+    
     await updateList();
 
     _status = ModelProviderStatus.idle;
@@ -186,6 +193,13 @@ class ModelProvider extends ChangeNotifier {
       }
     }
 
+    sleep(
+      const Duration(
+        seconds: 1,
+        milliseconds: 500,
+      ),
+    );
+
     await updateList();
 
     _status = ModelProviderStatus.idle;
@@ -241,6 +255,13 @@ class ModelProvider extends ChangeNotifier {
       }
     }
 
+    sleep(
+      const Duration(
+        seconds: 1,
+        milliseconds: 500,
+      ),
+    );
+
     await updateList();
 
     _status = ModelProviderStatus.idle;
@@ -263,7 +284,14 @@ class ModelProvider extends ChangeNotifier {
       logger.e(error);
     });
 
-    updateList();
+    sleep(
+      const Duration(
+        seconds: 1,
+        milliseconds: 500,
+      ),
+    );
+
+    await updateList();
   }
 
   Model getModel(int index) {
