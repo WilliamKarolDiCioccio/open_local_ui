@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/helpers/github.dart';
@@ -92,7 +93,11 @@ class _DashboardLayoutState extends State<DashboardLayout> {
             ],
           ),
         ),
-      ),
+      )
+          .animate()
+          .fadeIn(
+            duration: 200.ms,
+          ),
     );
   }
 
