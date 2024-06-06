@@ -148,7 +148,10 @@ class _ModelsPageState extends State<ModelsPage> {
           ),
           IconButton(
             tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
-            icon: const Icon(UniconsLine.trash),
+            icon: const Icon(
+              UniconsLine.trash,
+              color: Colors.red,
+            ),
             onPressed: () {
               showConfirmationDialog(
                 context: context,

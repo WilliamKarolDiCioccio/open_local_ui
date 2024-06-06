@@ -1,6 +1,9 @@
 {
   "@@locale": "en",
+  "moreOptionsButton": "More options",
   "feedbackButton": "Feedback",
+  "licenseButton": "License",
+  "privacyButton": "Privacy",
   "dashboardHomeBtn": "Home",
   "dashboardChatBtn": "Chat",
   "dashboardSessionsBtn": "Sessions",
@@ -97,8 +100,6 @@
     }
   },
   "attachFilesDialogBrowseFilesButton": "Browse files",
-  "cancelButtonTextShared": "Cancel",
-  "confirmButtonTextShared": "Confirm",
   "pullModelDialogTitle": "Pull model",
   "pullModelDialogGuideText1": "Please type the name of the model to pull:",
   "pullModelDialogModelNameLabel": "Model name",
@@ -214,10 +215,11 @@
   "dialogCloseButtonShared": "Close",
   "dialogStartButtonShared": "Start",
   "dialogCreateButtonShared": "Create",
-  "dialogResetButton": "Reset",
   "dialogRemoveButton": "Remove",
   "dialogAttachButton": "Attach",
   "dialogContinueInBackgroundButtonShared": "Continue in background",
+  "dialogCancelButtonShared": "Cancel",
+  "dialogConfirmButtonShared": "Confirm",
   "suggestion1part1": "What are some common use cases ",
   "suggestion1part2": "for problem-solving skills?",
   "suggestion2part1": "Plan a birthday party ",
@@ -248,5 +250,9 @@
   "noNeedToCreateSessionSnackbarText": "No need to create a new session",
   "modelIsGeneratingSnackbarText": "Model is generating",
   "noModelsAvailableSnackbarText": "No models available",
-  "somethingWentWrongSnackbarText": "Something went wrong"
+  "somethingWentWrongSnackbarText": "Something went wrong",
+  "abortModelRemovalSnackbarText": "Abort model removal",
+  "abortSessionRemovalSnackbarText": "Abort session removal",
+  "undoButtonTextShared": "Undo",
+  "redoButtonTextShared": "Redo"
 }

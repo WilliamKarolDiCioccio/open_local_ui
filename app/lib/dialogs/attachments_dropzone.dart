@@ -33,22 +33,23 @@ class AttachmentsDropzoneDialog extends StatefulWidget {
 }
 
 class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
-  Uint8List? _imageBytes;
-  ImageStatus _imageStatus = ImageStatus.empty;
+  late Uint8List? _imageBytes;
+  late ImageStatus _imageStatus;
 
   @override
   void initState() {
     super.initState();
 
     _imageBytes = widget.imageBytes;
+    _imageStatus = _imageBytes == null ? ImageStatus.empty : ImageStatus.loaded;
   }
 
   bool _isURL(String str) {
-    const urlPattern = r'^(https?:\/\/)?' +
-        r'((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|' +
-        r'((\d{1,3}\.){3}\d{1,3}))' +
-        r'(:\d+)?(\/[-a-z\d%_.~+]*)*' +
-        r'(\?[;&a-z\d%_.~+=-]*)?' +
+    const urlPattern = r'^(https?:\/\/)?'
+        r'((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'
+        r'((\d{1,3}\.){3}\d{1,3}))'
+        r'(:\d+)?(\/[-a-z\d%_.~+]*)*'
+        r'(\?[;&a-z\d%_.~+=-]*)?'
         r'(\#[-a-z\d_]*)?$';
     final regExp = RegExp(urlPattern, caseSensitive: false);
     return regExp.hasMatch(str);
@@ -157,79 +158,67 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     }
   }
 
-  Widget _buildImage() {
+  void _loadFromFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      allowCompression: false,
+      allowedExtensions: ['png', 'jpeg', 'webp'],
+    );
+
+    if (result != null) {
+      final file = File(result.files.single.path!);
+
+      if (result.files.single.extension == 'webp') {
+        final image = await file.pngUint8List;
+
+        setState(() {
+          _imageBytes = image;
+        });
+      } else {
+        final stream = file.openRead();
+        _setImageFromStream(stream);
+      }
+    }
+  }
+
+  Widget _buildDropzone() {
+    late Widget innerWidget;
+
     switch (_imageStatus) {
       case ImageStatus.empty:
-        return DropRegion(
-          formats: const [
-            Formats.plainText,
-            Formats.png,
-            Formats.jpeg,
-            Formats.webp,
-          ],
-          onDropOver: (event) async => await _onDropOver(event),
-          onPerformDrop: (event) async => await _onPerformDrop(event),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  UniconsLine.cloud_upload,
-                  size: 64.0,
-                ),
-                Text(
-                  AppLocalizations.of(context)!.attachFilesDialogText,
-                  style: const TextStyle(fontSize: 24.0),
-                ),
-                Text(
-                  AppLocalizations.of(context)!
-                      .attachFilesDialogAllowedFormatsText(
-                    'PNG, JPEG, WEBP',
-                  ),
-                  style: const TextStyle(fontSize: 14.0),
-                ),
-                const SizedBox(height: 16.0),
-                TextButton.icon(
-                  label: Text(
-                    AppLocalizations.of(context)!
-                        .attachFilesDialogBrowseFilesButton,
-                    style: const TextStyle(fontSize: 16.0),
-                  ),
-                  icon: const Icon(UniconsLine.folder),
-                  onPressed: () async {
-                    FilePickerResult? result =
-                        await FilePicker.platform.pickFiles(
-                      allowMultiple: false,
-                      allowCompression: false,
-                      allowedExtensions: ['png', 'jpeg', 'webp'],
-                    );
-
-                    if (result != null) {
-                      final file = File(result.files.single.path!);
-
-                      if (result.files.single.extension == 'webp') {
-                        final image = await file.pngUint8List;
-
-                        setState(() {
-                          _imageBytes = image;
-                        });
-                      } else {
-                        final stream = file.openRead();
-                        _setImageFromStream(stream);
-                      }
-                    }
-                  },
-                ),
-              ],
+        innerWidget = Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              UniconsLine.cloud_upload,
+              size: 64.0,
             ),
-          ),
+            Text(
+              AppLocalizations.of(context)!.attachFilesDialogText,
+              style: const TextStyle(fontSize: 24.0),
+            ),
+            Text(
+              AppLocalizations.of(context)!.attachFilesDialogAllowedFormatsText(
+                'PNG, JPEG, WEBP',
+              ),
+              style: const TextStyle(fontSize: 14.0),
+            ),
+            const SizedBox(height: 16.0),
+            TextButton.icon(
+              label: Text(
+                AppLocalizations.of(context)!
+                    .attachFilesDialogBrowseFilesButton,
+                style: const TextStyle(fontSize: 16.0),
+              ),
+              icon: const Icon(UniconsLine.folder),
+              onPressed: () => _loadFromFile(),
+            ),
+          ],
         );
       case ImageStatus.loading:
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        innerWidget = const CircularProgressIndicator();
       case ImageStatus.loaded:
-        return ClipRRect(
+        innerWidget = ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.memory(
             _imageBytes!,
@@ -237,13 +226,25 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           ),
         );
       case ImageStatus.error:
-        return const Center(
-          child: Icon(
-            UniconsLine.exclamation_triangle,
-            size: 64.0,
-          ),
+        innerWidget = const Icon(
+          UniconsLine.exclamation_triangle,
+          size: 64.0,
         );
     }
+
+    return DropRegion(
+      formats: const [
+        Formats.plainText,
+        Formats.png,
+        Formats.jpeg,
+        Formats.webp,
+      ],
+      onDropOver: (event) async => await _onDropOver(event),
+      onPerformDrop: (event) async => await _onPerformDrop(event),
+      child: Center(
+        child: innerWidget,
+      ),
+    );
   }
 
   @override
@@ -254,37 +255,40 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
         width: 512.0,
         height: 512.0,
         child: Center(
-          child: _buildImage(),
+          child: _buildDropzone(),
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () {
-            setState(() {
-              _imageBytes = null;
-              _imageStatus = ImageStatus.empty;
-            });
-          },
-          child: Text(
-            AppLocalizations.of(context)!.dialogResetButton,
+        if (_imageStatus == ImageStatus.empty)
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(_imageBytes);
+            },
+            child: Text(
+              AppLocalizations.of(context)!.dialogCancelButtonShared,
+            ),
           ),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(null);
-          },
-          child: Text(
-            AppLocalizations.of(context)!.dialogRemoveButton,
+        if (_imageStatus == ImageStatus.loaded)
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _imageBytes = null;
+                _imageStatus = ImageStatus.empty;
+              });
+            },
+            child: Text(
+              AppLocalizations.of(context)!.dialogRemoveButton,
+            ),
           ),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(_imageBytes);
-          },
-          child: Text(
-            AppLocalizations.of(context)!.dialogAttachButton,
+        if (_imageStatus == ImageStatus.loaded)
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(_imageBytes);
+            },
+            child: Text(
+              AppLocalizations.of(context)!.dialogAttachButton,
+            ),
           ),
-        ),
       ],
     )
         .animate()

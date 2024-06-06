@@ -91,7 +91,10 @@ class _SessionsPageState extends State<SessionsPage> {
           ),
           IconButton(
             tooltip: AppLocalizations.of(context)!.sessionsPageDeleteButton,
-            icon: const Icon(UniconsLine.trash),
+            icon: const Icon(
+              UniconsLine.trash,
+              color: Colors.red,
+            ),
             onPressed: () {
               showConfirmationDialog(
                 context: context,

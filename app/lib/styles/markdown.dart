@@ -42,5 +42,5 @@ const header6TextStyle = TextStyle(
 
 const paragraphTextStyle = TextStyle(
   fontFamily: 'Neuton',
-  fontSize: 16,
+  fontSize: 18,
 );

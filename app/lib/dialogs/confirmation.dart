@@ -26,7 +26,7 @@ class ConfirmationDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context)!.cancelButtonTextShared,
+            AppLocalizations.of(context)!.dialogCancelButtonShared,
           ),
         ),
         TextButton(
@@ -37,22 +37,9 @@ class ConfirmationDialog extends StatelessWidget {
           },
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(Colors.red),
-            side: WidgetStateProperty.resolveAs(
-              WidgetStateBorderSide.resolveWith((states) {
-                if (states.contains(WidgetState.focused)) {
-                  return const BorderSide(
-                    color: Colors.white,
-                    width: 1,
-                  );
-                } else {
-                  return BorderSide.none;
-                }
-              }),
-              {WidgetState.focused},
-            ),
           ),
           child: Text(
-            AppLocalizations.of(context)!.confirmButtonTextShared,
+            AppLocalizations.of(context)!.dialogConfirmButtonShared,
             style: const TextStyle(
               color: Colors.white,
             ),

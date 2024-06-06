@@ -74,60 +74,69 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
-            suffixIcon: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(width: 8.0),
-                IconButton(
-                  tooltip: _imageBytes == null
-                      ? AppLocalizations.of(context)!
-                          .chatInputFieldAttachButtonTooltip
-                      : AppLocalizations.of(context)!
-                          .chatInputFieldDetachButtonTooltip,
-                  icon: Icon(
-                    _imageBytes == null
-                        ? UniconsLine.link_add
-                        : UniconsLine.link_broken,
-                  ),
-                  onPressed: () async {
-                    final imageBytes = await showAttachmentsDropzoneDialog(
-                      context,
-                      _imageBytes,
-                    );
-
-                    setState(() {
-                      _imageBytes = imageBytes;
-                    });
-                  },
+            prefixIcon: Padding(
+              padding: const EdgeInsets.only(
+                left: 8.0,
+                right: 8.0,
+              ),
+              child: IconButton(
+                tooltip: _imageBytes == null
+                    ? AppLocalizations.of(context)!
+                        .chatInputFieldAttachButtonTooltip
+                    : AppLocalizations.of(context)!
+                        .chatInputFieldDetachButtonTooltip,
+                icon: Icon(
+                  _imageBytes == null
+                      ? UniconsLine.link_add
+                      : UniconsLine.link_broken,
                 ),
-                const SizedBox(width: 8.0),
-                if (context.watch<ChatProvider>().isGenerating)
-                  IconButton(
-                    tooltip: AppLocalizations.of(context)!
-                        .chatInputFieldCancelButtonTooltip,
-                    icon: const Icon(UniconsLine.stop_circle),
-                    onPressed: () async {
-                      context.read<ChatProvider>().abortGeneration();
-                    },
-                  )
-                else
-                  IconButton(
-                    tooltip: AppLocalizations.of(context)!
-                        .chatInputFieldSendButtonTooltip,
-                    icon: const Icon(UniconsLine.message),
-                    onPressed: () async {
-                      _text = _textEditingController.text;
+                onPressed: () async {
+                  final imageBytes = await showAttachmentsDropzoneDialog(
+                    context,
+                    _imageBytes,
+                  );
 
-                      _sendMessage();
-                    },
-                  ),
-                const SizedBox(width: 8.0),
-              ],
+                  setState(() {
+                    _imageBytes = imageBytes;
+                  });
+                },
+              ),
+            ),
+            suffixIcon: Padding(
+              padding: const EdgeInsets.only(
+                left: 8.0,
+                right: 8.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (context.watch<ChatProvider>().isGenerating)
+                    IconButton(
+                      tooltip: AppLocalizations.of(context)!
+                          .chatInputFieldCancelButtonTooltip,
+                      icon: const Icon(UniconsLine.stop_circle),
+                      onPressed: () async {
+                        context.read<ChatProvider>().abortGeneration();
+                      },
+                    )
+                  else
+                    IconButton(
+                      tooltip: AppLocalizations.of(context)!
+                          .chatInputFieldSendButtonTooltip,
+                      icon: const Icon(UniconsLine.message),
+                      onPressed: () async {
+                        _text = _textEditingController.text;
+
+                        _sendMessage();
+                      },
+                    ),
+                ],
+              ),
             ),
           ),
           style: const TextStyle(
-            fontSize: 20.0,
+            fontSize: 18.0,
             fontFamily: 'Neuton',
             fontWeight: FontWeight.w300,
           ),
