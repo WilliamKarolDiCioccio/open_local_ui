@@ -40,6 +40,24 @@ class _SessionsPageState extends State<SessionsPage> {
 
   final prototypeChatSession = ChatSessionWrapper('', DateTime(0), '');
 
+  @override
+  void initState() {
+    super.initState();
+
+    _sortBy = {SortBy.name};
+    _sortOrder = {SortOrder.ascending};
+
+    SharedPreferences.getInstance().then((prefs) {
+      final sortBy = prefs.getInt('sessionsSortBy') ?? 0;
+      final sortOrder = prefs.getBool('sessionsSortOrder') ?? false;
+
+      setState(() {
+        _sortBy = {SortBy.values[sortBy]};
+        _sortOrder = {sortOrder ? SortOrder.descending : SortOrder.ascending};
+      });
+    });
+  }
+
   void _deleteSession(String uuid) {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
@@ -104,26 +122,6 @@ class _SessionsPageState extends State<SessionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    SharedPreferences.getInstance().then((prefs) {
-      final index = prefs.getInt('modelsSortBy') ?? 0;
-
-      switch (index) {
-        case 0:
-          _sortBy = {SortBy.name};
-          break;
-        case 1:
-          _sortBy = {SortBy.date};
-          break;
-        case 2:
-          _sortBy = {SortBy.size};
-          break;
-      }
-
-      _sortOrder = prefs.getBool('modelsSortOrder') ?? false
-          ? {SortOrder.ascending}
-          : {SortOrder.descending};
-    });
-
     var sortedSessions = context.watch<ChatProvider>().sessions;
 
     sortedSessions.sort(
@@ -203,15 +201,20 @@ class _SessionsPageState extends State<SessionsPage> {
                   ),
                 ],
                 selected: _sortBy,
-                onSelectionChanged: (value) => {
+                onSelectionChanged: (value) async {
+                  final prefs = await SharedPreferences.getInstance();
+
+                  await prefs.setInt('sessionsSortBy', value.first.index);
+
                   setState(() {
                     _sortBy = value;
-                  })
+                  });
                 },
               ),
               const Gap(16),
-              Text(AppLocalizations.of(context)!
-                  .listFiltersSortOrderControlLabel),
+              Text(
+                AppLocalizations.of(context)!.listFiltersSortOrderControlLabel,
+              ),
               const Gap(16),
               SegmentedButton<SortOrder>(
                 selectedIcon: const Icon(UniconsLine.check),

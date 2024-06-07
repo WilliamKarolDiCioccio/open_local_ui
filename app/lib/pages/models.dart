@@ -57,6 +57,24 @@ class _ModelsPageState extends State<ModelsPage> {
     ),
   );
 
+  @override
+  void initState() {
+    super.initState();
+
+    _sortBy = {SortBy.name};
+    _sortOrder = {SortOrder.ascending};
+
+    SharedPreferences.getInstance().then((prefs) {
+      final sortBy = prefs.getInt('modelsSortBy') ?? 0;
+      final sortOrder = prefs.getBool('modelsSortOrder') ?? false;
+
+      setState(() {
+        _sortBy = {SortBy.values[sortBy]};
+        _sortOrder = {sortOrder ? SortOrder.descending : SortOrder.ascending};
+      });
+    });
+  }
+
   void _deleteModel(String name) {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelper.showSnackBar(
@@ -129,26 +147,6 @@ class _ModelsPageState extends State<ModelsPage> {
 
   @override
   Widget build(BuildContext context) {
-    SharedPreferences.getInstance().then((prefs) {
-      final index = prefs.getInt('modelsSortBy') ?? 0;
-
-      switch (index) {
-        case 0:
-          _sortBy = {SortBy.name};
-          break;
-        case 1:
-          _sortBy = {SortBy.date};
-          break;
-        case 2:
-          _sortBy = {SortBy.size};
-          break;
-      }
-
-      _sortOrder = prefs.getBool('modelsSortOrder') ?? false
-          ? {SortOrder.ascending}
-          : {SortOrder.descending};
-    });
-
     var sortedModels = context.read<ModelProvider>().models;
 
     sortedModels.sort(
@@ -259,17 +257,7 @@ class _ModelsPageState extends State<ModelsPage> {
                 onSelectionChanged: (value) async {
                   final prefs = await SharedPreferences.getInstance();
 
-                  switch (value.first) {
-                    case SortBy.name:
-                      await prefs.setInt('modelsSortBy', 0);
-                      break;
-                    case SortBy.date:
-                      await prefs.setInt('modelsSortBy', 1);
-                      break;
-                    case SortBy.size:
-                      await prefs.setInt('modelsSortBy', 2);
-                      break;
-                  }
+                  await prefs.setInt('modelsSortBy', value.first.index);
 
                   setState(() {
                     _sortBy = value;
@@ -277,8 +265,9 @@ class _ModelsPageState extends State<ModelsPage> {
                 },
               ),
               const Gap(16),
-              Text(AppLocalizations.of(context)!
-                  .listFiltersSortOrderControlLabel),
+              Text(
+                AppLocalizations.of(context)!.listFiltersSortOrderControlLabel,
+              ),
               const Gap(16),
               SegmentedButton<SortOrder>(
                 selectedIcon: const Icon(UniconsLine.check),
