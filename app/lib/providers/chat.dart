@@ -6,7 +6,6 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
-import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/utils/logger.dart';
@@ -44,7 +43,7 @@ class ChatProvider extends ChangeNotifier {
   ChatSessionWrapper addSession(String title) {
     _sessions.add(ChatSessionWrapper(
       title,
-      DateTimeHelpers.getFormattedDateTime(),
+      DateTime.now(),
       const Uuid().v4(),
     ));
 
@@ -68,7 +67,7 @@ class ChatProvider extends ChangeNotifier {
   ChatMessageWrapper addSystemMessage(String message) {
     _session!.messages.add(ChatSystemMessageWrapper(
       message,
-      DateTimeHelpers.getFormattedDateTime(),
+      DateTime.now(),
       const Uuid().v4(),
     ));
 
@@ -80,7 +79,7 @@ class ChatProvider extends ChangeNotifier {
   ChatMessageWrapper addModelMessage(String message, String? senderName) {
     _session!.messages.add(ChatModelMessageWrapper(
       message,
-      DateTimeHelpers.getFormattedDateTime(),
+      DateTime.now(),
       const Uuid().v4(),
       senderName!,
     ));
@@ -93,7 +92,7 @@ class ChatProvider extends ChangeNotifier {
   ChatMessageWrapper addUserMessage(String message, Uint8List? imageBytes) {
     _session!.messages.add(ChatUserMessageWrapper(
       message,
-      DateTimeHelpers.getFormattedDateTime(),
+      DateTime.now(),
       const Uuid().v4(),
       imageBytes: imageBytes,
     ));

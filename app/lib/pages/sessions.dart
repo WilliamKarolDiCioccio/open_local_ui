@@ -4,12 +4,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/dialogs/confirmation.dart';
+import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 enum SortBy {
@@ -33,10 +35,10 @@ class SessionsPage extends StatefulWidget {
 }
 
 class _SessionsPageState extends State<SessionsPage> {
-  Set<SortBy> _sortBy = {SortBy.name};
-  Set<SortOrder> _sortOrder = {SortOrder.ascending};
+  late Set<SortBy> _sortBy;
+  late Set<SortOrder> _sortOrder;
 
-  final prototypeChatSession = ChatSessionWrapper('', '', '');
+  final prototypeChatSession = ChatSessionWrapper('', DateTime(0), '');
 
   void _deleteSession(String uuid) {
     if (context.read<ChatProvider>().isGenerating) {
@@ -64,7 +66,11 @@ class _SessionsPageState extends State<SessionsPage> {
   Widget _buildModelListTile(ChatSessionWrapper session, BuildContext context) {
     return ListTile(
       title: Text(session.title),
-      subtitle: Text(session.createdAt.toString()),
+      subtitle: Text(
+        AppLocalizations.of(context)!.createdAtTextShared(
+          DateTimeHelpers.formattedDateTime(session.createdAt),
+        ),
+      ),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
@@ -98,6 +104,26 @@ class _SessionsPageState extends State<SessionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    SharedPreferences.getInstance().then((prefs) {
+      final index = prefs.getInt('modelsSortBy') ?? 0;
+
+      switch (index) {
+        case 0:
+          _sortBy = {SortBy.name};
+          break;
+        case 1:
+          _sortBy = {SortBy.date};
+          break;
+        case 2:
+          _sortBy = {SortBy.size};
+          break;
+      }
+
+      _sortOrder = prefs.getBool('modelsSortOrder') ?? false
+          ? {SortOrder.ascending}
+          : {SortOrder.descending};
+    });
+
     var sortedSessions = context.watch<ChatProvider>().sessions;
 
     sortedSessions.sort(
@@ -105,20 +131,14 @@ class _SessionsPageState extends State<SessionsPage> {
         if (_sortBy.contains(SortBy.name)) {
           return a.title.compareTo(b.title);
         } else if (_sortBy.contains(SortBy.date)) {
-          return DateTime.parse(
-            a.createdAt,
-          ).compareTo(
-            DateTime.parse(
-              b.createdAt,
-            ),
-          );
+          return a.createdAt.compareTo(b.createdAt);
         } else if (_sortBy.contains(SortBy.size)) {
           return a.title.length.compareTo(b.title.length);
         }
         return 0;
       },
     );
-    
+
     if (_sortOrder.contains(SortOrder.descending)) {
       sortedSessions = sortedSessions.reversed.toList();
     }
@@ -214,10 +234,18 @@ class _SessionsPageState extends State<SessionsPage> {
                   ),
                 ],
                 selected: _sortOrder,
-                onSelectionChanged: (value) => {
+                onSelectionChanged: (value) async {
+                  final prefs = await SharedPreferences.getInstance();
+
+                  if (value.contains(SortOrder.descending)) {
+                    await prefs.setBool('sessionsSortOrder', true);
+                  } else {
+                    await prefs.setBool('sessionsSortOrder', false);
+                  }
+
                   setState(() {
                     _sortOrder = value;
-                  })
+                  });
                 },
               ),
             ],

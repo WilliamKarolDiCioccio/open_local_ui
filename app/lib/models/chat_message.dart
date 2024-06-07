@@ -11,7 +11,7 @@ class ChatMessageWrapper {
   final Id id = Isar.autoIncrement;
 
   String text;
-  final String createdAt;
+  final DateTime createdAt;
   final String uuid;
   @ignore
   final String? senderName;
@@ -30,7 +30,7 @@ class ChatMessageWrapper {
 class ChatSystemMessageWrapper extends ChatMessageWrapper {
   ChatSystemMessageWrapper(
     String text,
-    String createdAt,
+    DateTime createdAt,
     String uuid,
   ) : super(
           text,
@@ -44,7 +44,7 @@ class ChatSystemMessageWrapper extends ChatMessageWrapper {
 class ChatModelMessageWrapper extends ChatMessageWrapper {
   ChatModelMessageWrapper(
     String text,
-    String createdAt,
+    DateTime createdAt,
     String uuid,
     String senderName,
   ) : super(
@@ -63,7 +63,7 @@ class ChatUserMessageWrapper extends ChatMessageWrapper {
 
   ChatUserMessageWrapper(
     String text,
-    String createdAt,
+    DateTime createdAt,
     String uuid, {
     this.imageBytes,
     this.filePaths,

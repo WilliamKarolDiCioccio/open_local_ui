@@ -1,6 +1,5 @@
 class DateTimeHelpers {
-  static String getFormattedDateTime() {
-    final now = DateTime.now();
-    return '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}';
+  static String formattedDateTime(DateTime dateTime) {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
   }
 }

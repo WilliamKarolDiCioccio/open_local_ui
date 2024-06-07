@@ -8,6 +8,7 @@ import 'package:open_local_ui/dialogs/create_model.dart';
 import 'package:open_local_ui/dialogs/model_details.dart';
 import 'package:open_local_ui/dialogs/pull_model.dart';
 import 'package:open_local_ui/dialogs/push_model.dart';
+import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/layout/page_base.dart';
@@ -15,6 +16,7 @@ import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 enum SortBy {
@@ -38,8 +40,8 @@ class ModelsPage extends StatefulWidget {
 }
 
 class _ModelsPageState extends State<ModelsPage> {
-  Set<SortBy> _sortBy = {SortBy.name};
-  Set<SortOrder> _sortOrder = {SortOrder.ascending};
+  late Set<SortBy> _sortBy;
+  late Set<SortOrder> _sortOrder;
 
   final prototypeModel = Model(
     name: '',
@@ -54,13 +56,6 @@ class _ModelsPageState extends State<ModelsPage> {
       quantizationLevel: '',
     ),
   );
-
-  @override
-  void initState() {
-    super.initState();
-
-    context.read<ModelProvider>().updateList();
-  }
 
   void _deleteModel(String name) {
     if (context.read<ChatProvider>().isGenerating) {
@@ -94,8 +89,8 @@ class _ModelsPageState extends State<ModelsPage> {
     return ListTile(
       title: Text(model.name),
       subtitle: Text(
-        AppLocalizations.of(context)!.modelDetailsDialogModifiedAtText(
-          model.modifiedAt.toString(),
+        AppLocalizations.of(context)!.modifiedAtTextShared(
+          DateTimeHelpers.formattedDateTime(model.modifiedAt),
         ),
       ),
       trailing: Row(
@@ -134,6 +129,26 @@ class _ModelsPageState extends State<ModelsPage> {
 
   @override
   Widget build(BuildContext context) {
+    SharedPreferences.getInstance().then((prefs) {
+      final index = prefs.getInt('modelsSortBy') ?? 0;
+
+      switch (index) {
+        case 0:
+          _sortBy = {SortBy.name};
+          break;
+        case 1:
+          _sortBy = {SortBy.date};
+          break;
+        case 2:
+          _sortBy = {SortBy.size};
+          break;
+      }
+
+      _sortOrder = prefs.getBool('modelsSortOrder') ?? false
+          ? {SortOrder.ascending}
+          : {SortOrder.descending};
+    });
+
     var sortedModels = context.read<ModelProvider>().models;
 
     sortedModels.sort(
@@ -241,10 +256,24 @@ class _ModelsPageState extends State<ModelsPage> {
                   ),
                 ],
                 selected: _sortBy,
-                onSelectionChanged: (value) => {
+                onSelectionChanged: (value) async {
+                  final prefs = await SharedPreferences.getInstance();
+
+                  switch (value.first) {
+                    case SortBy.name:
+                      await prefs.setInt('modelsSortBy', 0);
+                      break;
+                    case SortBy.date:
+                      await prefs.setInt('modelsSortBy', 1);
+                      break;
+                    case SortBy.size:
+                      await prefs.setInt('modelsSortBy', 2);
+                      break;
+                  }
+
                   setState(() {
                     _sortBy = value;
-                  })
+                  });
                 },
               ),
               const Gap(16),
@@ -272,10 +301,18 @@ class _ModelsPageState extends State<ModelsPage> {
                   ),
                 ],
                 selected: _sortOrder,
-                onSelectionChanged: (value) => {
+                onSelectionChanged: (value) async {
+                  final prefs = await SharedPreferences.getInstance();
+
+                  if (value.contains(SortOrder.descending)) {
+                    await prefs.setBool('modelsSortOrder', true);
+                  } else {
+                    await prefs.setBool('modelsSortOrder', false);
+                  }
+
                   setState(() {
                     _sortOrder = value;
-                  })
+                  });
                 },
               ),
             ],

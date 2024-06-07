@@ -125,14 +125,6 @@
       }
     }
   },
-  "modelDetailsDialogModifiedAtText": "Modified at: {modifiedAt}",
-  "@modelDetailsDialogModifiedAtText": {
-    "placeholders": {
-      "modifiedAt": {
-        "type": "String"
-      }
-    }
-  },
   "modelDetailsDialogSizeText": "Size: {size} GB",
   "@modelDetailsDialogSizeText": {
     "placeholders": {
@@ -223,6 +215,23 @@
   "dialogCloseButtonShared": "Close",
   "dialogStartButtonShared": "Start",
   "dialogCreateButtonShared": "Create",
+  
+  "createdAtTextShared": "Created at: {createdAt}",
+  "@modelDetailsDialogCreatedAtText": {
+    "placeholders": {
+      "createdAt": {
+        "type": "String"
+      }
+    }
+  },
+  "modifiedAtTextShared": "Modified at: {modifiedAt}",
+  "@modelDetailsDialogModifiedAtText": {
+    "placeholders": {
+      "modifiedAt": {
+        "type": "String"
+      }
+    }
+  },
   "dialogRemoveButton": "Remove",
   "dialogAttachButton": "Attach",
   "dialogContinueInBackgroundButtonShared": "Continue in background",

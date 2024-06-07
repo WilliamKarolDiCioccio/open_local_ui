@@ -20,7 +20,7 @@ class ModelDetailsDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.modelDetailsDialogModifiedAtText(
+            AppLocalizations.of(context)!.modifiedAtTextShared(
               model.modifiedAt.toString(),
             ),
           ),

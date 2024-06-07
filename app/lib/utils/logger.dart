@@ -20,7 +20,7 @@ Future<void> initLogger() async {
 }
 
 Future<File> _createLogFile() async {
-  final timeStamp = DateTimeHelpers.getFormattedDateTime()
+  final timeStamp = DateTimeHelpers.formattedDateTime(DateTime.now())
       .replaceAll(' ', '_')
       .replaceAll('/', '-')
       .replaceAll(':', '-');

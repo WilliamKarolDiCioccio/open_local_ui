@@ -16,7 +16,7 @@ class ChatSessionWrapper {
   final Id id = Isar.autoIncrement;
 
   String title;
-  final String createdAt;
+  final DateTime createdAt;
   final String uuid;
   @ignore
   final memory = ConversationBufferMemory(returnMessages: true);
