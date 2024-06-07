@@ -1,9 +1,8 @@
 import 'package:envied/envied.dart';
-import 'package:flutter/foundation.dart';
 
 part 'env.g.dart';
 
-@Envied(path: kDebugMode ? '.env.dev' : '.env')
+@Envied(path: '.env')
 final class Env {
   @EnviedField(varName: 'GITHUB_FEEDBACK_PAT', obfuscate: true)
   static final String gitHubFeedbackPat = _Env.gitHubFeedbackPat;
