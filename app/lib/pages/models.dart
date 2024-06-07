@@ -2,20 +2,31 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/layout/dashboard.dart';
-import 'package:provider/provider.dart';
-import 'package:unicons/unicons.dart';
-
+import 'package:gap/gap.dart';
 import 'package:open_local_ui/dialogs/confirmation.dart';
 import 'package:open_local_ui/dialogs/create_model.dart';
 import 'package:open_local_ui/dialogs/model_details.dart';
 import 'package:open_local_ui/dialogs/pull_model.dart';
 import 'package:open_local_ui/dialogs/push_model.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
+import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
+import 'package:provider/provider.dart';
+import 'package:unicons/unicons.dart';
+
+enum SortBy {
+  name,
+  date,
+  size,
+}
+
+enum SortOrder {
+  ascending,
+  descending,
+}
 
 class ModelsPage extends StatefulWidget {
   final PageController pageController;
@@ -27,6 +38,23 @@ class ModelsPage extends StatefulWidget {
 }
 
 class _ModelsPageState extends State<ModelsPage> {
+  Set<SortBy> _sortBy = {SortBy.name};
+  Set<SortOrder> _sortOrder = {SortOrder.ascending};
+
+  final prototypeModel = Model(
+    name: '',
+    modifiedAt: DateTime.timestamp(),
+    size: 0,
+    digest: '',
+    details: ModelDetails(
+      format: '',
+      family: '',
+      families: [],
+      parameterSize: '',
+      quantizationLevel: '',
+    ),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -45,83 +73,21 @@ class _ModelsPageState extends State<ModelsPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<ModelProvider>(
-      builder: (context, value, child) => PageBaseLayout(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.modelsPageTitle,
-              style: const TextStyle(
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton.icon(
-                  label: Text(
-                    AppLocalizations.of(context)!.modelsPagePullButton,
-                    style: const TextStyle(fontSize: 18.0),
-                  ),
-                  icon: const Icon(UniconsLine.download_alt),
-                  onPressed: () => showPullModelDialog(context),
-                ),
-                TextButton.icon(
-                  label: Text(
-                    AppLocalizations.of(context)!.modelsPagePushButton,
-                    style: const TextStyle(fontSize: 18.0),
-                  ),
-                  icon: const Icon(UniconsLine.upload_alt),
-                  onPressed: () => showPushModelDialog(context),
-                ),
-                TextButton.icon(
-                  label: Text(
-                    AppLocalizations.of(context)!.modelsPageCreateButton,
-                    style: const TextStyle(fontSize: 18.0),
-                  ),
-                  icon: const Icon(UniconsLine.create_dashboard),
-                  onPressed: () => showCreateModelDialog(context),
-                ),
-                TextButton.icon(
-                  label: Text(
-                    AppLocalizations.of(context)!.modelsPageRefreshButton,
-                    style: const TextStyle(fontSize: 18.0),
-                  ),
-                  icon: const Icon(UniconsLine.sync),
-                  onPressed: () {
-                    context.read<ModelProvider>().updateList();
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Expanded(
-              child: ListView.builder(
-                itemCount: context.read<ModelProvider>().modelsCount,
-                itemBuilder: (context, index) {
-                  return _buildModelListTile(
-                    context.read<ModelProvider>().models[index],
-                    context,
-                  )
-                      .animate(delay: (index * 100).ms)
-                      .fadeIn(duration: 900.ms, delay: 300.ms)
-                      .move(
-                        begin: const Offset(-16, 0),
-                        curve: Curves.easeOutQuad,
-                      );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void _setModel(Model model) {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelper.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+        SnackBarType.error,
+      );
+    } else {
+      if (!context.read<ChatProvider>().isSessionSelected) {
+        final session = context.read<ChatProvider>().addSession('');
+        context.read<ChatProvider>().setSession(session.uuid);
+      }
+
+      context.read<ChatProvider>().setModel(model.name);
+      widget.pageController.jumpToPage(PageIndex.chat.index);
+    }
   }
 
   Widget _buildModelListTile(Model model, BuildContext context) {
@@ -139,12 +105,7 @@ class _ModelsPageState extends State<ModelsPage> {
           IconButton(
             tooltip: AppLocalizations.of(context)!.modelsPageUseButton,
             icon: const Icon(UniconsLine.enter),
-            onPressed: () {
-              context.read<ChatProvider>().setModel(model.name);
-              final session = context.read<ChatProvider>().addSession('');
-              context.read<ChatProvider>().setSession(session.uuid);
-              widget.pageController.jumpToPage(PageIndex.chat.index);
-            },
+            onPressed: () => _setModel(model),
           ),
           IconButton(
             tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
@@ -168,6 +129,178 @@ class _ModelsPageState extends State<ModelsPage> {
       onTap: () {
         showModelDetailsDialog(model, context);
       },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var sortedModels = context.read<ModelProvider>().models;
+
+    sortedModels.sort(
+      (a, b) {
+        if (_sortBy.contains(SortBy.name)) {
+          return a.name.compareTo(b.name);
+        } else if (_sortBy.contains(SortBy.date)) {
+          return a.modifiedAt.compareTo(
+            b.modifiedAt,
+          );
+        } else if (_sortBy.contains(SortBy.size)) {
+          return a.size.compareTo(b.size);
+        }
+        return 0;
+      },
+    );
+
+    if (_sortOrder.contains(SortOrder.descending)) {
+      sortedModels = sortedModels.reversed.toList();
+    }
+
+    return PageBaseLayout(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.modelsPageTitle,
+            style: const TextStyle(
+              fontSize: 32.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Gap(16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton.icon(
+                label: Text(
+                  AppLocalizations.of(context)!.modelsPagePullButton,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                icon: const Icon(UniconsLine.download_alt),
+                onPressed: () => showPullModelDialog(context),
+              ),
+              TextButton.icon(
+                label: Text(
+                  AppLocalizations.of(context)!.modelsPagePushButton,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                icon: const Icon(UniconsLine.upload_alt),
+                onPressed: () => showPushModelDialog(context),
+              ),
+              TextButton.icon(
+                label: Text(
+                  AppLocalizations.of(context)!.modelsPageCreateButton,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                icon: const Icon(UniconsLine.create_dashboard),
+                onPressed: () => showCreateModelDialog(context),
+              ),
+              TextButton.icon(
+                label: Text(
+                  AppLocalizations.of(context)!.modelsPageRefreshButton,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                icon: const Icon(UniconsLine.sync),
+                onPressed: () {
+                  context.read<ModelProvider>().updateList();
+                },
+              ),
+            ],
+          ),
+          const Gap(16),
+          const Divider(),
+          const Gap(16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(AppLocalizations.of(context)!.listFiltersSortByControlLabel),
+              const Gap(16),
+              SegmentedButton<SortBy>(
+                selectedIcon: const Icon(UniconsLine.check),
+                segments: [
+                  ButtonSegment(
+                    value: SortBy.name,
+                    label: Text(
+                      AppLocalizations.of(context)!.sortByNameOptionsLabel,
+                    ),
+                    icon: const Icon(UniconsLine.tag),
+                  ),
+                  ButtonSegment(
+                    value: SortBy.date,
+                    label: Text(
+                      AppLocalizations.of(context)!.sortByDateOptionsLabel,
+                    ),
+                    icon: const Icon(UniconsLine.clock),
+                  ),
+                  ButtonSegment(
+                    value: SortBy.size,
+                    label: Text(
+                      AppLocalizations.of(context)!.sortBySizeOptionsLabel,
+                    ),
+                    icon: const Icon(UniconsLine.database),
+                  ),
+                ],
+                selected: _sortBy,
+                onSelectionChanged: (value) => {
+                  setState(() {
+                    _sortBy = value;
+                  })
+                },
+              ),
+              const Gap(16),
+              Text(AppLocalizations.of(context)!
+                  .listFiltersSortOrderControlLabel),
+              const Gap(16),
+              SegmentedButton<SortOrder>(
+                selectedIcon: const Icon(UniconsLine.check),
+                segments: [
+                  ButtonSegment(
+                    value: SortOrder.ascending,
+                    label: Text(
+                      AppLocalizations.of(context)!
+                          .sortOrderAscendingOptionsLabel,
+                    ),
+                    icon: const Icon(UniconsLine.arrow_up),
+                  ),
+                  ButtonSegment(
+                    value: SortOrder.descending,
+                    label: Text(
+                      AppLocalizations.of(context)!
+                          .sortOrderDescendingOptionsLabel,
+                    ),
+                    icon: const Icon(UniconsLine.arrow_down),
+                  ),
+                ],
+                selected: _sortOrder,
+                onSelectionChanged: (value) => {
+                  setState(() {
+                    _sortOrder = value;
+                  })
+                },
+              ),
+            ],
+          ),
+          const Gap(16),
+          Expanded(
+            child: ListView.builder(
+              prototypeItem: _buildModelListTile(prototypeModel, context),
+              itemCount: context.read<ModelProvider>().modelsCount,
+              itemBuilder: (context, index) {
+                return _buildModelListTile(
+                  sortedModels[index],
+                  context,
+                )
+                    .animate(delay: (index * 100).ms)
+                    .fadeIn(duration: 900.ms, delay: 300.ms)
+                    .move(
+                      begin: const Offset(-16, 0),
+                      curve: Curves.easeOutQuad,
+                    );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
