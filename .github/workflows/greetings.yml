@@ -1,0 +1,40 @@
+name: Greetings
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: |
+          Hello and welcome to the OpenLocalUI repository!
+
+          Thank you for your interest in contributing to our project. To get started, please review the following resources:
+
+          - [Code of Conduct](CODE_OF_CONDUCT.md): Understand our expectations for a welcoming and inclusive environment.
+          - [Contributing Guidelines](CONTRIBUTING.md): Find detailed instructions on our development process, how to propose changes, and best practices to follow.
+          - [MIT License](LICENSE.md): Review our permissive license that encourages community contributions.
+
+          We appreciate your contributions and look forward to collaborating with you!
+
+          Best regards,
+          The OpenLocalUI Team
+        pr-message: |
+          Hello and welcome to the OpenLocalUI repository!
+
+          Thank you for your interest in contributing to our project. To get started, please review the following resources:
+
+          - [Code of Conduct](CODE_OF_CONDUCT.md): Understand our expectations for a welcoming and inclusive environment.
+          - [Contributing Guidelines](CONTRIBUTING.md): Find detailed instructions on our development process, how to propose changes, and best practices to follow.
+          - [MIT License](LICENSE.md): Review our permissive license that encourages community contributions.
+
+          We appreciate your contributions and look forward to collaborating with you!
+
+          Best regards,
+          The OpenLocalUI Team
