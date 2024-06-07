@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:open_local_ui/helpers/http.dart';
+import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/models/ollama_responses.dart';
 import 'package:open_local_ui/utils/logger.dart';
@@ -82,6 +83,8 @@ class ModelProvider extends ChangeNotifier {
   }
 
   Stream<OllamaPullResponse> pull(String name) async* {
+    final completer = Completer<void>();
+
     _status = ModelProviderStatus.pulling;
 
     final request = http.Request('POST', Uri.parse('$_api/pull'));
@@ -98,14 +101,14 @@ class ModelProvider extends ChangeNotifier {
       return;
     }
 
-    final completer = Completer<void>();
-
     final stream = response.stream
         .transform(utf8.decoder)
         .transform(const LineSplitter())
         .asBroadcastStream();
 
     final startTime = DateTime.now().toString();
+
+    OllamaPullResponse? lastResponse;
 
     await for (var data in stream) {
       try {
@@ -123,11 +126,30 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
+          lastResponse = modelPullResponse;
+
           yield modelPullResponse;
         }
       } catch (e) {
         logger.d('Incomplete or invalid JSON received: $data');
+
+        SnackBarHelpers.showSnackBar(
+          'Failed to pull model $name',
+          SnackBarType.error,
+        );
       }
+    }
+
+    if (lastResponse == null || lastResponse.status != 'success') {
+      SnackBarHelpers.showSnackBar(
+        'Failed to pull model $name',
+        SnackBarType.error,
+      );
+    } else {
+      SnackBarHelpers.showSnackBar(
+        'Model $name pulled successfully',
+        SnackBarType.success,
+      );
     }
 
     sleep(
@@ -136,7 +158,7 @@ class ModelProvider extends ChangeNotifier {
         milliseconds: 500,
       ),
     );
-    
+
     await updateList();
 
     _status = ModelProviderStatus.idle;
@@ -145,6 +167,8 @@ class ModelProvider extends ChangeNotifier {
   }
 
   Stream<OllamaPushResponse> push(String name) async* {
+    final completer = Completer<void>();
+
     _status = ModelProviderStatus.pushing;
 
     final request = http.Request('POST', Uri.parse('$_api/push'));
@@ -161,14 +185,14 @@ class ModelProvider extends ChangeNotifier {
       return;
     }
 
-    final completer = Completer<void>();
-
     final stream = response.stream
         .transform(utf8.decoder)
         .transform(const LineSplitter())
         .asBroadcastStream();
 
     final startTime = DateTime.now().toString();
+
+    OllamaPushResponse? lastResponse;
 
     await for (var data in stream) {
       try {
@@ -178,7 +202,7 @@ class ModelProvider extends ChangeNotifier {
             jsonData.containsKey('status') &&
             jsonData.containsKey('total') &&
             jsonData.containsKey('completed')) {
-          final modelPushResponse = OllamaPushResponse(
+          final modelCreateResponse = OllamaPushResponse(
             status: jsonData['status'] as String,
             total: jsonData['total'] as int,
             completed: jsonData['completed'] as int,
@@ -186,11 +210,30 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
-          yield modelPushResponse;
+          lastResponse = modelCreateResponse;
+
+          yield modelCreateResponse;
         }
       } catch (e) {
         logger.d('Incomplete or invalid JSON received: $data');
+
+        SnackBarHelpers.showSnackBar(
+          'Failed to push model $name',
+          SnackBarType.error,
+        );
       }
+    }
+
+    if (lastResponse == null || lastResponse.status != 'success') {
+      SnackBarHelpers.showSnackBar(
+        'Failed to push model $name',
+        SnackBarType.error,
+      );
+    } else {
+      SnackBarHelpers.showSnackBar(
+        'Model $name pushed successfully',
+        SnackBarType.success,
+      );
     }
 
     sleep(
@@ -208,6 +251,8 @@ class ModelProvider extends ChangeNotifier {
   }
 
   Stream<OllamaCreateResponse> create(String name, String modelfile) async* {
+    final completer = Completer<void>();
+
     _status = ModelProviderStatus.creating;
 
     final request = http.Request('POST', Uri.parse('$_api/create'));
@@ -225,8 +270,6 @@ class ModelProvider extends ChangeNotifier {
       return;
     }
 
-    final completer = Completer<void>();
-
     final stream = response.stream
         .transform(utf8.decoder)
         .transform(const LineSplitter())
@@ -234,13 +277,15 @@ class ModelProvider extends ChangeNotifier {
 
     final startTime = DateTime.now().toString();
 
+    OllamaCreateResponse? lastResponse;
+
     await for (var data in stream) {
       try {
         final jsonData = jsonDecode(data);
 
         if (jsonData is Map<String, dynamic> &&
             jsonData.containsKey('status')) {
-          final modelPushResponse = OllamaCreateResponse(
+          final modelCreateResponse = OllamaCreateResponse(
             status: jsonData['status'] as String,
             total: 0,
             completed: 0,
@@ -248,11 +293,30 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
-          yield modelPushResponse;
+          lastResponse = modelCreateResponse;
+
+          yield modelCreateResponse;
         }
       } catch (e) {
         logger.d('Incomplete or invalid JSON received: $data');
+
+        SnackBarHelpers.showSnackBar(
+          'Failed to create model $name',
+          SnackBarType.error,
+        );
       }
+    }
+
+    if (lastResponse == null || lastResponse.status != 'success') {
+      SnackBarHelpers.showSnackBar(
+        'Failed to create model $name',
+        SnackBarType.error,
+      );
+    } else {
+      SnackBarHelpers.showSnackBar(
+        'Model $name created successfully',
+        SnackBarType.success,
+      );
     }
 
     sleep(

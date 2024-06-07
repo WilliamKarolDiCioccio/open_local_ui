@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:open_local_ui/providers/locale.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
-
-import 'package:open_local_ui/layout/page_base.dart';
-import 'package:open_local_ui/providers/locale.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -79,6 +78,17 @@ class ThemeSettings extends StatelessWidget {
         ),
         const SizedBox(height: 8.0),
         DropdownMenu(
+          menuHeight: 128,
+          menuStyle: MenuStyle(
+            elevation: WidgetStateProperty.all(
+              8.0,
+            ),
+            shape: WidgetStateProperty.all(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              ),
+            ),
+          ),
           leadingIcon: const Icon(UniconsLine.moon_eclipse),
           inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(
@@ -131,6 +141,17 @@ class AccessibilitySettings extends StatelessWidget {
         ),
         const SizedBox(height: 8.0),
         DropdownMenu(
+          menuHeight: 256,
+          menuStyle: MenuStyle(
+            elevation: WidgetStateProperty.all(
+              8.0,
+            ),
+            shape: WidgetStateProperty.all(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              ),
+            ),
+          ),
           leadingIcon: const Icon(UniconsLine.language),
           inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(

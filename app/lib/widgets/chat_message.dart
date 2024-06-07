@@ -39,16 +39,16 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   void _copyMessage() {
     Clipboard.setData(ClipboardData(text: widget.message.text));
 
-    SnackBarHelper.showSnackBar(
-      AppLocalizations.of(context)!.messageCopiedSnackbarText,
+    SnackBarHelpers.showSnackBar(
+      AppLocalizations.of(context)!.messageCopiedSnackBarText,
       SnackBarType.success,
     );
   }
 
   void _regenerateMessage() {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {
@@ -69,13 +69,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         context.read<ChatProvider>().lastMessage!.uuid == widget.message.uuid;
 
     if (context.read<ChatProvider>().isGenerating && isLastMessage) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else if (widget.message.text.isEmpty) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.nothingToSynthesizeSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.nothingToSynthesizeSnackBarText,
         SnackBarType.error,
       );
     } else {
@@ -93,8 +93,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
   void _sendEditedMessage() {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
-
 import 'package:open_local_ui/models/ollama_responses.dart';
 import 'package:open_local_ui/providers/model.dart';
+import 'package:provider/provider.dart';
 
 class CreateModelDialog extends StatefulWidget {
   const CreateModelDialog({super.key});
@@ -24,6 +23,14 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   double _progressValue = 0.0;
   String _progressBarText = '';
 
+  @override
+  void dispose() {
+    _nameEditingController.dispose();
+    _fileEditingController.dispose();
+    _modelSelectionController.dispose();
+    super.dispose();
+  }
+
   void _updateProgress(OllamaCreateResponse response) {
     setState(() {
       _stepsCount += 1;
@@ -39,12 +46,39 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
     });
   }
 
-  @override
-  void dispose() {
-    _nameEditingController.dispose();
-    _fileEditingController.dispose();
-    _modelSelectionController.dispose();
-    super.dispose();
+  void _createModel() async {
+    setState(() => _isCreating = true);
+
+    final splitIndex = _modelSelectionController.text.indexOf(':');
+    String modelBaseName;
+
+    if (splitIndex != -1) {
+      modelBaseName = _modelSelectionController.text.substring(
+        0,
+        splitIndex,
+      );
+    } else {
+      modelBaseName = _modelSelectionController.text;
+    }
+
+    final stream = context.read<ModelProvider>().create(
+          _nameEditingController.text.toLowerCase(),
+          "FROM $modelBaseName\nSYSTEM ${_fileEditingController.text}",
+        );
+
+    await for (final data in stream) {
+      if (context.mounted) _updateProgress(data);
+    }
+
+    if (context.mounted) {
+      setState(() {
+        _isCreating = false;
+        _progressValue = 0.0;
+        _progressBarText = '';
+        _nameEditingController.clear();
+        _fileEditingController.clear();
+      });
+    }
   }
 
   @override
@@ -76,6 +110,17 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                   AppLocalizations.of(context)!.createModelDialogGuideText1,
                 ),
                 DropdownMenu(
+                  menuHeight: 128,
+                  menuStyle: MenuStyle(
+                    elevation: WidgetStateProperty.all(
+                      8.0,
+                    ),
+                    shape: WidgetStateProperty.all(
+                      const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      ),
+                    ),
+                  ),
                   controller: _modelSelectionController,
                   inputDecorationTheme: const InputDecorationTheme(
                     border: OutlineInputBorder(
@@ -134,7 +179,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                 LinearProgressIndicator(
                   value: _progressValue,
                   minHeight: 20.0,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
               ],
             ),
@@ -153,40 +198,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
         ),
         if (!_isCreating)
           TextButton(
-            onPressed: () async {
-              setState(() => _isCreating = true);
-
-              final splitIndex = _modelSelectionController.text.indexOf(':');
-              String modelBaseName;
-
-              if (splitIndex != -1) {
-                modelBaseName = _modelSelectionController.text.substring(
-                  0,
-                  splitIndex,
-                );
-              } else {
-                modelBaseName = _modelSelectionController.text;
-              }
-
-              final stream = context.read<ModelProvider>().create(
-                    _nameEditingController.text.toLowerCase(),
-                    "FROM $modelBaseName\nSYSTEM ${_fileEditingController.text}",
-                  );
-
-              await for (final data in stream) {
-                if (context.mounted) _updateProgress(data);
-              }
-
-              if (context.mounted) {
-                setState(() {
-                  _isCreating = false;
-                  _progressValue = 0.0;
-                  _progressBarText = '';
-                  _nameEditingController.clear();
-                  _fileEditingController.clear();
-                });
-              }
-            },
+            onPressed: () => _createModel(),
             child: Text(
               AppLocalizations.of(context)!.dialogCreateButtonShared,
             ),

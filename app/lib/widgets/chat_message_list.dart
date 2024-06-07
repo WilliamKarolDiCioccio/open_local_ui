@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/widgets/chat_message.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,9 @@ class ChatMessageList extends StatefulWidget {
 
 class _ChatMessageListState extends State<ChatMessageList> {
   final ScrollController _scrollController = ScrollController();
-  bool _isScrollButtonVisible = false;
+  final OverlayPortalController _overlayPortalController =
+      OverlayPortalController();
+  final GlobalKey _expandedKey = GlobalKey();
 
   @override
   void initState() {
@@ -34,11 +37,11 @@ class _ChatMessageListState extends State<ChatMessageList> {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent) {
       setState(() {
-        _isScrollButtonVisible = false;
+        _overlayPortalController.hide();
       });
     } else {
       setState(() {
-        _isScrollButtonVisible = true;
+        _overlayPortalController.show();
       });
     }
   }
@@ -51,14 +54,23 @@ class _ChatMessageListState extends State<ChatMessageList> {
     );
   }
 
+  Offset _getExpandedOffset() {
+    final RenderBox renderBox =
+        _expandedKey.currentContext?.findRenderObject() as RenderBox;
+
+    return renderBox.localToGlobal(Offset.zero);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
+          key: _expandedKey,
           child: ScrollConfiguration(
-            behavior:
-                ScrollConfiguration.of(context).copyWith(scrollbars: false),
+            behavior: ScrollConfiguration.of(context).copyWith(
+              scrollbars: false,
+            ),
             child: ListView.builder(
               controller: _scrollController,
               itemCount: context.watch<ChatProvider>().messageCount,
@@ -76,17 +88,25 @@ class _ChatMessageListState extends State<ChatMessageList> {
             ),
           ),
         ),
-        if (_isScrollButtonVisible)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(
-                UniconsLine.arrow_down,
-                size: 32.0,
+        OverlayPortal(
+          controller: _overlayPortalController,
+          overlayChildBuilder: (context) {
+            return Positioned(
+              left: _getExpandedOffset().dx,
+              bottom: _getExpandedOffset().dy + 24,
+              child: ElevatedButton.icon(
+                label: Text(
+                  AppLocalizations.of(context)!.scrollToBottomButton,
+                ),
+                icon: const Icon(
+                  UniconsLine.arrow_down,
+                  size: 32.0,
+                ),
+                onPressed: _scrollToBottom,
               ),
-              onPressed: _scrollToBottom,
-            ),
-          ),
+            );
+          },
+        ),
       ],
     );
   }

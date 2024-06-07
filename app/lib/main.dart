@@ -155,16 +155,19 @@ class WindowManagementBar extends StatelessWidget {
               MinimizeWindowButton(
                 colors: WindowButtonColors(
                   iconNormal: SystemTheme.accentColor.accent,
+                  iconMouseOver: Colors.green,
                 ),
               ),
               MaximizeWindowButton(
                 colors: WindowButtonColors(
                   iconNormal: SystemTheme.accentColor.accent,
+                  iconMouseOver: Colors.orange,
                 ),
               ),
               CloseWindowButton(
                 colors: WindowButtonColors(
                   iconNormal: SystemTheme.accentColor.accent,
+                  iconMouseOver: Colors.red,
                 ),
               ),
             ],

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/providers/model.dart';
-import 'package:provider/provider.dart';
-import 'package:unicons/unicons.dart';
-
 import 'package:open_local_ui/dialogs/attachments_dropzone.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:open_local_ui/providers/model.dart';
+import 'package:provider/provider.dart';
+import 'package:unicons/unicons.dart';
 
 class ChatInputFieldWidget extends StatefulWidget {
   const ChatInputFieldWidget({super.key});
@@ -31,8 +30,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   void _sendMessage() {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<ModelProvider>().modelsCount == 0) {
-        return SnackBarHelper.showSnackBar(
-          AppLocalizations.of(context)!.noModelsAvailableSnackbarText,
+        return SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context)!.noModelsAvailableSnackBarText,
           SnackBarType.error,
         );
       } else {
@@ -40,8 +39,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
         context.read<ChatProvider>().setModel(models.first.name);
       }
     } else if (context.read<ChatProvider>().isGenerating) {
-      return SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      return SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     }
@@ -63,7 +62,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
           _sendMessage();
         },
       },
-      child: ConstrainedBox(
+      child: Container(
+        padding: const EdgeInsets.only(top: 8.0),
         constraints: const BoxConstraints(
           maxHeight: 200,
         ),
@@ -72,7 +72,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.chatInputFieldHint,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(16.0),
             ),
             prefixIcon: Padding(
               padding: const EdgeInsets.only(

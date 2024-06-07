@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "moreOptionsButton": "More options",
+  "scrollToBottomButton": "Scroll to bottom",
   "feedbackButton": "Feedback",
   "licenseButton": "License",
   "privacyButton": "Privacy",
@@ -215,7 +216,6 @@
   "dialogCloseButtonShared": "Close",
   "dialogStartButtonShared": "Start",
   "dialogCreateButtonShared": "Create",
-  
   "createdAtTextShared": "Created at: {createdAt}",
   "@modelDetailsDialogCreatedAtText": {
     "placeholders": {
@@ -261,15 +261,15 @@
   "suggestion11part2": "in relationships using effective communication",
   "suggestion12part1": "Explain the significance ",
   "suggestion12part2": "of empathy in building strong connections",
-  "messageCopiedSnackbarText": "Message copied to clipboard",
-  "codeCopiedSnackbarText": "Code copied to clipboard",
-  "nothingToSynthesizeSnackbarText": "Nothing to synthesize",
-  "noNeedToCreateSessionSnackbarText": "No need to create a new session",
-  "modelIsGeneratingSnackbarText": "Model is generating",
-  "noModelsAvailableSnackbarText": "No models available",
-  "somethingWentWrongSnackbarText": "Something went wrong",
-  "abortModelRemovalSnackbarText": "Abort model removal",
-  "abortSessionRemovalSnackbarText": "Abort session removal",
+  "messageCopiedSnackBarText": "Message copied to clipboard",
+  "codeCopiedSnackBarText": "Code copied to clipboard",
+  "nothingToSynthesizeSnackBarText": "Nothing to synthesize",
+  "noNeedToCreateSessionSnackBarText": "No need to create a new session",
+  "modelIsGeneratingSnackBarText": "Model is generating",
+  "noModelsAvailableSnackBarText": "No models available",
+  "somethingWentWrongSnackBarText": "Something went wrong",
+  "abortModelRemovalSnackBarText": "Abort model removal",
+  "abortSessionRemovalSnackBarText": "Abort session removal",
   "undoButtonTextShared": "Undo",
   "redoButtonTextShared": "Redo"
 }

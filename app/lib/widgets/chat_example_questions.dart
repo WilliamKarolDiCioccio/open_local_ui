@@ -83,8 +83,8 @@ class ChatExampleQuestions extends StatelessWidget {
           onTap: () {
             if (!context.read<ChatProvider>().isModelSelected) {
               if (context.read<ModelProvider>().modelsCount == 0) {
-                return SnackBarHelper.showSnackBar(
-                  AppLocalizations.of(context)!.noModelsAvailableSnackbarText,
+                return SnackBarHelpers.showSnackBar(
+                  AppLocalizations.of(context)!.noModelsAvailableSnackBarText,
                   SnackBarType.error,
                 );
               } else {
@@ -92,8 +92,8 @@ class ChatExampleQuestions extends StatelessWidget {
                 context.read<ChatProvider>().setModel(models.first.name);
               }
             } else if (context.read<ChatProvider>().isGenerating) {
-              return SnackBarHelper.showSnackBar(
-                AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+              return SnackBarHelpers.showSnackBar(
+                AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
                 SnackBarType.error,
               );
             }
@@ -112,7 +112,7 @@ class ChatExampleQuestions extends StatelessWidget {
                 border: Border.all(
                   color: AdaptiveTheme.of(context).theme.dividerColor,
                 ),
-                borderRadius: BorderRadius.circular(20.0),
+                borderRadius: BorderRadius.circular(16.0),
               ),
               padding: const EdgeInsets.all(12.0),
               child: ListTile(

@@ -60,8 +60,8 @@ class _SessionsPageState extends State<SessionsPage> {
 
   void _deleteSession(String uuid) {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {
@@ -71,8 +71,8 @@ class _SessionsPageState extends State<SessionsPage> {
 
   void _setSession(ChatSessionWrapper session) {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {

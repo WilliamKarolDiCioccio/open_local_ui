@@ -22,6 +22,12 @@ class _PushModelDialogState extends State<PushModelDialog> {
   double _progressValue = 0.0;
   String _progressBarText = '';
 
+  @override
+  void dispose() {
+    _modelSelectionController.dispose();
+    super.dispose();
+  }
+
   void _updateProgress(OllamaPushResponse response) {
     setState(() {
       _progressValue = response.completed / response.total;
@@ -38,10 +44,25 @@ class _PushModelDialogState extends State<PushModelDialog> {
     });
   }
 
-  @override
-  void dispose() {
-    _modelSelectionController.dispose();
-    super.dispose();
+  void _pushModel() async {
+    setState(() => _isPushing = true);
+
+    final stream = context
+        .read<ModelProvider>()
+        .push(_modelSelectionController.text.toLowerCase());
+
+    await for (final data in stream) {
+      if (context.mounted) _updateProgress(data);
+    }
+
+    if (context.mounted) {
+      setState(() {
+        _isPushing = false;
+        _progressValue = 0.0;
+        _progressBarText = '';
+        _modelSelectionController.clear();
+      });
+    }
   }
 
   @override
@@ -74,6 +95,17 @@ class _PushModelDialogState extends State<PushModelDialog> {
                 ),
                 const SizedBox(width: 8.0),
                 DropdownMenu(
+                  menuHeight: 128,
+                  menuStyle: MenuStyle(
+                    elevation: WidgetStateProperty.all(
+                      8.0,
+                    ),
+                    shape: WidgetStateProperty.all(
+                      const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      ),
+                    ),
+                  ),
                   controller: _modelSelectionController,
                   inputDecorationTheme: const InputDecorationTheme(
                     border: OutlineInputBorder(
@@ -101,7 +133,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
                 LinearProgressIndicator(
                   value: _progressValue,
                   minHeight: 20.0,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
               ],
             ),
@@ -120,26 +152,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
         ),
         if (!_isPushing)
           TextButton(
-            onPressed: () async {
-              setState(() => _isPushing = true);
-
-              final stream = context
-                  .read<ModelProvider>()
-                  .push(_modelSelectionController.text.toLowerCase());
-
-              await for (final data in stream) {
-                if (context.mounted) _updateProgress(data);
-              }
-
-              if (context.mounted) {
-                setState(() {
-                  _isPushing = false;
-                  _progressValue = 0.0;
-                  _progressBarText = '';
-                  _modelSelectionController.clear();
-                });
-              }
-            },
+            onPressed: () => _pushModel(),
             child: Text(
               AppLocalizations.of(context)!.dialogStartButtonShared,
             ),

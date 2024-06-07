@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
-import 'package:unicons/unicons.dart';
-
+import 'package:gap/gap.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
+import 'package:provider/provider.dart';
+import 'package:unicons/unicons.dart';
 
 class ChatToolbarWidget extends StatefulWidget {
   const ChatToolbarWidget({super.key});
@@ -20,13 +20,13 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
   void _newSession() {
     if (context.read<ChatProvider>().isSessionSelected) {
       if (context.read<ChatProvider>().session!.messages.isEmpty) {
-        SnackBarHelper.showSnackBar(
-          AppLocalizations.of(context)!.noNeedToCreateSessionSnackbarText,
+        SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context)!.noNeedToCreateSessionSnackBarText,
           SnackBarType.info,
         );
       } else if (context.read<ChatProvider>().isGenerating) {
-        SnackBarHelper.showSnackBar(
-          AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+        SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
           SnackBarType.error,
         );
       } else {
@@ -34,8 +34,8 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         context.read<ChatProvider>().setSession(session.uuid);
       }
     } else {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.noNeedToCreateSessionSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.noNeedToCreateSessionSnackBarText,
         SnackBarType.info,
       );
     }
@@ -43,15 +43,16 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChatProvider>(
-      builder: (context, value, child) => Row(
+    return Container(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildModelSelector(),
-          const SizedBox(width: 16.0),
-          _buildOptionsBar(),
-          const SizedBox(width: 16.0),
-          TextButton.icon(
+          const ChatModelSelectionWidget(),
+          const Gap(16),
+          const ChatOptionBarWidget(),
+          const Gap(8),
+          ElevatedButton.icon(
             label: Text(
               AppLocalizations.of(context)!.chatToolbarNewSessionButton,
               style: const TextStyle(fontSize: 18.0),
@@ -63,42 +64,21 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       ),
     );
   }
+}
 
-  Widget _buildModelSelector() {
-    final List<DropdownMenuEntry> modelsMenuEntries = [];
+class ChatOptionBarWidget extends StatelessWidget {
+  const ChatOptionBarWidget({super.key});
 
-    for (final model in context.read<ModelProvider>().models) {
-      final shortName = model.name.length > 20
-          ? '${model.name.substring(0, 20)}...'
-          : model.name;
-
-      modelsMenuEntries
-          .add(DropdownMenuEntry(value: model.name, label: shortName));
-    }
-
-    return DropdownMenu(
-      inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-      ),
-      enableSearch: true,
-      hintText: AppLocalizations.of(context)!.chatToolbarModelSelectorHint,
-      initialSelection: context.watch<ChatProvider>().modelName,
-      dropdownMenuEntries: modelsMenuEntries,
-      onSelected: (value) => context.read<ChatProvider>().setModel(value ?? ''),
-    );
-  }
-
-  Widget _buildOptionsBar() {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
           color: AdaptiveTheme.of(context).theme.dividerColor,
         ),
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(16.0),
       ),
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -111,10 +91,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
                   context.read<ChatProvider>().enableWebSearch(value ?? false);
                 },
               ),
-            ],
-          ),
-          Row(
-            children: [
+              const Gap(8),
               Text(AppLocalizations.of(context)!.chatToolbarDocsSearchOption),
               Checkbox(
                 value: context.watch<ChatProvider>().isDocsSearchEnabled,
@@ -126,6 +103,54 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ChatModelSelectionWidget extends StatelessWidget {
+  const ChatModelSelectionWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<DropdownMenuEntry> modelsMenuEntries = [];
+
+    for (final model in context.read<ModelProvider>().models) {
+      final shortName = model.name.length > 20
+          ? '${model.name.substring(0, 20)}...'
+          : model.name;
+
+      modelsMenuEntries.add(
+        DropdownMenuEntry(
+          value: model.name,
+          label: shortName,
+        ),
+      );
+    }
+
+    return DropdownMenu(
+      enabled: context.watch<ModelProvider>().modelsCount > 0 &&
+          !context.watch<ChatProvider>().isGenerating,
+      menuHeight: 128,
+      menuStyle: MenuStyle(
+        elevation: WidgetStateProperty.all(
+          8.0,
+        ),
+        shape: WidgetStateProperty.all(
+          const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16.0)),
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+      ),
+      enableSearch: true,
+      hintText: AppLocalizations.of(context)!.chatToolbarModelSelectorHint,
+      initialSelection: context.watch<ChatProvider>().modelName,
+      dropdownMenuEntries: modelsMenuEntries,
+      onSelected: (value) => context.read<ChatProvider>().setModel(value ?? ''),
     );
   }
 }

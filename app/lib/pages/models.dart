@@ -77,8 +77,8 @@ class _ModelsPageState extends State<ModelsPage> {
 
   void _deleteModel(String name) {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {
@@ -88,8 +88,8 @@ class _ModelsPageState extends State<ModelsPage> {
 
   void _setModel(Model model) {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {

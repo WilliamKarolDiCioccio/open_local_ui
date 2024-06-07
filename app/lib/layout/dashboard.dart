@@ -93,9 +93,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
             ],
           ),
         ),
-      )
-          .animate()
-          .fadeIn(
+      ).animate().fadeIn(
             duration: 200.ms,
           ),
     );
