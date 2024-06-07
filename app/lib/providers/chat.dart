@@ -466,6 +466,12 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void newSession() {
+    final session = addSession('');
+    setSession(session.uuid);
+    notifyListeners();
+  }
+
   bool get isWebSearchEnabled => _enableWebSearch;
 
   bool get isDocsSearchEnabled => _enableDocsSearch;

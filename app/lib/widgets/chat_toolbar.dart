@@ -30,8 +30,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
           SnackBarType.error,
         );
       } else {
-        final session = context.read<ChatProvider>().addSession('');
-        context.read<ChatProvider>().setSession(session.uuid);
+        context.read<ChatProvider>().newSession();
       }
     } else {
       SnackBarHelper.showSnackBar(
