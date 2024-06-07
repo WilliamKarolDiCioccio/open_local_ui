@@ -65,7 +65,7 @@ dist/
 **.spec
 
 # Environment variable file
-.env*
+.env
 
 # TTS related
 **.wav
