@@ -6,13 +6,12 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
-
 import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/utils/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatProvider extends ChangeNotifier {
   bool _enableWebSearch = false;
@@ -20,7 +19,6 @@ class ChatProvider extends ChangeNotifier {
   bool _enableOllamaGpu = true;
   late ChatOllama _model;
   String _modelName = '';
-
 
   ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
@@ -35,7 +33,7 @@ class ChatProvider extends ChangeNotifier {
     _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
     _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
     _enableOllamaGpu = prefs.getBool('enableOllamaGpu') ?? true;
-    
+
     _modelName = prefs.getString('modelName') ?? '';
 
     setModel(_modelName, temperature: 0.8, useGpu: _enableOllamaGpu);
@@ -383,9 +381,15 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setModel(String name, {double temperature = 0.8, bool useGpu = true}) async {
-    if (_session?.status == ChatSessionStatus.generating) {
-      return;
+  void setModel(
+    String name, {
+    double temperature = 0.8,
+    bool useGpu = true,
+  }) async {
+    if (_session != null) {
+      if (_session?.status == ChatSessionStatus.generating) {
+        return;
+      }
     }
 
     _modelName = name;
@@ -408,8 +412,7 @@ class ChatProvider extends ChangeNotifier {
 
   void setSession(String uuid) {
     if (_session != null) {
-      if (_session!.status == ChatSessionStatus.generating ||
-          messageCount == 0) {
+      if (_session!.status == ChatSessionStatus.generating) {
         return;
       }
     }
