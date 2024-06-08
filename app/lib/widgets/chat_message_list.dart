@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,6 +20,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
   final OverlayPortalController _overlayPortalController =
       OverlayPortalController();
   final GlobalKey _expandedKey = GlobalKey();
+  bool _isUserScrolling = false;
 
   @override
   void initState() {
@@ -33,25 +35,39 @@ class _ChatMessageListState extends State<ChatMessageList> {
     super.dispose();
   }
 
-  void _scrollListener() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent) {
-      setState(() {
-        _overlayPortalController.hide();
-      });
-    } else {
-      setState(() {
-        _overlayPortalController.show();
-      });
-    }
-  }
-
-  void _scrollToBottom() {
+  void _scrollToBottomWithAnimation() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
+  }
+
+  void _scrollToBottom() {
+    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  }
+
+  void _scrollListener() {
+    final atBottom = _scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent;
+
+    if (atBottom) {
+      setState(() {
+        SchedulerBinding.instance.addPostFrameCallback(
+          (_) => _overlayPortalController.hide(),
+        );
+
+        _isUserScrolling = false;
+      });
+    } else {
+      setState(() {
+        SchedulerBinding.instance.addPostFrameCallback(
+          (_) => _overlayPortalController.show(),
+        );
+
+        _isUserScrolling = true;
+      });
+    }
   }
 
   Offset _getExpandedOffset() {
@@ -63,6 +79,11 @@ class _ChatMessageListState extends State<ChatMessageList> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_isUserScrolling &&
+        context.watch<ChatProvider>().isAutoscrollEnabled) {
+      if (_scrollController.hasClients) _scrollToBottom();
+    }
+
     return Column(
       children: [
         Expanded(
@@ -102,7 +123,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
                   UniconsLine.arrow_down,
                   size: 32.0,
                 ),
-                onPressed: _scrollToBottom,
+                onPressed: () => _scrollToBottomWithAnimation(),
               ),
             );
           },

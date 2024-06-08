@@ -35,6 +35,7 @@
   "chatToolbarModelSelectorHint": "Select model",
   "chatToolbarWebSearchOption": "Web search:",
   "chatToolbarDocsSearchOption": "Docs search:",
+  "chatToolbarAutoscrollOption": "Autoscroll",
   "chatToolbarNewSessionButton": "New session",
   "chatInputFieldHint": "Type a message...",
   "chatInputFieldAttachButtonTooltip": "Attach files",

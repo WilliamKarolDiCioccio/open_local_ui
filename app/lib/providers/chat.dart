@@ -15,6 +15,7 @@ import 'package:uuid/uuid.dart';
 class ChatProvider extends ChangeNotifier {
   bool _enableWebSearch = false;
   bool _enableDocsSearch = false;
+  bool _enableAutoscroll = true;
   bool _enableOllamaGpu = true;
   late ChatOllama _model;
   String _modelName = '';
@@ -31,6 +32,7 @@ class ChatProvider extends ChangeNotifier {
 
     _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
     _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
+    _enableAutoscroll = prefs.getBool('enableAutoscroll') ?? true;
     _enableOllamaGpu = prefs.getBool('enableOllamaGpu') ?? true;
 
     _modelName = prefs.getString('modelName') ?? '';
@@ -466,6 +468,16 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void enableAutoscroll(bool value) async {
+    _enableAutoscroll = value;
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('enableAutoscroll', value);
+
+    notifyListeners();
+  }
+
   void ollamaEnableGpu(bool value) async {
     _enableOllamaGpu = value;
 
@@ -487,6 +499,8 @@ class ChatProvider extends ChangeNotifier {
   bool get isWebSearchEnabled => _enableWebSearch;
 
   bool get isDocsSearchEnabled => _enableDocsSearch;
+
+  bool get isAutoscrollEnabled => _enableAutoscroll;
 
   bool get isOllamaUsingGpu => _enableOllamaGpu;
 

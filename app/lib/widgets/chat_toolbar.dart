@@ -57,7 +57,9 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
               style: const TextStyle(fontSize: 18.0),
             ),
             icon: const Icon(UniconsLine.plus),
-            onPressed: () => _newSession(),
+            onPressed: !context.watch<ChatProvider>().isGenerating
+                ? () => _newSession()
+                : null,
           )
         ],
       ),
@@ -86,16 +88,32 @@ class ChatOptionBarWidget extends StatelessWidget {
               Text(AppLocalizations.of(context)!.chatToolbarWebSearchOption),
               Checkbox(
                 value: context.watch<ChatProvider>().isWebSearchEnabled,
-                onChanged: (value) {
-                  context.read<ChatProvider>().enableWebSearch(value ?? false);
-                },
+                onChanged: !context.watch<ChatProvider>().isGenerating
+                    ? (value) {
+                        context
+                            .read<ChatProvider>()
+                            .enableWebSearch(value ?? false);
+                      }
+                    : null,
               ),
               const Gap(8),
               Text(AppLocalizations.of(context)!.chatToolbarDocsSearchOption),
               Checkbox(
                 value: context.watch<ChatProvider>().isDocsSearchEnabled,
+                onChanged: !context.watch<ChatProvider>().isGenerating
+                    ? (value) {
+                        context
+                            .read<ChatProvider>()
+                            .enableDocsSearch(value ?? false);
+                      }
+                    : null,
+              ),
+              const Gap(8),
+              Text(AppLocalizations.of(context)!.chatToolbarAutoscrollOption),
+              Checkbox(
+                value: context.watch<ChatProvider>().isAutoscrollEnabled,
                 onChanged: (value) {
-                  context.read<ChatProvider>().enableDocsSearch(value ?? false);
+                  context.read<ChatProvider>().enableAutoscroll(value ?? false);
                 },
               ),
             ],
