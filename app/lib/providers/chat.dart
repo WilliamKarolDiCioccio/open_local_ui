@@ -137,7 +137,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void removeLastMessage() async {
-    if (_session == null || _session!.status == ChatSessionStatus.generating) {
+    if (_session == null || _session!.status == ChatSessionStatus.generating || messageCount == 0) {
       return;
     }
 
