@@ -13,6 +13,7 @@
   "dashboardAboutBtn": "About",
   "chatMessageListText1": "Welcome!",
   "chatMessageListText2": "Want some suggestions?",
+  "chatMessageListText3": "Refresh suggestions",
   "chatMessageCopyButtonTooltip": "Copy message",
   "chatMessageEditButtonTooltip": "Edit message",
   "chatMessageTTSButtonTooltip": "Read aloud",
