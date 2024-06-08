@@ -64,38 +64,50 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ChatMessageWrapper addSystemMessage(String message) {
-    _session!.messages.add(ChatSystemMessageWrapper(
+  ChatSystemMessageWrapper addSystemMessage(String message) {
+    final chatMessage = ChatSystemMessageWrapper(
       message,
       DateTime.now(),
       const Uuid().v4(),
-    ));
+    );
+
+    if (_session == null) return chatMessage;
+
+    _session!.messages.add(chatMessage);
 
     notifyListeners();
 
-    return _session!.messages.last;
+    return _session!.messages.last as ChatSystemMessageWrapper;
   }
 
-  ChatMessageWrapper addModelMessage(String message, String? senderName) {
-    _session!.messages.add(ChatModelMessageWrapper(
+  ChatModelMessageWrapper addModelMessage(String message, String? senderName) {
+    final chatMessage = ChatModelMessageWrapper(
       message,
       DateTime.now(),
       const Uuid().v4(),
       senderName!,
-    ));
+    );
+
+    if (_session == null) return chatMessage;
+
+    _session!.messages.add(chatMessage);
 
     notifyListeners();
 
-    return _session!.messages.last;
+    return _session!.messages.last as ChatModelMessageWrapper;
   }
 
   ChatMessageWrapper addUserMessage(String message, Uint8List? imageBytes) {
-    _session!.messages.add(ChatUserMessageWrapper(
+    final chatMessage = ChatUserMessageWrapper(
       message,
       DateTime.now(),
       const Uuid().v4(),
       imageBytes: imageBytes,
-    ));
+    );
+
+    if (_session == null) return chatMessage;
+
+    _session!.messages.add(chatMessage);
 
     notifyListeners();
 
@@ -137,7 +149,9 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void removeLastMessage() async {
-    if (_session == null || _session!.status == ChatSessionStatus.generating || messageCount == 0) {
+    if (_session == null ||
+        _session!.status == ChatSessionStatus.generating ||
+        messageCount == 0) {
       return;
     }
 
@@ -194,8 +208,7 @@ class ChatProvider extends ChangeNotifier {
 
   Future sendMessage(String text, {Uint8List? imageBytes}) async {
     if (_session == null) {
-      final session = addSession('');
-      setSession(session.uuid);
+      newSession();
     }
     if (text.isEmpty) {
       addSystemMessage('Try to be more specific.');
