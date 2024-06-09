@@ -40,6 +40,7 @@ class SnackBarHelpers {
         borderRadius: BorderRadius.circular(16.0),
       ),
       behavior: SnackBarBehavior.floating,
+      elevation: 8.0,
     );
 
     scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
