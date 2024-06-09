@@ -26,8 +26,8 @@ Future<File> _createLogFile() async {
       .replaceAll(':', '-');
 
   final fileName = 'log_$timeStamp.log';
-  final directory = await getApplicationDocumentsDirectory();
-  final logsFolderPath = '${directory.path}/logs';
+  final directory = await getApplicationSupportDirectory();
+  final logsFolderPath = '${directory.path}/OpenLocalUI/logs';
 
   await Directory(logsFolderPath).create(recursive: true);
   final logFile = File('$logsFolderPath/$fileName');
