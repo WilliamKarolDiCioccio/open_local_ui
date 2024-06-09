@@ -7,6 +7,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/l10n/l10n.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
@@ -16,6 +17,7 @@ import 'package:open_local_ui/providers/model.dart';
 import 'package:open_local_ui/scaffold_messenger_key.dart';
 import 'package:open_local_ui/services/tts.dart';
 import 'package:open_local_ui/utils/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
@@ -33,6 +35,10 @@ void main() async {
     SystemTheme.fallbackColor = Colors.cyan;
     await SystemTheme.accentColor.load();
   }
+
+  await Hive.initFlutter();
+  final docsDir = await getApplicationDocumentsDirectory();
+  Hive.init('${docsDir.path}/OpenLocalUI/saved_data');
 
   await Supabase.initialize(
     url: Env.supabaseUrl,

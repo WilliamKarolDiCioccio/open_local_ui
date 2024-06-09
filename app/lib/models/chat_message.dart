@@ -1,21 +1,78 @@
 import 'dart:typed_data';
 
-import 'package:isar/isar.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'chat_message.g.dart';
 
+class ImageBytesJSONConverter implements JsonConverter<Uint8List?, Object?> {
+  const ImageBytesJSONConverter();
+
+  @override
+  Uint8List? fromJson(Object? json) {
+    if (json is String) {
+      return Uint8List.fromList(json.codeUnits);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Object? toJson(Uint8List? object) {
+    if (object != null) {
+      return String.fromCharCodes(object);
+    } else {
+      return null;
+    }
+  }
+}
+
 enum ChatMessageSender { user, model, system }
 
-@collection
-class ChatMessageWrapper {
-  final Id id = Isar.autoIncrement;
+class ChatMessageSenderJSONConverter
+    implements JsonConverter<ChatMessageSender, String> {
+  const ChatMessageSenderJSONConverter();
 
+  @override
+  ChatMessageSender fromJson(String json) {
+    switch (json) {
+      case 'user':
+        return ChatMessageSender.user;
+      case 'model':
+        return ChatMessageSender.model;
+      case 'system':
+        return ChatMessageSender.system;
+      default:
+        throw ArgumentError.value(json, 'json', 'Invalid ChatMessageSender');
+    }
+  }
+
+  @override
+  String toJson(ChatMessageSender object) {
+    switch (object) {
+      case ChatMessageSender.user:
+        return 'user';
+      case ChatMessageSender.model:
+        return 'model';
+      case ChatMessageSender.system:
+        return 'system';
+    }
+  }
+}
+
+// NOTE: named with 'Wrapper' suffix to avoid conflict with LangChain
+@JsonSerializable()
+class ChatMessageWrapper {
   String text;
   final DateTime createdAt;
   final String uuid;
-  @ignore
   final String? senderName;
-  @enumerated
+
+  @JsonKey(
+    includeToJson: true,
+    includeFromJson: true,
+    toJson: _senderToJson,
+    fromJson: _senderFromJson,
+  )
   final ChatMessageSender sender;
 
   ChatMessageWrapper(
@@ -25,8 +82,20 @@ class ChatMessageWrapper {
     this.sender, {
     this.senderName,
   });
+
+  factory ChatMessageWrapper.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageWrapperFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChatMessageWrapperToJson(this);
+
+  static ChatMessageSender _senderFromJson(String json) =>
+      const ChatMessageSenderJSONConverter().fromJson(json);
+
+  static String _senderToJson(ChatMessageSender object) =>
+      const ChatMessageSenderJSONConverter().toJson(object);
 }
 
+@JsonSerializable()
 class ChatSystemMessageWrapper extends ChatMessageWrapper {
   ChatSystemMessageWrapper(
     String text,
@@ -39,8 +108,15 @@ class ChatSystemMessageWrapper extends ChatMessageWrapper {
           ChatMessageSender.system,
           senderName: 'System',
         );
+
+  factory ChatSystemMessageWrapper.fromJson(Map<String, dynamic> json) =>
+      _$ChatSystemMessageWrapperFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ChatSystemMessageWrapperToJson(this);
 }
 
+@JsonSerializable()
 class ChatModelMessageWrapper extends ChatMessageWrapper {
   ChatModelMessageWrapper(
     String text,
@@ -54,10 +130,17 @@ class ChatModelMessageWrapper extends ChatMessageWrapper {
           ChatMessageSender.model,
           senderName: senderName,
         );
+
+  factory ChatModelMessageWrapper.fromJson(Map<String, dynamic> json) =>
+      _$ChatModelMessageWrapperFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ChatModelMessageWrapperToJson(this);
 }
 
+@JsonSerializable()
 class ChatUserMessageWrapper extends ChatMessageWrapper {
-  @ignore
+  @JsonKey(fromJson: _imageBytesFromJson, toJson: _imageBytesToJson)
   final Uint8List? imageBytes;
   final List<String>? filePaths;
 
@@ -74,4 +157,16 @@ class ChatUserMessageWrapper extends ChatMessageWrapper {
           ChatMessageSender.user,
           senderName: 'User',
         );
+
+  factory ChatUserMessageWrapper.fromJson(Map<String, dynamic> json) =>
+      _$ChatUserMessageWrapperFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ChatUserMessageWrapperToJson(this);
+
+  static Uint8List? _imageBytesFromJson(Object? json) =>
+      const ImageBytesJSONConverter().fromJson(json);
+
+  static Object? _imageBytesToJson(Uint8List? imageBytes) =>
+      const ImageBytesJSONConverter().toJson(imageBytes);
 }

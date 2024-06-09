@@ -38,7 +38,12 @@ class _SessionsPageState extends State<SessionsPage> {
   late Set<SortBy> _sortBy;
   late Set<SortOrder> _sortOrder;
 
-  final prototypeChatSession = ChatSessionWrapper('', DateTime(0), '');
+  final prototypeChatSession = ChatSessionWrapper(
+    '',
+    DateTime(0),
+    '',
+    [],
+  );
 
   @override
   void initState() {

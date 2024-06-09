@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
+import 'package:open_local_ui/database/sessions.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/utils/logger.dart';
@@ -23,6 +24,8 @@ class ChatProvider extends ChangeNotifier {
   ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
 
+  // Constructor and initialization
+
   ChatProvider() {
     loadSettings();
   }
@@ -39,19 +42,52 @@ class ChatProvider extends ChangeNotifier {
 
     setModel(_modelName, temperature: 0.8, useGpu: _enableOllamaGpu);
 
+    final loadedSessions = await SessionsDatabase.loadSessions();
+
+    _sessions.addAll(loadedSessions);
+
     notifyListeners();
   }
+
+  // Sessions management
 
   ChatSessionWrapper addSession(String title) {
     _sessions.add(ChatSessionWrapper(
       title,
       DateTime.now(),
       const Uuid().v4(),
+      [],
     ));
+
+    SessionsDatabase.saveSession(_sessions.last);
 
     notifyListeners();
 
     return _sessions.last;
+  }
+
+  void newSession() {
+    final session = addSession('');
+    setSession(session.uuid);
+    notifyListeners();
+  }
+
+  void setSession(String uuid) {
+    if (_session != null) {
+      if (_session!.status == ChatSessionStatus.generating) {
+        return;
+      }
+    }
+
+    clearSessionHistory();
+
+    final index = _sessions.indexWhere((element) => element.uuid == uuid);
+
+    _session = _sessions[index];
+
+    loadSessionHistory();
+
+    notifyListeners();
   }
 
   void removeSession(String uuid) {
@@ -63,8 +99,12 @@ class ChatProvider extends ChangeNotifier {
 
     _session = null;
 
+    SessionsDatabase.deleteSession(uuid);
+
     notifyListeners();
   }
+
+  // Messages management
 
   ChatSystemMessageWrapper addSystemMessage(String message) {
     final chatMessage = ChatSystemMessageWrapper(
@@ -76,6 +116,8 @@ class ChatProvider extends ChangeNotifier {
     if (_session == null) return chatMessage;
 
     _session!.messages.add(chatMessage);
+
+    SessionsDatabase.updateSession(_session!);
 
     notifyListeners();
 
@@ -94,6 +136,8 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.messages.add(chatMessage);
 
+    SessionsDatabase.updateSession(_session!);
+
     notifyListeners();
 
     return _session!.messages.last as ChatModelMessageWrapper;
@@ -110,6 +154,8 @@ class ChatProvider extends ChangeNotifier {
     if (_session == null) return chatMessage;
 
     _session!.messages.add(chatMessage);
+
+    SessionsDatabase.updateSession(_session!);
 
     notifyListeners();
 
@@ -129,6 +175,8 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.memory.chatHistory.removeLast();
 
+    SessionsDatabase.updateSession(_session!);
+
     notifyListeners();
   }
 
@@ -147,6 +195,8 @@ class ChatProvider extends ChangeNotifier {
       _session!.memory.chatHistory.removeLast();
     }
 
+    SessionsDatabase.updateSession(_session!);
+
     notifyListeners();
   }
 
@@ -160,8 +210,12 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.removeLast();
     _session!.memory.chatHistory.removeLast();
 
+    SessionsDatabase.updateSession(_session!);
+
     notifyListeners();
   }
+
+  // Chat logic
 
   Future<RunnableSequence> _buildChain() async {
     final defaultPrompt = await rootBundle.loadString(
@@ -275,6 +329,8 @@ class ChatProvider extends ChangeNotifier {
         _session!.title = response.toString();
       }
 
+      SessionsDatabase.updateSession(_session!);
+
       notifyListeners();
     } catch (e) {
       _session!.status = ChatSessionStatus.idle;
@@ -282,6 +338,8 @@ class ChatProvider extends ChangeNotifier {
       removeLastMessage();
 
       addSystemMessage('An error occurred while generating the response.');
+
+      SessionsDatabase.updateSession(_session!);
 
       logger.e(e);
     }
@@ -384,20 +442,59 @@ class ChatProvider extends ChangeNotifier {
     sendMessage(text, imageBytes: imageBytes);
   }
 
+  void abortGeneration() {
+    if (_session == null && _session!.status != ChatSessionStatus.generating) {
+      return;
+    }
+
+    _session!.status = ChatSessionStatus.aborting;
+
+    notifyListeners();
+  }
+
+  // Session history management
+
+  void loadSessionHistory() async {
+    if (_session == null || _session!.status == ChatSessionStatus.generating) {
+      return;
+    }
+
+    for (final message in _session!.messages) {
+      switch (message.sender) {
+        case ChatMessageSender.system:
+          continue;
+        case ChatMessageSender.model:
+          _session!.memory.chatHistory.addAIChatMessage(
+            message.text,
+          );
+          break;
+        case ChatMessageSender.user:
+          _session!.memory.chatHistory.addHumanChatMessage(
+            message.text,
+          );
+          break;
+      }
+    }
+
+    notifyListeners();
+  }
+
   void clearSessionHistory() async {
     if (_session == null || _session!.status == ChatSessionStatus.generating) {
       return;
     }
 
-    _session!.messages.clear();
     _session!.memory.chatHistory.clear();
 
     notifyListeners();
   }
 
+  // Model management
+
   void setModel(
     String name, {
     double temperature = 0.8,
+    int keepAlive = 5,
     bool useGpu = true,
   }) async {
     if (_session != null) {
@@ -418,35 +515,14 @@ class ChatProvider extends ChangeNotifier {
         temperature: temperature,
         numGpu: useGpu ? null : 0,
         format: OllamaResponseFormat.json,
+        keepAlive: keepAlive,
       ),
     );
 
     notifyListeners();
   }
 
-  void setSession(String uuid) {
-    if (_session != null) {
-      if (_session!.status == ChatSessionStatus.generating) {
-        return;
-      }
-    }
-
-    final index = _sessions.indexWhere((element) => element.uuid == uuid);
-
-    _session = _sessions[index];
-
-    notifyListeners();
-  }
-
-  void abortGeneration() {
-    if (_session == null && _session!.status != ChatSessionStatus.generating) {
-      return;
-    }
-
-    _session!.status = ChatSessionStatus.aborting;
-
-    notifyListeners();
-  }
+  // Chat configuration
 
   void enableWebSearch(bool value) async {
     _enableWebSearch = value;
@@ -487,12 +563,6 @@ class ChatProvider extends ChangeNotifier {
 
     setModel(_modelName, temperature: 0.8, useGpu: value);
 
-    notifyListeners();
-  }
-
-  void newSession() {
-    final session = addSession('');
-    setSession(session.uuid);
     notifyListeners();
   }
 
