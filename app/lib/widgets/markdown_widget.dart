@@ -63,6 +63,12 @@ class MessageMarkdownWidget extends StatelessWidget {
           const H5Config(style: header5TextStyle),
           const H6Config(style: header6TextStyle),
           const PConfig(textStyle: paragraphTextStyle),
+          if (isDark)
+            CodeConfig(
+              style: codeTextStyle.copyWith(
+                backgroundColor: const Color.fromARGB(204, 46, 46, 46),
+              ),
+            ),
         ],
       ),
     );
