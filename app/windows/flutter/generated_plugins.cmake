@@ -8,6 +8,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
   irondash_engine_context
   isar_flutter_libs
+  share_plus
   super_native_extensions
   system_theme
   url_launcher_windows

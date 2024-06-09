@@ -1,16 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/dialogs/confirmation.dart';
+import 'package:open_local_ui/dialogs/create_folder.dart';
 import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
@@ -63,17 +68,6 @@ class _SessionsPageState extends State<SessionsPage> {
     });
   }
 
-  void _deleteSession(String uuid) {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
-        SnackBarType.error,
-      );
-    } else {
-      context.read<ChatProvider>().removeSession(uuid);
-    }
-  }
-
   void _setSession(ChatSessionWrapper session) {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
@@ -83,6 +77,63 @@ class _SessionsPageState extends State<SessionsPage> {
     } else {
       context.read<ChatProvider>().setSession(session.uuid);
       widget.pageController.jumpToPage(PageIndex.chat.index);
+    }
+  }
+
+  void _shareSession(ChatSessionWrapper session) async {
+    if (session.status == ChatSessionStatus.generating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        SnackBarType.error,
+      );
+    } else {
+      late ShareResult shareResult;
+
+      if (Platform.isLinux) {
+        shareResult = await Share.share(session.toJson().toString());
+      } else {
+        final cacheDir = await getApplicationCacheDirectory();
+
+        final file = File('${cacheDir.path}/${session.uuid}.json');
+        await file.writeAsString(session.toJson().toString());
+
+        final shareFile = XFile(
+          file.path,
+          mimeType: 'application/json',
+          name: session.title,
+          lastModified: session.messages.last.createdAt,
+        );
+
+        shareResult = await Share.shareXFiles(
+          [shareFile],
+          text: session.title,
+        );
+      }
+
+      if (shareResult.status == ShareResultStatus.success) {
+        SnackBarHelpers.showSnackBar(
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(context)!.sessionSharedSnackBarText,
+          SnackBarType.success,
+        );
+      } else {
+        SnackBarHelpers.showSnackBar(
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(context)!.failedToShareSessionSnackBarText,
+          SnackBarType.error,
+        );
+      }
+    }
+  }
+
+  void _deleteSession(String uuid) async {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        SnackBarType.error,
+      );
+    } else {
+      context.read<ChatProvider>().removeSession(uuid);
     }
   }
 
@@ -103,6 +154,13 @@ class _SessionsPageState extends State<SessionsPage> {
             icon: const Icon(UniconsLine.enter),
             onPressed: () => _setSession(session),
           ),
+          const Gap(8),
+          IconButton(
+            tooltip: AppLocalizations.of(context)!.sessionsPageShareButton,
+            icon: const Icon(UniconsLine.share),
+            onPressed: () => _shareSession(session),
+          ),
+          const Gap(8),
           IconButton(
             tooltip: AppLocalizations.of(context)!.sessionsPageDeleteButton,
             icon: const Icon(
@@ -168,7 +226,7 @@ class _SessionsPageState extends State<SessionsPage> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.folder_plus),
-                onPressed: () => {},
+                onPressed: () => showCreateFolderDialog(context),
               ),
             ],
           ),

@@ -75,17 +75,6 @@ class _ModelsPageState extends State<ModelsPage> {
     });
   }
 
-  void _deleteModel(String name) {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
-        SnackBarType.error,
-      );
-    } else {
-      context.read<ModelProvider>().remove(name);
-    }
-  }
-
   void _setModel(Model model) {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
@@ -100,6 +89,17 @@ class _ModelsPageState extends State<ModelsPage> {
 
       context.read<ChatProvider>().setModel(model.name);
       widget.pageController.jumpToPage(PageIndex.chat.index);
+    }
+  }
+
+  void _deleteModel(String name) async {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        SnackBarType.error,
+      );
+    } else {
+      context.read<ModelProvider>().remove(name);
     }
   }
 
@@ -120,6 +120,7 @@ class _ModelsPageState extends State<ModelsPage> {
             icon: const Icon(UniconsLine.enter),
             onPressed: () => _setModel(model),
           ),
+          const Gap(8),
           IconButton(
             tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
             icon: const Icon(
