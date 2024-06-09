@@ -10,51 +10,92 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  # Basic Flutter Packages
   cupertino_icons: ^1.0.6
-  unicons: ^2.1.1
-  logger: ^2.2.0
-  adaptive_theme: ^3.6.0
-  url_launcher: ^6.2.6
-  langchain: ^0.7.1
-  langchain_ollama: ^0.2.1+1
-  flutter_native_splash: ^2.4.0
-  bitsdojo_window: ^0.1.6
-  http: ^1.2.1
-  provider: ^6.1.2
-  uuid: ^4.4.0
-  shared_preferences: ^2.2.3
-  conversion_units: ^0.1.8
-  system_theme: ^2.3.1
-  path_provider: ^2.1.3
-  freezed_annotation: ^2.4.1
-  json_annotation: ^4.0.1
-  super_drag_and_drop: ^0.8.12
   flutter_localizations:
     sdk: flutter
+  
+  # Utility Packages
+  uuid: ^4.4.0
+  provider: ^6.1.2
+  shared_preferences: ^2.2.3
+  path_provider: ^2.1.3
+  path: ^1.9.0
+  http: ^1.2.1
   intl: any
-  file_picker: ^8.0.2
+
+  # Theming and UI
+  adaptive_theme: ^3.6.0
+  system_theme: ^2.3.1
+  flex_color_picker: ^3.5.0
+
+  # Icons and Graphics
+  unicons: ^2.1.1
   flutter_image_converter: ^0.3.1
-  image: ^4.1.7
+  cached_network_image: ^3.3.1
+  gap: ^3.0.1
+
+  # Splash Screen
+  flutter_native_splash: ^2.4.0
+
+  # Window Management
+  bitsdojo_window: ^0.1.6
+
+  # Local Storage
+  hive_flutter: ^1.1.0
   isar_flutter_libs: ^3.1.0+1
-  flutter_animate: ^4.5.0
+
+  # JSON and Annotations
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.0.1
+
+  # Conversions
+  conversion_units: ^0.1.8
+
+  # File Picker
+  file_picker: ^8.0.2
+
+  # Audio and Video
+  audioplayers: ^6.0.0
+
+  # Markdown and HTML
+  markdown_widget: ^2.3.2+6
+  markdown: ^7.2.2
+  html: ^0.15.4
+
+  # Feedback and User Interaction
+  feedback: ^3.1.0
+  super_drag_and_drop: ^0.8.12
+
+  # Logging
+  logger: ^2.2.0
+
+  # URL Launcher
+  url_launcher: ^6.2.6
+
+  # Supabase Integration
   supabase_flutter: ^2.5.2
+
+  # Device and Package Info
   device_info_plus: ^10.1.0
   package_info_plus: ^8.0.0
+  devicelocale: ^0.7.1
+
+  # Environment Variables
   envied: ^0.5.4+1
-  feedback: ^3.1.0
-  gap: ^3.0.1
+
+  # Animations
+  flutter_animate: ^4.5.0
+
+  # GRPC and Protocol Buffers
   grpc: ^3.2.4
   protoc_plugin: ^21.1.2
   protobuf: ^3.1.0
-  html: ^0.15.4
-  audioplayers: ^6.0.0
-  cached_network_image: ^3.3.1
-  path: ^1.9.0
-  devicelocale: ^0.7.1
-  markdown_widget: ^2.3.2+6
-  markdown: ^7.2.2
-  flex_color_picker: ^3.5.0
-  hive_flutter: ^1.1.0
+
+  # LangChain Integration
+  langchain: ^0.7.1
+  langchain_ollama: ^0.2.1+1
 
 dev_dependencies:
   flutter_test:
