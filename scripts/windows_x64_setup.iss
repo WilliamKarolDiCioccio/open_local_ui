@@ -24,7 +24,7 @@ LicenseFile=..\LICENSE.md
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=C:\Users\theyo\Desktop\open_local_ui(main)\scripts
+OutputDir=.
 OutputBaseFilename=windows_x64_setup
 Compression=lzma
 SolidCompression=yes
