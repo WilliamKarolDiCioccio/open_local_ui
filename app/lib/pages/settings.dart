@@ -212,7 +212,7 @@ class OllamaSettings extends StatelessWidget {
             Switch(
               value: context.watch<ChatProvider>().isOllamaUsingGpu,
               onChanged: (value) {
-                context.read<ChatProvider>().ollamaEnableGpu(value);
+                context.read<ChatProvider>().enableGPU(value);
               },
             ),
             if (!context.watch<ChatProvider>().isOllamaUsingGpu) const Gap(8),

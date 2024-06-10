@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -9,17 +10,18 @@ import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:open_local_ui/database/sessions.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/models/chat_session.dart';
+import 'package:open_local_ui/providers/model.dart';
 import 'package:open_local_ui/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatProvider extends ChangeNotifier {
-  bool _enableWebSearch = false;
-  bool _enableDocsSearch = false;
-  bool _enableAutoscroll = true;
-  bool _enableOllamaGpu = true;
+  late bool _enableWebSearch;
+  late bool _enableDocsSearch;
+  late bool _enableAutoscroll;
+  late bool _enableGPU;
   late ChatOllama _model;
-  String _modelName = '';
+  late String _modelName;
 
   ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
@@ -36,11 +38,16 @@ class ChatProvider extends ChangeNotifier {
     _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
     _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
     _enableAutoscroll = prefs.getBool('enableAutoscroll') ?? true;
-    _enableOllamaGpu = prefs.getBool('enableOllamaGpu') ?? true;
+    _enableGPU = prefs.getBool('enableGPU') ?? true;
 
-    _modelName = prefs.getString('modelName') ?? '';
+    final models = ModelProvider.getModelsStatic();
+    final modelName = prefs.getString('modelName') ?? '';
 
-    setModel(_modelName, temperature: 0.8, useGpu: _enableOllamaGpu);
+    if (models.any((model) => model.name == modelName)) {
+      setModel(modelName);
+    } else {
+      setModel(models.first.name);
+    }
 
     final loadedSessions = await SessionsDatabase.loadSessions();
 
@@ -86,6 +93,22 @@ class ChatProvider extends ChangeNotifier {
     _session = _sessions[index];
 
     loadSessionHistory();
+
+    for (final message in _session!.messages.reversed) {
+      if (message is ChatModelMessageWrapper) {
+        final models = ModelProvider.getModelsStatic();
+
+        if (models.any(
+          (model) => model.name == message.senderName,
+        )) {
+          setModel(message.senderName!);
+        } else {
+          setModel(models.first.name);
+        }
+
+        break;
+      }
+    }
 
     notifyListeners();
   }
@@ -501,12 +524,7 @@ class ChatProvider extends ChangeNotifier {
 
   // Model management
 
-  void setModel(
-    String name, {
-    double temperature = 0.8,
-    int keepAlive = 5,
-    bool useGpu = true,
-  }) async {
+  void setModel(String name) async {
     if (_session != null) {
       if (_session?.status == ChatSessionStatus.generating) {
         return;
@@ -519,13 +537,23 @@ class ChatProvider extends ChangeNotifier {
 
     await prefs.setString('modelName', name);
 
+    late int? numGPU;
+
+    if (_enableGPU) {
+      if (Platform.isMacOS) {
+        numGPU = 1;
+      } else {
+        numGPU = null;
+      }
+    }
+
     _model = ChatOllama(
       defaultOptions: ChatOllamaOptions(
         model: name,
-        temperature: temperature,
-        numGpu: useGpu ? null : 0,
+        keepAlive: 5,
+        temperature: 0.8,
+        numGpu: numGPU,
         format: OllamaResponseFormat.json,
-        keepAlive: keepAlive,
       ),
     );
 
@@ -564,14 +592,14 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void ollamaEnableGpu(bool value) async {
-    _enableOllamaGpu = value;
+  void enableGPU(bool value) async {
+    _enableGPU = value;
 
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setBool('enableOllamaGpu', value);
+    await prefs.setBool('enableGPU', value);
 
-    setModel(_modelName, temperature: 0.8, useGpu: value);
+    setModel(_modelName);
 
     notifyListeners();
   }
@@ -582,7 +610,7 @@ class ChatProvider extends ChangeNotifier {
 
   bool get isAutoscrollEnabled => _enableAutoscroll;
 
-  bool get isOllamaUsingGpu => _enableOllamaGpu;
+  bool get isOllamaUsingGpu => _enableGPU;
 
   String get modelName => _modelName;
 

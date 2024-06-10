@@ -44,7 +44,7 @@ class ModelProvider extends ChangeNotifier {
         });
       });
 
-      _staticUpdateList();
+      _updateListStatic();
     } catch (e) {
       logger.e(e);
     }
@@ -54,7 +54,7 @@ class ModelProvider extends ChangeNotifier {
     _process.kill();
   }
 
-  static Future _staticUpdateList() async {
+  static Future _updateListStatic() async {
     await HTTPHelpers.get('$_api/tags').then((response) {
       if (response.statusCode != 200) {
         logger.e('Failed to fetch models list');
@@ -77,7 +77,7 @@ class ModelProvider extends ChangeNotifier {
   }
 
   Future updateList() async {
-    await _staticUpdateList();
+    await _updateListStatic();
 
     notifyListeners();
   }
@@ -358,11 +358,9 @@ class ModelProvider extends ChangeNotifier {
     await updateList();
   }
 
-  Model getModel(int index) {
-    return _models[index];
-  }
-
   List<Model> get models => _models;
+  
+  static List<Model> getModelsStatic() => _models;
 
   int get modelsCount => _models.length;
 
