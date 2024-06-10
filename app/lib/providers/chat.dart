@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:open_local_ui/database/sessions.dart';
@@ -12,6 +14,7 @@ import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/model.dart';
 import 'package:open_local_ui/utils/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -28,7 +31,13 @@ class ChatProvider extends ChangeNotifier {
 
   // Constructor and initialization
 
-  ChatProvider() {
+  ChatProvider()
+      : _enableWebSearch = false,
+        _enableDocsSearch = false,
+        _enableAutoscroll = true,
+        _enableGPU = true,
+        _model = ChatOllama(),
+        _modelName = '' {
     loadSettings();
   }
 
@@ -49,7 +58,15 @@ class ChatProvider extends ChangeNotifier {
       setModel(models.first.name);
     }
 
-    final loadedSessions = await SessionsDatabase.loadSessions();
+    final docsDir = await getApplicationDocumentsDirectory();
+
+    final loadedSessions = await Isolate.run(
+      () async {
+        Hive.init('${docsDir.path}/OpenLocalUI/saved_data');
+
+        return await SessionsDatabase.loadSessions();
+      },
+    );
 
     _sessions.addAll(loadedSessions);
 
