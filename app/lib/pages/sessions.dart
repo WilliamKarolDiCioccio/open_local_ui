@@ -254,7 +254,7 @@ class _SessionListTileState extends State<SessionListTile> {
     super.dispose();
   }
 
-  void _setSession() {
+  void _setSession() async {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,

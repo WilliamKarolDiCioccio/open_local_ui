@@ -279,7 +279,7 @@ class ModelListTile extends StatefulWidget {
 }
 
 class _ModelListTileState extends State<ModelListTile> {
-  void _setModel(Model model) {
+  void _setModel(Model model) async {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
