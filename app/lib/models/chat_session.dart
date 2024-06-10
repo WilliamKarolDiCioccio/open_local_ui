@@ -11,7 +11,18 @@ class ChatMessagesJSONConverter
 
   @override
   List<ChatMessageWrapper> fromJson(List<dynamic> json) {
-    return json.map((e) => ChatMessageWrapper.fromJson(e)).toList();
+    return json.map((e) {
+      final genericWrapper = ChatMessageWrapper.fromJson(e);
+
+      switch (genericWrapper.sender) {
+        case ChatMessageSender.user:
+          return ChatUserMessageWrapper.fromJson(e);
+        case ChatMessageSender.model:
+          return ChatModelMessageWrapper.fromJson(e);
+        case ChatMessageSender.system:
+          return ChatSystemMessageWrapper.fromJson(e);
+      }
+    }).toList();
   }
 
   @override

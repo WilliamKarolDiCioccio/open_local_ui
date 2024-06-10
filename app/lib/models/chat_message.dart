@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,7 +11,8 @@ class ImageBytesJSONConverter implements JsonConverter<Uint8List?, Object?> {
   @override
   Uint8List? fromJson(Object? json) {
     if (json is String) {
-      return Uint8List.fromList(json.codeUnits);
+      final base64String = jsonDecode(json);
+      return base64Decode(base64String);
     } else {
       return null;
     }
@@ -19,7 +21,8 @@ class ImageBytesJSONConverter implements JsonConverter<Uint8List?, Object?> {
   @override
   Object? toJson(Uint8List? object) {
     if (object != null) {
-      return String.fromCharCodes(object);
+      final base64String = base64Encode(object);
+      return jsonEncode(base64String);
     } else {
       return null;
     }
@@ -140,8 +143,15 @@ class ChatModelMessageWrapper extends ChatMessageWrapper {
 
 @JsonSerializable()
 class ChatUserMessageWrapper extends ChatMessageWrapper {
-  @JsonKey(fromJson: _imageBytesFromJson, toJson: _imageBytesToJson)
+  @JsonKey(
+    includeToJson: true,
+    includeFromJson: true,
+    includeIfNull: true,
+    fromJson: _imageBytesFromJson,
+    toJson: _imageBytesToJson,
+  )
   final Uint8List? imageBytes;
+  
   final List<String>? filePaths;
 
   ChatUserMessageWrapper(
