@@ -132,14 +132,18 @@ class ChatModelSelectionWidget extends StatelessWidget {
     final List<DropdownMenuEntry> modelsMenuEntries = [];
 
     for (final model in context.read<ModelProvider>().models) {
-      final shortName = model.name.length > 20
-          ? '${model.name.substring(0, 20)}...'
-          : model.name;
+      late String modelName;
+
+      if (model.name.length > 20) {
+        modelName = '${model.name.substring(0, 20)}...';
+      } else {
+        modelName = model.name;
+      }
 
       modelsMenuEntries.add(
         DropdownMenuEntry(
           value: model.name,
-          label: shortName,
+          label: modelName,
         ),
       );
     }

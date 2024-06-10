@@ -72,7 +72,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
       );
     } else {
       if (_textEditingController.text.isEmpty) return;
-      
+
       final userMessage = widget.message as ChatUserMessageWrapper;
 
       context.read<ChatProvider>().sendEditedMessage(
@@ -122,8 +122,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String senderName;
-    IconData senderIconData;
+    late String senderName;
+    late IconData senderIconData;
 
     switch (widget.message.sender) {
       case ChatMessageSender.user:
@@ -132,7 +132,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         break;
       case ChatMessageSender.model:
         senderIconData = UniconsLine.robot;
-        senderName = widget.message.senderName!;
+
+        if (widget.message.senderName!.length > 20) {
+          senderName = '${widget.message.senderName!.substring(0, 20)}...';
+        } else {
+          senderName = widget.message.senderName!;
+        }
+
         break;
       case ChatMessageSender.system:
         senderIconData = UniconsLine.eye;
