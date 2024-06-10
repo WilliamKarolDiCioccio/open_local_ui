@@ -104,6 +104,16 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSessionTitle(String uuid, String title) {
+    final index = _sessions.indexWhere((element) => element.uuid == uuid);
+
+    _sessions[index].title = title;
+
+    SessionsDatabase.updateSession(_sessions[index]);
+
+    notifyListeners();
+  }
+
   // Messages management
 
   ChatSystemMessageWrapper addSystemMessage(String message) {

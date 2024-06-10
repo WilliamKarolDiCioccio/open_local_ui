@@ -75,77 +75,6 @@ class _ModelsPageState extends State<ModelsPage> {
     });
   }
 
-  void _setModel(Model model) {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
-        SnackBarType.error,
-      );
-    } else {
-      if (!context.read<ChatProvider>().isSessionSelected) {
-        final session = context.read<ChatProvider>().addSession('');
-        context.read<ChatProvider>().setSession(session.uuid);
-      }
-
-      context.read<ChatProvider>().setModel(model.name);
-      widget.pageController.jumpToPage(PageIndex.chat.index);
-    }
-  }
-
-  void _deleteModel(String name) async {
-    if (context.read<ChatProvider>().modelName == name) {
-      SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
-        SnackBarType.error,
-      );
-    } else {
-      context.read<ModelProvider>().remove(name);
-    }
-  }
-
-  Widget _buildModelListTile(Model model, BuildContext context) {
-    return ListTile(
-      title: Text(model.name),
-      subtitle: Text(
-        AppLocalizations.of(context)!.modifiedAtTextShared(
-          DateTimeHelpers.formattedDateTime(model.modifiedAt),
-        ),
-      ),
-      trailing: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            tooltip: AppLocalizations.of(context)!.modelsPageUseButton,
-            icon: const Icon(UniconsLine.enter),
-            onPressed: () => _setModel(model),
-          ),
-          const Gap(8),
-          IconButton(
-            tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
-            icon: const Icon(
-              UniconsLine.trash,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              showConfirmationDialog(
-                context: context,
-                title:
-                    AppLocalizations.of(context)!.modelsPageDeleteDialogTitle,
-                content: AppLocalizations.of(context)!
-                    .modelsPageDeleteDialogText(model.name),
-                onConfirm: () => _deleteModel(model.name),
-              );
-            },
-          ),
-        ],
-      ),
-      onTap: () {
-        showModelDetailsDialog(model, context);
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var sortedModels = context.read<ModelProvider>().models;
@@ -310,12 +239,15 @@ class _ModelsPageState extends State<ModelsPage> {
           const Gap(16),
           Expanded(
             child: ListView.builder(
-              prototypeItem: _buildModelListTile(prototypeModel, context),
+              prototypeItem: ModelListTile(
+                model: prototypeModel,
+                pageController: widget.pageController,
+              ),
               itemCount: context.read<ModelProvider>().modelsCount,
               itemBuilder: (context, index) {
-                return _buildModelListTile(
-                  sortedModels[index],
-                  context,
+                return ModelListTile(
+                  model: sortedModels[index],
+                  pageController: widget.pageController,
                 )
                     .animate(delay: (index * 100).ms)
                     .fadeIn(duration: 900.ms, delay: 300.ms)
@@ -328,6 +260,96 @@ class _ModelsPageState extends State<ModelsPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ModelListTile extends StatefulWidget {
+  final Model model;
+  final PageController pageController;
+
+  const ModelListTile({
+    super.key,
+    required this.model,
+    required this.pageController,
+  });
+
+  @override
+  State<ModelListTile> createState() => _ModelListTileState();
+}
+
+class _ModelListTileState extends State<ModelListTile> {
+  void _setModel(Model model) {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        SnackBarType.error,
+      );
+    } else {
+      if (!context.read<ChatProvider>().isSessionSelected) {
+        final session = context.read<ChatProvider>().addSession('');
+        context.read<ChatProvider>().setSession(session.uuid);
+      }
+
+      context.read<ChatProvider>().setModel(model.name);
+      widget.pageController.jumpToPage(PageIndex.chat.index);
+    }
+  }
+
+  void _deleteModel() async {
+    if (context.read<ChatProvider>().modelName == widget.model.name) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        SnackBarType.error,
+      );
+    } else {
+      context.read<ModelProvider>().remove(widget.model.name);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(widget.model.name),
+      subtitle: Text(
+        AppLocalizations.of(context)!.modifiedAtTextShared(
+          DateTimeHelpers.formattedDateTime(widget.model.modifiedAt),
+        ),
+      ),
+      trailing: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            tooltip: AppLocalizations.of(context)!.modelsPageUseButton,
+            icon: const Icon(UniconsLine.enter),
+            onPressed: () => _setModel(widget.model),
+          ),
+          const Gap(8),
+          IconButton(
+            tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
+            icon: const Icon(
+              UniconsLine.trash,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              showConfirmationDialog(
+                context: context,
+                title:
+                    AppLocalizations.of(context)!.modelsPageDeleteDialogTitle,
+                content:
+                    AppLocalizations.of(context)!.modelsPageDeleteDialogText(
+                  widget.model.name,
+                ),
+                onConfirm: () => _deleteModel(),
+              );
+            },
+          ),
+        ],
+      ),
+      onTap: () {
+        showModelDetailsDialog(widget.model, context);
+      },
     );
   }
 }

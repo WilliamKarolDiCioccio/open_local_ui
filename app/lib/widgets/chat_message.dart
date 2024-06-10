@@ -64,6 +64,35 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     _textEditingController.text = widget.message.text;
   }
 
+  void _sendEditedText() {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        SnackBarType.error,
+      );
+    } else {
+      if (_textEditingController.text.isEmpty) return;
+      
+      final userMessage = widget.message as ChatUserMessageWrapper;
+
+      context.read<ChatProvider>().sendEditedMessage(
+            userMessage.uuid,
+            _textEditingController.text,
+            userMessage.imageBytes,
+          );
+
+      _cancelEditingMessage();
+    }
+  }
+
+  void _cancelEditingMessage() {
+    setState(() {
+      _showEditWidget = false;
+    });
+
+    _textEditingController.clear();
+  }
+
   void _showTTSPlayer() {
     final isLastMessage =
         context.read<ChatProvider>().lastMessage!.uuid == widget.message.uuid;
@@ -89,39 +118,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     setState(() {
       _showPlayerWidget = false;
     });
-  }
-
-  void _sendEditedMessage() {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
-        SnackBarType.error,
-      );
-    } else {
-      final userMessage = widget.message as ChatUserMessageWrapper;
-
-      context.read<ChatProvider>().sendEditedMessage(
-            userMessage.uuid,
-            _textEditingController.text,
-            userMessage.imageBytes,
-          );
-
-      setState(() {
-        _showEditWidget = false;
-      });
-
-      _textEditingController.clear();
-    }
-  }
-
-  void _cancelEditingMessage() {
-    if (!mounted) return;
-
-    setState(() {
-      _showEditWidget = false;
-    });
-
-    _textEditingController.clear();
   }
 
   @override
@@ -248,7 +244,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   decoration: InputDecoration(
                     hintText:
                         AppLocalizations.of(context)!.chatMessageEditFieldHint,
-                    border: InputBorder.none,
                     counterText: '',
                   ),
                   style: const TextStyle(
@@ -262,8 +257,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   expands: false,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 ),
+                const Gap(16),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     TextButton.icon(
@@ -272,12 +268,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                       icon: const Icon(UniconsLine.times),
                       onPressed: () => _cancelEditingMessage(),
                     ),
+                    const Gap(8),
                     TextButton.icon(
                       label: Text(
                         AppLocalizations.of(context)!.chatMessageResendButton,
                       ),
                       icon: const Icon(UniconsLine.message),
-                      onPressed: () => _sendEditedMessage(),
+                      onPressed: () => _sendEditedText(),
                     ),
                   ],
                 ),
