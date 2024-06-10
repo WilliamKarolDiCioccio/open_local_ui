@@ -77,7 +77,7 @@ class _ModelsPageState extends State<ModelsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var sortedModels = context.read<ModelProvider>().models;
+    var sortedModels = context.watch<ModelProvider>().models;
 
     sortedModels.sort(
       (a, b) {
@@ -243,7 +243,7 @@ class _ModelsPageState extends State<ModelsPage> {
                 model: prototypeModel,
                 pageController: widget.pageController,
               ),
-              itemCount: context.read<ModelProvider>().modelsCount,
+              itemCount: context.watch<ModelProvider>().modelsCount,
               itemBuilder: (context, index) {
                 return ModelListTile(
                   model: sortedModels[index],
