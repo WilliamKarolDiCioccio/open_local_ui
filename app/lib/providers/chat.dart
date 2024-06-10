@@ -580,6 +580,12 @@ class ChatProvider extends ChangeNotifier {
 
   ChatSessionWrapper? get session => _session;
 
+  ChatSessionWrapper? get sessionByUuid {
+    return _sessions.firstWhere(
+      (element) => element.uuid == _session?.uuid,
+    );
+  }
+
   bool get isSessionSelected => _session != null;
 
   List<ChatMessageWrapper> get messages {

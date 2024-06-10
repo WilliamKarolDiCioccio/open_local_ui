@@ -80,6 +80,7 @@ class _SessionsPageState extends State<SessionsPage> {
     }
   }
 
+  // ignore: unused_element
   void _shareSession(ChatSessionWrapper session) async {
     if (session.status == ChatSessionStatus.generating) {
       SnackBarHelpers.showSnackBar(
@@ -126,14 +127,14 @@ class _SessionsPageState extends State<SessionsPage> {
     }
   }
 
-  void _deleteSession(String uuid) async {
-    if (context.read<ChatProvider>().isGenerating) {
+  void _deleteSession(ChatSessionWrapper session) async {
+    if (session.status == ChatSessionStatus.generating) {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {
-      context.read<ChatProvider>().removeSession(uuid);
+      context.read<ChatProvider>().removeSession(session.uuid);
     }
   }
 
@@ -174,7 +175,7 @@ class _SessionsPageState extends State<SessionsPage> {
                     AppLocalizations.of(context)!.sessionsPageDeleteDialogTitle,
                 content: AppLocalizations.of(context)!
                     .sessionsPageDeleteDialogText(session.title),
-                onConfirm: () => _deleteSession(session.uuid),
+                onConfirm: () => _deleteSession(session),
               );
             },
           ),

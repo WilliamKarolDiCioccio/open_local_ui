@@ -93,7 +93,7 @@ class _ModelsPageState extends State<ModelsPage> {
   }
 
   void _deleteModel(String name) async {
-    if (context.read<ChatProvider>().isGenerating) {
+    if (context.read<ChatProvider>().modelName == name) {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
         SnackBarType.error,
