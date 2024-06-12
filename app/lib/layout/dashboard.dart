@@ -14,7 +14,6 @@ import 'package:open_local_ui/pages/models.dart';
 import 'package:open_local_ui/pages/sessions.dart';
 import 'package:open_local_ui/pages/settings.dart';
 import 'package:unicons/unicons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DashboardLayout extends StatefulWidget {
   const DashboardLayout({super.key});
@@ -255,11 +254,7 @@ class LicenseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton.icon(
       onPressed: () {
-        launchUrl(
-          Uri.parse(
-            'https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/LICENSE.md',
-          ),
-        );
+        showLicensePage(context: context);
       },
       icon: const Icon(UniconsLine.keyhole_circle),
       label: Text(AppLocalizations.of(context)!.licenseButton),
