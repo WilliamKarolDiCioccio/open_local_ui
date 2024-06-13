@@ -19,44 +19,51 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatProvider extends ChangeNotifier {
-  late bool _enableWebSearch;
-  late bool _enableDocsSearch;
-  late bool _enableAutoscroll;
-  late bool _enableGPU;
-  late ChatOllama _model;
-  late String _modelName;
-
+  // Langchain model
+  ChatOllama _model;
+  // Model settings
+  String _modelName;
+  bool _enableGPU;
+  double _temperature;
+  int _keepAliveTime;
+  bool _enableWebSearch;
+  bool _enableDocsSearch;
+  // Chat session
   ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
 
   // Constructor and initialization
 
   ChatProvider()
-      : _enableWebSearch = false,
+      : _model = ChatOllama(),
+        _modelName = '',
+        _enableWebSearch = false,
         _enableDocsSearch = false,
-        _enableAutoscroll = true,
         _enableGPU = true,
-        _model = ChatOllama(),
-        _modelName = '' {
+        _temperature = 0.8,
+        _keepAliveTime = 5 {
     loadSettings();
   }
 
   void loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
 
-    _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
-    _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
-    _enableAutoscroll = prefs.getBool('enableAutoscroll') ?? true;
-    _enableGPU = prefs.getBool('enableGPU') ?? true;
-
     final models = ModelProvider.getModelsStatic();
     final modelName = prefs.getString('modelName') ?? '';
 
     if (models.any((model) => model.name == modelName)) {
-      setModel(modelName);
+      _modelName = modelName;
     } else {
-      setModel(models.first.name);
+      _modelName = models.first.name;
     }
+
+    _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
+    _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
+    _enableGPU = prefs.getBool('enableGPU') ?? true;
+    _temperature = prefs.getDouble('temperature') ?? 0.8;
+    _keepAliveTime = prefs.getInt('keepAliveTime') ?? 5;
+
+    _updateModelOptions();
 
     final docsDir = await getApplicationDocumentsDirectory();
 
@@ -97,11 +104,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void setSession(String uuid) {
-    if (_session != null) {
-      if (_session!.status == ChatSessionStatus.generating) {
-        return;
-      }
-    }
+    if (isGenerating) return;
 
     clearSessionHistory();
 
@@ -163,7 +166,7 @@ class ChatProvider extends ChangeNotifier {
       const Uuid().v4(),
     );
 
-    if (_session == null) return chatMessage;
+    if (isSessionSelected) return chatMessage;
 
     _session!.messages.add(chatMessage);
 
@@ -182,7 +185,7 @@ class ChatProvider extends ChangeNotifier {
       senderName!,
     );
 
-    if (_session == null) return chatMessage;
+    if (!isSessionSelected) return chatMessage;
 
     _session!.messages.add(chatMessage);
 
@@ -213,9 +216,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void removeMessage(String uuid) async {
-    if (_session == null || _session!.status == ChatSessionStatus.generating) {
-      return;
-    }
+    if (!isSessionSelected || isGenerating) return;
 
     final index = _session!.messages.indexWhere(
       (element) => element.uuid == uuid,
@@ -231,9 +232,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void removeFromMessage(String uuid) async {
-    if (_session == null || _session!.status == ChatSessionStatus.generating) {
-      return;
-    }
+    if (!isSessionSelected || isGenerating) return;
 
     final index = _session!.messages.indexWhere(
       (element) => element.uuid == uuid,
@@ -251,9 +250,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void removeLastMessage() async {
-    if (_session == null ||
-        _session!.status == ChatSessionStatus.generating ||
-        messageCount == 0) {
+    if (!isSessionSelected || isGenerating || messageCount == 0) {
       return;
     }
 
@@ -313,9 +310,10 @@ class ChatProvider extends ChangeNotifier {
   }
 
   Future sendMessage(String text, {Uint8List? imageBytes}) async {
-    if (_session == null) {
+    if (!isSessionSelected) {
       newSession();
     }
+
     if (text.isEmpty) {
       addSystemMessage('Try to be more specific.');
 
@@ -396,9 +394,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void regenerateMessage(String uuid) async {
-    if (_session == null || _session!.status == ChatSessionStatus.generating) {
-      return;
-    }
+    if (!isSessionSelected || isGenerating) return;
 
     final modelMessageIndex = _session!.messages.indexWhere(
       (element) => element.uuid == uuid,
@@ -475,9 +471,7 @@ class ChatProvider extends ChangeNotifier {
     String text,
     Uint8List? imageBytes,
   ) async {
-    if (_session == null || _session!.status == ChatSessionStatus.generating) {
-      return;
-    }
+    if (!isSessionSelected || isGenerating) return;
 
     final messageIndex = _session!.messages.indexWhere(
       (element) => element.uuid == uuid,
@@ -493,9 +487,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void abortGeneration() {
-    if (_session == null && _session!.status != ChatSessionStatus.generating) {
-      return;
-    }
+    if (!isSessionSelected || !isGenerating) return;
 
     _session!.status = ChatSessionStatus.aborting;
 
@@ -505,9 +497,7 @@ class ChatProvider extends ChangeNotifier {
   // Session history management
 
   void loadSessionHistory() async {
-    if (_session == null || _session!.status == ChatSessionStatus.generating) {
-      return;
-    }
+    if (!isSessionSelected || isGenerating) return;
 
     for (final message in _session!.messages) {
       switch (message.sender) {
@@ -530,23 +520,37 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void clearSessionHistory() async {
-    if (_session == null || _session!.status == ChatSessionStatus.generating) {
-      return;
-    }
+    if (!isSessionSelected || isGenerating) return;
 
     _session!.memory.chatHistory.clear();
 
     notifyListeners();
   }
 
-  // Model management
+  // Model configuration
+
+  void _updateModelOptions() {
+    int? numGPU;
+
+    if (_enableGPU) {
+      numGPU = Platform.isMacOS ? 1 : null;
+    } else {
+      numGPU = 0;
+    }
+
+    final modelOptions = ChatOllamaOptions(
+      model: _modelName,
+      keepAlive: _keepAliveTime,
+      temperature: _temperature,
+      numGpu: numGPU,
+      format: OllamaResponseFormat.json,
+    );
+
+    _model = ChatOllama(defaultOptions: modelOptions);
+  }
 
   void setModel(String name) async {
-    if (_session != null) {
-      if (_session?.status == ChatSessionStatus.generating) {
-        return;
-      }
-    }
+    if (isGenerating) return;
 
     _modelName = name;
 
@@ -554,84 +558,96 @@ class ChatProvider extends ChangeNotifier {
 
     await prefs.setString('modelName', name);
 
-    late int? numGPU;
-
-    if (_enableGPU) {
-      if (Platform.isMacOS) {
-        numGPU = 1;
-      } else {
-        numGPU = null;
-      }
-    }
-
-    _model = ChatOllama(
-      defaultOptions: ChatOllamaOptions(
-        model: name,
-        keepAlive: 5,
-        temperature: 0.8,
-        numGpu: numGPU,
-        format: OllamaResponseFormat.json,
-      ),
-    );
+    _updateModelOptions();
 
     notifyListeners();
   }
 
-  // Chat configuration
+  void setTemperature(double value) async {
+    if (isGenerating) return;
 
-  void enableWebSearch(bool value) async {
-    _enableWebSearch = value;
+    _temperature = value;
 
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setBool('enableWebSearch', value);
+    await prefs.setDouble('temperature', value);
+
+    _updateModelOptions();
 
     notifyListeners();
   }
 
-  void enableDocsSearch(bool value) async {
-    _enableDocsSearch = value;
+  void setKeepAliveTime(int value) async {
+    if (isGenerating) return;
+
+    _keepAliveTime = value;
 
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setBool('enableDocsSearch', value);
+    await prefs.setInt('keepAliveTime', value.toInt());
 
-    notifyListeners();
-  }
-
-  void enableAutoscroll(bool value) async {
-    _enableAutoscroll = value;
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setBool('enableAutoscroll', value);
+    _updateModelOptions();
 
     notifyListeners();
   }
 
   void enableGPU(bool value) async {
+    if (isGenerating) return;
+
     _enableGPU = value;
 
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setBool('enableGPU', value);
 
-    setModel(_modelName);
+    _updateModelOptions();
 
     notifyListeners();
   }
 
-  bool get isWebSearchEnabled => _enableWebSearch;
+  void enableWebSearch(bool value) async {
+    if (isGenerating) return;
 
-  bool get isDocsSearchEnabled => _enableDocsSearch;
+    _enableWebSearch = value;
 
-  bool get isAutoscrollEnabled => _enableAutoscroll;
+    final prefs = await SharedPreferences.getInstance();
 
-  bool get isOllamaUsingGpu => _enableGPU;
+    await prefs.setBool('enableWebSearch', value);
+
+    _updateModelOptions();
+
+    notifyListeners();
+  }
+
+  void enableDocsSearch(bool value) async {
+    if (isGenerating) return;
+
+    _enableDocsSearch = value;
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('enableDocsSearch', value);
+
+    _updateModelOptions();
+
+    notifyListeners();
+  }
+
+  // Getters
 
   String get modelName => _modelName;
 
   bool get isModelSelected => _modelName.isNotEmpty;
+
+  double get temperature => _temperature;
+
+  double get keepAliveTime => _keepAliveTime.toDouble();
+
+  bool get isOllamaUsingGpu => _enableGPU;
+
+  bool get isWebSearchEnabled => _enableWebSearch;
+
+  bool get isDocsSearchEnabled => _enableDocsSearch;
 
   ChatSessionWrapper? get session => _session;
 

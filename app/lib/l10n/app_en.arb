@@ -35,7 +35,6 @@
   "chatToolbarModelSelectorHint": "Select model",
   "chatToolbarWebSearchOption": "Web search:",
   "chatToolbarDocsSearchOption": "Docs search:",
-  "chatToolbarAutoscrollOption": "Autoscroll",
   "chatToolbarNewSessionButton": "New session",
   "chatInputFieldHint": "Type a message...",
   "chatInputFieldAttachButtonTooltip": "Attach files",
@@ -88,8 +87,9 @@
   "settingsLanguageFrench": "French",
   "settingsLanguageItalian": "Italian",
   "settingsPageOllamaLabel": "Ollama",
-  "settingsPageOllamaUseGpuLabel": "Use GPU",
-  "settingsPageOllamaPerformanceWarn": "Harmful for performance!",
+  "settingsPageOllamaUseGPULabel": "Use GPU",
+  "settingsPageOllamaSetTemperatureLabel": "Set temperature",
+  "settingsPageOllamaSetKeepAliveTimeLabel": "Set keep alive time",
   "aboutPageCopyRightNotice": "© 2024 William Karol Di Cioccio",
   "aboutPageTitle1": "Discover more",
   "aboutPageTitle2": "Powered by",
@@ -289,6 +289,7 @@
   "somethingWentWrongSnackBarText": "Something went wrong",
   "abortModelRemovalSnackBarText": "Abort model removal",
   "abortSessionRemovalSnackBarText": "Abort session removal",
+  "ollamaDisabledGPUWarningSnackbarText": "Disabling GPU is harmful for performance",
   "undoButtonTextShared": "Undo",
   "redoButtonTextShared": "Redo"
 }

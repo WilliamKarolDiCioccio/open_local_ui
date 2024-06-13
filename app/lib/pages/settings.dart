@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/locale.dart';
@@ -70,13 +71,12 @@ class ThemeSettings extends StatelessWidget {
     }
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.settingsPageThemeLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const SizedBox(height: 8.0),
+        const Gap(16.0),
         DropdownMenu(
           menuHeight: 128,
           menuStyle: MenuStyle(
@@ -133,13 +133,12 @@ class AccessibilitySettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.settingsPageAccessiblityLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const SizedBox(height: 8.0),
+        const Gap(16.0),
         DropdownMenu(
           menuHeight: 256,
           menuStyle: MenuStyle(
@@ -186,42 +185,136 @@ class AccessibilitySettings extends StatelessWidget {
   }
 }
 
-class OllamaSettings extends StatelessWidget {
+class OllamaSettings extends StatefulWidget {
   const OllamaSettings({super.key});
+
+  @override
+  State<OllamaSettings> createState() => _OllamaSettingsState();
+}
+
+class _OllamaSettingsState extends State<OllamaSettings> {
+  double _temperature = 0.0;
+  double _keepAliveTime = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _temperature = context.read<ChatProvider>().temperature;
+    _keepAliveTime = context.read<ChatProvider>().keepAliveTime;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.settingsPageOllamaLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const SizedBox(height: 8.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(UniconsLine.processor),
-            const Gap(8.0),
-            Text(
-              '${AppLocalizations.of(context)!.settingsPageOllamaUseGpuLabel}:',
-              style: const TextStyle(fontSize: 16.0),
-            ),
-            const Gap(8.0),
-            Switch(
-              value: context.watch<ChatProvider>().isOllamaUsingGpu,
-              onChanged: (value) {
-                context.read<ChatProvider>().enableGPU(value);
-              },
-            ),
-            if (!context.watch<ChatProvider>().isOllamaUsingGpu) const Gap(8),
-            if (!context.watch<ChatProvider>().isOllamaUsingGpu)
-              Text(
-                AppLocalizations.of(context)!.settingsPageOllamaPerformanceWarn,
-                style: const TextStyle(color: Colors.red),
+        const Gap(16.0),
+        FractionallySizedBox(
+          widthFactor: 0.6,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(UniconsLine.processor),
+                  const Gap(8.0),
+                  Text(
+                    '${AppLocalizations.of(context)!.settingsPageOllamaUseGPULabel}:',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const Gap(8.0),
+                  Switch(
+                    value: context.watch<ChatProvider>().isOllamaUsingGpu,
+                    onChanged: !context.watch<ChatProvider>().isGenerating
+                        ? (value) {
+                            if (!value) {
+                              SnackBarHelpers.showSnackBar(
+                                AppLocalizations.of(context)!
+                                    .ollamaDisabledGPUWarningSnackbarText,
+                                SnackBarType.warning,
+                              );
+                            }
+
+                            context.read<ChatProvider>().enableGPU(value);
+                          }
+                        : null,
+                  ),
+                ],
               ),
-          ],
+              const Gap(16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(UniconsLine.temperature),
+                  const Gap(8.0),
+                  Text(
+                    '${AppLocalizations.of(context)!.settingsPageOllamaSetTemperatureLabel}:',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const Gap(8.0),
+                  Slider(
+                    value: _temperature,
+                    onChangeEnd: (value) {
+                      context.read<ChatProvider>().setTemperature(_temperature);
+                    },
+                    onChanged: !context.watch<ChatProvider>().isGenerating
+                        ? (value) {
+                            setState(() {
+                              _temperature = value;
+                            });
+                          }
+                        : null,
+                    min: 0,
+                    max: 1,
+                  ),
+                  const Gap(8.0),
+                  Text(
+                    '${(_temperature * 100).round()}%',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+              const Gap(16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(UniconsLine.clock),
+                  const Gap(8.0),
+                  Text(
+                    '${AppLocalizations.of(context)!.settingsPageOllamaSetKeepAliveTimeLabel}:',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const Gap(8.0),
+                  Slider(
+                    value: _keepAliveTime,
+                    onChangeEnd: (value) {
+                      context.read<ChatProvider>().setKeepAliveTime(
+                            _keepAliveTime == 61 ? -1 : _keepAliveTime.toInt(),
+                          );
+                    },
+                    onChanged: !context.watch<ChatProvider>().isGenerating
+                        ? (value) {
+                            setState(() {
+                              _keepAliveTime = value;
+                            });
+                          }
+                        : null,
+                    min: 0,
+                    max: 61,
+                  ),
+                  const Gap(8.0),
+                  Text(
+                    '${_keepAliveTime == 61 ? '∞' : _keepAliveTime.round()} min',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );

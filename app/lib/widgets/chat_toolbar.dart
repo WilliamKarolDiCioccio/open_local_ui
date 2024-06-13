@@ -108,14 +108,6 @@ class ChatOptionBarWidget extends StatelessWidget {
                       }
                     : null,
               ),
-              const Gap(8),
-              Text(AppLocalizations.of(context)!.chatToolbarAutoscrollOption),
-              Checkbox(
-                value: context.watch<ChatProvider>().isAutoscrollEnabled,
-                onChanged: (value) {
-                  context.read<ChatProvider>().enableAutoscroll(value ?? false);
-                },
-              ),
             ],
           ),
         ],

@@ -79,9 +79,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isUserScrolling &&
-        context.watch<ChatProvider>().isAutoscrollEnabled) {
-      if (_scrollController.hasClients) _scrollToBottom();
+    if (!_isUserScrolling && _scrollController.hasClients) {
+      _scrollToBottom();
     }
 
     return Column(
