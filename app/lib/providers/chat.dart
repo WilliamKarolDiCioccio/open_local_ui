@@ -166,6 +166,14 @@ class ChatProvider extends ChangeNotifier {
 
     _sessions[index].title = title;
 
+    if (isSessionSelected && _session!.uuid == uuid) {
+      () async {
+        doWhenWindowReady(() async {
+          appWindow.title = 'OpenLocalUI - ${_sessions[index].title}';
+        });
+      }();
+    }
+
     SessionsDatabase.updateSession(_sessions[index]);
 
     notifyListeners();
@@ -377,7 +385,7 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      if (_session!.title.isEmpty) {
+      if (_session!.title == 'Untitled') {
         final titleGeneratorPrompt = await rootBundle.loadString(
           'assets/prompts/title_generator.txt',
         );
@@ -388,7 +396,7 @@ class ChatProvider extends ChangeNotifier {
 
         final response = await chain.invoke({'question': text});
 
-        _session!.title = response.toString();
+        setSessionTitle(_session!.uuid, response.toString());
       }
 
       SessionsDatabase.updateSession(_session!);
