@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gap/gap.dart';
 import 'package:open_local_ui/models/ollama_responses.dart';
 import 'package:open_local_ui/providers/model.dart';
 import 'package:provider/provider.dart';
@@ -18,10 +19,25 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   final TextEditingController _fileEditingController = TextEditingController();
   final TextEditingController _modelSelectionController =
       TextEditingController();
+  final List<DropdownMenuEntry> _modelsMenuEntries = [];
   bool _isCreating = false;
   int _stepsCount = 0;
   double _progressValue = 0.0;
   String _progressBarText = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    for (final model in context.read<ModelProvider>().models) {
+      final shortName = model.name.length > 20
+          ? '${model.name.substring(0, 20)}...'
+          : model.name;
+
+      _modelsMenuEntries
+          .add(DropdownMenuEntry(value: model.name, label: shortName));
+    }
+  }
 
   @override
   void dispose() {
@@ -83,17 +99,6 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuEntry> modelsMenuEntries = [];
-
-    for (final model in context.read<ModelProvider>().models) {
-      final shortName = model.name.length > 20
-          ? '${model.name.substring(0, 20)}...'
-          : model.name;
-
-      modelsMenuEntries
-          .add(DropdownMenuEntry(value: model.name, label: shortName));
-    }
-
     return AlertDialog(
       title: Text(
         AppLocalizations.of(context)!.createModelDialogTitle,
@@ -109,6 +114,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                 Text(
                   AppLocalizations.of(context)!.createModelDialogGuideText1,
                 ),
+                const Gap(8.0),
                 DropdownMenu(
                   menuHeight: 128,
                   menuStyle: MenuStyle(
@@ -132,13 +138,14 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                   enableSearch: true,
                   hintText: AppLocalizations.of(context)!
                       .createModelDialogModelSelectorHint,
-                  dropdownMenuEntries: modelsMenuEntries,
+                  dropdownMenuEntries: _modelsMenuEntries,
                   onSelected: null,
                 ),
                 const SizedBox(height: 16.0),
                 Text(
                   AppLocalizations.of(context)!.createModelDialogGuideText2,
                 ),
+                const Gap(8.0),
                 TextField(
                   controller: _nameEditingController,
                   decoration: InputDecoration(
@@ -150,10 +157,11 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                   maxLength: 32,
                   maxLines: 1,
                 ),
-                const SizedBox(height: 16.0),
+                const Gap(16.0),
                 Text(
                   AppLocalizations.of(context)!.createModelDialogGuideText3,
                 ),
+                const Gap(8.0),
                 TextField(
                   controller: _fileEditingController,
                   decoration: InputDecoration(

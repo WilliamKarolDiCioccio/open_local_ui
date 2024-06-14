@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/dialogs/confirmation.dart';
 import 'package:open_local_ui/dialogs/create_model.dart';
+import 'package:open_local_ui/dialogs/import_model.dart';
 import 'package:open_local_ui/dialogs/model_details.dart';
 import 'package:open_local_ui/dialogs/pull_model.dart';
 import 'package:open_local_ui/dialogs/push_model.dart';
@@ -137,6 +138,14 @@ class _ModelsPageState extends State<ModelsPage> {
                 ),
                 icon: const Icon(UniconsLine.create_dashboard),
                 onPressed: () => showCreateModelDialog(context),
+              ),
+              TextButton.icon(
+                label: Text(
+                  AppLocalizations.of(context)!.modelsPageImportButton,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                icon: const Icon(UniconsLine.cube),
+                onPressed: () => showImportModelDialog(context),
               ),
               TextButton.icon(
                 label: Text(
