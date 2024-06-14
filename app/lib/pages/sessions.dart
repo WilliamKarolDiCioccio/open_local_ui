@@ -44,7 +44,6 @@ class _SessionsPageState extends State<SessionsPage> {
   late Set<SortOrder> _sortOrder;
 
   final prototypeChatSession = ChatSessionWrapper(
-    '',
     DateTime(0),
     '',
     [],

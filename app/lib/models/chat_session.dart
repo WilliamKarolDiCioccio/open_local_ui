@@ -58,7 +58,12 @@ class ChatSessionWrapper {
   @JsonKey(includeToJson: false, includeFromJson: false)
   ChatSessionStatus status = ChatSessionStatus.idle;
 
-  ChatSessionWrapper(this.title, this.createdAt, this.uuid, this.messages);
+  ChatSessionWrapper(
+    this.createdAt,
+    this.uuid,
+    this.messages, {
+    this.title = 'Untitled',
+  });
 
   factory ChatSessionWrapper.fromJson(Map<String, dynamic> json) =>
       _$ChatSessionWrapperFromJson(json);

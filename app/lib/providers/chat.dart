@@ -6,6 +6,7 @@ import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
@@ -84,7 +85,6 @@ class ChatProvider extends ChangeNotifier {
 
   ChatSessionWrapper addSession(String title) {
     _sessions.add(ChatSessionWrapper(
-      title,
       DateTime.now(),
       const Uuid().v4(),
       [],
@@ -111,6 +111,12 @@ class ChatProvider extends ChangeNotifier {
     final index = _sessions.indexWhere((element) => element.uuid == uuid);
 
     _session = _sessions[index];
+
+    () async {
+      doWhenWindowReady(() {
+        appWindow.title = 'OpenLocalUI - ${_session!.title}';
+      });
+    }();
 
     loadSessionHistory();
 
@@ -139,6 +145,14 @@ class ChatProvider extends ChangeNotifier {
     if (_sessions[index].status == ChatSessionStatus.generating) return;
 
     _sessions.removeAt(index);
+
+    if (isSessionSelected && _session!.uuid == uuid) {
+      () async {
+        doWhenWindowReady(() async {
+          appWindow.title = 'OpenLocalUI';
+        });
+      }();
+    }
 
     _session = null;
 
