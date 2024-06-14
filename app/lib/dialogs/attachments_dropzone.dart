@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
+import 'package:gap/gap.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/helpers/http.dart';
 import 'package:open_local_ui/utils/logger.dart';
@@ -162,6 +163,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowCompression: false,
+      type: FileType.custom,
       allowedExtensions: ['png', 'jpeg', 'webp'],
     );
 
@@ -203,7 +205,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               ),
               style: const TextStyle(fontSize: 14.0),
             ),
-            const SizedBox(height: 16.0),
+            const Gap(16.0),
             TextButton.icon(
               label: Text(
                 AppLocalizations.of(context)!
