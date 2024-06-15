@@ -164,7 +164,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
       allowMultiple: false,
       allowCompression: false,
       type: FileType.custom,
-      allowedExtensions: ['png', 'jpeg', 'webp'],
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'webp'],
     );
 
     if (result != null) {
