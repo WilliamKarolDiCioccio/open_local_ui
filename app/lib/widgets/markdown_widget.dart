@@ -50,7 +50,7 @@ class MessageMarkdownWidget extends StatelessWidget {
                 launchUrl(Uri.parse(url));
               } catch (e) {
                 SnackBarHelpers.showSnackBar(
-                  AppLocalizations.of(context)!.somethingWentWrongSnackBarText,
+                  AppLocalizations.of(context).somethingWentWrongSnackBarText,
                   SnackBarType.error,
                 );
               }
@@ -96,7 +96,7 @@ class _CodeWrapperState extends State<CodeWrapperWidget> {
     Clipboard.setData(ClipboardData(text: widget.text));
 
     SnackBarHelpers.showSnackBar(
-      AppLocalizations.of(context)!.codeCopiedSnackBarText,
+      AppLocalizations.of(context).codeCopiedSnackBarText,
       SnackBarType.success,
     );
   }

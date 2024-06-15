@@ -21,12 +21,12 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
     if (context.read<ChatProvider>().isSessionSelected) {
       if (context.read<ChatProvider>().session!.messages.isEmpty) {
         SnackBarHelpers.showSnackBar(
-          AppLocalizations.of(context)!.noNeedToCreateSessionSnackBarText,
+          AppLocalizations.of(context).noNeedToCreateSessionSnackBarText,
           SnackBarType.info,
         );
       } else if (context.read<ChatProvider>().isGenerating) {
         SnackBarHelpers.showSnackBar(
-          AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+          AppLocalizations.of(context).modelIsGeneratingSnackBarText,
           SnackBarType.error,
         );
       } else {
@@ -34,7 +34,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       }
     } else {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.noNeedToCreateSessionSnackBarText,
+        AppLocalizations.of(context).noNeedToCreateSessionSnackBarText,
         SnackBarType.info,
       );
     }
@@ -53,7 +53,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
           const Gap(16),
           ElevatedButton.icon(
             label: Text(
-              AppLocalizations.of(context)!.chatToolbarNewSessionButton,
+              AppLocalizations.of(context).chatToolbarNewSessionButton,
               style: const TextStyle(fontSize: 18.0),
             ),
             icon: const Icon(UniconsLine.plus),
@@ -85,7 +85,7 @@ class ChatOptionBarWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(AppLocalizations.of(context)!.chatToolbarWebSearchOption),
+              Text(AppLocalizations.of(context).chatToolbarWebSearchOption),
               Checkbox(
                 value: context.watch<ChatProvider>().isWebSearchEnabled,
                 onChanged: !context.watch<ChatProvider>().isGenerating
@@ -97,7 +97,7 @@ class ChatOptionBarWidget extends StatelessWidget {
                     : null,
               ),
               const Gap(8),
-              Text(AppLocalizations.of(context)!.chatToolbarDocsSearchOption),
+              Text(AppLocalizations.of(context).chatToolbarDocsSearchOption),
               Checkbox(
                 value: context.watch<ChatProvider>().isDocsSearchEnabled,
                 onChanged: !context.watch<ChatProvider>().isGenerating
@@ -160,7 +160,7 @@ class ChatModelSelectionWidget extends StatelessWidget {
         ),
       ),
       enableSearch: true,
-      hintText: AppLocalizations.of(context)!.chatToolbarModelSelectorHint,
+      hintText: AppLocalizations.of(context).chatToolbarModelSelectorHint,
       initialSelection: context.watch<ChatProvider>().modelName,
       dropdownMenuEntries: modelsMenuEntries,
       onSelected: (value) => context.read<ChatProvider>().setModel(value ?? ''),

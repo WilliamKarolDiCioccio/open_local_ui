@@ -47,7 +47,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
       _progressValue += _stepsCount / 11;
 
       _progressBarText =
-          AppLocalizations.of(context)!.progressBarStatusTextWithStepsShared(
+          AppLocalizations.of(context).progressBarStatusTextWithStepsShared(
         response.status,
         11,
         _stepsCount,
@@ -81,7 +81,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context)!.importModelDialogTitle,
+        AppLocalizations.of(context).importModelDialogTitle,
       ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +98,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
               if (!_isImporting)
                 TextButton.icon(
                   label: Text(
-                    AppLocalizations.of(context)!
+                    AppLocalizations.of(context)
                         .attachFilesDialogBrowseFilesButton,
                     style: const TextStyle(fontSize: 16.0),
                   ),
@@ -107,7 +107,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
                 ),
               if (!_isImporting)
                 Text(
-                  AppLocalizations.of(context)!
+                  AppLocalizations.of(context)
                       .attachFilesDialogAllowedFormatsText(
                     'GGUF',
                   ),
@@ -136,16 +136,16 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             _isImporting
-                ? AppLocalizations.of(context)!
+                ? AppLocalizations.of(context)
                     .dialogContinueInBackgroundButtonShared
-                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+                : AppLocalizations.of(context).dialogCloseButtonShared,
           ),
         ),
         if (!_isImporting && _file != null)
           TextButton(
             onPressed: () => _importModel(),
             child: Text(
-              AppLocalizations.of(context)!.modelsPageImportButton,
+              AppLocalizations.of(context).modelsPageImportButton,
             ),
           ),
       ],

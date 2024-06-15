@@ -24,7 +24,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<ModelProvider>().modelsCount == 0) {
         return SnackBarHelpers.showSnackBar(
-          AppLocalizations.of(context)!.noModelsAvailableSnackBarText,
+          AppLocalizations.of(context).noModelsAvailableSnackBarText,
           SnackBarType.error,
         );
       } else {
@@ -33,7 +33,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
       }
     } else if (context.read<ChatProvider>().isGenerating) {
       return SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     }
@@ -45,7 +45,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<ModelProvider>().modelsCount == 0) {
         return SnackBarHelpers.showSnackBar(
-          AppLocalizations.of(context)!.noModelsAvailableSnackBarText,
+          AppLocalizations.of(context).noModelsAvailableSnackBarText,
           SnackBarType.error,
         );
       } else {
@@ -54,7 +54,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
       }
     } else if (context.read<ChatProvider>().isGenerating) {
       return SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     }
@@ -69,52 +69,52 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
   List<Widget> _generateSuggestionsCells() {
     final List<List<String>> exampleQuestions = [
       [
-        AppLocalizations.of(context)!.suggestion1part1,
-        AppLocalizations.of(context)!.suggestion1part2,
+        AppLocalizations.of(context).suggestion1part1,
+        AppLocalizations.of(context).suggestion1part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion2part1,
-        AppLocalizations.of(context)!.suggestion2part2,
+        AppLocalizations.of(context).suggestion2part1,
+        AppLocalizations.of(context).suggestion2part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion3part1,
-        AppLocalizations.of(context)!.suggestion3part2,
+        AppLocalizations.of(context).suggestion3part1,
+        AppLocalizations.of(context).suggestion3part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion4part1,
-        AppLocalizations.of(context)!.suggestion4part2,
+        AppLocalizations.of(context).suggestion4part1,
+        AppLocalizations.of(context).suggestion4part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion5part1,
-        AppLocalizations.of(context)!.suggestion5part2,
+        AppLocalizations.of(context).suggestion5part1,
+        AppLocalizations.of(context).suggestion5part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion6part1,
-        AppLocalizations.of(context)!.suggestion6part2,
+        AppLocalizations.of(context).suggestion6part1,
+        AppLocalizations.of(context).suggestion6part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion7part1,
-        AppLocalizations.of(context)!.suggestion7part2,
+        AppLocalizations.of(context).suggestion7part1,
+        AppLocalizations.of(context).suggestion7part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion8part1,
-        AppLocalizations.of(context)!.suggestion8part2,
+        AppLocalizations.of(context).suggestion8part1,
+        AppLocalizations.of(context).suggestion8part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion9part1,
-        AppLocalizations.of(context)!.suggestion9part2,
+        AppLocalizations.of(context).suggestion9part1,
+        AppLocalizations.of(context).suggestion9part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion10part1,
-        AppLocalizations.of(context)!.suggestion10part2,
+        AppLocalizations.of(context).suggestion10part1,
+        AppLocalizations.of(context).suggestion10part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion11part1,
-        AppLocalizations.of(context)!.suggestion11part2,
+        AppLocalizations.of(context).suggestion11part1,
+        AppLocalizations.of(context).suggestion11part2,
       ],
       [
-        AppLocalizations.of(context)!.suggestion12part1,
-        AppLocalizations.of(context)!.suggestion12part2,
+        AppLocalizations.of(context).suggestion12part1,
+        AppLocalizations.of(context).suggestion12part2,
       ],
     ];
 
@@ -209,7 +209,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            AppLocalizations.of(context)!.chatMessageListText1,
+            AppLocalizations.of(context).chatMessageListText1,
             style: const TextStyle(
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
@@ -218,7 +218,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
                 begin: const Offset(0, 160),
                 curve: Curves.easeOutQuad,
               ),
-          Text(AppLocalizations.of(context)!.chatMessageListText2)
+          Text(AppLocalizations.of(context).chatMessageListText2)
               .animate(delay: 300.ms)
               .fadeIn(duration: 200.ms)
               .move(
@@ -253,7 +253,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
               setState(() {});
             },
             label: Text(
-              AppLocalizations.of(context)!.chatMessageListText3,
+              AppLocalizations.of(context).chatMessageListText3,
             ),
             icon: const Icon(UniconsLine.sync),
           ).animate(delay: 1.seconds).fadeIn(duration: 300.ms).move(

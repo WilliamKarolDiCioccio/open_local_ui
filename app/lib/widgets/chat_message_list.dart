@@ -116,7 +116,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
               bottom: _getExpandedOffset().dy + 24,
               child: ElevatedButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.scrollToBottomButton,
+                  AppLocalizations.of(context).scrollToBottomButton,
                 ),
                 icon: const Icon(
                   UniconsLine.arrow_down,

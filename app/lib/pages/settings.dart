@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Text(
-              AppLocalizations.of(context)!.settingsPageTitle,
+              AppLocalizations.of(context).settingsPageTitle,
               style: const TextStyle(
                 fontSize: 32.0,
                 fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class ThemeSettings extends StatelessWidget {
     return Column(
       children: [
         Text(
-          AppLocalizations.of(context)!.settingsPageThemeLabel,
+          AppLocalizations.of(context).settingsPageThemeLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
         const Gap(16.0),
@@ -100,13 +100,13 @@ class ThemeSettings extends StatelessWidget {
           dropdownMenuEntries: [
             DropdownMenuEntry(
                 value: 'Light',
-                label: AppLocalizations.of(context)!.settingsThemeModeLight),
+                label: AppLocalizations.of(context).settingsThemeModeLight),
             DropdownMenuEntry(
                 value: 'Dark',
-                label: AppLocalizations.of(context)!.settingsThemeModeDark),
+                label: AppLocalizations.of(context).settingsThemeModeDark),
             DropdownMenuEntry(
                 value: 'System',
-                label: AppLocalizations.of(context)!.settingsThemeModeSystem),
+                label: AppLocalizations.of(context).settingsThemeModeSystem),
           ],
           onSelected: (value) {
             switch (value) {
@@ -135,7 +135,7 @@ class AccessibilitySettings extends StatelessWidget {
     return Column(
       children: [
         Text(
-          AppLocalizations.of(context)!.settingsPageAccessiblityLabel,
+          AppLocalizations.of(context).settingsPageAccessiblityLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
         const Gap(16.0),
@@ -162,19 +162,19 @@ class AccessibilitySettings extends StatelessWidget {
           dropdownMenuEntries: [
             DropdownMenuEntry(
                 value: 'en',
-                label: AppLocalizations.of(context)!.settingsLanguageEnglish),
+                label: AppLocalizations.of(context).settingsLanguageEnglish),
             DropdownMenuEntry(
                 value: 'es',
-                label: AppLocalizations.of(context)!.settingsLanguageSpanish),
+                label: AppLocalizations.of(context).settingsLanguageSpanish),
             DropdownMenuEntry(
                 value: 'fr',
-                label: AppLocalizations.of(context)!.settingsLanguageFrench),
+                label: AppLocalizations.of(context).settingsLanguageFrench),
             DropdownMenuEntry(
                 value: 'de',
-                label: AppLocalizations.of(context)!.settingsLanguageDetusche),
+                label: AppLocalizations.of(context).settingsLanguageDetusche),
             DropdownMenuEntry(
                 value: 'it',
-                label: AppLocalizations.of(context)!.settingsLanguageItalian),
+                label: AppLocalizations.of(context).settingsLanguageItalian),
           ],
           onSelected: (value) {
             context.read<LocaleProvider>().setLocale(value ?? 'en');
@@ -209,7 +209,7 @@ class _OllamaSettingsState extends State<OllamaSettings> {
     return Column(
       children: [
         Text(
-          AppLocalizations.of(context)!.settingsPageOllamaLabel,
+          AppLocalizations.of(context).settingsPageOllamaLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
         const Gap(16.0),
@@ -223,7 +223,7 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                   const Icon(UniconsLine.processor),
                   const Gap(8.0),
                   Text(
-                    '${AppLocalizations.of(context)!.settingsPageOllamaUseGPULabel}:',
+                    '${AppLocalizations.of(context).settingsPageOllamaUseGPULabel}:',
                     style: const TextStyle(fontSize: 16.0),
                   ),
                   const Gap(8.0),
@@ -233,7 +233,7 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                         ? (value) {
                             if (!value) {
                               SnackBarHelpers.showSnackBar(
-                                AppLocalizations.of(context)!
+                                AppLocalizations.of(context)
                                     .ollamaDisabledGPUWarningSnackbarText,
                                 SnackBarType.warning,
                               );
@@ -252,7 +252,7 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                   const Icon(UniconsLine.temperature),
                   const Gap(8.0),
                   Text(
-                    '${AppLocalizations.of(context)!.settingsPageOllamaSetTemperatureLabel}:',
+                    '${AppLocalizations.of(context).settingsPageOllamaSetTemperatureLabel}:',
                     style: const TextStyle(fontSize: 16.0),
                   ),
                   const Gap(8.0),
@@ -285,7 +285,7 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                   const Icon(UniconsLine.clock),
                   const Gap(8.0),
                   Text(
-                    '${AppLocalizations.of(context)!.settingsPageOllamaSetKeepAliveTimeLabel}:',
+                    '${AppLocalizations.of(context).settingsPageOllamaSetKeepAliveTimeLabel}:',
                     style: const TextStyle(fontSize: 16.0),
                   ),
                   const Gap(8.0),

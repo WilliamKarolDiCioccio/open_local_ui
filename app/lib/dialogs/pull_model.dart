@@ -37,7 +37,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
       final fmt = NumberFormat('#00');
 
       _progressBarText =
-          AppLocalizations.of(context)!.progressBarStatusTextWithTimeShared(
+          AppLocalizations.of(context).progressBarStatusTextWithTimeShared(
         response.status,
         fmt.format(duration.inHours),
         fmt.format(duration.inMinutes % 60),
@@ -71,7 +71,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context)!.pullModelDialogTitle,
+        AppLocalizations.of(context).pullModelDialogTitle,
       ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -82,15 +82,15 @@ class _PullModelDialogState extends State<PullModelDialog> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context)!.pullModelDialogGuideText1,
+                  AppLocalizations.of(context).pullModelDialogGuideText1,
                 ),
                 const SizedBox(width: 8.0),
                 TextField(
                   controller: _textEditingController,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!
+                    labelText: AppLocalizations.of(context)
                         .pullModelDialogModelNameLabel,
-                    hintText: AppLocalizations.of(context)!
+                    hintText: AppLocalizations.of(context)
                         .pullModelDialogModelNameHint,
                   ),
                 ),
@@ -119,16 +119,16 @@ class _PullModelDialogState extends State<PullModelDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             _isPulling
-                ? AppLocalizations.of(context)!
+                ? AppLocalizations.of(context)
                     .dialogContinueInBackgroundButtonShared
-                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+                : AppLocalizations.of(context).dialogCloseButtonShared,
           ),
         ),
         if (!_isPulling)
           TextButton(
             onPressed: () => _pullModel(),
             child: Text(
-              AppLocalizations.of(context)!.dialogStartButtonShared,
+              AppLocalizations.of(context).dialogStartButtonShared,
             ),
           ),
       ],

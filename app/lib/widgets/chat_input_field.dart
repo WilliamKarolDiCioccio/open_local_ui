@@ -31,7 +31,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<ModelProvider>().modelsCount == 0) {
         return SnackBarHelpers.showSnackBar(
-          AppLocalizations.of(context)!.noModelsAvailableSnackBarText,
+          AppLocalizations.of(context).noModelsAvailableSnackBarText,
           SnackBarType.error,
         );
       } else {
@@ -40,7 +40,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
       }
     } else if (context.read<ChatProvider>().isGenerating) {
       return SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     }
@@ -70,7 +70,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
         child: TextField(
           controller: _textEditingController,
           decoration: InputDecoration(
-            hintText: AppLocalizations.of(context)!.chatInputFieldHint,
+            hintText: AppLocalizations.of(context).chatInputFieldHint,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.0),
             ),
@@ -81,9 +81,9 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
               ),
               child: IconButton(
                 tooltip: _imageBytes == null
-                    ? AppLocalizations.of(context)!
+                    ? AppLocalizations.of(context)
                         .chatInputFieldAttachButtonTooltip
-                    : AppLocalizations.of(context)!
+                    : AppLocalizations.of(context)
                         .chatInputFieldDetachButtonTooltip,
                 icon: Icon(
                   _imageBytes == null
@@ -113,7 +113,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                 children: [
                   if (context.watch<ChatProvider>().isGenerating)
                     IconButton(
-                      tooltip: AppLocalizations.of(context)!
+                      tooltip: AppLocalizations.of(context)
                           .chatInputFieldCancelButtonTooltip,
                       icon: const Icon(UniconsLine.stop_circle),
                       onPressed: () async {
@@ -122,7 +122,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                     )
                   else
                     IconButton(
-                      tooltip: AppLocalizations.of(context)!
+                      tooltip: AppLocalizations.of(context)
                           .chatInputFieldSendButtonTooltip,
                       icon: const Icon(UniconsLine.message),
                       onPressed: () async {

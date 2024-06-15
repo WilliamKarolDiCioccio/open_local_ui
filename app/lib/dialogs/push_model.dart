@@ -35,7 +35,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
       final duration = HTTPHelpers.calculateRemainingTime(response);
 
       _progressBarText =
-          AppLocalizations.of(context)!.progressBarStatusTextWithTimeShared(
+          AppLocalizations.of(context).progressBarStatusTextWithTimeShared(
         response.status,
         (duration.inHours).toString(),
         (duration.inMinutes % 60).toString(),
@@ -80,7 +80,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
 
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context)!.pullModelDialogTitle,
+        AppLocalizations.of(context).pullModelDialogTitle,
       ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -91,7 +91,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context)!.pushModelDialogGuideText1,
+                  AppLocalizations.of(context).pushModelDialogGuideText1,
                 ),
                 const SizedBox(width: 8.0),
                 DropdownMenu(
@@ -115,7 +115,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
                   ),
                   enableFilter: true,
                   enableSearch: true,
-                  hintText: AppLocalizations.of(context)!
+                  hintText: AppLocalizations.of(context)
                       .pushModelDialogModelSelectorHint,
                   dropdownMenuEntries: modelsMenuEntries,
                   onSelected: null,
@@ -145,16 +145,16 @@ class _PushModelDialogState extends State<PushModelDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             _isPushing
-                ? AppLocalizations.of(context)!
+                ? AppLocalizations.of(context)
                     .dialogContinueInBackgroundButtonShared
-                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+                : AppLocalizations.of(context).dialogCloseButtonShared,
           ),
         ),
         if (!_isPushing)
           TextButton(
             onPressed: () => _pushModel(),
             child: Text(
-              AppLocalizations.of(context)!.dialogStartButtonShared,
+              AppLocalizations.of(context).dialogStartButtonShared,
             ),
           ),
       ],

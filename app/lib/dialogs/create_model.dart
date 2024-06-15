@@ -54,7 +54,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
       _progressValue += _stepsCount / 11;
 
       _progressBarText =
-          AppLocalizations.of(context)!.progressBarStatusTextWithStepsShared(
+          AppLocalizations.of(context).progressBarStatusTextWithStepsShared(
         response.status,
         11,
         _stepsCount,
@@ -101,7 +101,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context)!.createModelDialogTitle,
+        AppLocalizations.of(context).createModelDialogTitle,
       ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -112,7 +112,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context)!.createModelDialogGuideText1,
+                  AppLocalizations.of(context).createModelDialogGuideText1,
                 ),
                 const Gap(8.0),
                 DropdownMenu(
@@ -136,22 +136,22 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                   ),
                   enableFilter: true,
                   enableSearch: true,
-                  hintText: AppLocalizations.of(context)!
+                  hintText: AppLocalizations.of(context)
                       .createModelDialogModelSelectorHint,
                   dropdownMenuEntries: _modelsMenuEntries,
                   onSelected: null,
                 ),
                 const SizedBox(height: 16.0),
                 Text(
-                  AppLocalizations.of(context)!.createModelDialogGuideText2,
+                  AppLocalizations.of(context).createModelDialogGuideText2,
                 ),
                 const Gap(8.0),
                 TextField(
                   controller: _nameEditingController,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!
+                    labelText: AppLocalizations.of(context)
                         .createModelDialogModelNameLabel,
-                    hintText: AppLocalizations.of(context)!
+                    hintText: AppLocalizations.of(context)
                         .createModelDialogModelNameHint,
                   ),
                   maxLength: 32,
@@ -159,15 +159,15 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                 ),
                 const Gap(16.0),
                 Text(
-                  AppLocalizations.of(context)!.createModelDialogGuideText3,
+                  AppLocalizations.of(context).createModelDialogGuideText3,
                 ),
                 const Gap(8.0),
                 TextField(
                   controller: _fileEditingController,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!
+                    labelText: AppLocalizations.of(context)
                         .createModelDialogModelFileLabel,
-                    hintText: AppLocalizations.of(context)!
+                    hintText: AppLocalizations.of(context)
                         .createModelDialogModelFileHint,
                   ),
                   maxLength: 4096,
@@ -199,16 +199,16 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             _isCreating
-                ? AppLocalizations.of(context)!
+                ? AppLocalizations.of(context)
                     .dialogContinueInBackgroundButtonShared
-                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+                : AppLocalizations.of(context).dialogCloseButtonShared,
           ),
         ),
         if (!_isCreating)
           TextButton(
             onPressed: () => _createModel(),
             child: Text(
-              AppLocalizations.of(context)!.dialogCreateButtonShared,
+              AppLocalizations.of(context).dialogCreateButtonShared,
             ),
           ),
       ],

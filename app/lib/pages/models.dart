@@ -105,7 +105,7 @@ class _ModelsPageState extends State<ModelsPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.modelsPageTitle,
+            AppLocalizations.of(context).modelsPageTitle,
             style: const TextStyle(
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
@@ -117,7 +117,7 @@ class _ModelsPageState extends State<ModelsPage> {
             children: [
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPagePullButton,
+                  AppLocalizations.of(context).modelsPagePullButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.download_alt),
@@ -125,7 +125,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPagePushButton,
+                  AppLocalizations.of(context).modelsPagePushButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.upload_alt),
@@ -133,7 +133,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPageCreateButton,
+                  AppLocalizations.of(context).modelsPageCreateButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.create_dashboard),
@@ -141,7 +141,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPageImportButton,
+                  AppLocalizations.of(context).modelsPageImportButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.cube),
@@ -149,7 +149,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPageRefreshButton,
+                  AppLocalizations.of(context).modelsPageRefreshButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.sync),
@@ -165,7 +165,7 @@ class _ModelsPageState extends State<ModelsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(AppLocalizations.of(context)!.listFiltersSortByControlLabel),
+              Text(AppLocalizations.of(context).listFiltersSortByControlLabel),
               const Gap(16),
               SegmentedButton<SortBy>(
                 selectedIcon: const Icon(UniconsLine.check),
@@ -173,21 +173,21 @@ class _ModelsPageState extends State<ModelsPage> {
                   ButtonSegment(
                     value: SortBy.name,
                     label: Text(
-                      AppLocalizations.of(context)!.sortByNameOptionsLabel,
+                      AppLocalizations.of(context).sortByNameOptionsLabel,
                     ),
                     icon: const Icon(UniconsLine.tag),
                   ),
                   ButtonSegment(
                     value: SortBy.date,
                     label: Text(
-                      AppLocalizations.of(context)!.sortByDateOptionsLabel,
+                      AppLocalizations.of(context).sortByDateOptionsLabel,
                     ),
                     icon: const Icon(UniconsLine.clock),
                   ),
                   ButtonSegment(
                     value: SortBy.size,
                     label: Text(
-                      AppLocalizations.of(context)!.sortBySizeOptionsLabel,
+                      AppLocalizations.of(context).sortBySizeOptionsLabel,
                     ),
                     icon: const Icon(UniconsLine.database),
                   ),
@@ -205,7 +205,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               const Gap(16),
               Text(
-                AppLocalizations.of(context)!.listFiltersSortOrderControlLabel,
+                AppLocalizations.of(context).listFiltersSortOrderControlLabel,
               ),
               const Gap(16),
               SegmentedButton<SortOrder>(
@@ -214,7 +214,7 @@ class _ModelsPageState extends State<ModelsPage> {
                   ButtonSegment(
                     value: SortOrder.ascending,
                     label: Text(
-                      AppLocalizations.of(context)!
+                      AppLocalizations.of(context)
                           .sortOrderAscendingOptionsLabel,
                     ),
                     icon: const Icon(UniconsLine.arrow_up),
@@ -222,7 +222,7 @@ class _ModelsPageState extends State<ModelsPage> {
                   ButtonSegment(
                     value: SortOrder.descending,
                     label: Text(
-                      AppLocalizations.of(context)!
+                      AppLocalizations.of(context)
                           .sortOrderDescendingOptionsLabel,
                     ),
                     icon: const Icon(UniconsLine.arrow_down),
@@ -291,7 +291,7 @@ class _ModelListTileState extends State<ModelListTile> {
   void _setModel(Model model) async {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {
@@ -308,7 +308,7 @@ class _ModelListTileState extends State<ModelListTile> {
   void _deleteModel() async {
     if (context.read<ChatProvider>().modelName == widget.model.name) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
         SnackBarType.error,
       );
     } else {
@@ -321,7 +321,7 @@ class _ModelListTileState extends State<ModelListTile> {
     return ListTile(
       title: Text(widget.model.name),
       subtitle: Text(
-        AppLocalizations.of(context)!.modifiedAtTextShared(
+        AppLocalizations.of(context).modifiedAtTextShared(
           DateTimeHelpers.formattedDateTime(widget.model.modifiedAt),
         ),
       ),
@@ -330,13 +330,13 @@ class _ModelListTileState extends State<ModelListTile> {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            tooltip: AppLocalizations.of(context)!.modelsPageUseButton,
+            tooltip: AppLocalizations.of(context).modelsPageUseButton,
             icon: const Icon(UniconsLine.enter),
             onPressed: () => _setModel(widget.model),
           ),
           const Gap(8),
           IconButton(
-            tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
+            tooltip: AppLocalizations.of(context).modelsPageDeleteButton,
             icon: const Icon(
               UniconsLine.trash,
               color: Colors.red,
@@ -345,9 +345,9 @@ class _ModelListTileState extends State<ModelListTile> {
               showConfirmationDialog(
                 context: context,
                 title:
-                    AppLocalizations.of(context)!.modelsPageDeleteDialogTitle,
+                    AppLocalizations.of(context).modelsPageDeleteDialogTitle,
                 content:
-                    AppLocalizations.of(context)!.modelsPageDeleteDialogText(
+                    AppLocalizations.of(context).modelsPageDeleteDialogText(
                   widget.model.name,
                 ),
                 onConfirm: () => _deleteModel(),

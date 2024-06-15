@@ -196,11 +196,11 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               size: 64.0,
             ),
             Text(
-              AppLocalizations.of(context)!.attachFilesDialogText,
+              AppLocalizations.of(context).attachFilesDialogText,
               style: const TextStyle(fontSize: 24.0),
             ),
             Text(
-              AppLocalizations.of(context)!.attachFilesDialogAllowedFormatsText(
+              AppLocalizations.of(context).attachFilesDialogAllowedFormatsText(
                 'PNG, JPEG, WEBP',
               ),
               style: const TextStyle(fontSize: 14.0),
@@ -208,7 +208,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
             const Gap(16.0),
             TextButton.icon(
               label: Text(
-                AppLocalizations.of(context)!
+                AppLocalizations.of(context)
                     .attachFilesDialogBrowseFilesButton,
                 style: const TextStyle(fontSize: 16.0),
               ),
@@ -267,7 +267,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               Navigator.of(context).pop(_imageBytes);
             },
             child: Text(
-              AppLocalizations.of(context)!.dialogCancelButtonShared,
+              AppLocalizations.of(context).dialogCancelButtonShared,
             ),
           ),
         if (_imageStatus == ImageStatus.loaded)
@@ -279,7 +279,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               });
             },
             child: Text(
-              AppLocalizations.of(context)!.dialogRemoveButton,
+              AppLocalizations.of(context).dialogRemoveButton,
             ),
           ),
         if (_imageStatus == ImageStatus.loaded)
@@ -288,7 +288,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               Navigator.of(context).pop(_imageBytes);
             },
             child: Text(
-              AppLocalizations.of(context)!.dialogAttachButton,
+              AppLocalizations.of(context).dialogAttachButton,
             ),
           ),
       ],
