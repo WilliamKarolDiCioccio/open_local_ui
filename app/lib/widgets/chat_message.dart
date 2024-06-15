@@ -40,7 +40,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     Clipboard.setData(ClipboardData(text: widget.message.text));
 
     SnackBarHelpers.showSnackBar(
-      AppLocalizations.of(context).messageCopiedSnackBarText,
+      AppLocalizations.of(context).messageCopiedSnackBar,
       SnackBarType.success,
     );
   }
@@ -48,7 +48,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   void _regenerateMessage() {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -67,7 +67,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   void _sendEditedText() {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -99,12 +99,12 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
     if (context.read<ChatProvider>().isGenerating && isLastMessage) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else if (widget.message.text.isEmpty) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).nothingToSynthesizeSnackBarText,
+        AppLocalizations.of(context).nothingToSynthesizeSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -128,7 +128,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     switch (widget.message.sender) {
       case ChatMessageSender.user:
         senderIconData = UniconsLine.user;
-        senderName = AppLocalizations.of(context).chatMessageSenderUser;
+        senderName = AppLocalizations.of(context).chatUserSender;
         break;
       case ChatMessageSender.model:
         senderIconData = UniconsLine.robot;
@@ -142,7 +142,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         break;
       case ChatMessageSender.system:
         senderIconData = UniconsLine.eye;
-        senderName = AppLocalizations.of(context).chatMessageSenderSystem;
+        senderName = AppLocalizations.of(context).chatSystemSender;
         break;
     }
 
@@ -212,15 +212,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             Row(
               children: [
                 IconButton(
-                  tooltip: AppLocalizations.of(context)
-                      .chatMessageCopyButtonTooltip,
+                  tooltip: AppLocalizations.of(context).markdownCopyTooltip,
                   onPressed: () => _copyMessage(),
                   icon: const Icon(UniconsLine.copy),
                 ),
                 const Gap(8),
                 IconButton(
-                  tooltip:
-                      AppLocalizations.of(context).chatMessageTTSButtonTooltip,
+                  tooltip: AppLocalizations.of(context).chatReadAloudTooltip,
                   onPressed: () => _showTTSPlayer(),
                   icon: const Icon(Icons.hearing),
                 ),
@@ -228,15 +226,15 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 if (widget.message.sender == ChatMessageSender.model)
                   IconButton(
                     tooltip: AppLocalizations.of(context)
-                        .chatMessageRegenerateButtonTooltip,
+                        .chatRegenerateMessageTooltip,
                     onPressed: () => _regenerateMessage(),
                     icon: const Icon(UniconsLine.repeat),
                   ),
                 const Gap(8),
                 if (widget.message.sender == ChatMessageSender.user)
                   IconButton(
-                    tooltip: AppLocalizations.of(context)
-                        .chatMessageEditButtonTooltip,
+                    tooltip:
+                        AppLocalizations.of(context).chatEditMessageTooltip,
                     onPressed: () => _beginEditingMessage(),
                     icon: const Icon(UniconsLine.edit),
                   ),
@@ -248,8 +246,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 TextField(
                   controller: _textEditingController,
                   decoration: InputDecoration(
-                    hintText:
-                        AppLocalizations.of(context).chatMessageEditFieldHint,
+                    hintText: AppLocalizations.of(context).chatEditFieldHint,
                     counterText: '',
                   ),
                   style: const TextStyle(
@@ -269,15 +266,16 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     TextButton.icon(
-                      label: Text(AppLocalizations.of(context)
-                          .chatMessageCancelEditButton),
+                      label: Text(
+                        AppLocalizations.of(context).chatCancelEditButton,
+                      ),
                       icon: const Icon(UniconsLine.times),
                       onPressed: () => _cancelEditingMessage(),
                     ),
                     const Gap(8),
                     TextButton.icon(
                       label: Text(
-                        AppLocalizations.of(context).chatMessageResendButton,
+                        AppLocalizations.of(context).chatResendMessageButton,
                       ),
                       icon: const Icon(UniconsLine.message),
                       onPressed: () => _sendEditedText(),

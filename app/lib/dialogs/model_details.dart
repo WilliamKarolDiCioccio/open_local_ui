@@ -25,36 +25,34 @@ class ModelDetailsDialog extends StatelessWidget {
             ),
           ),
           Text(
-            AppLocalizations.of(context).modelDetailsDialogSizeText(
+            AppLocalizations.of(context).modelDetailsSizeText(
               Kilobytes.toGigabytes(model.size.toDouble() / 1024)
                   .toStringAsFixed(1),
             ),
           ),
           Text(
-            AppLocalizations.of(context)
-                .modelDetailsDialogDigestText(model.digest),
+            AppLocalizations.of(context).modelDetailsDigestText(model.digest),
           ),
           Text(
             AppLocalizations.of(context)
-                .modelDeatilsDialogFormatText(model.details.format),
+                .modelDetailsFormatText(model.details.format),
           ),
           Text(
             AppLocalizations.of(context)
-                .modelDetailsDialogFamilyText(model.details.family),
+                .modelDetailsFamilyText(model.details.family),
           ),
           if (model.details.families != null)
             Text(
-              AppLocalizations.of(context).modelDetailsDialogFamilyText(
+              AppLocalizations.of(context).modelDetailsFamilyText(
                 model.details.families!.join(', '),
               ),
             ),
           Text(
-            AppLocalizations.of(context).modelDetailsDialogParametersSizeText(
-                model.details.parameterSize),
+            AppLocalizations.of(context)
+                .modelDetailsParametersSizeText(model.details.parameterSize),
           ),
           Text(
-            AppLocalizations.of(context)
-                .modelDetailsDialogQuantizationLevelText(
+            AppLocalizations.of(context).modelDetailsQuantizationLevelText(
               model.details.quantizationLevel.toString(),
             ),
           ),
@@ -66,7 +64,7 @@ class ModelDetailsDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context).closeButtonTextShared,
+            AppLocalizations.of(context).closeButtonShared,
           ),
         ),
       ],

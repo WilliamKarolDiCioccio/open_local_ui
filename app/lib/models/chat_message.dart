@@ -151,7 +151,7 @@ class ChatUserMessageWrapper extends ChatMessageWrapper {
     toJson: _imageBytesToJson,
   )
   final Uint8List? imageBytes;
-  
+
   final List<String>? filePaths;
 
   ChatUserMessageWrapper(

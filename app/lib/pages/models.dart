@@ -165,7 +165,7 @@ class _ModelsPageState extends State<ModelsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(AppLocalizations.of(context).listFiltersSortByControlLabel),
+              Text(AppLocalizations.of(context).listFiltersSortByLabel),
               const Gap(16),
               SegmentedButton<SortBy>(
                 selectedIcon: const Icon(UniconsLine.check),
@@ -173,21 +173,21 @@ class _ModelsPageState extends State<ModelsPage> {
                   ButtonSegment(
                     value: SortBy.name,
                     label: Text(
-                      AppLocalizations.of(context).sortByNameOptionsLabel,
+                      AppLocalizations.of(context).sortByNameOption,
                     ),
                     icon: const Icon(UniconsLine.tag),
                   ),
                   ButtonSegment(
                     value: SortBy.date,
                     label: Text(
-                      AppLocalizations.of(context).sortByDateOptionsLabel,
+                      AppLocalizations.of(context).sortByDateOption,
                     ),
                     icon: const Icon(UniconsLine.clock),
                   ),
                   ButtonSegment(
                     value: SortBy.size,
                     label: Text(
-                      AppLocalizations.of(context).sortBySizeOptionsLabel,
+                      AppLocalizations.of(context).sortBySizeOption,
                     ),
                     icon: const Icon(UniconsLine.database),
                   ),
@@ -205,7 +205,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               const Gap(16),
               Text(
-                AppLocalizations.of(context).listFiltersSortOrderControlLabel,
+                AppLocalizations.of(context).listFiltersSortOrderLabel,
               ),
               const Gap(16),
               SegmentedButton<SortOrder>(
@@ -214,16 +214,14 @@ class _ModelsPageState extends State<ModelsPage> {
                   ButtonSegment(
                     value: SortOrder.ascending,
                     label: Text(
-                      AppLocalizations.of(context)
-                          .sortOrderAscendingOptionsLabel,
+                      AppLocalizations.of(context).sortOrderAscendingOption,
                     ),
                     icon: const Icon(UniconsLine.arrow_up),
                   ),
                   ButtonSegment(
                     value: SortOrder.descending,
                     label: Text(
-                      AppLocalizations.of(context)
-                          .sortOrderDescendingOptionsLabel,
+                      AppLocalizations.of(context).sortOrderDescendingOption,
                     ),
                     icon: const Icon(UniconsLine.arrow_down),
                   ),
@@ -291,7 +289,7 @@ class _ModelListTileState extends State<ModelListTile> {
   void _setModel(Model model) async {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -308,7 +306,7 @@ class _ModelListTileState extends State<ModelListTile> {
   void _deleteModel() async {
     if (context.read<ChatProvider>().modelName == widget.model.name) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -344,8 +342,7 @@ class _ModelListTileState extends State<ModelListTile> {
             onPressed: () {
               showConfirmationDialog(
                 context: context,
-                title:
-                    AppLocalizations.of(context).modelsPageDeleteDialogTitle,
+                title: AppLocalizations.of(context).modelsPageDeleteDialogTitle,
                 content:
                     AppLocalizations.of(context).modelsPageDeleteDialogText(
                   widget.model.name,

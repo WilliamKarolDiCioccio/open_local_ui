@@ -1,0 +1,284 @@
+{
+  "@@locale": "de",
+  "abortModelRemovalSnackBar": "Modellentfernung abbrechen",
+  "abortSessionRemovalSnackBar": "Sitzungsentfernung abbrechen",
+  "aboutPageContributorsTitle": "Mitwirkende",
+  "aboutPageCopyrightNotice": "© 2024 William Karol Di Cioccio",
+  "aboutPageDiscoverTitle": "Mehr entdecken",
+  "aboutPagePoweredByTitle": "Powered by",
+  "aboutPageSocialButtonContributeTooltip": "Beitragen",
+  "aboutPageSocialButtonJoinServerTooltip": "Server beitreten",
+  "aboutPageSocialButtonWatchTrailerTooltip": "Trailer ansehen",
+  "aboutPageVisitProfileTooltip": "Profil besuchen",
+  "appTitle": "Meine App",
+  "attachFilesDialogAllowedFormats": "Erlaubte Formate: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "Dateien durchsuchen",
+  "attachFilesDialogDropFilesText": "Dateien hier ablegen",
+  "cancelButtonShared": "Abbrechen",
+  "chatAttachFilesTooltip": "Dateien anhängen",
+  "chatCancelEditButton": "Bearbeitung abbrechen",
+  "chatCancelGenerationTooltip": "Generierung abbrechen",
+  "chatCopyMessageTooltip": "Nachricht kopieren",
+  "chatDetachFilesTooltip": "Dateien trennen",
+  "chatEditFieldHint": "Nachricht eingeben...",
+  "chatEditMessageTooltip": "Nachricht bearbeiten",
+  "chatInputFieldHint": "Nachricht eingeben...",
+  "chatReadAloudTooltip": "Vorlesen",
+  "chatRefreshSuggestions": "Vorschläge aktualisieren",
+  "chatRegenerateMessageTooltip": "Nachricht neu generieren",
+  "chatResendMessageButton": "Nachricht erneut senden",
+  "chatSendTooltip": "Nachricht senden",
+  "chatSuggestionsPrompt": "Möchten Sie Vorschläge?",
+  "chatSystemSender": "System",
+  "chatTitleEditHint": "Geben Sie einen Titel ein...",
+  "chatToolbarDocsSearchOption": "Dokumentensuche:",
+  "chatToolbarModelSelectorHint": "Modell auswählen",
+  "chatToolbarNewSessionButton": "Neue Sitzung",
+  "chatToolbarWebSearchOption": "Websuche:",
+  "chatUserSender": "Sie",
+  "chatWelcomeMessage": "Willkommen!",
+  "closeButtonShared": "Schließen",
+  "codeCopiedSnackBar": "Code in Zwischenablage kopiert",
+  "createFolderDialogFolderNameHint": "Geben Sie den Ordnernamen ein...",
+  "createFolderDialogFolderNameLabel": "Ordner Name",
+  "createFolderDialogGuideText1": "Geben Sie den Namen des zu erstellenden Ordners ein:",
+  "createFolderDialogGuideText2": "Legen Sie optional eine Ordnerfarbe fest:",
+  "createFolderDialogTitle": "Ordner erstellen",
+  "createModelDialogGuideText1": "Wählen Sie das zu verwendende Modell aus:",
+  "createModelDialogGuideText2": "Geben Sie den Namen des zu erstellenden Modells ein:",
+  "createModelDialogGuideText3": "Schreiben Sie optional eine Modelldatei:",
+  "createModelDialogModelFileHint": "Geben Sie die Modelldatei ein...",
+  "createModelDialogModelFileLabel": "Modelldatei",
+  "createModelDialogModelNameHint": "Geben Sie den Modellnamen ein...",
+  "createModelDialogModelNameLabel": "Modellname",
+  "createModelDialogModelSelectorHint": "Modell auswählen",
+  "createModelDialogTitle": "Modell erstellen",
+  "createAtTextShared": "Erstellt at: {createdAt}",
+  "dashboardAboutButton": "Info",
+  "dashboardChatButton": "Chat",
+  "dashboardHomeButton": "Home",
+  "dashboardModelsButton": "Modelle",
+  "dashboardSessionsButton": "Sitzungen",
+  "dashboardSettingsButton": "Einstellungen",
+  "dialogAttachButton": "Anhängen",
+  "dialogCancelButtonShared": "Abbrechen",
+  "dialogCloseButtonShared": "Schließen",
+  "dialogConfirmButtonShared": "Bestätigen",
+  "dialogContinueInBackgroundButtonShared": "Im Hintergrund fortfahren",
+  "dialogCreateButtonShared": "Erstellen",
+  "dialogRemoveButton": "Entfernen",
+  "dialogStartButtonShared": "Start",
+  "failedToCreateFolderSnackBar": "Ordner konnte nicht erstellt werden",
+  "failedToCreateModelSnackBar": "Modell konnte nicht erstellt werden",
+  "failedToPullModelSnackBar": "Modell konnte nicht abgerufen werden",
+  "failedToPushModelSnackBar": "Modell konnte nicht übertragen werden",
+  "failedToShareSessionSnackBar": "Sitzung konnte nicht freigegeben werden",
+  "feedbackButton": "Feedback",
+  "folderCreatedSnackBar": "Ordner erstellt",
+  "importModelDialogTitle": "Modell importieren",
+  "licenseButton": "Lizenz",
+  "listFiltersSortByLabel": "Sortieren nach",
+  "listFiltersSortOrderLabel": "In Reihenfolge",
+  "markdownCopyTooltip": "Markdown kopieren",
+  "markdownLanguageLabel": "Sprache: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "Nachricht kopiert nach Zwischenablage",
+  "modelDetailsDigestText": "Digest: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "Familie: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "Format: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "Parameter: {parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "Quantisierung: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsSizeText": "Größe: {size} GB",
+  "@modelDetailsSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsTitle": "{modelName} Details",
+  "@modelDetailsTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelIsGeneratingSnackBar": "Modell wird generiert",
+  "modelsPageCreateButton": "Erstellen",
+  "modelsPageDeleteButton": "Modell löschen",
+  "modelsPageDeleteDialogText": "Dadurch wird {modelName} gelöscht. Bestätigen Sie?",
+  "@modelsPageDeleteDialogText": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsPageDeleteDialogTitle": "Modell löschen",
+  "modelsPageImportButton": "Importieren",
+  "modelsPagePullButton": "Ziehen",
+  "modelsPagePushButton": "Drücken",
+  "modelsPageRefreshButton": "Aktualisieren",
+  "modelsPageTitle": "Modellverwaltung",
+  "modelsPageUseButton": "Modell verwenden",
+  "modifiedAtTextShared": "Geändert am: {modifiedAt}",
+  "moreOptionsButton": "Weitere Optionen",
+  "noModelsAvailableSnackBar": "Keine Modelle verfügbar",
+  "noNeedToCreateSessionSnackBar": "Keine neue Sitzung erforderlich",
+  "nothingToSynthesizeSnackBar": "Nichts zu synthetisieren",
+  "offlineWarningTextShared": "Sie sind offline",
+  "ollamaDisabledGPUWarningSnackBar": "Das Deaktivieren der GPU ist leistungsschädlich",
+  "privacyButton": "Datenschutz",
+  "progressBarStatusWithStepsText": "Status: {status} - Schritt {completedSteps} von {totalSteps}",
+  "@progressBarStatusWithStepsText": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "totalSteps": {
+        "type": "int"
+      },
+      "completedSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "progressBarStatusWithTimeText": "Status: {status} - Verbleibende Zeit: {hours}:{minutes}:{seconds}",
+  "@progressBarStatusWithTimeText": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "Minuten": {
+        "type": "String"
+      },
+      "Sekunden": {
+        "type": "String"
+      }
+    }
+  },
+  "pullModelDialogGuideText": "Bitte geben Sie den Namen des zu ziehenden Modells ein:",
+  "pullModelDialogModelNameHint": "Modellnamen eingeben...",
+  "pullModelDialogModelNameLabel": "Modellname",
+  "pullModelDialogTitle": "Modell ziehen",
+  "pushModelDialogGuideText": "Bitte wählen Sie das zu pushende Modell aus:",
+  "pushModelDialogModelSelectorHint": "Modell auswählen",
+  "pushModelDialogTitle": "Modell pushen",
+  "redoButtonShared": "Wiederholen",
+  "saveButtonShared": "Speichern",
+  "scrollToBottomButton": "Nach unten scrollen",
+  "sessionSharedSnackBar": "Sitzung freigegeben",
+  "sessionsPageCreateFolderButton": "Ordner erstellen",
+  "sessionsPageDeleteButton": "Sitzung löschen",
+  "sessionsPageDeleteDialogText": "Hierdurch wird {sessionName} gelöscht. Bestätigen Sie?",
+  "@sessionsPageDeleteDialogText": {
+    "placeholders": {
+      "sessionName": {
+        "type": "String"
+      }
+    }
+  },
+  "sessionsPageDeleteDialogTitle": "Sitzung löschen",
+  "sessionsPageEditTitleButton": "Titel bearbeiten",
+  "sessionsPageEnterButton": "Sitzung eingeben",
+  "sessionsPageShareButton": "Sitzung teilen",
+  "sessionsPageTitle": "Sitzungsverwaltung",
+  "settingsLanguageEnglish": "Englisch",
+  "settingsLanguageFrench": "Französisch",
+  "settingsLanguageGerman": "Deutsch",
+  "settingsLanguageItalian": "Italienisch",
+  "settingsLanguageSpanish": "Spanisch",
+  "settingsPageAccessibilityLabel": "Zugänglichkeit",
+  "settingsPageOllamaKeepAliveTimeLabel": "Keep-Alive-Zeit festlegen",
+  "settingsPageOllamaLabel": "Ollama",
+  "settingsPageOllamaTemperatureLabel": "Temperatur einstellen",
+  "settingsPageOllamaUseGPULabel": "GPU verwenden",
+  "settingsPageThemeLabel": "Design",
+  "settingsPageTitle": "Einstellungen",
+  "settingsThemeModeDark": "Dunkel",
+  "settingsThemeModeLight": "Hell",
+  "settingsThemeModeSystem": "System",
+  "somethingWentWrongSnackBar": "Etwas ist schiefgelaufen",
+  "sortByDateOption": "Datum",
+  "sortByNameOption": "Name",
+  "sortBySizeOption": "Größe",
+  "sortOrderAscendingOption": "Aufsteigend",
+  "sortOrderDescendingOption": "Absteigend",
+  "suggestionAddressConflictsInRelationshipsPartOne": "Konflikte in Beziehungen ansprechen",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "effektive Kommunikation verwenden",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "Was sind einige häufige Anwendungsfälle",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "für Problemlösungsfähigkeiten?",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "Beschreiben Sie den Prozess",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "der Entscheidungsfindung in komplexen Situationen",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "Besprechen Sie die Vor- und Nachteile der Fernarbeit",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "für Arbeitnehmer und Arbeitgeber",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "Unterscheiden Sie zwischen Unterrichten und Mentoring",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "und ihre Vorteile",
+  "suggestionEvaluateTeamPerformancePartOne": "Bewerten Sie die Leistung eines Teams",
+  "suggestionEvaluateTeamPerformancePartTwo": "mit Teamwork-Kennzahlen",
+  "suggestionExplainEmpathySignificancePartOne": "Erklären Sie die Bedeutung von Empathie",
+  "suggestionExplainEmpathySignificancePartTwo": "beim Aufbau starker Verbindungen",
+  "suggestionExplainLearningFromExperiencePartOne": "Erklären Sie das Konzept des Lernens aus Erfahrung",
+  "suggestionExplainLearningFromExperiencePartTwo": "mit Alltagssituationen",
+  "suggestionHandleDailyStressPartOne": "Bewältigen Sie Stress im täglichen Leben",
+  "suggestionHandleDailyStressPartTwo": "mit effektiven Bewältigungsstrategien",
+  "suggestionImportanceOfCommunicationPartOne": "Verstehen Sie die Bedeutung von Kommunikation",
+  "suggestionImportanceOfCommunicationPartTwo": "im Privat- und Berufsleben",
+  "suggestionPersonalGrowthChallengesPartOne": "Listen Sie einige Herausforderungen auf",
+  "suggestionPersonalGrowthChallengesPartTwo": "im persönlichen Wachstum",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "Planen Sie eine Geburtstagsparty",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "für Ihren besten Freund mit einem Überraschungselement",
+  "undoButtonShared": "Rückgängig machen"
+}

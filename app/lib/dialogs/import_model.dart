@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/models/ollama_responses.dart';
@@ -47,7 +48,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
       _progressValue += _stepsCount / 11;
 
       _progressBarText =
-          AppLocalizations.of(context).progressBarStatusTextWithStepsShared(
+          AppLocalizations.of(context).progressBarStatusWithStepsText(
         response.status,
         11,
         _stepsCount,
@@ -107,8 +108,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
                 ),
               if (!_isImporting)
                 Text(
-                  AppLocalizations.of(context)
-                      .attachFilesDialogAllowedFormatsText(
+                  AppLocalizations.of(context).attachFilesDialogAllowedFormats(
                     'GGUF',
                   ),
                   style: const TextStyle(fontSize: 14.0),
@@ -149,7 +149,15 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
             ),
           ),
       ],
-    );
+    )
+        .animate()
+        .fadeIn(
+          duration: 200.ms,
+        )
+        .move(
+          begin: const Offset(0, 160),
+          curve: Curves.easeOutQuad,
+        );
   }
 }
 

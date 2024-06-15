@@ -30,11 +30,11 @@ class AboutPage extends StatelessWidget {
             ),
           ),
           Text(
-            AppLocalizations.of(context).aboutPageCopyRightNotice,
+            AppLocalizations.of(context).aboutPageCopyrightNotice,
           ),
           const Gap(32),
           Text(
-            AppLocalizations.of(context).aboutPageTitle1,
+            AppLocalizations.of(context).aboutPageDiscoverTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -45,8 +45,8 @@ class AboutPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                tooltip:
-                    AppLocalizations.of(context).aboutPageSocialButtonTooltip1,
+                tooltip: AppLocalizations.of(context)
+                    .aboutPageSocialButtonContributeTooltip,
                 onPressed: () {
                   launchUrl(Uri.parse(gitHubPage));
                 },
@@ -55,8 +55,8 @@ class AboutPage extends StatelessWidget {
               ),
               const Gap(8),
               IconButton(
-                tooltip:
-                    AppLocalizations.of(context).aboutPageSocialButtonTooltip2,
+                tooltip: AppLocalizations.of(context)
+                    .aboutPageSocialButtonJoinServerTooltip,
                 onPressed: () {
                   // TODO: Implement Discord invite link
                 },
@@ -65,8 +65,8 @@ class AboutPage extends StatelessWidget {
               ),
               const Gap(8),
               IconButton(
-                tooltip:
-                    AppLocalizations.of(context).aboutPageSocialButtonTooltip3,
+                tooltip: AppLocalizations.of(context)
+                    .aboutPageSocialButtonWatchTrailerTooltip,
                 onPressed: () {
                   // TODO: Implement YouTube trailer link
                 },
@@ -77,7 +77,7 @@ class AboutPage extends StatelessWidget {
           ),
           const Gap(32),
           Text(
-            AppLocalizations.of(context).aboutPageTitle2,
+            AppLocalizations.of(context).aboutPagePoweredByTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -130,7 +130,7 @@ class AboutPage extends StatelessWidget {
           ),
           const Gap(32),
           Text(
-            AppLocalizations.of(context).aboutPageTitle3,
+            AppLocalizations.of(context).aboutPageContributorsTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -191,7 +191,7 @@ class AboutPage extends StatelessWidget {
                             const Gap(8),
                             IconButton(
                               tooltip: AppLocalizations.of(context)
-                                  .aboutPageVisitProfileButtonTooltip,
+                                  .aboutPageVisitProfileTooltip,
                               icon: const Icon(UniconsLine.github),
                               onPressed: () {
                                 launchUrl(

@@ -359,7 +359,7 @@ class ModelProvider extends ChangeNotifier {
   }
 
   List<Model> get models => _models;
-  
+
   static List<Model> getModelsStatic() => _models;
 
   int get modelsCount => _models.length;

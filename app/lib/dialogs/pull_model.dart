@@ -37,7 +37,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
       final fmt = NumberFormat('#00');
 
       _progressBarText =
-          AppLocalizations.of(context).progressBarStatusTextWithTimeShared(
+          AppLocalizations.of(context).progressBarStatusWithTimeText(
         response.status,
         fmt.format(duration.inHours),
         fmt.format(duration.inMinutes % 60),
@@ -82,7 +82,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context).pullModelDialogGuideText1,
+                  AppLocalizations.of(context).pullModelDialogGuideText,
                 ),
                 const SizedBox(width: 8.0),
                 TextField(

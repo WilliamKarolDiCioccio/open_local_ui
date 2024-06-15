@@ -129,7 +129,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context).dashboardChatBtn,
+                  AppLocalizations.of(context).dashboardChatButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.comment),
@@ -137,7 +137,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context).dashboardSessionsBtn,
+                  AppLocalizations.of(context).dashboardSessionsButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.archive),
@@ -145,7 +145,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context).dashboardModelsBtn,
+                  AppLocalizations.of(context).dashboardModelsButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.cube),
@@ -157,7 +157,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context).dashboardSettingsBtn,
+                  AppLocalizations.of(context).dashboardSettingsButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.setting),
@@ -165,7 +165,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context).dashboardAboutBtn,
+                  AppLocalizations.of(context).dashboardAboutButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.info_circle),

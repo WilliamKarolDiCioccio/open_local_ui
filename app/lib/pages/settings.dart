@@ -135,7 +135,7 @@ class AccessibilitySettings extends StatelessWidget {
     return Column(
       children: [
         Text(
-          AppLocalizations.of(context).settingsPageAccessiblityLabel,
+          AppLocalizations.of(context).settingsPageAccessibilityLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
         const Gap(16.0),
@@ -171,7 +171,7 @@ class AccessibilitySettings extends StatelessWidget {
                 label: AppLocalizations.of(context).settingsLanguageFrench),
             DropdownMenuEntry(
                 value: 'de',
-                label: AppLocalizations.of(context).settingsLanguageDetusche),
+                label: AppLocalizations.of(context).settingsLanguageGerman),
             DropdownMenuEntry(
                 value: 'it',
                 label: AppLocalizations.of(context).settingsLanguageItalian),
@@ -234,7 +234,7 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                             if (!value) {
                               SnackBarHelpers.showSnackBar(
                                 AppLocalizations.of(context)
-                                    .ollamaDisabledGPUWarningSnackbarText,
+                                    .ollamaDisabledGPUWarningSnackBar,
                                 SnackBarType.warning,
                               );
                             }
@@ -252,7 +252,7 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                   const Icon(UniconsLine.temperature),
                   const Gap(8.0),
                   Text(
-                    '${AppLocalizations.of(context).settingsPageOllamaSetTemperatureLabel}:',
+                    '${AppLocalizations.of(context).settingsPageOllamaTemperatureLabel}:',
                     style: const TextStyle(fontSize: 16.0),
                   ),
                   const Gap(8.0),
@@ -285,7 +285,7 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                   const Icon(UniconsLine.clock),
                   const Gap(8.0),
                   Text(
-                    '${AppLocalizations.of(context).settingsPageOllamaSetKeepAliveTimeLabel}:',
+                    '${AppLocalizations.of(context).settingsPageOllamaKeepAliveTimeLabel}:',
                     style: const TextStyle(fontSize: 16.0),
                   ),
                   const Gap(8.0),

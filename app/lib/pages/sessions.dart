@@ -120,7 +120,7 @@ class _SessionsPageState extends State<SessionsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(AppLocalizations.of(context).listFiltersSortByControlLabel),
+              Text(AppLocalizations.of(context).listFiltersSortByLabel),
               const Gap(16),
               SegmentedButton<SortBy>(
                 selectedIcon: const Icon(UniconsLine.check),
@@ -128,21 +128,21 @@ class _SessionsPageState extends State<SessionsPage> {
                   ButtonSegment(
                     value: SortBy.name,
                     label: Text(
-                      AppLocalizations.of(context).sortByNameOptionsLabel,
+                      AppLocalizations.of(context).sortByNameOption,
                     ),
                     icon: const Icon(UniconsLine.tag),
                   ),
                   ButtonSegment(
                     value: SortBy.date,
                     label: Text(
-                      AppLocalizations.of(context).sortByDateOptionsLabel,
+                      AppLocalizations.of(context).sortByDateOption,
                     ),
                     icon: const Icon(UniconsLine.clock),
                   ),
                   ButtonSegment(
                     value: SortBy.size,
                     label: Text(
-                      AppLocalizations.of(context).sortBySizeOptionsLabel,
+                      AppLocalizations.of(context).sortBySizeOption,
                     ),
                     icon: const Icon(UniconsLine.database),
                   ),
@@ -160,7 +160,7 @@ class _SessionsPageState extends State<SessionsPage> {
               ),
               const Gap(16),
               Text(
-                AppLocalizations.of(context).listFiltersSortOrderControlLabel,
+                AppLocalizations.of(context).listFiltersSortOrderLabel,
               ),
               const Gap(16),
               SegmentedButton<SortOrder>(
@@ -169,16 +169,14 @@ class _SessionsPageState extends State<SessionsPage> {
                   ButtonSegment(
                     value: SortOrder.ascending,
                     label: Text(
-                      AppLocalizations.of(context)
-                          .sortOrderAscendingOptionsLabel,
+                      AppLocalizations.of(context).sortOrderAscendingOption,
                     ),
                     icon: const Icon(UniconsLine.arrow_up),
                   ),
                   ButtonSegment(
                     value: SortOrder.descending,
                     label: Text(
-                      AppLocalizations.of(context)
-                          .sortOrderDescendingOptionsLabel,
+                      AppLocalizations.of(context).sortOrderDescendingOption,
                     ),
                     icon: const Icon(UniconsLine.arrow_down),
                   ),
@@ -256,7 +254,7 @@ class _SessionListTileState extends State<SessionListTile> {
   void _setSession() async {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -276,7 +274,7 @@ class _SessionListTileState extends State<SessionListTile> {
   void _sendEditedTitle() {
     if (widget.session.status == ChatSessionStatus.generating) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -302,7 +300,7 @@ class _SessionListTileState extends State<SessionListTile> {
   void _shareSession() async {
     if (widget.session.status == ChatSessionStatus.generating) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -332,13 +330,13 @@ class _SessionListTileState extends State<SessionListTile> {
       if (shareResult.status == ShareResultStatus.success) {
         SnackBarHelpers.showSnackBar(
           // ignore: use_build_context_synchronously
-          AppLocalizations.of(context).sessionSharedSnackBarText,
+          AppLocalizations.of(context).sessionSharedSnackBar,
           SnackBarType.success,
         );
       } else {
         SnackBarHelpers.showSnackBar(
           // ignore: use_build_context_synchronously
-          AppLocalizations.of(context).failedToShareSessionSnackBarText,
+          AppLocalizations.of(context).failedToShareSessionSnackBar,
           SnackBarType.error,
         );
       }
@@ -348,7 +346,7 @@ class _SessionListTileState extends State<SessionListTile> {
   void _deleteSession() async {
     if (widget.session.status == ChatSessionStatus.generating) {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).modelIsGeneratingSnackBarText,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -365,8 +363,7 @@ class _SessionListTileState extends State<SessionListTile> {
               child: TextField(
                 autofocus: true,
                 decoration: InputDecoration(
-                  hintText:
-                      AppLocalizations.of(context).chatTitleEditFieldHint,
+                  hintText: AppLocalizations.of(context).chatEditFieldHint,
                   counterText: '',
                 ),
                 controller: _textEditingController,
@@ -389,8 +386,7 @@ class _SessionListTileState extends State<SessionListTile> {
             Row(
               children: [
                 IconButton(
-                  tooltip:
-                      AppLocalizations.of(context).sessionsPageEnterButton,
+                  tooltip: AppLocalizations.of(context).sessionsPageEnterButton,
                   icon: const Icon(UniconsLine.enter),
                   onPressed: () => _setSession(),
                 ),
@@ -403,8 +399,7 @@ class _SessionListTileState extends State<SessionListTile> {
                 ),
                 const Gap(8),
                 IconButton(
-                  tooltip:
-                      AppLocalizations.of(context).sessionsPageShareButton,
+                  tooltip: AppLocalizations.of(context).sessionsPageShareButton,
                   icon: const Icon(UniconsLine.share),
                   onPressed: () => _shareSession(),
                 ),
@@ -433,13 +428,13 @@ class _SessionListTileState extends State<SessionListTile> {
             Row(
               children: [
                 IconButton(
-                  tooltip: AppLocalizations.of(context).cancelSharedButtonText,
+                  tooltip: AppLocalizations.of(context).cancelButtonShared,
                   icon: const Icon(UniconsLine.times),
                   onPressed: () => _cancelEditingTitle(),
                 ),
                 const Gap(8),
                 IconButton(
-                  tooltip: AppLocalizations.of(context).saveSharedButtonText,
+                  tooltip: AppLocalizations.of(context).saveButtonShared,
                   icon: const Icon(UniconsLine.check),
                   onPressed: () => _sendEditedTitle(),
                 ),

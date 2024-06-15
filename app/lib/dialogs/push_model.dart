@@ -35,7 +35,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
       final duration = HTTPHelpers.calculateRemainingTime(response);
 
       _progressBarText =
-          AppLocalizations.of(context).progressBarStatusTextWithTimeShared(
+          AppLocalizations.of(context).progressBarStatusWithTimeText(
         response.status,
         (duration.inHours).toString(),
         (duration.inMinutes % 60).toString(),
@@ -91,7 +91,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context).pushModelDialogGuideText1,
+                  AppLocalizations.of(context).pushModelDialogGuideText,
                 ),
                 const SizedBox(width: 8.0),
                 DropdownMenu(

@@ -54,7 +54,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
       _progressValue += _stepsCount / 11;
 
       _progressBarText =
-          AppLocalizations.of(context).progressBarStatusTextWithStepsShared(
+          AppLocalizations.of(context).progressBarStatusWithStepsText(
         response.status,
         11,
         _stepsCount,
