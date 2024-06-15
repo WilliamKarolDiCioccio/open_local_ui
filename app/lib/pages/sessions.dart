@@ -6,7 +6,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/dialogs/confirmation.dart';
-import 'package:open_local_ui/dialogs/create_folder.dart';
 import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
@@ -110,7 +109,7 @@ class _SessionsPageState extends State<SessionsPage> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.folder_plus),
-                onPressed: () => showCreateFolderDialog(context),
+                onPressed: () => {},
               ),
             ],
           ),
