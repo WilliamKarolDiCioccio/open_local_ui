@@ -213,7 +213,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                       : ''),
             ),
           const Gap(8.0),
-          if (!_showEditWidget && !_showPlayerWidget)
+          if (!_showEditWidget &&
+              !_showPlayerWidget &&
+              !context.watch<ChatProvider>().isGenerating)
             Row(
               children: [
                 IconButton(
