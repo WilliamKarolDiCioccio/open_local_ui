@@ -7,7 +7,6 @@ const codeTextStyle = TextStyle(
 
 const linkTextStyle = TextStyle(
   color: Colors.blue,
-  decoration: TextDecoration.underline,
 );
 
 const header1TextStyle = TextStyle(
