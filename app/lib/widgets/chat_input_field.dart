@@ -138,10 +138,9 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
             fontWeight: FontWeight.w300,
           ),
           autofocus: true,
-          maxLength: 4096,
+          maxLength: TextField.noMaxLength,
           maxLines: null,
           expands: false,
-          maxLengthEnforcement: MaxLengthEnforcement.enforced,
         ),
       ),
     );
