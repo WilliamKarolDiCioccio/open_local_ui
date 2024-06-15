@@ -313,6 +313,24 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                   ),
                 ],
               ),
+              const Gap(16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(UniconsLine.calculator),
+                  const Gap(8.0),
+                  Text(
+                    '${AppLocalizations.of(context).settingsPageOllamaShowStatistics}:',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const Gap(8.0),
+                  Switch(
+                    value: context.watch<ChatProvider>().isChatShowStatistics,
+                    onChanged: (value) =>
+                        context.read<ChatProvider>().enableStatistics(value),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

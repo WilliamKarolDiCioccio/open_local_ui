@@ -125,6 +125,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     late String senderName;
     late IconData senderIconData;
 
+    final chatProvider = context.watch<ChatProvider>();
+
     switch (widget.message.sender) {
       case ChatMessageSender.user:
         senderIconData = UniconsLine.user;
@@ -205,7 +207,10 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               const SizedBox(height: 8.0),
           if (!_showEditWidget)
             MessageMarkdownWidget(
-              widget.message.text,
+              widget.message.text +
+                  (chatProvider.isChatShowStatistics
+                      ? _buildStatisticsSummary(widget.message)
+                      : ''),
             ),
           const Gap(8.0),
           if (!_showEditWidget && !_showPlayerWidget)
@@ -293,5 +298,21 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         ],
       ),
     );
+  }
+
+  String _buildStatisticsSummary(ChatMessageWrapper message) {
+    if (message.totalTokens == 0) {
+      return '';
+    }
+
+    final token = message.totalTokens;
+    final durationMs = message.totalDuration / 1000 ~/ 1000;
+    final tps = (token / (durationMs / 1000)).toStringAsFixed(2);
+
+    return '''
+
+
+**Token:** $token   **Duration:** $durationMs ms   **Speed:** $tps t/s
+ ''';
   }
 }

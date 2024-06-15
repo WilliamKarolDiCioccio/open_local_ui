@@ -245,6 +245,7 @@
   "settingsPageOllamaLabel": "Ollama",
   "settingsPageOllamaTemperatureLabel": "Set temperature",
   "settingsPageOllamaUseGPULabel": "Use GPU",
+  "settingsPageOllamaShowStatistics": "Show Statistics",
   "settingsPageThemeLabel": "Theme",
   "settingsPageTitle": "Settings",
   "settingsThemeModeDark": "Dark",

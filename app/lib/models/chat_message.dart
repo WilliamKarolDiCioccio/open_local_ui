@@ -70,6 +70,19 @@ class ChatMessageWrapper {
   final String uuid;
   final String? senderName;
 
+  // Metadata
+  int totalDuration;
+  int loadDuration;
+  int promptEvalCount;
+  int promptEvalDuration;
+  int evalCount;
+  int evalDuration;
+
+  // Usage
+  int promptTokens;
+  int responseTokens;
+  int totalTokens;
+
   @JsonKey(
     includeToJson: true,
     includeFromJson: true,
@@ -84,6 +97,15 @@ class ChatMessageWrapper {
     this.uuid,
     this.sender, {
     this.senderName,
+    this.totalDuration = 0,
+    this.loadDuration = 0,
+    this.promptEvalCount = 0,
+    this.promptEvalDuration = 0,
+    this.evalCount = 0,
+    this.evalDuration = 0,
+    this.promptTokens = 0,
+    this.responseTokens = 0,
+    this.totalTokens = 0,
   });
 
   factory ChatMessageWrapper.fromJson(Map<String, dynamic> json) =>
