@@ -29,6 +29,8 @@ class ChatProvider extends ChangeNotifier {
   int _keepAliveTime;
   bool _enableWebSearch;
   bool _enableDocsSearch;
+  bool _showStatistics;
+
   // Chat session
   ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
@@ -41,6 +43,7 @@ class ChatProvider extends ChangeNotifier {
         _enableWebSearch = false,
         _enableDocsSearch = false,
         _enableGPU = true,
+        _showStatistics = false,
         _temperature = 0.8,
         _keepAliveTime = 5 {
     loadSettings();
@@ -63,6 +66,7 @@ class ChatProvider extends ChangeNotifier {
     _enableGPU = prefs.getBool('enableGPU') ?? true;
     _temperature = prefs.getDouble('temperature') ?? 0.8;
     _keepAliveTime = prefs.getInt('keepAliveTime') ?? 5;
+    _showStatistics = prefs.getBool('showStatistics') ?? false;
 
     _updateModelOptions();
 
@@ -307,8 +311,7 @@ class ChatProvider extends ChangeNotifier {
           ),
         }) |
         promptTemplate |
-        _model |
-        const StringOutputParser<ChatResult>();
+        _model;
 
     return chain;
   }
@@ -364,15 +367,31 @@ class ChatProvider extends ChangeNotifier {
       addModelMessage('', _modelName);
 
       await for (final response in chain.stream([prompt])) {
+        ChatResult result = response as ChatResult;
         if (_session!.status == ChatSessionStatus.aborting) {
           _session!.status = ChatSessionStatus.idle;
-
           _session!.memory.chatHistory.removeLast();
-
           break;
         }
 
-        _session!.messages.last.text += response.toString();
+        final lastMessage = _session!.messages.last;
+        lastMessage.text += result.outputAsString;
+
+        // Update metadata and usage.
+        lastMessage.totalDuration +=
+            result.metadata['total_duration'] as int? ?? 0;
+        lastMessage.loadDuration +=
+            result.metadata['load_duration'] as int? ?? 0;
+        lastMessage.promptEvalCount +=
+            result.metadata['prompt_eval_count'] as int? ?? 0;
+        lastMessage.promptEvalDuration +=
+            result.metadata['prompt_eval_duration'] as int? ?? 0;
+        lastMessage.evalCount += result.metadata['eval_count'] as int? ?? 0;
+        lastMessage.evalDuration +=
+            result.metadata['eval_duration'] as int? ?? 0;
+        lastMessage.promptTokens += result.usage.promptTokens ?? 0;
+        lastMessage.responseTokens += result.usage.responseTokens ?? 0;
+        lastMessage.totalTokens += result.usage.totalTokens ?? 0;
 
         notifyListeners();
       }
@@ -627,6 +646,13 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void enableStatistics(bool value) async {
+    _showStatistics = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('showStatistics', value);
+    notifyListeners();
+  }
+
   void enableWebSearch(bool value) async {
     if (isGenerating) return;
 
@@ -666,6 +692,8 @@ class ChatProvider extends ChangeNotifier {
   double get keepAliveTime => _keepAliveTime.toDouble();
 
   bool get isOllamaUsingGpu => _enableGPU;
+
+  bool get isChatShowStatistics => _showStatistics;
 
   bool get isWebSearchEnabled => _enableWebSearch;
 
