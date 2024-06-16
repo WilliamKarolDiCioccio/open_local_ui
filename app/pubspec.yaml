@@ -84,7 +84,7 @@ dependencies:
   # Device and Package Info
   device_info_plus: ^10.1.0
   package_info_plus: ^8.0.0
-  devicelocale: ^0.7.1
+  language_code: ^0.5.3+2
 
   # Environment Variables
   envied: ^0.5.4+1
