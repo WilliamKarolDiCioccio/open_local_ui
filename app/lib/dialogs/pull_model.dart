@@ -54,10 +54,10 @@ class _PullModelDialogState extends State<PullModelDialog> {
         .pull(_textEditingController.text.toLowerCase());
 
     await for (final response in stream) {
-      if (context.mounted) _updateProgress(response);
+      if (mounted) _updateProgress(response);
     }
 
-    if (context.mounted) {
+    if (mounted) {
       setState(() {
         _isPulling = false;
         _progressValue = 0.0;

@@ -52,10 +52,10 @@ class _PushModelDialogState extends State<PushModelDialog> {
         .push(_modelSelectionController.text.toLowerCase());
 
     await for (final data in stream) {
-      if (context.mounted) _updateProgress(data);
+      if (mounted) _updateProgress(data);
     }
 
-    if (context.mounted) {
+    if (mounted) {
       setState(() {
         _isPushing = false;
         _progressValue = 0.0;

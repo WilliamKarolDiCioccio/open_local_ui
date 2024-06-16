@@ -108,8 +108,6 @@ class ModelProvider extends ChangeNotifier {
 
     final startTime = DateTime.now().toString();
 
-    OllamaPullResponse? lastResponse;
-
     await for (var data in stream) {
       try {
         final jsonData = jsonDecode(data);
@@ -126,8 +124,6 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
-          lastResponse = modelPullResponse;
-
           yield modelPullResponse;
         }
       } catch (e) {
@@ -140,17 +136,10 @@ class ModelProvider extends ChangeNotifier {
       }
     }
 
-    if (lastResponse == null || lastResponse.status != 'success') {
-      SnackBarHelpers.showSnackBar(
-        'Failed to pull model $name',
-        SnackBarType.error,
-      );
-    } else {
-      SnackBarHelpers.showSnackBar(
-        'Model $name pulled successfully',
-        SnackBarType.success,
-      );
-    }
+    SnackBarHelpers.showSnackBar(
+      'Model $name pulled successfully',
+      SnackBarType.success,
+    );
 
     sleep(
       const Duration(
@@ -192,8 +181,6 @@ class ModelProvider extends ChangeNotifier {
 
     final startTime = DateTime.now().toString();
 
-    OllamaPushResponse? lastResponse;
-
     await for (var data in stream) {
       try {
         final jsonData = jsonDecode(data);
@@ -210,8 +197,6 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
-          lastResponse = modelCreateResponse;
-
           yield modelCreateResponse;
         }
       } catch (e) {
@@ -224,17 +209,10 @@ class ModelProvider extends ChangeNotifier {
       }
     }
 
-    if (lastResponse == null || lastResponse.status != 'success') {
-      SnackBarHelpers.showSnackBar(
-        'Failed to push model $name',
-        SnackBarType.error,
-      );
-    } else {
-      SnackBarHelpers.showSnackBar(
-        'Model $name pushed successfully',
-        SnackBarType.success,
-      );
-    }
+    SnackBarHelpers.showSnackBar(
+      'Model $name pushed successfully',
+      SnackBarType.success,
+    );
 
     sleep(
       const Duration(
@@ -277,8 +255,6 @@ class ModelProvider extends ChangeNotifier {
 
     final startTime = DateTime.now().toString();
 
-    OllamaCreateResponse? lastResponse;
-
     await for (var data in stream) {
       try {
         final jsonData = jsonDecode(data);
@@ -293,8 +269,6 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
-          lastResponse = modelCreateResponse;
-
           yield modelCreateResponse;
         }
       } catch (e) {
@@ -307,17 +281,10 @@ class ModelProvider extends ChangeNotifier {
       }
     }
 
-    if (lastResponse == null || lastResponse.status != 'success') {
-      SnackBarHelpers.showSnackBar(
-        'Failed to create model $name',
-        SnackBarType.error,
-      );
-    } else {
-      SnackBarHelpers.showSnackBar(
-        'Model $name created successfully',
-        SnackBarType.success,
-      );
-    }
+    SnackBarHelpers.showSnackBar(
+      'Model $name created successfully',
+      SnackBarType.success,
+    );
 
     sleep(
       const Duration(
