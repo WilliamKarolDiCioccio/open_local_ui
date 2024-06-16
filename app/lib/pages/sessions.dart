@@ -14,9 +14,9 @@ import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum SortBy {
   name,
@@ -303,30 +303,12 @@ class _SessionListTileState extends State<SessionListTile> {
         SnackBarType.error,
       );
     } else {
-      late ShareResult shareResult;
+      final targetDir = (await getDownloadsDirectory())?.path ?? '.';
 
-      if (Platform.isLinux) {
-        shareResult = await Share.share(widget.session.toJson().toString());
-      } else {
-        final cacheDir = await getApplicationCacheDirectory();
-
-        final file = File('${cacheDir.path}/${widget.session.uuid}.json');
-        await file.writeAsString(widget.session.toJson().toString());
-
-        final shareFile = XFile(
-          file.path,
-          mimeType: 'application/json',
-          name: widget.session.title,
-          lastModified: widget.session.messages.last.createdAt,
-        );
-
-        shareResult = await Share.shareXFiles(
-          [shareFile],
-          text: widget.session.title,
-        );
-      }
-
-      if (shareResult.status == ShareResultStatus.success) {
+      final file =
+          File('$targetDir/OpenLocalUI_Chat_${widget.session.uuid}.json');
+      await file.writeAsString(widget.session.toJson().toString());
+      if (await launchUrl(file.uri)) {
         SnackBarHelpers.showSnackBar(
           // ignore: use_build_context_synchronously
           AppLocalizations.of(context).sessionSharedSnackBar,
