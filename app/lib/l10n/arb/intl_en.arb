@@ -221,6 +221,7 @@
   "scrollToBottomButton": "Scroll to bottom",
   "sessionSharedSnackBar": "Session shared",
   "sessionsPageCreateFolderButton": "Create folder",
+  "sessionsPageClearSessionsButton": "Clear sessions",
   "sessionsPageDeleteButton": "Delete session",
   "sessionsPageDeleteDialogText": "This will delete {sessionName}. Do you confirm?",
   "@sessionsPageDeleteDialogText": {

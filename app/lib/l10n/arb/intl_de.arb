@@ -221,6 +221,7 @@
   "scrollToBottomButton": "Nach unten scrollen",
   "sessionSharedSnackBar": "Sitzung freigegeben",
   "sessionsPageCreateFolderButton": "Ordner erstellen",
+  "sessionsPageClearSessionsButton": "Sitzungen löschen",
   "sessionsPageDeleteButton": "Sitzung löschen",
   "sessionsPageDeleteDialogText": "Sitzung {sessionName} löschen. Wollen Sie fortfahren?",
   "@sessionsPageDeleteDialogText": {

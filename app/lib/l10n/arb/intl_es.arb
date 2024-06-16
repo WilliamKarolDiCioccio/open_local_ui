@@ -221,6 +221,7 @@
   "scrollToBottomButton": "Desplazarse hasta el final",
   "sessionSharedSnackBar": "Sesión compartida",
   "sessionsPageCreateFolderButton": "Crear carpeta",
+  "sessionsPageClearSessionsButton": "Borrar sesiones",
   "sessionsPageDeleteButton": "Eliminar sesión",
   "sessionsPageDeleteDialogText": "Esto eliminará {sessionName}. ¿Confirmas?",
   "@sessionsPageDeleteDialogText": {

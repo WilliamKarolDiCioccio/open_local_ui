@@ -165,6 +165,18 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSessions() {
+    List<String> uuids = [];
+
+    for (final session in _sessions) {
+      uuids.add(session.uuid);
+    }
+
+    for (final uuid in uuids) {
+      removeSession(uuid);
+    }
+  }
+
   void setSessionTitle(String uuid, String title) {
     final index = _sessions.indexWhere((element) => element.uuid == uuid);
 
@@ -282,6 +294,17 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.messages.removeLast();
     _session!.memory.chatHistory.removeLast();
+
+    SessionsDatabase.updateSession(_session!);
+
+    notifyListeners();
+  }
+
+  void clearMessages() async {
+    if (!isSessionSelected || isGenerating) return;
+
+    _session!.messages.clear();
+    _session!.memory.chatHistory.clear();
 
     SessionsDatabase.updateSession(_session!);
 
