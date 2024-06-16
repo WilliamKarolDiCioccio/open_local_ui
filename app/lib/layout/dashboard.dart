@@ -148,7 +148,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                   AppLocalizations.of(context).dashboardModelsButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
-                icon: const Icon(UniconsLine.cube),
+                icon: const Icon(UniconsLine.robot),
                 onPressed: () => _changePage(2),
               ),
               const SizedBox(
