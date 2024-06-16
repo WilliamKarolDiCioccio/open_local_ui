@@ -128,6 +128,21 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Generate intl files",
+      "type": "shell",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["../scripts/generate_intl_files.ps1"],
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     }
   ],
   "inputs": [

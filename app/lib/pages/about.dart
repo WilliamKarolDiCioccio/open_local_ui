@@ -1,7 +1,9 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,25 +29,24 @@ class AboutPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Gap(8),
           Text(
-            AppLocalizations.of(context)!.aboutPageCopyRightNotice,
+            AppLocalizations.of(context).aboutPageCopyrightNotice,
           ),
           const Gap(32),
           Text(
-            AppLocalizations.of(context)!.aboutPageTitle1,
+            AppLocalizations.of(context).aboutPageDiscoverTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Gap(8),
+          const Gap(16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                tooltip:
-                    AppLocalizations.of(context)!.aboutPageSocialButtonTooltip1,
+                tooltip: AppLocalizations.of(context)
+                    .aboutPageSocialButtonContributeTooltip,
                 onPressed: () {
                   launchUrl(Uri.parse(gitHubPage));
                 },
@@ -54,8 +55,8 @@ class AboutPage extends StatelessWidget {
               ),
               const Gap(8),
               IconButton(
-                tooltip:
-                    AppLocalizations.of(context)!.aboutPageSocialButtonTooltip2,
+                tooltip: AppLocalizations.of(context)
+                    .aboutPageSocialButtonJoinServerTooltip,
                 onPressed: () {
                   // TODO: Implement Discord invite link
                 },
@@ -64,8 +65,8 @@ class AboutPage extends StatelessWidget {
               ),
               const Gap(8),
               IconButton(
-                tooltip:
-                    AppLocalizations.of(context)!.aboutPageSocialButtonTooltip3,
+                tooltip: AppLocalizations.of(context)
+                    .aboutPageSocialButtonWatchTrailerTooltip,
                 onPressed: () {
                   // TODO: Implement YouTube trailer link
                 },
@@ -76,34 +77,66 @@ class AboutPage extends StatelessWidget {
           ),
           const Gap(32),
           Text(
-            AppLocalizations.of(context)!.aboutPageTitle2,
+            AppLocalizations.of(context).aboutPagePoweredByTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Gap(8),
-          const Row(
+          const Gap(16),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Flutter'),
-              SizedBox(width: 8),
-              Text('LangChain'),
-              SizedBox(width: 8),
-              Text('Ollama'),
-              SizedBox(width: 8),
-              Text('Supabase'),
+              SvgPicture.asset(
+                'assets/graphics/logos/flutter.svg',
+                width: 44,
+                height: 44,
+                // ignore: deprecated_member_use
+                color: AdaptiveTheme.of(context).mode.isDark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+              const Gap(32),
+              SvgPicture.asset(
+                'assets/graphics/logos/langchain.svg',
+                width: 44,
+                height: 44,
+                // ignore: deprecated_member_use
+                color: AdaptiveTheme.of(context).mode.isDark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+              const Gap(32),
+              SvgPicture.asset(
+                'assets/graphics/logos/supabase.svg',
+                width: 44,
+                height: 44,
+                // ignore: deprecated_member_use
+                color: AdaptiveTheme.of(context).mode.isDark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+              const Gap(32),
+              SvgPicture.asset(
+                'assets/graphics/logos/ollama.svg',
+                width: 44,
+                height: 44,
+                // ignore: deprecated_member_use
+                color: AdaptiveTheme.of(context).mode.isDark
+                    ? Colors.white
+                    : Colors.black,
+              ),
             ],
           ),
           const Gap(32),
           Text(
-            AppLocalizations.of(context)!.aboutPageTitle3,
+            AppLocalizations.of(context).aboutPageContributorsTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Gap(8),
+          const Gap(16),
           FutureBuilder(
             future: GitHubRESTHelpers.listRepositoryContributors(),
             builder: (context, snapshot) {
@@ -119,7 +152,7 @@ class AboutPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     if (collaborators.isEmpty) {
                       return Text(
-                        AppLocalizations.of(context)!.offlineWarningTextShared,
+                        AppLocalizations.of(context).offlineWarningTextShared,
                       );
                     }
 
@@ -157,8 +190,8 @@ class AboutPage extends StatelessWidget {
                             Text(collaborator.login),
                             const Gap(8),
                             IconButton(
-                              tooltip: AppLocalizations.of(context)!
-                                  .aboutPageVisitProfileButtonTooltip,
+                              tooltip: AppLocalizations.of(context)
+                                  .aboutPageVisitProfileTooltip,
                               icon: const Icon(UniconsLine.github),
                               onPressed: () {
                                 launchUrl(

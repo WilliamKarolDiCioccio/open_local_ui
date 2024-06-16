@@ -20,14 +20,14 @@ Future<void> initLogger() async {
 }
 
 Future<File> _createLogFile() async {
-  final timeStamp = DateTimeHelpers.getFormattedDateTime()
+  final timeStamp = DateTimeHelpers.formattedDateTime(DateTime.now())
       .replaceAll(' ', '_')
       .replaceAll('/', '-')
       .replaceAll(':', '-');
 
   final fileName = 'log_$timeStamp.log';
-  final directory = await getApplicationDocumentsDirectory();
-  final logsFolderPath = '${directory.path}/logs';
+  final directory = await getApplicationSupportDirectory();
+  final logsFolderPath = '${directory.path}/OpenLocalUI/logs';
 
   await Directory(logsFolderPath).create(recursive: true);
   final logFile = File('$logsFolderPath/$fileName');

@@ -1,0 +1,286 @@
+{
+  "@@locale": "en",
+  "abortModelRemovalSnackBar": "Abort model removal",
+  "abortSessionRemovalSnackBar": "Abort session removal",
+  "aboutPageContributorsTitle": "Contributors",
+  "aboutPageCopyrightNotice": "© 2024 William Karol Di Cioccio",
+  "aboutPageDiscoverTitle": "Discover more",
+  "aboutPagePoweredByTitle": "Powered by",
+  "aboutPageSocialButtonContributeTooltip": "Contribute",
+  "aboutPageSocialButtonJoinServerTooltip": "Join server",
+  "aboutPageSocialButtonWatchTrailerTooltip": "Watch trailer",
+  "aboutPageVisitProfileTooltip": "Visit profile",
+  "appTitle": "MyApp",
+  "attachFilesDialogAllowedFormats": "Allowed formats: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "Browse files",
+  "attachFilesDialogDropFilesText": "Drop files here",
+  "cancelButtonShared": "Cancel",
+  "chatAttachFilesTooltip": "Attach files",
+  "chatCancelEditButton": "Cancel editing",
+  "chatCancelGenerationTooltip": "Cancel generation",
+  "chatCopyMessageTooltip": "Copy message",
+  "chatDetachFilesTooltip": "Detach files",
+  "chatEditFieldHint": "Type a message...",
+  "chatEditMessageTooltip": "Edit message",
+  "chatInputFieldHint": "Type a message...",
+  "chatReadAloudTooltip": "Read aloud",
+  "chatRefreshSuggestions": "Refresh suggestions",
+  "chatRegenerateMessageTooltip": "Regenerate message",
+  "chatResendMessageButton": "Resend message",
+  "chatSendTooltip": "Send message",
+  "chatSuggestionsPrompt": "Want some suggestions?",
+  "chatSystemSender": "System",
+  "chatTitleEditHint": "Type a title...",
+  "chatToolbarDocsSearchOption": "Docs search:",
+  "chatToolbarModelSelectorHint": "Select model",
+  "chatToolbarNewSessionButton": "New session",
+  "chatToolbarWebSearchOption": "Web search:",
+  "chatUserSender": "You",
+  "chatWelcomeMessage": "Welcome!",
+  "closeButtonShared": "Close",
+  "codeCopiedSnackBar": "Code copied to clipboard",
+  "createFolderDialogFolderNameHint": "Enter the folder name...",
+  "createFolderDialogFolderNameLabel": "Folder name",
+  "createFolderDialogGuideText1": "Enter the name of the folder to create:",
+  "createFolderDialogGuideText2": "Optionally, set a folder color:",
+  "createFolderDialogTitle": "Create folder",
+  "createModelDialogGuideText1": "Select the model to use:",
+  "createModelDialogGuideText2": "Enter the name of the model to create:",
+  "createModelDialogGuideText3": "Optionally, write a model file:",
+  "createModelDialogModelFileHint": "Enter the model file...",
+  "createModelDialogModelFileLabel": "Model file",
+  "createModelDialogModelNameHint": "Enter the model name...",
+  "createModelDialogModelNameLabel": "Model name",
+  "createModelDialogModelSelectorHint": "Select model",
+  "createModelDialogTitle": "Create model",
+  "createdAtTextShared": "Created at: {createdAt}",
+  "dashboardAboutButton": "About",
+  "dashboardChatButton": "Chat",
+  "dashboardHomeButton": "Home",
+  "dashboardModelsButton": "Models",
+  "dashboardSessionsButton": "Sessions",
+  "dashboardSettingsButton": "Settings",
+  "dialogAttachButton": "Attach",
+  "dialogCancelButtonShared": "Cancel",
+  "dialogCloseButtonShared": "Close",
+  "dialogConfirmButtonShared": "Confirm",
+  "dialogContinueInBackgroundButtonShared": "Continue in background",
+  "dialogCreateButtonShared": "Create",
+  "dialogRemoveButton": "Remove",
+  "dialogStartButtonShared": "Start",
+  "failedToCreateFolderSnackBar": "Failed to create folder",
+  "failedToCreateModelSnackBar": "Failed to create model",
+  "failedToPullModelSnackBar": "Failed to pull model",
+  "failedToPushModelSnackBar": "Failed to push model",
+  "failedToShareSessionSnackBar": "Failed to share session",
+  "feedbackButton": "Feedback",
+  "folderCreatedSnackBar": "Folder created",
+  "importModelDialogTitle": "Import model",
+  "licenseButton": "License",
+  "listFiltersSortByLabel": "Sort by",
+  "listFiltersSortOrderLabel": "In order",
+  "markdownCopyTooltip": "Copy markdown",
+  "markdownLanguageLabel": "Language: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "Message copied to clipboard",
+  "modelDetailsDigestText": "Digest: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "Family: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "Format: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "Parameters: {parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "Quantization: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsSizeText": "Size: {size} GB",
+  "@modelDetailsSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsTitle": "{modelName} details",
+  "@modelDetailsTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelIsGeneratingSnackBar": "Model is generating",
+  "modelsPageCreateButton": "Create",
+  "modelsPageDeleteButton": "Delete model",
+  "modelsPageDeleteDialogText": "This will delete {modelName}. Do you confirm?",
+  "@modelsPageDeleteDialogText": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsPageDeleteDialogTitle": "Delete model",
+  "modelsPageImportButton": "Import",
+  "modelsPagePullButton": "Pull",
+  "modelsPagePushButton": "Push",
+  "modelsPageRefreshButton": "Refresh",
+  "modelsPageTitle": "Models management",
+  "modelsPageUseButton": "Use model",
+  "modifiedAtTextShared": "Modified at: {modifiedAt}",
+  "moreOptionsButton": "More options",
+  "noModelsAvailableSnackBar": "No models available",
+  "noNeedToCreateSessionSnackBar": "No need to create a new session",
+  "nothingToSynthesizeSnackBar": "Nothing to synthesize",
+  "offlineWarningTextShared": "You are offline",
+  "ollamaDisabledGPUWarningSnackBar": "Disabling GPU is harmful for performance",
+  "privacyButton": "Privacy",
+  "progressBarStatusWithStepsText": "Status: {status} - Step {completedSteps} of {totalSteps}",
+  "@progressBarStatusWithStepsText": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "totalSteps": {
+        "type": "int"
+      },
+      "completedSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "progressBarStatusWithTimeText": "Status: {status} - Remaining time: {hours}:{minutes}:{seconds}",
+  "@progressBarStatusWithTimeText": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "pullModelDialogGuideText": "Please type the name of the model to pull:",
+  "pullModelDialogModelNameHint": "Type model name...",
+  "pullModelDialogModelNameLabel": "Model name",
+  "pullModelDialogTitle": "Pull model",
+  "pushModelDialogGuideText": "Please select the model to push:",
+  "pushModelDialogModelSelectorHint": "Select model",
+  "pushModelDialogTitle": "Push model",
+  "redoButtonShared": "Redo",
+  "saveButtonShared": "Save",
+  "scrollToBottomButton": "Scroll to bottom",
+  "sessionSharedSnackBar": "Session shared",
+  "sessionsPageCreateFolderButton": "Create folder",
+  "sessionsPageClearSessionsButton": "Clear sessions",
+  "sessionsPageDeleteButton": "Delete session",
+  "sessionsPageDeleteDialogText": "This will delete {sessionName}. Do you confirm?",
+  "@sessionsPageDeleteDialogText": {
+    "placeholders": {
+      "sessionName": {
+        "type": "String"
+      }
+    }
+  },
+  "sessionsPageDeleteDialogTitle": "Delete session",
+  "sessionsPageEditTitleButton": "Edit title",
+  "sessionsPageEnterButton": "Enter session",
+  "sessionsPageShareButton": "Share session",
+  "sessionsPageTitle": "Sessions management",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageFrench": "French",
+  "settingsLanguageGerman": "Deutsch",
+  "settingsLanguageItalian": "Italian",
+  "settingsLanguageSpanish": "Spanish",
+  "settingsPageAccessibilityLabel": "Accessibility",
+  "settingsPageOllamaKeepAliveTimeLabel": "Set keep alive time",
+  "settingsPageOllamaLabel": "Ollama",
+  "settingsPageOllamaTemperatureLabel": "Set temperature",
+  "settingsPageOllamaUseGPULabel": "Use GPU",
+  "settingsPageOllamaShowStatistics": "Show Statistics",
+  "settingsPageThemeLabel": "Theme",
+  "settingsPageTitle": "Settings",
+  "settingsThemeModeDark": "Dark",
+  "settingsThemeModeLight": "Light",
+  "settingsThemeModeSystem": "System",
+  "somethingWentWrongSnackBar": "Something went wrong",
+  "sortByDateOption": "Date",
+  "sortByNameOption": "Name",
+  "sortBySizeOption": "Size",
+  "sortOrderAscendingOption": "Ascending",
+  "sortOrderDescendingOption": "Descending",
+  "suggestionAddressConflictsInRelationshipsPartOne": "Address conflicts in relationships",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "using effective communication",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "What are some common use cases",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "for problem-solving skills?",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "Describe the process",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "of decision-making in complex situations",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "Discuss advantages and disadvantages of remote work",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "for employees and employers",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "Distinguish between teaching and mentoring",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "and their benefits",
+  "suggestionEvaluateTeamPerformancePartOne": "Evaluate the performance of a team",
+  "suggestionEvaluateTeamPerformancePartTwo": "using teamwork metrics",
+  "suggestionExplainEmpathySignificancePartOne": "Explain the significance of empathy",
+  "suggestionExplainEmpathySignificancePartTwo": "in building strong connections",
+  "suggestionExplainLearningFromExperiencePartOne": "Explain the concept of learning from experience",
+  "suggestionExplainLearningFromExperiencePartTwo": "using everyday situations",
+  "suggestionHandleDailyStressPartOne": "Handle stress in daily life",
+  "suggestionHandleDailyStressPartTwo": "with effective coping strategies",
+  "suggestionImportanceOfCommunicationPartOne": "Understand the importance of communication",
+  "suggestionImportanceOfCommunicationPartTwo": "in personal and professional life",
+  "suggestionPersonalGrowthChallengesPartOne": "List some challenges",
+  "suggestionPersonalGrowthChallengesPartTwo": " in personal growth",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "Plan a birthday party",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "for your best friend with a surprise element",
+  "undoButtonShared": "Undo"
+}

@@ -22,6 +22,12 @@ class _PullModelDialogState extends State<PullModelDialog> {
   double _progressValue = 0.0;
   String _progressBarText = '';
 
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
   void _updateProgress(OllamaPullResponse response) {
     setState(() {
       _progressValue = response.completed / response.total;
@@ -31,7 +37,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
       final fmt = NumberFormat('#00');
 
       _progressBarText =
-          AppLocalizations.of(context)!.progressBarStatusTextWithTimeShared(
+          AppLocalizations.of(context).progressBarStatusWithTimeText(
         response.status,
         fmt.format(duration.inHours),
         fmt.format(duration.inMinutes % 60),
@@ -40,17 +46,32 @@ class _PullModelDialogState extends State<PullModelDialog> {
     });
   }
 
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
+  void _pullModel() async {
+    setState(() => _isPulling = true);
+
+    final stream = context
+        .read<ModelProvider>()
+        .pull(_textEditingController.text.toLowerCase());
+
+    await for (final response in stream) {
+      if (context.mounted) _updateProgress(response);
+    }
+
+    if (context.mounted) {
+      setState(() {
+        _isPulling = false;
+        _progressValue = 0.0;
+        _progressBarText = '';
+        _textEditingController.clear();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context)!.pullModelDialogTitle,
+        AppLocalizations.of(context).pullModelDialogTitle,
       ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -61,15 +82,15 @@ class _PullModelDialogState extends State<PullModelDialog> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context)!.pullModelDialogGuideText1,
+                  AppLocalizations.of(context).pullModelDialogGuideText,
                 ),
                 const SizedBox(width: 8.0),
                 TextField(
                   controller: _textEditingController,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!
+                    labelText: AppLocalizations.of(context)
                         .pullModelDialogModelNameLabel,
-                    hintText: AppLocalizations.of(context)!
+                    hintText: AppLocalizations.of(context)
                         .pullModelDialogModelNameHint,
                   ),
                 ),
@@ -86,7 +107,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
                 LinearProgressIndicator(
                   value: _progressValue,
                   minHeight: 20.0,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
               ],
             ),
@@ -98,35 +119,16 @@ class _PullModelDialogState extends State<PullModelDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             _isPulling
-                ? AppLocalizations.of(context)!
+                ? AppLocalizations.of(context)
                     .dialogContinueInBackgroundButtonShared
-                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+                : AppLocalizations.of(context).dialogCloseButtonShared,
           ),
         ),
         if (!_isPulling)
           TextButton(
-            onPressed: () async {
-              setState(() => _isPulling = true);
-
-              final stream = context
-                  .read<ModelProvider>()
-                  .pull(_textEditingController.text.toLowerCase());
-
-              await for (final response in stream) {
-                if (context.mounted) _updateProgress(response);
-              }
-
-              if (context.mounted) {
-                setState(() {
-                  _isPulling = false;
-                  _progressValue = 0.0;
-                  _progressBarText = '';
-                  _textEditingController.clear();
-                });
-              }
-            },
+            onPressed: () => _pullModel(),
             child: Text(
-              AppLocalizations.of(context)!.dialogStartButtonShared,
+              AppLocalizations.of(context).dialogStartButtonShared,
             ),
           ),
       ],

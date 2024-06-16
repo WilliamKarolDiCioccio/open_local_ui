@@ -86,7 +86,7 @@ class TTSService {
 
   static Future stopServer() async {
     _process.kill();
-    
+
     await _channel.shutdown();
   }
 }

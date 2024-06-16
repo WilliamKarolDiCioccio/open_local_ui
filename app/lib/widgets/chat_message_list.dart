@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/widgets/chat_message.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,10 @@ class ChatMessageList extends StatefulWidget {
 
 class _ChatMessageListState extends State<ChatMessageList> {
   final ScrollController _scrollController = ScrollController();
-  bool _isScrollButtonVisible = false;
+  final OverlayPortalController _overlayPortalController =
+      OverlayPortalController();
+  final GlobalKey _expandedKey = GlobalKey();
+  bool _isUserScrolling = false;
 
   @override
   void initState() {
@@ -30,20 +35,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
     super.dispose();
   }
 
-  void _scrollListener() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent) {
-      setState(() {
-        _isScrollButtonVisible = false;
-      });
-    } else {
-      setState(() {
-        _isScrollButtonVisible = true;
-      });
-    }
-  }
-
-  void _scrollToBottom() {
+  void _scrollToBottomWithAnimation() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 300),
@@ -51,14 +43,54 @@ class _ChatMessageListState extends State<ChatMessageList> {
     );
   }
 
+  void _scrollToBottom() {
+    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  }
+
+  void _scrollListener() {
+    final atBottom = _scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent;
+
+    if (atBottom) {
+      setState(() {
+        SchedulerBinding.instance.addPostFrameCallback(
+          (_) => _overlayPortalController.hide(),
+        );
+
+        _isUserScrolling = false;
+      });
+    } else {
+      setState(() {
+        SchedulerBinding.instance.addPostFrameCallback(
+          (_) => _overlayPortalController.show(),
+        );
+
+        _isUserScrolling = true;
+      });
+    }
+  }
+
+  Offset _getExpandedOffset() {
+    final RenderBox renderBox =
+        _expandedKey.currentContext?.findRenderObject() as RenderBox;
+
+    return renderBox.localToGlobal(Offset.zero);
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!_isUserScrolling && _scrollController.hasClients) {
+      _scrollToBottom();
+    }
+
     return Column(
       children: [
         Expanded(
+          key: _expandedKey,
           child: ScrollConfiguration(
-            behavior:
-                ScrollConfiguration.of(context).copyWith(scrollbars: false),
+            behavior: ScrollConfiguration.of(context).copyWith(
+              scrollbars: false,
+            ),
             child: ListView.builder(
               controller: _scrollController,
               itemCount: context.watch<ChatProvider>().messageCount,
@@ -76,17 +108,25 @@ class _ChatMessageListState extends State<ChatMessageList> {
             ),
           ),
         ),
-        if (_isScrollButtonVisible)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(
-                UniconsLine.arrow_down,
-                size: 32.0,
+        OverlayPortal(
+          controller: _overlayPortalController,
+          overlayChildBuilder: (context) {
+            return Positioned(
+              left: _getExpandedOffset().dx,
+              bottom: _getExpandedOffset().dy + 24,
+              child: ElevatedButton.icon(
+                label: Text(
+                  AppLocalizations.of(context).scrollToBottomButton,
+                ),
+                icon: const Icon(
+                  UniconsLine.arrow_down,
+                  size: 32.0,
+                ),
+                onPressed: () => _scrollToBottomWithAnimation(),
               ),
-              onPressed: _scrollToBottom,
-            ),
-          ),
+            );
+          },
+        ),
       ],
     );
   }

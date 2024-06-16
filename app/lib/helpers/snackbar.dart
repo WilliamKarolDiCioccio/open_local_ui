@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:open_local_ui/scaffold_messenger_key.dart';
 
 enum SnackBarType {
@@ -8,25 +9,21 @@ enum SnackBarType {
   error,
 }
 
-class SnackBarHelper {
-  static void showSnackBar(String message, SnackBarType type) {
-    late Color backgroundColor;
-
+class SnackBarHelpers {
+  static Color _getColor(SnackBarType type) {
     switch (type) {
       case SnackBarType.success:
-        backgroundColor = Colors.green;
-        break;
+        return Colors.green;
       case SnackBarType.info:
-        backgroundColor = Colors.blue;
-        break;
+        return Colors.blue;
       case SnackBarType.warning:
-        backgroundColor = Colors.orange;
-        break;
+        return Colors.orange;
       case SnackBarType.error:
-        backgroundColor = Colors.red;
-        break;
+        return Colors.red;
     }
+  }
 
+  static void showSnackBar(String message, SnackBarType type) async {
     final snackBar = SnackBar(
       content: Text(
         message,
@@ -36,9 +33,14 @@ class SnackBarHelper {
           fontWeight: FontWeight.bold,
         ),
       ),
+      showCloseIcon: true,
       duration: const Duration(seconds: 3),
-      backgroundColor: backgroundColor,
+      backgroundColor: _getColor(type),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
       behavior: SnackBarBehavior.floating,
+      elevation: 8.0,
     );
 
     scaffoldMessengerKey.currentState?.showSnackBar(snackBar);

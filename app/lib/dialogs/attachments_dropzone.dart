@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
+import 'package:gap/gap.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/helpers/http.dart';
 import 'package:open_local_ui/utils/logger.dart';
@@ -162,7 +163,8 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowCompression: false,
-      allowedExtensions: ['png', 'jpeg', 'webp'],
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'webp'],
     );
 
     if (result != null) {
@@ -194,20 +196,19 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               size: 64.0,
             ),
             Text(
-              AppLocalizations.of(context)!.attachFilesDialogText,
+              AppLocalizations.of(context).attachFilesDialogDropFilesText,
               style: const TextStyle(fontSize: 24.0),
             ),
             Text(
-              AppLocalizations.of(context)!.attachFilesDialogAllowedFormatsText(
+              AppLocalizations.of(context).attachFilesDialogAllowedFormats(
                 'PNG, JPEG, WEBP',
               ),
               style: const TextStyle(fontSize: 14.0),
             ),
-            const SizedBox(height: 16.0),
+            const Gap(16.0),
             TextButton.icon(
               label: Text(
-                AppLocalizations.of(context)!
-                    .attachFilesDialogBrowseFilesButton,
+                AppLocalizations.of(context).attachFilesDialogBrowseFilesButton,
                 style: const TextStyle(fontSize: 16.0),
               ),
               icon: const Icon(UniconsLine.folder),
@@ -265,7 +266,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               Navigator.of(context).pop(_imageBytes);
             },
             child: Text(
-              AppLocalizations.of(context)!.dialogCancelButtonShared,
+              AppLocalizations.of(context).dialogCancelButtonShared,
             ),
           ),
         if (_imageStatus == ImageStatus.loaded)
@@ -277,7 +278,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               });
             },
             child: Text(
-              AppLocalizations.of(context)!.dialogRemoveButton,
+              AppLocalizations.of(context).dialogRemoveButton,
             ),
           ),
         if (_imageStatus == ImageStatus.loaded)
@@ -286,7 +287,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               Navigator.of(context).pop(_imageBytes);
             },
             child: Text(
-              AppLocalizations.of(context)!.dialogAttachButton,
+              AppLocalizations.of(context).dialogAttachButton,
             ),
           ),
       ],

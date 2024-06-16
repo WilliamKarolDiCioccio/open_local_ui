@@ -1,0 +1,285 @@
+{
+  "@@locale": "es",
+  "abortModelRemovalSnackBar": "Cancelar eliminación de modelo",
+  "abortSessionRemovalSnackBar": "Cancelar eliminación de sesión",
+  "aboutPageContributorsTitle": "Colaboradores",
+  "aboutPageCopyrightNotice": "© 2024 William Karol Di Cioccio",
+  "aboutPageDiscoverTitle": "Descubra más",
+  "aboutPagePoweredByTitle": "Desarrollado por",
+  "aboutPageSocialButtonContributeTooltip": "Contribuya",
+  "aboutPageSocialButtonJoinServerTooltip": "Unirse al servidor",
+  "aboutPageSocialButtonWatchTrailerTooltip": "Ver tráiler",
+  "aboutPageVisitProfileTooltip": "Visitar perfil",
+  "appTitle": "MyApp",
+  "attachFilesDialogAllowedFormats": "Formatos permitidos: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "Examinar archivos",
+  "attachFilesDialogDropFilesText": "Soltar archivos aquí",
+  "cancelButtonShared": "Cancelar",
+  "chatAttachFilesTooltip": "Adjuntar archivos",
+  "chatCancelEditButton": "Cancelar edición",
+  "chatCancelGenerationTooltip": "Cancelar generación",
+  "chatCopyMessageTooltip": "Copiar mensaje",
+  "chatDetachFilesTooltip": "Separar archivos",
+  "chatEditFieldHint": "Escribe un mensaje...",
+  "chatEditMessageTooltip": "Editar mensaje",
+  "chatInputFieldHint": "Escribe un mensaje...",
+  "chatReadAloudTooltip": "Leer en voz alta",
+  "chatRefreshSuggestions": "Actualizar sugerencias",
+  "chatRegenerateMessageTooltip": "Regenerar mensaje",
+  "chatResendMessageButton": "Reenviar mensaje",
+  "chatSendTooltip": "Enviar mensaje",
+  "chatSuggestionsPrompt": "¿Quieres algunas sugerencias?",
+  "chatSystemSender": "Sistema",
+  "chatTitleEditHint": "Escribe un título...",
+  "chatToolbarDocsSearchOption": "Búsqueda de documentos:",
+  "chatToolbarModelSelectorHint": "Seleccionar modelo",
+  "chatToolbarNewSessionButton": "Nueva sesión",
+  "chatToolbarWebSearchOption": "Búsqueda web:",
+  "chatUserSender": "Tú",
+  "chatWelcomeMessage": "¡Bienvenido!",
+  "closeButtonShared": "Cerrar",
+  "codeCopiedSnackBar": "Código copiado al portapapeles",
+  "createFolderDialogFolderNameHint": "Ingrese el nombre de la carpeta...",
+  "createFolderDialogFolderNameLabel": "Nombre de la carpeta",
+  "createFolderDialogGuideText1": "Ingrese el nombre de la carpeta a crear:",
+  "createFolderDialogGuideText2": "Opcionalmente, establezca un color de carpeta:",
+  "createFolderDialogTitle": "Crear carpeta",
+  "createModelDialogGuideText1": "Seleccione el modelo a utilizar:",
+  "createModelDialogGuideText2": "Ingrese el nombre del modelo a crear:",
+  "createModelDialogGuideText3": "Opcionalmente, escriba un archivo de modelo:",
+  "createModelDialogModelFileHint": "Ingrese el archivo de modelo...",
+  "createModelDialogModelFileLabel": "Archivo de modelo",
+  "createModelDialogModelNameHint": "Ingrese el nombre del modelo...",
+  "createModelDialogModelNameLabel": "Nombre del modelo",
+  "createModelDialogModelSelectorHint": "Seleccionar modelo",
+  "createModelDialogTitle": "Crear modelo",
+  "createdAtTextShared": "Creado en: {createdAt}",
+  "dashboardAboutButton": "Acerca de",
+  "dashboardChatButton": "Chat",
+  "dashboardHomeButton": "Inicio",
+  "dashboardModelsButton": "Modelos",
+  "dashboardSessionsButton": "Sesiones",
+  "dashboardSettingsButton": "Configuración",
+  "dialogAttachButton": "Adjuntar",
+  "dialogCancelButtonShared": "Cancelar",
+  "dialogCloseButtonShared": "Cerrar",
+  "dialogConfirmButtonShared": "Confirmar",
+  "dialogContinueInBackgroundButtonShared": "Continuar en segundo plano",
+  "dialogCreateButtonShared": "Crear",
+  "dialogRemoveButton": "Eliminar",
+  "dialogStartButtonShared": "Iniciar",
+  "failedToCreateFolderSnackBar": "Error al crear la carpeta",
+  "failedToCreateModelSnackBar": "Error al crear el modelo",
+  "failedToPullModelSnackBar": "Error al extraer el modelo",
+  "failedToPushModelSnackBar": "Error al enviar el modelo",
+  "failedToShareSessionSnackBar": "Error al compartir la sesión",
+  "feedbackButton": "Comentarios",
+  "folderCreatedSnackBar": "Carpeta creada",
+  "importModelDialogTitle": "Importar modelo",
+  "licenseButton": "Licencia",
+  "listFiltersSortByLabel": "Ordenar por",
+  "listFiltersSortOrderLabel": "En order",
+  "markdownCopyTooltip": "Copiar markdown",
+  "markdownLanguageLabel": "Idioma: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "Mensaje copiado al portapapeles",
+  "modelDetailsDigestText": "Resumen: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "Familia: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "Formato: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "Parámetros: {parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "Cuantización: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsSizeText": "Tamaño: {size} GB",
+  "@modelDetailsSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsTitle": "Detalles de {modelName}",
+  "@modelDetailsTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelIsGeneratingSnackBar": "El modelo se está generando",
+  "modelsPageCreateButton": "Crear",
+  "modelsPageDeleteButton": "Eliminar modelo",
+  "modelsPageDeleteDialogText": "Esto eliminará {modelName}. ¿Confirmas?",
+  "@modelsPageDeleteDialogText": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsPageDeleteDialogTitle": "Eliminar modelo",
+  "modelsPageImportButton": "Importar",
+  "modelsPagePullButton": "Extraer",
+  "modelsPagePushButton": "Enviar",
+  "modelsPageRefreshButton": "Actualizar",
+  "modelsPageTitle": "Administración de modelos",
+  "modelsPageUseButton": "Usar modelo",
+  "modifiedAtTextShared": "Modificado en: {modifiedAt}",
+  "moreOptionsButton": "Más opciones",
+  "noModelsAvailableSnackBar": "No hay modelos disponibles",
+  "noNeedToCreateSessionSnackBar": "No es necesario crear una nueva sesión",
+  "nothingToSynthesizeSnackBar": "Nada que sintetizar",
+  "offlineWarningTextShared": "Estás desconectado",
+  "ollamaDisabledGPUWarningSnackBar": "Deshabilitar la GPU es perjudicial para el rendimiento",
+  "privacyButton": "Privacidad",
+  "progressBarStatusWithStepsText": "Estado: {status} - Paso {completedSteps} de {totalSteps}",
+  "@progressBarStatusWithStepsText": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "totalSteps": {
+        "type": "int"
+      },
+      "completedSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "progressBarStatusWithTimeText": "Estado: {status} - Tiempo restante: {hours}:{minutes}:{seconds}",
+  "@progressBarStatusWithTimeText": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "pullModelDialogGuideText": "Escriba el nombre del modelo que se va a extraer:",
+  "pullModelDialogModelNameHint": "Escriba el nombre del modelo...",
+  "pullModelDialogModelNameLabel": "Nombre del modelo",
+  "pullModelDialogTitle": "Extraer modelo",
+  "pushModelDialogGuideText": "Seleccione el modelo que se va a insertar:",
+  "pushModelDialogModelSelectorHint": "Seleccionar modelo",
+  "pushModelDialogTitle": "Insertar modelo",
+  "redoButtonShared": "Rehacer",
+  "saveButtonShared": "Guardar",
+  "scrollToBottomButton": "Desplazarse hasta el final",
+  "sessionSharedSnackBar": "Sesión compartida",
+  "sessionsPageCreateFolderButton": "Crear carpeta",
+  "sessionsPageClearSessionsButton": "Borrar sesiones",
+  "sessionsPageDeleteButton": "Eliminar sesión",
+  "sessionsPageDeleteDialogText": "Esto eliminará {sessionName}. ¿Confirmas?",
+  "@sessionsPageDeleteDialogText": {
+    "placeholders": {
+      "sessionName": {
+        "type": "String"
+      }
+    }
+  },
+  "sessionsPageDeleteDialogTitle": "Eliminar sesión",
+  "sessionsPageEditTitleButton": "Editar título",
+  "sessionsPageEnterButton": "Ingresar a sesión",
+  "sessionsPageShareButton": "Compartir sesión",
+  "sessionsPageTitle": "Administración de sesiones",
+  "settingsLanguageEnglish": "Inglés",
+  "settingsLanguageFrench": "Francés",
+  "settingsLanguageGerman": "Deutsch",
+  "settingsLanguageItalian": "Italiano",
+  "settingsLanguageSpanish": "Español",
+  "settingsPageAccessibilityLabel": "Accesibilidad",
+  "settingsPageOllamaKeepAliveTimeLabel": "Establecer tiempo de conexión",
+  "settingsPageOllamaLabel": "Ollama",
+  "settingsPageOllamaTemperatureLabel": "Establecer temperatura",
+  "settingsPageOllamaUseGPULabel": "Usar GPU",
+  "settingsPageThemeLabel": "Tema",
+  "settingsPageTitle": "Configuración",
+  "settingsThemeModeDark": "Oscuro",
+  "settingsThemeModeLight": "Claro",
+  "settingsThemeModeSystem": "Sistema",
+  "somethingWentWrongSnackBar": "Algo salió mal",
+  "sortByDateOption": "Fecha",
+  "sortByNameOption": "Nombre",
+  "sortBySizeOption": "Tamaño",
+  "sortOrderAscendingOption": "Ascendente",
+  "sortOrderDescendingOption": "Descendente",
+  "suggestionAddressConflictsInRelationshipsPartOne": "Abordar conflictos en las relaciones",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "utilizar una comunicación eficaz",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "¿Cuáles son algunos casos de uso comunes",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "para las habilidades de resolución de problemas?",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "Describir el proceso",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "de toma de decisiones en situaciones complejas",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "Analice las ventajas y desventajas del trabajo remoto",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "para empleados y empleadores",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "Distinguir entre enseñanza y tutoría",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "y sus beneficios",
+  "suggestionEvaluateTeamPerformancePartOne": "Evaluar el rendimiento de un equipo",
+  "suggestionEvaluateTeamPerformancePartTwo": "utilizando métricas de trabajo en equipo",
+  "suggestionExplainEmpathySignificancePartOne": "Explicar la importancia de la empatía",
+  "suggestionExplainEmpathySignificancePartTwo": "en la construcción de conexiones sólidas",
+  "suggestionExplainLearningFromExperiencePartOne": "Explicar el concepto de aprender de la experiencia",
+  "suggestionExplainLearningFromExperiencePartTwo": "utilizando situaciones cotidianas",
+  "suggestionHandleDailyStressPartOne": "Manejar el estrés en la vida diaria",
+  "suggestionHandleDailyStressPartTwo": "con estrategias de afrontamiento efectivas",
+  "suggestionImportanceOfCommunicationPartOne": "Comprender la importancia de la comunicación",
+  "suggestionImportanceOfCommunicationPartTwo": "en la vida personal y profesional",
+  "suggestionPersonalGrowthChallengesPartOne": "Enumera algunos desafíos",
+  "suggestionPersonalGrowthChallengesPartTwo": "en el crecimiento personal",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "Planifica una fiesta de cumpleaños",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "para tu mejor amigo con un elemento sorpresa",
+  "undoButtonShared": "Deshacer"
+}

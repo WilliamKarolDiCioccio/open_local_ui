@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/chat_message.dart';
 import 'package:open_local_ui/providers/chat.dart';
@@ -38,16 +39,16 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   void _copyMessage() {
     Clipboard.setData(ClipboardData(text: widget.message.text));
 
-    SnackBarHelper.showSnackBar(
-      AppLocalizations.of(context)!.messageCopiedSnackbarText,
+    SnackBarHelpers.showSnackBar(
+      AppLocalizations.of(context).messageCopiedSnackBar,
       SnackBarType.success,
     );
   }
 
   void _regenerateMessage() {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -63,18 +64,47 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     _textEditingController.text = widget.message.text;
   }
 
+  void _sendEditedText() {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        SnackBarType.error,
+      );
+    } else {
+      if (_textEditingController.text.isEmpty) return;
+
+      final userMessage = widget.message as ChatUserMessageWrapper;
+
+      context.read<ChatProvider>().sendEditedMessage(
+            userMessage.uuid,
+            _textEditingController.text,
+            userMessage.imageBytes,
+          );
+
+      _cancelEditingMessage();
+    }
+  }
+
+  void _cancelEditingMessage() {
+    setState(() {
+      _showEditWidget = false;
+    });
+
+    _textEditingController.clear();
+  }
+
   void _showTTSPlayer() {
     final isLastMessage =
         context.read<ChatProvider>().lastMessage!.uuid == widget.message.uuid;
 
     if (context.read<ChatProvider>().isGenerating && isLastMessage) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackBarType.error,
       );
     } else if (widget.message.text.isEmpty) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.nothingToSynthesizeSnackbarText,
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).nothingToSynthesizeSnackBar,
         SnackBarType.error,
       );
     } else {
@@ -90,56 +120,31 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     });
   }
 
-  void _sendEditedMessage() {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
-        SnackBarType.error,
-      );
-    } else {
-      final userMessage = widget.message as ChatUserMessageWrapper;
-
-      context.read<ChatProvider>().sendEditedMessage(
-            userMessage.uuid,
-            _textEditingController.text,
-            userMessage.imageBytes,
-          );
-
-      setState(() {
-        _showEditWidget = false;
-      });
-
-      _textEditingController.clear();
-    }
-  }
-
-  void _cancelEditingMessage() {
-    if (!mounted) return;
-
-    setState(() {
-      _showEditWidget = false;
-    });
-
-    _textEditingController.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
-    String senderName;
-    IconData senderIconData;
+    late String senderName;
+    late IconData senderIconData;
+
+    final chatProvider = context.watch<ChatProvider>();
 
     switch (widget.message.sender) {
       case ChatMessageSender.user:
         senderIconData = UniconsLine.user;
-        senderName = AppLocalizations.of(context)!.chatMessageSenderUser;
+        senderName = AppLocalizations.of(context).chatUserSender;
         break;
       case ChatMessageSender.model:
         senderIconData = UniconsLine.robot;
-        senderName = widget.message.senderName!;
+
+        if (widget.message.senderName!.length > 20) {
+          senderName = '${widget.message.senderName!.substring(0, 20)}...';
+        } else {
+          senderName = widget.message.senderName!;
+        }
+
         break;
       case ChatMessageSender.system:
         senderIconData = UniconsLine.eye;
-        senderName = AppLocalizations.of(context)!.chatMessageSenderSystem;
+        senderName = AppLocalizations.of(context).chatSystemSender;
         break;
     }
 
@@ -172,7 +177,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               ),
               const Gap(8),
               Text(
-                widget.message.createdAt,
+                DateTimeHelpers.formattedDateTime(widget.message.createdAt),
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w100,
@@ -202,38 +207,41 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               const SizedBox(height: 8.0),
           if (!_showEditWidget)
             MessageMarkdownWidget(
-              widget.message.text,
+              widget.message.text +
+                  (chatProvider.isChatShowStatistics
+                      ? _buildStatisticsSummary(widget.message)
+                      : ''),
             ),
           const Gap(8.0),
-          if (!_showEditWidget && !_showPlayerWidget)
+          if (!_showEditWidget &&
+              !_showPlayerWidget &&
+              !context.watch<ChatProvider>().isGenerating)
             Row(
               children: [
                 IconButton(
-                  tooltip: AppLocalizations.of(context)!
-                      .chatMessageCopyButtonTooltip,
+                  tooltip: AppLocalizations.of(context).markdownCopyTooltip,
                   onPressed: () => _copyMessage(),
                   icon: const Icon(UniconsLine.copy),
                 ),
                 const Gap(8),
                 IconButton(
-                  tooltip:
-                      AppLocalizations.of(context)!.chatMessageTTSButtonTooltip,
+                  tooltip: AppLocalizations.of(context).chatReadAloudTooltip,
                   onPressed: () => _showTTSPlayer(),
                   icon: const Icon(Icons.hearing),
                 ),
                 const Gap(8),
                 if (widget.message.sender == ChatMessageSender.model)
                   IconButton(
-                    tooltip: AppLocalizations.of(context)!
-                        .chatMessageRegenerateButtonTooltip,
+                    tooltip: AppLocalizations.of(context)
+                        .chatRegenerateMessageTooltip,
                     onPressed: () => _regenerateMessage(),
                     icon: const Icon(UniconsLine.repeat),
                   ),
                 const Gap(8),
                 if (widget.message.sender == ChatMessageSender.user)
                   IconButton(
-                    tooltip: AppLocalizations.of(context)!
-                        .chatMessageEditButtonTooltip,
+                    tooltip:
+                        AppLocalizations.of(context).chatEditMessageTooltip,
                     onPressed: () => _beginEditingMessage(),
                     icon: const Icon(UniconsLine.edit),
                   ),
@@ -245,9 +253,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 TextField(
                   controller: _textEditingController,
                   decoration: InputDecoration(
-                    hintText:
-                        AppLocalizations.of(context)!.chatMessageEditFieldHint,
-                    border: InputBorder.none,
+                    hintText: AppLocalizations.of(context).chatEditFieldHint,
                     counterText: '',
                   ),
                   style: const TextStyle(
@@ -261,22 +267,25 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   expands: false,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 ),
+                const Gap(16),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     TextButton.icon(
-                      label: Text(AppLocalizations.of(context)!
-                          .chatMessageCancelEditButton),
+                      label: Text(
+                        AppLocalizations.of(context).chatCancelEditButton,
+                      ),
                       icon: const Icon(UniconsLine.times),
                       onPressed: () => _cancelEditingMessage(),
                     ),
+                    const Gap(8),
                     TextButton.icon(
                       label: Text(
-                        AppLocalizations.of(context)!.chatMessageResendButton,
+                        AppLocalizations.of(context).chatResendMessageButton,
                       ),
                       icon: const Icon(UniconsLine.message),
-                      onPressed: () => _sendEditedMessage(),
+                      onPressed: () => _sendEditedText(),
                     ),
                   ],
                 ),
@@ -291,5 +300,21 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         ],
       ),
     );
+  }
+
+  String _buildStatisticsSummary(ChatMessageWrapper message) {
+    if (message.totalTokens == 0) {
+      return '';
+    }
+
+    final token = message.totalTokens;
+    final durationMs = message.totalDuration / 1000 ~/ 1000;
+    final tps = (token / (durationMs / 1000)).toStringAsFixed(2);
+
+    return '''
+
+
+**Token:** $token   **Duration:** $durationMs ms   **Speed:** $tps t/s
+ ''';
   }
 }

@@ -55,7 +55,7 @@ class GitHubRESTHelpers {
       logger.e(
         'Failed to list Contributors. Status code: ${response.statusCode}',
       );
-      
+
       return [];
     }
 

@@ -63,7 +63,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
 
   Widget _buildOptionsOverlay() {
     return Positioned(
-      top: _getButtonOffset().dy - 156,
+      top: _getButtonOffset().dy - 128,
       left: _getButtonOffset().dx,
       child: Container(
         decoration: BoxDecoration(
@@ -88,14 +88,10 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               FeedbackButton(),
               Gap(8),
               LicenseButton(),
-              Gap(8),
-              PrivacyButton(),
             ],
           ),
         ),
-      )
-          .animate()
-          .fadeIn(
+      ).animate().fadeIn(
             duration: 200.ms,
           ),
     );
@@ -133,7 +129,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.dashboardChatBtn,
+                  AppLocalizations.of(context).dashboardChatButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.comment),
@@ -141,7 +137,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.dashboardSessionsBtn,
+                  AppLocalizations.of(context).dashboardSessionsButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.archive),
@@ -149,10 +145,10 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.dashboardModelsBtn,
+                  AppLocalizations.of(context).dashboardModelsButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
-                icon: const Icon(UniconsLine.cube),
+                icon: const Icon(UniconsLine.robot),
                 onPressed: () => _changePage(2),
               ),
               const SizedBox(
@@ -161,7 +157,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.dashboardSettingsBtn,
+                  AppLocalizations.of(context).dashboardSettingsButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.setting),
@@ -169,7 +165,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.dashboardAboutBtn,
+                  AppLocalizations.of(context).dashboardAboutButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.info_circle),
@@ -191,7 +187,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                       ),
                       const Gap(8),
                       Text(
-                        AppLocalizations.of(context)!.moreOptionsButton,
+                        AppLocalizations.of(context).moreOptionsButton,
                         style: TextStyle(
                           color: AdaptiveTheme.of(context).mode.isDark
                               ? Colors.grey[300]
@@ -244,7 +240,7 @@ class FeedbackButton extends StatelessWidget {
         );
       },
       icon: const Icon(UniconsLine.feedback),
-      label: Text(AppLocalizations.of(context)!.feedbackButton),
+      label: Text(AppLocalizations.of(context).feedbackButton),
     );
   }
 }
@@ -256,25 +252,10 @@ class LicenseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton.icon(
       onPressed: () {
-        // TODO: Add license page
+        showLicensePage(context: context);
       },
       icon: const Icon(UniconsLine.keyhole_circle),
-      label: Text(AppLocalizations.of(context)!.licenseButton),
-    );
-  }
-}
-
-class PrivacyButton extends StatelessWidget {
-  const PrivacyButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: () {
-        // TODO: Add privacy page
-      },
-      icon: const Icon(UniconsLine.shield),
-      label: Text(AppLocalizations.of(context)!.privacyButton),
+      label: Text(AppLocalizations.of(context).licenseButton),
     );
   }
 }

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
-
+import 'package:gap/gap.dart';
 import 'package:open_local_ui/models/ollama_responses.dart';
 import 'package:open_local_ui/providers/model.dart';
+import 'package:provider/provider.dart';
 
 class CreateModelDialog extends StatefulWidget {
   const CreateModelDialog({super.key});
@@ -19,24 +19,24 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   final TextEditingController _fileEditingController = TextEditingController();
   final TextEditingController _modelSelectionController =
       TextEditingController();
+  final List<DropdownMenuEntry> _modelsMenuEntries = [];
   bool _isCreating = false;
   int _stepsCount = 0;
   double _progressValue = 0.0;
   String _progressBarText = '';
 
-  void _updateProgress(OllamaCreateResponse response) {
-    setState(() {
-      _stepsCount += 1;
+  @override
+  void initState() {
+    super.initState();
 
-      _progressValue += _stepsCount / 11;
+    for (final model in context.read<ModelProvider>().models) {
+      final shortName = model.name.length > 20
+          ? '${model.name.substring(0, 20)}...'
+          : model.name;
 
-      _progressBarText =
-          AppLocalizations.of(context)!.progressBarStatusTextWithStepsShared(
-        response.status,
-        11,
-        _stepsCount,
-      );
-    });
+      _modelsMenuEntries
+          .add(DropdownMenuEntry(value: model.name, label: shortName));
+    }
   }
 
   @override
@@ -47,22 +47,61 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final List<DropdownMenuEntry> modelsMenuEntries = [];
+  void _updateProgress(OllamaCreateResponse response) {
+    setState(() {
+      _stepsCount += 1;
 
-    for (final model in context.read<ModelProvider>().models) {
-      final shortName = model.name.length > 20
-          ? '${model.name.substring(0, 20)}...'
-          : model.name;
+      _progressValue += _stepsCount / 11;
 
-      modelsMenuEntries
-          .add(DropdownMenuEntry(value: model.name, label: shortName));
+      _progressBarText =
+          AppLocalizations.of(context).progressBarStatusWithStepsText(
+        response.status,
+        11,
+        _stepsCount,
+      );
+    });
+  }
+
+  void _createModel() async {
+    setState(() => _isCreating = true);
+
+    final splitIndex = _modelSelectionController.text.indexOf(':');
+    String modelBaseName;
+
+    if (splitIndex != -1) {
+      modelBaseName = _modelSelectionController.text.substring(
+        0,
+        splitIndex,
+      );
+    } else {
+      modelBaseName = _modelSelectionController.text;
     }
 
+    final stream = context.read<ModelProvider>().create(
+          _nameEditingController.text.toLowerCase(),
+          "FROM $modelBaseName\nSYSTEM ${_fileEditingController.text}",
+        );
+
+    await for (final data in stream) {
+      if (context.mounted) _updateProgress(data);
+    }
+
+    if (context.mounted) {
+      setState(() {
+        _isCreating = false;
+        _progressValue = 0.0;
+        _progressBarText = '';
+        _nameEditingController.clear();
+        _fileEditingController.clear();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context)!.createModelDialogTitle,
+        AppLocalizations.of(context).createModelDialogTitle,
       ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -73,9 +112,21 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context)!.createModelDialogGuideText1,
+                  AppLocalizations.of(context).createModelDialogGuideText1,
                 ),
+                const Gap(8.0),
                 DropdownMenu(
+                  menuHeight: 128,
+                  menuStyle: MenuStyle(
+                    elevation: WidgetStateProperty.all(
+                      8.0,
+                    ),
+                    shape: WidgetStateProperty.all(
+                      const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      ),
+                    ),
+                  ),
                   controller: _modelSelectionController,
                   inputDecorationTheme: const InputDecorationTheme(
                     border: OutlineInputBorder(
@@ -85,36 +136,38 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                   ),
                   enableFilter: true,
                   enableSearch: true,
-                  hintText: AppLocalizations.of(context)!
+                  hintText: AppLocalizations.of(context)
                       .createModelDialogModelSelectorHint,
-                  dropdownMenuEntries: modelsMenuEntries,
+                  dropdownMenuEntries: _modelsMenuEntries,
                   onSelected: null,
                 ),
                 const SizedBox(height: 16.0),
                 Text(
-                  AppLocalizations.of(context)!.createModelDialogGuideText2,
+                  AppLocalizations.of(context).createModelDialogGuideText2,
                 ),
+                const Gap(8.0),
                 TextField(
                   controller: _nameEditingController,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!
+                    labelText: AppLocalizations.of(context)
                         .createModelDialogModelNameLabel,
-                    hintText: AppLocalizations.of(context)!
+                    hintText: AppLocalizations.of(context)
                         .createModelDialogModelNameHint,
                   ),
                   maxLength: 32,
                   maxLines: 1,
                 ),
-                const SizedBox(height: 16.0),
+                const Gap(16.0),
                 Text(
-                  AppLocalizations.of(context)!.createModelDialogGuideText3,
+                  AppLocalizations.of(context).createModelDialogGuideText3,
                 ),
+                const Gap(8.0),
                 TextField(
                   controller: _fileEditingController,
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!
+                    labelText: AppLocalizations.of(context)
                         .createModelDialogModelFileLabel,
-                    hintText: AppLocalizations.of(context)!
+                    hintText: AppLocalizations.of(context)
                         .createModelDialogModelFileHint,
                   ),
                   maxLength: 4096,
@@ -134,7 +187,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                 LinearProgressIndicator(
                   value: _progressValue,
                   minHeight: 20.0,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
               ],
             ),
@@ -146,49 +199,16 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             _isCreating
-                ? AppLocalizations.of(context)!
+                ? AppLocalizations.of(context)
                     .dialogContinueInBackgroundButtonShared
-                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+                : AppLocalizations.of(context).dialogCloseButtonShared,
           ),
         ),
         if (!_isCreating)
           TextButton(
-            onPressed: () async {
-              setState(() => _isCreating = true);
-
-              final splitIndex = _modelSelectionController.text.indexOf(':');
-              String modelBaseName;
-
-              if (splitIndex != -1) {
-                modelBaseName = _modelSelectionController.text.substring(
-                  0,
-                  splitIndex,
-                );
-              } else {
-                modelBaseName = _modelSelectionController.text;
-              }
-
-              final stream = context.read<ModelProvider>().create(
-                    _nameEditingController.text.toLowerCase(),
-                    "FROM $modelBaseName\nSYSTEM ${_fileEditingController.text}",
-                  );
-
-              await for (final data in stream) {
-                if (context.mounted) _updateProgress(data);
-              }
-
-              if (context.mounted) {
-                setState(() {
-                  _isCreating = false;
-                  _progressValue = 0.0;
-                  _progressBarText = '';
-                  _nameEditingController.clear();
-                  _fileEditingController.clear();
-                });
-              }
-            },
+            onPressed: () => _createModel(),
             child: Text(
-              AppLocalizations.of(context)!.dialogCreateButtonShared,
+              AppLocalizations.of(context).dialogCreateButtonShared,
             ),
           ),
       ],

@@ -5,9 +5,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/dialogs/confirmation.dart';
 import 'package:open_local_ui/dialogs/create_model.dart';
+import 'package:open_local_ui/dialogs/import_model.dart';
 import 'package:open_local_ui/dialogs/model_details.dart';
 import 'package:open_local_ui/dialogs/pull_model.dart';
 import 'package:open_local_ui/dialogs/push_model.dart';
+import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/layout/page_base.dart';
@@ -15,6 +17,7 @@ import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 
 enum SortBy {
@@ -38,8 +41,8 @@ class ModelsPage extends StatefulWidget {
 }
 
 class _ModelsPageState extends State<ModelsPage> {
-  Set<SortBy> _sortBy = {SortBy.name};
-  Set<SortOrder> _sortOrder = {SortOrder.ascending};
+  late Set<SortBy> _sortBy;
+  late Set<SortOrder> _sortOrder;
 
   final prototypeModel = Model(
     name: '',
@@ -59,82 +62,23 @@ class _ModelsPageState extends State<ModelsPage> {
   void initState() {
     super.initState();
 
-    context.read<ModelProvider>().updateList();
-  }
+    _sortBy = {SortBy.name};
+    _sortOrder = {SortOrder.ascending};
 
-  void _deleteModel(String name) {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
-        SnackBarType.error,
-      );
-    } else {
-      context.read<ModelProvider>().remove(name);
-    }
-  }
+    SharedPreferences.getInstance().then((prefs) {
+      final sortBy = prefs.getInt('modelsSortBy') ?? 0;
+      final sortOrder = prefs.getBool('modelsSortOrder') ?? false;
 
-  void _setModel(Model model) {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
-        SnackBarType.error,
-      );
-    } else {
-      if (!context.read<ChatProvider>().isSessionSelected) {
-        final session = context.read<ChatProvider>().addSession('');
-        context.read<ChatProvider>().setSession(session.uuid);
-      }
-
-      context.read<ChatProvider>().setModel(model.name);
-      widget.pageController.jumpToPage(PageIndex.chat.index);
-    }
-  }
-
-  Widget _buildModelListTile(Model model, BuildContext context) {
-    return ListTile(
-      title: Text(model.name),
-      subtitle: Text(
-        AppLocalizations.of(context)!.modelDetailsDialogModifiedAtText(
-          model.modifiedAt.toString(),
-        ),
-      ),
-      trailing: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            tooltip: AppLocalizations.of(context)!.modelsPageUseButton,
-            icon: const Icon(UniconsLine.enter),
-            onPressed: () => _setModel(model),
-          ),
-          IconButton(
-            tooltip: AppLocalizations.of(context)!.modelsPageDeleteButton,
-            icon: const Icon(
-              UniconsLine.trash,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              showConfirmationDialog(
-                context: context,
-                title:
-                    AppLocalizations.of(context)!.modelsPageDeleteDialogTitle,
-                content: AppLocalizations.of(context)!
-                    .modelsPageDeleteDialogText(model.name),
-                onConfirm: () => _deleteModel(model.name),
-              );
-            },
-          ),
-        ],
-      ),
-      onTap: () {
-        showModelDetailsDialog(model, context);
-      },
-    );
+      setState(() {
+        _sortBy = {SortBy.values[sortBy]};
+        _sortOrder = {sortOrder ? SortOrder.descending : SortOrder.ascending};
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var sortedModels = context.read<ModelProvider>().models;
+    var sortedModels = context.watch<ModelProvider>().models;
 
     sortedModels.sort(
       (a, b) {
@@ -161,7 +105,7 @@ class _ModelsPageState extends State<ModelsPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.modelsPageTitle,
+            AppLocalizations.of(context).modelsPageTitle,
             style: const TextStyle(
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
@@ -173,7 +117,7 @@ class _ModelsPageState extends State<ModelsPage> {
             children: [
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPagePullButton,
+                  AppLocalizations.of(context).modelsPagePullButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.download_alt),
@@ -181,7 +125,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPagePushButton,
+                  AppLocalizations.of(context).modelsPagePushButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.upload_alt),
@@ -189,7 +133,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPageCreateButton,
+                  AppLocalizations.of(context).modelsPageCreateButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.create_dashboard),
@@ -197,7 +141,15 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.modelsPageRefreshButton,
+                  AppLocalizations.of(context).modelsPageImportButton,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                icon: const Icon(UniconsLine.import),
+                onPressed: () => showImportModelDialog(context),
+              ),
+              TextButton.icon(
+                label: Text(
+                  AppLocalizations.of(context).modelsPageRefreshButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.sync),
@@ -213,7 +165,7 @@ class _ModelsPageState extends State<ModelsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(AppLocalizations.of(context)!.listFiltersSortByControlLabel),
+              Text(AppLocalizations.of(context).listFiltersSortByLabel),
               const Gap(16),
               SegmentedButton<SortBy>(
                 selectedIcon: const Icon(UniconsLine.check),
@@ -221,35 +173,40 @@ class _ModelsPageState extends State<ModelsPage> {
                   ButtonSegment(
                     value: SortBy.name,
                     label: Text(
-                      AppLocalizations.of(context)!.sortByNameOptionsLabel,
+                      AppLocalizations.of(context).sortByNameOption,
                     ),
                     icon: const Icon(UniconsLine.tag),
                   ),
                   ButtonSegment(
                     value: SortBy.date,
                     label: Text(
-                      AppLocalizations.of(context)!.sortByDateOptionsLabel,
+                      AppLocalizations.of(context).sortByDateOption,
                     ),
                     icon: const Icon(UniconsLine.clock),
                   ),
                   ButtonSegment(
                     value: SortBy.size,
                     label: Text(
-                      AppLocalizations.of(context)!.sortBySizeOptionsLabel,
+                      AppLocalizations.of(context).sortBySizeOption,
                     ),
                     icon: const Icon(UniconsLine.database),
                   ),
                 ],
                 selected: _sortBy,
-                onSelectionChanged: (value) => {
+                onSelectionChanged: (value) async {
+                  final prefs = await SharedPreferences.getInstance();
+
+                  await prefs.setInt('modelsSortBy', value.first.index);
+
                   setState(() {
                     _sortBy = value;
-                  })
+                  });
                 },
               ),
               const Gap(16),
-              Text(AppLocalizations.of(context)!
-                  .listFiltersSortOrderControlLabel),
+              Text(
+                AppLocalizations.of(context).listFiltersSortOrderLabel,
+              ),
               const Gap(16),
               SegmentedButton<SortOrder>(
                 selectedIcon: const Icon(UniconsLine.check),
@@ -257,25 +214,31 @@ class _ModelsPageState extends State<ModelsPage> {
                   ButtonSegment(
                     value: SortOrder.ascending,
                     label: Text(
-                      AppLocalizations.of(context)!
-                          .sortOrderAscendingOptionsLabel,
+                      AppLocalizations.of(context).sortOrderAscendingOption,
                     ),
                     icon: const Icon(UniconsLine.arrow_up),
                   ),
                   ButtonSegment(
                     value: SortOrder.descending,
                     label: Text(
-                      AppLocalizations.of(context)!
-                          .sortOrderDescendingOptionsLabel,
+                      AppLocalizations.of(context).sortOrderDescendingOption,
                     ),
                     icon: const Icon(UniconsLine.arrow_down),
                   ),
                 ],
                 selected: _sortOrder,
-                onSelectionChanged: (value) => {
+                onSelectionChanged: (value) async {
+                  final prefs = await SharedPreferences.getInstance();
+
+                  if (value.contains(SortOrder.descending)) {
+                    await prefs.setBool('modelsSortOrder', true);
+                  } else {
+                    await prefs.setBool('modelsSortOrder', false);
+                  }
+
                   setState(() {
                     _sortOrder = value;
-                  })
+                  });
                 },
               ),
             ],
@@ -283,12 +246,15 @@ class _ModelsPageState extends State<ModelsPage> {
           const Gap(16),
           Expanded(
             child: ListView.builder(
-              prototypeItem: _buildModelListTile(prototypeModel, context),
-              itemCount: context.read<ModelProvider>().modelsCount,
+              prototypeItem: ModelListTile(
+                model: prototypeModel,
+                pageController: widget.pageController,
+              ),
+              itemCount: context.watch<ModelProvider>().modelsCount,
               itemBuilder: (context, index) {
-                return _buildModelListTile(
-                  sortedModels[index],
-                  context,
+                return ModelListTile(
+                  model: sortedModels[index],
+                  pageController: widget.pageController,
                 )
                     .animate(delay: (index * 100).ms)
                     .fadeIn(duration: 900.ms, delay: 300.ms)
@@ -301,6 +267,95 @@ class _ModelsPageState extends State<ModelsPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ModelListTile extends StatefulWidget {
+  final Model model;
+  final PageController pageController;
+
+  const ModelListTile({
+    super.key,
+    required this.model,
+    required this.pageController,
+  });
+
+  @override
+  State<ModelListTile> createState() => _ModelListTileState();
+}
+
+class _ModelListTileState extends State<ModelListTile> {
+  void _setModel(Model model) async {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        SnackBarType.error,
+      );
+    } else {
+      if (!context.read<ChatProvider>().isSessionSelected) {
+        final session = context.read<ChatProvider>().addSession('');
+        context.read<ChatProvider>().setSession(session.uuid);
+      }
+
+      context.read<ChatProvider>().setModel(model.name);
+      widget.pageController.jumpToPage(PageIndex.chat.index);
+    }
+  }
+
+  void _deleteModel() async {
+    if (context.read<ChatProvider>().modelName == widget.model.name) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        SnackBarType.error,
+      );
+    } else {
+      context.read<ModelProvider>().remove(widget.model.name);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(widget.model.name),
+      subtitle: Text(
+        AppLocalizations.of(context).modifiedAtTextShared(
+          DateTimeHelpers.formattedDateTime(widget.model.modifiedAt),
+        ),
+      ),
+      trailing: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            tooltip: AppLocalizations.of(context).modelsPageUseButton,
+            icon: const Icon(UniconsLine.enter),
+            onPressed: () => _setModel(widget.model),
+          ),
+          const Gap(8),
+          IconButton(
+            tooltip: AppLocalizations.of(context).modelsPageDeleteButton,
+            icon: const Icon(
+              UniconsLine.trash,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              showConfirmationDialog(
+                context: context,
+                title: AppLocalizations.of(context).modelsPageDeleteDialogTitle,
+                content:
+                    AppLocalizations.of(context).modelsPageDeleteDialogText(
+                  widget.model.name,
+                ),
+                onConfirm: () => _deleteModel(),
+              );
+            },
+          ),
+        ],
+      ),
+      onTap: () {
+        showModelDetailsDialog(widget.model, context);
+      },
     );
   }
 }

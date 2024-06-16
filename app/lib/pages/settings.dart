@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:open_local_ui/helpers/snackbar.dart';
+import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:open_local_ui/providers/locale.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
-
-import 'package:open_local_ui/layout/page_base.dart';
-import 'package:open_local_ui/providers/locale.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Text(
-              AppLocalizations.of(context)!.settingsPageTitle,
+              AppLocalizations.of(context).settingsPageTitle,
               style: const TextStyle(
                 fontSize: 32.0,
                 fontWeight: FontWeight.bold,
@@ -71,14 +71,24 @@ class ThemeSettings extends StatelessWidget {
     }
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.settingsPageThemeLabel,
+          AppLocalizations.of(context).settingsPageThemeLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const SizedBox(height: 8.0),
+        const Gap(16.0),
         DropdownMenu(
+          menuHeight: 128,
+          menuStyle: MenuStyle(
+            elevation: WidgetStateProperty.all(
+              8.0,
+            ),
+            shape: WidgetStateProperty.all(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              ),
+            ),
+          ),
           leadingIcon: const Icon(UniconsLine.moon_eclipse),
           inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(
@@ -90,13 +100,13 @@ class ThemeSettings extends StatelessWidget {
           dropdownMenuEntries: [
             DropdownMenuEntry(
                 value: 'Light',
-                label: AppLocalizations.of(context)!.settingsThemeModeLight),
+                label: AppLocalizations.of(context).settingsThemeModeLight),
             DropdownMenuEntry(
                 value: 'Dark',
-                label: AppLocalizations.of(context)!.settingsThemeModeDark),
+                label: AppLocalizations.of(context).settingsThemeModeDark),
             DropdownMenuEntry(
                 value: 'System',
-                label: AppLocalizations.of(context)!.settingsThemeModeSystem),
+                label: AppLocalizations.of(context).settingsThemeModeSystem),
           ],
           onSelected: (value) {
             switch (value) {
@@ -123,14 +133,24 @@ class AccessibilitySettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.settingsPageAccessiblityLabel,
+          AppLocalizations.of(context).settingsPageAccessibilityLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const SizedBox(height: 8.0),
+        const Gap(16.0),
         DropdownMenu(
+          menuHeight: 256,
+          menuStyle: MenuStyle(
+            elevation: WidgetStateProperty.all(
+              8.0,
+            ),
+            shape: WidgetStateProperty.all(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              ),
+            ),
+          ),
           leadingIcon: const Icon(UniconsLine.language),
           inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(
@@ -145,19 +165,19 @@ class AccessibilitySettings extends StatelessWidget {
                 label: AppLocalizations.of(context)!.settingsLanguageSystem),
             DropdownMenuEntry(
                 value: 'en',
-                label: AppLocalizations.of(context)!.settingsLanguageEnglish),
+                label: AppLocalizations.of(context).settingsLanguageEnglish),
             DropdownMenuEntry(
                 value: 'es',
-                label: AppLocalizations.of(context)!.settingsLanguageSpanish),
+                label: AppLocalizations.of(context).settingsLanguageSpanish),
             DropdownMenuEntry(
                 value: 'fr',
-                label: AppLocalizations.of(context)!.settingsLanguageFrench),
+                label: AppLocalizations.of(context).settingsLanguageFrench),
             DropdownMenuEntry(
                 value: 'de',
-                label: AppLocalizations.of(context)!.settingsLanguageDetusche),
+                label: AppLocalizations.of(context).settingsLanguageGerman),
             DropdownMenuEntry(
                 value: 'it',
-                label: AppLocalizations.of(context)!.settingsLanguageItalian),
+                label: AppLocalizations.of(context).settingsLanguageItalian),
           ],
           onSelected: (value) {
             context
@@ -170,42 +190,154 @@ class AccessibilitySettings extends StatelessWidget {
   }
 }
 
-class OllamaSettings extends StatelessWidget {
+class OllamaSettings extends StatefulWidget {
   const OllamaSettings({super.key});
+
+  @override
+  State<OllamaSettings> createState() => _OllamaSettingsState();
+}
+
+class _OllamaSettingsState extends State<OllamaSettings> {
+  double _temperature = 0.0;
+  double _keepAliveTime = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _temperature = context.read<ChatProvider>().temperature;
+    _keepAliveTime = context.read<ChatProvider>().keepAliveTime;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.settingsPageOllamaLabel,
+          AppLocalizations.of(context).settingsPageOllamaLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const SizedBox(height: 8.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(UniconsLine.processor),
-            const Gap(8.0),
-            Text(
-              '${AppLocalizations.of(context)!.settingsPageOllamaUseGpuLabel}:',
-              style: const TextStyle(fontSize: 16.0),
-            ),
-            const Gap(8.0),
-            Switch(
-              value: context.watch<ChatProvider>().isOllamaUsingGpu,
-              onChanged: (value) {
-                context.read<ChatProvider>().ollamaEnableGpu(value);
-              },
-            ),
-            if (!context.watch<ChatProvider>().isOllamaUsingGpu) const Gap(8),
-            if (!context.watch<ChatProvider>().isOllamaUsingGpu)
-              Text(
-                AppLocalizations.of(context)!.settingsPageOllamaPerformanceWarn,
-                style: const TextStyle(color: Colors.red),
+        const Gap(16.0),
+        FractionallySizedBox(
+          widthFactor: 0.6,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(UniconsLine.processor),
+                  const Gap(8.0),
+                  Text(
+                    '${AppLocalizations.of(context).settingsPageOllamaUseGPULabel}:',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const Gap(8.0),
+                  Switch(
+                    value: context.watch<ChatProvider>().isOllamaUsingGpu,
+                    onChanged: !context.watch<ChatProvider>().isGenerating
+                        ? (value) {
+                            if (!value) {
+                              SnackBarHelpers.showSnackBar(
+                                AppLocalizations.of(context)
+                                    .ollamaDisabledGPUWarningSnackBar,
+                                SnackBarType.warning,
+                              );
+                            }
+
+                            context.read<ChatProvider>().enableGPU(value);
+                          }
+                        : null,
+                  ),
+                ],
               ),
-          ],
+              const Gap(16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(UniconsLine.temperature),
+                  const Gap(8.0),
+                  Text(
+                    '${AppLocalizations.of(context).settingsPageOllamaTemperatureLabel}:',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const Gap(8.0),
+                  Slider(
+                    value: _temperature,
+                    onChangeEnd: (value) {
+                      context.read<ChatProvider>().setTemperature(_temperature);
+                    },
+                    onChanged: !context.watch<ChatProvider>().isGenerating
+                        ? (value) {
+                            setState(() {
+                              _temperature = value;
+                            });
+                          }
+                        : null,
+                    min: 0,
+                    max: 1,
+                  ),
+                  const Gap(8.0),
+                  Text(
+                    '${(_temperature * 100).round()}%',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+              const Gap(16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(UniconsLine.clock),
+                  const Gap(8.0),
+                  Text(
+                    '${AppLocalizations.of(context).settingsPageOllamaKeepAliveTimeLabel}:',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const Gap(8.0),
+                  Slider(
+                    value: _keepAliveTime,
+                    onChangeEnd: (value) {
+                      context.read<ChatProvider>().setKeepAliveTime(
+                            _keepAliveTime == 61 ? -1 : _keepAliveTime.toInt(),
+                          );
+                    },
+                    onChanged: !context.watch<ChatProvider>().isGenerating
+                        ? (value) {
+                            setState(() {
+                              _keepAliveTime = value;
+                            });
+                          }
+                        : null,
+                    min: 0,
+                    max: 61,
+                  ),
+                  const Gap(8.0),
+                  Text(
+                    '${_keepAliveTime == 61 ? '∞' : _keepAliveTime.round()} min',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+              const Gap(16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(UniconsLine.calculator),
+                  const Gap(8.0),
+                  Text(
+                    '${AppLocalizations.of(context).settingsPageOllamaShowStatistics}:',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const Gap(8.0),
+                  Switch(
+                    value: context.watch<ChatProvider>().isChatShowStatistics,
+                    onChanged: (value) =>
+                        context.read<ChatProvider>().enableStatistics(value),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );

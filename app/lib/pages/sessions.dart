@@ -1,16 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/dialogs/confirmation.dart';
+import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/layout/dashboard.dart';
 import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/chat.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum SortBy {
   name,
@@ -33,67 +39,31 @@ class SessionsPage extends StatefulWidget {
 }
 
 class _SessionsPageState extends State<SessionsPage> {
-  Set<SortBy> _sortBy = {SortBy.name};
-  Set<SortOrder> _sortOrder = {SortOrder.ascending};
+  late Set<SortBy> _sortBy;
+  late Set<SortOrder> _sortOrder;
 
-  final prototypeChatSession = ChatSessionWrapper('', '', '');
+  final prototypeChatSession = ChatSessionWrapper(
+    DateTime(0),
+    '',
+    [],
+  );
 
-  void _deleteSession(String uuid) {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
-        SnackBarType.error,
-      );
-    } else {
-      context.read<ChatProvider>().removeSession(uuid);
-    }
-  }
+  @override
+  void initState() {
+    super.initState();
 
-  void _setSession(ChatSessionWrapper session) {
-    if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
-        AppLocalizations.of(context)!.modelIsGeneratingSnackbarText,
-        SnackBarType.error,
-      );
-    } else {
-      context.read<ChatProvider>().setSession(session.uuid);
-      widget.pageController.jumpToPage(PageIndex.chat.index);
-    }
-  }
+    _sortBy = {SortBy.name};
+    _sortOrder = {SortOrder.ascending};
 
-  Widget _buildModelListTile(ChatSessionWrapper session, BuildContext context) {
-    return ListTile(
-      title: Text(session.title),
-      subtitle: Text(session.createdAt.toString()),
-      trailing: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            tooltip: AppLocalizations.of(context)!.sessionsPageEnterButton,
-            icon: const Icon(UniconsLine.enter),
-            onPressed: () => _setSession(session),
-          ),
-          IconButton(
-            tooltip: AppLocalizations.of(context)!.sessionsPageDeleteButton,
-            icon: const Icon(
-              UniconsLine.trash,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              showConfirmationDialog(
-                context: context,
-                title:
-                    AppLocalizations.of(context)!.sessionsPageDeleteDialogTitle,
-                content: AppLocalizations.of(context)!
-                    .sessionsPageDeleteDialogText(session.title),
-                onConfirm: () => _deleteSession(session.uuid),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+    SharedPreferences.getInstance().then((prefs) {
+      final sortBy = prefs.getInt('sessionsSortBy') ?? 0;
+      final sortOrder = prefs.getBool('sessionsSortOrder') ?? false;
+
+      setState(() {
+        _sortBy = {SortBy.values[sortBy]};
+        _sortOrder = {sortOrder ? SortOrder.descending : SortOrder.ascending};
+      });
+    });
   }
 
   @override
@@ -105,20 +75,14 @@ class _SessionsPageState extends State<SessionsPage> {
         if (_sortBy.contains(SortBy.name)) {
           return a.title.compareTo(b.title);
         } else if (_sortBy.contains(SortBy.date)) {
-          return DateTime.parse(
-            a.createdAt,
-          ).compareTo(
-            DateTime.parse(
-              b.createdAt,
-            ),
-          );
+          return a.createdAt.compareTo(b.createdAt);
         } else if (_sortBy.contains(SortBy.size)) {
           return a.title.length.compareTo(b.title.length);
         }
         return 0;
       },
     );
-    
+
     if (_sortOrder.contains(SortOrder.descending)) {
       sortedSessions = sortedSessions.reversed.toList();
     }
@@ -129,7 +93,7 @@ class _SessionsPageState extends State<SessionsPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.sessionsPageTitle,
+            AppLocalizations.of(context).sessionsPageTitle,
             style: const TextStyle(
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
@@ -139,13 +103,24 @@ class _SessionsPageState extends State<SessionsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // TODO: Disable in release 0.2
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context)!.sessionsPageCreateFolderButton,
+                  AppLocalizations.of(context).sessionsPageCreateFolderButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.folder_plus),
                 onPressed: () => {},
+              ),
+              TextButton.icon(
+                label: Text(
+                  AppLocalizations.of(context).sessionsPageClearSessionsButton,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                icon: const Icon(UniconsLine.trash),
+                onPressed: () {
+                  context.read<ChatProvider>().clearSessions();
+                },
               ),
             ],
           ),
@@ -155,7 +130,7 @@ class _SessionsPageState extends State<SessionsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(AppLocalizations.of(context)!.listFiltersSortByControlLabel),
+              Text(AppLocalizations.of(context).listFiltersSortByLabel),
               const Gap(16),
               SegmentedButton<SortBy>(
                 selectedIcon: const Icon(UniconsLine.check),
@@ -163,35 +138,40 @@ class _SessionsPageState extends State<SessionsPage> {
                   ButtonSegment(
                     value: SortBy.name,
                     label: Text(
-                      AppLocalizations.of(context)!.sortByNameOptionsLabel,
+                      AppLocalizations.of(context).sortByNameOption,
                     ),
                     icon: const Icon(UniconsLine.tag),
                   ),
                   ButtonSegment(
                     value: SortBy.date,
                     label: Text(
-                      AppLocalizations.of(context)!.sortByDateOptionsLabel,
+                      AppLocalizations.of(context).sortByDateOption,
                     ),
                     icon: const Icon(UniconsLine.clock),
                   ),
                   ButtonSegment(
                     value: SortBy.size,
                     label: Text(
-                      AppLocalizations.of(context)!.sortBySizeOptionsLabel,
+                      AppLocalizations.of(context).sortBySizeOption,
                     ),
                     icon: const Icon(UniconsLine.database),
                   ),
                 ],
                 selected: _sortBy,
-                onSelectionChanged: (value) => {
+                onSelectionChanged: (value) async {
+                  final prefs = await SharedPreferences.getInstance();
+
+                  await prefs.setInt('sessionsSortBy', value.first.index);
+
                   setState(() {
                     _sortBy = value;
-                  })
+                  });
                 },
               ),
               const Gap(16),
-              Text(AppLocalizations.of(context)!
-                  .listFiltersSortOrderControlLabel),
+              Text(
+                AppLocalizations.of(context).listFiltersSortOrderLabel,
+              ),
               const Gap(16),
               SegmentedButton<SortOrder>(
                 selectedIcon: const Icon(UniconsLine.check),
@@ -199,25 +179,31 @@ class _SessionsPageState extends State<SessionsPage> {
                   ButtonSegment(
                     value: SortOrder.ascending,
                     label: Text(
-                      AppLocalizations.of(context)!
-                          .sortOrderAscendingOptionsLabel,
+                      AppLocalizations.of(context).sortOrderAscendingOption,
                     ),
                     icon: const Icon(UniconsLine.arrow_up),
                   ),
                   ButtonSegment(
                     value: SortOrder.descending,
                     label: Text(
-                      AppLocalizations.of(context)!
-                          .sortOrderDescendingOptionsLabel,
+                      AppLocalizations.of(context).sortOrderDescendingOption,
                     ),
                     icon: const Icon(UniconsLine.arrow_down),
                   ),
                 ],
                 selected: _sortOrder,
-                onSelectionChanged: (value) => {
+                onSelectionChanged: (value) async {
+                  final prefs = await SharedPreferences.getInstance();
+
+                  if (value.contains(SortOrder.descending)) {
+                    await prefs.setBool('sessionsSortOrder', true);
+                  } else {
+                    await prefs.setBool('sessionsSortOrder', false);
+                  }
+
                   setState(() {
                     _sortOrder = value;
-                  })
+                  });
                 },
               ),
             ],
@@ -225,15 +211,15 @@ class _SessionsPageState extends State<SessionsPage> {
           const Gap(16),
           Expanded(
             child: ListView.builder(
-              prototypeItem: _buildModelListTile(
-                prototypeChatSession,
-                context,
+              prototypeItem: SessionListTile(
+                session: prototypeChatSession,
+                pageController: widget.pageController,
               ),
               itemCount: context.watch<ChatProvider>().sessionCount,
               itemBuilder: (context, index) {
-                return _buildModelListTile(
-                  sortedSessions[index],
-                  context,
+                return SessionListTile(
+                  session: sortedSessions[index],
+                  pageController: widget.pageController,
                 )
                     .animate(delay: (index * 100).ms)
                     .fadeIn(duration: 900.ms, delay: 300.ms)
@@ -244,6 +230,208 @@ class _SessionsPageState extends State<SessionsPage> {
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class SessionListTile extends StatefulWidget {
+  final ChatSessionWrapper session;
+  final PageController pageController;
+
+  const SessionListTile({
+    super.key,
+    required this.session,
+    required this.pageController,
+  });
+
+  @override
+  State<SessionListTile> createState() => _SessionListTileState();
+}
+
+class _SessionListTileState extends State<SessionListTile> {
+  final TextEditingController _textEditingController = TextEditingController();
+  bool _showEditWidget = false;
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+
+    super.dispose();
+  }
+
+  void _setSession() async {
+    if (context.read<ChatProvider>().isGenerating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        SnackBarType.error,
+      );
+    } else {
+      context.read<ChatProvider>().setSession(widget.session.uuid);
+      widget.pageController.jumpToPage(PageIndex.chat.index);
+    }
+  }
+
+  void _beginEditingTitle() {
+    setState(() {
+      _showEditWidget = true;
+    });
+
+    _textEditingController.text = widget.session.title;
+  }
+
+  void _sendEditedTitle() {
+    if (widget.session.status == ChatSessionStatus.generating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        SnackBarType.error,
+      );
+    } else {
+      if (_textEditingController.text.isEmpty) return;
+
+      context.read<ChatProvider>().setSessionTitle(
+            widget.session.uuid,
+            _textEditingController.text,
+          );
+
+      _cancelEditingTitle();
+    }
+  }
+
+  void _cancelEditingTitle() {
+    setState(() {
+      _showEditWidget = false;
+    });
+
+    _textEditingController.clear();
+  }
+
+  void _shareSession() async {
+    if (widget.session.status == ChatSessionStatus.generating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        SnackBarType.error,
+      );
+    } else {
+      final targetDir = (await getDownloadsDirectory())?.path ?? '.';
+
+      final file =
+          File('$targetDir/OpenLocalUI_Chat_${widget.session.uuid}.json');
+      await file.writeAsString(widget.session.toJson().toString());
+      if (await launchUrl(file.uri)) {
+        SnackBarHelpers.showSnackBar(
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(context).sessionSharedSnackBar,
+          SnackBarType.success,
+        );
+      } else {
+        SnackBarHelpers.showSnackBar(
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(context).failedToShareSessionSnackBar,
+          SnackBarType.error,
+        );
+      }
+    }
+  }
+
+  void _deleteSession() async {
+    if (widget.session.status == ChatSessionStatus.generating) {
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        SnackBarType.error,
+      );
+    } else {
+      context.read<ChatProvider>().removeSession(widget.session.uuid);
+    }
+  }
+
+  @override
+  Widget build(BuildContext content) {
+    return ListTile(
+      leading: _showEditWidget
+          ? Container(
+              constraints: const BoxConstraints.tightForFinite(width: 256),
+              child: TextField(
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).chatEditFieldHint,
+                  counterText: '',
+                ),
+                controller: _textEditingController,
+              ),
+            )
+          : null,
+      title: _showEditWidget ? null : Text(widget.session.title),
+      subtitle: _showEditWidget
+          ? null
+          : Text(
+              AppLocalizations.of(context).createdAtTextShared(
+                DateTimeHelpers.formattedDateTime(widget.session.createdAt),
+              ),
+            ),
+      trailing: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!_showEditWidget)
+            Row(
+              children: [
+                IconButton(
+                  tooltip: AppLocalizations.of(context).sessionsPageEnterButton,
+                  icon: const Icon(UniconsLine.enter),
+                  onPressed: () => _setSession(),
+                ),
+                const Gap(8),
+                IconButton(
+                  tooltip:
+                      AppLocalizations.of(context).sessionsPageEditTitleButton,
+                  icon: const Icon(UniconsLine.edit),
+                  onPressed: () => _beginEditingTitle(),
+                ),
+                const Gap(8),
+                IconButton(
+                  tooltip: AppLocalizations.of(context).sessionsPageShareButton,
+                  icon: const Icon(UniconsLine.share),
+                  onPressed: () => _shareSession(),
+                ),
+                const Gap(8),
+                IconButton(
+                  tooltip:
+                      AppLocalizations.of(context).sessionsPageDeleteButton,
+                  icon: const Icon(
+                    UniconsLine.trash,
+                    color: Colors.red,
+                  ),
+                  onPressed: () {
+                    showConfirmationDialog(
+                      context: context,
+                      title: AppLocalizations.of(context)
+                          .sessionsPageDeleteDialogTitle,
+                      content: AppLocalizations.of(context)
+                          .sessionsPageDeleteDialogText(widget.session.title),
+                      onConfirm: () => _deleteSession(),
+                    );
+                  },
+                ),
+              ],
+            ),
+          if (_showEditWidget)
+            Row(
+              children: [
+                IconButton(
+                  tooltip: AppLocalizations.of(context).cancelButtonShared,
+                  icon: const Icon(UniconsLine.times),
+                  onPressed: () => _cancelEditingTitle(),
+                ),
+                const Gap(8),
+                IconButton(
+                  tooltip: AppLocalizations.of(context).saveButtonShared,
+                  icon: const Icon(UniconsLine.check),
+                  onPressed: () => _sendEditedTitle(),
+                ),
+              ],
+            ),
         ],
       ),
     );

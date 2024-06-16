@@ -22,6 +22,12 @@ class _PushModelDialogState extends State<PushModelDialog> {
   double _progressValue = 0.0;
   String _progressBarText = '';
 
+  @override
+  void dispose() {
+    _modelSelectionController.dispose();
+    super.dispose();
+  }
+
   void _updateProgress(OllamaPushResponse response) {
     setState(() {
       _progressValue = response.completed / response.total;
@@ -29,7 +35,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
       final duration = HTTPHelpers.calculateRemainingTime(response);
 
       _progressBarText =
-          AppLocalizations.of(context)!.progressBarStatusTextWithTimeShared(
+          AppLocalizations.of(context).progressBarStatusWithTimeText(
         response.status,
         (duration.inHours).toString(),
         (duration.inMinutes % 60).toString(),
@@ -38,10 +44,25 @@ class _PushModelDialogState extends State<PushModelDialog> {
     });
   }
 
-  @override
-  void dispose() {
-    _modelSelectionController.dispose();
-    super.dispose();
+  void _pushModel() async {
+    setState(() => _isPushing = true);
+
+    final stream = context
+        .read<ModelProvider>()
+        .push(_modelSelectionController.text.toLowerCase());
+
+    await for (final data in stream) {
+      if (context.mounted) _updateProgress(data);
+    }
+
+    if (context.mounted) {
+      setState(() {
+        _isPushing = false;
+        _progressValue = 0.0;
+        _progressBarText = '';
+        _modelSelectionController.clear();
+      });
+    }
   }
 
   @override
@@ -59,7 +80,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
 
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context)!.pullModelDialogTitle,
+        AppLocalizations.of(context).pullModelDialogTitle,
       ),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -70,10 +91,21 @@ class _PushModelDialogState extends State<PushModelDialog> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context)!.pushModelDialogGuideText1,
+                  AppLocalizations.of(context).pushModelDialogGuideText,
                 ),
                 const SizedBox(width: 8.0),
                 DropdownMenu(
+                  menuHeight: 128,
+                  menuStyle: MenuStyle(
+                    elevation: WidgetStateProperty.all(
+                      8.0,
+                    ),
+                    shape: WidgetStateProperty.all(
+                      const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      ),
+                    ),
+                  ),
                   controller: _modelSelectionController,
                   inputDecorationTheme: const InputDecorationTheme(
                     border: OutlineInputBorder(
@@ -83,7 +115,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
                   ),
                   enableFilter: true,
                   enableSearch: true,
-                  hintText: AppLocalizations.of(context)!
+                  hintText: AppLocalizations.of(context)
                       .pushModelDialogModelSelectorHint,
                   dropdownMenuEntries: modelsMenuEntries,
                   onSelected: null,
@@ -101,7 +133,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
                 LinearProgressIndicator(
                   value: _progressValue,
                   minHeight: 20.0,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
               ],
             ),
@@ -113,35 +145,16 @@ class _PushModelDialogState extends State<PushModelDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             _isPushing
-                ? AppLocalizations.of(context)!
+                ? AppLocalizations.of(context)
                     .dialogContinueInBackgroundButtonShared
-                : AppLocalizations.of(context)!.dialogCloseButtonShared,
+                : AppLocalizations.of(context).dialogCloseButtonShared,
           ),
         ),
         if (!_isPushing)
           TextButton(
-            onPressed: () async {
-              setState(() => _isPushing = true);
-
-              final stream = context
-                  .read<ModelProvider>()
-                  .push(_modelSelectionController.text.toLowerCase());
-
-              await for (final data in stream) {
-                if (context.mounted) _updateProgress(data);
-              }
-
-              if (context.mounted) {
-                setState(() {
-                  _isPushing = false;
-                  _progressValue = 0.0;
-                  _progressBarText = '';
-                  _modelSelectionController.clear();
-                });
-              }
-            },
+            onPressed: () => _pushModel(),
             child: Text(
-              AppLocalizations.of(context)!.dialogStartButtonShared,
+              AppLocalizations.of(context).dialogStartButtonShared,
             ),
           ),
       ],
