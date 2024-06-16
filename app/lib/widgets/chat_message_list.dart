@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/widgets/chat_message.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +19,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
   final OverlayPortalController _overlayPortalController =
       OverlayPortalController();
   final GlobalKey _expandedKey = GlobalKey();
+  final GlobalKey _overlayKey = GlobalKey();
   bool _isUserScrolling = false;
 
   @override
@@ -77,6 +77,13 @@ class _ChatMessageListState extends State<ChatMessageList> {
     return renderBox.localToGlobal(Offset.zero);
   }
 
+  Size _getExpandedSize() {
+    final RenderBox renderBox =
+        _expandedKey.currentContext?.findRenderObject() as RenderBox;
+
+    return renderBox.size;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!_isUserScrolling && _scrollController.hasClients) {
@@ -112,17 +119,19 @@ class _ChatMessageListState extends State<ChatMessageList> {
           controller: _overlayPortalController,
           overlayChildBuilder: (context) {
             return Positioned(
-              left: _getExpandedOffset().dx,
+              left:
+                  _getExpandedOffset().dx + (_getExpandedSize().width / 2) - 16,
               bottom: _getExpandedOffset().dy + 24,
-              child: ElevatedButton.icon(
-                label: Text(
-                  AppLocalizations.of(context).scrollToBottomButton,
+              child: Opacity(
+                opacity: 0.75,
+                child: IconButton.filled(
+                  key: _overlayKey,
+                  icon: const Icon(
+                    UniconsLine.arrow_down,
+                    size: 32.0,
+                  ),
+                  onPressed: () => _scrollToBottomWithAnimation(),
                 ),
-                icon: const Icon(
-                  UniconsLine.arrow_down,
-                  size: 32.0,
-                ),
-                onPressed: () => _scrollToBottomWithAnimation(),
               ),
             );
           },
