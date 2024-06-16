@@ -14,7 +14,6 @@ import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
