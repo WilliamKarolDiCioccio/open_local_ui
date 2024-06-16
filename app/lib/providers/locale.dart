@@ -1,74 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:devicelocale/devicelocale.dart';
 import 'package:intl/intl.dart';
+import 'package:language_code/language_code.dart';
 import 'package:open_local_ui/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleProvider extends ChangeNotifier {
-  Locale? _locale;
-  String? _languageCode;
-  // ignore: unused_field
-  String? _countryCode;
-  String? _currencyName;
-  String? _currencySymbol;
+  static const systemLangCode = 'system';
+
+  static const _fallbackLanguage = 'en';
+  static const _fallbackCountry = 'US';
+  static const _fallbackName = 'United States Dollar';
+  static const _fallbackCurrency = '\$';
+  static const _fallbackLocale = Locale(_fallbackLanguage, _fallbackCountry);
+
+  Locale _locale = _fallbackLocale;
+  String _languageSetting = systemLangCode;
+  String _currencyName = _fallbackName;
+  String _currencySymbol = _fallbackCurrency;
 
   LocaleProvider() {
     _loadLocale();
   }
 
-  void _loadLocale() async {
+  Future<void> _loadLocale() async {
+    var locale = _fallbackLocale;
+    var langCode = systemLangCode;
+
     final prefs = await SharedPreferences.getInstance();
     final savedLocale = prefs.getString('locale');
 
-    if (savedLocale == null) {
-      final deviceLocale = await Devicelocale.currentLocale;
-
-      if (deviceLocale != null && deviceLocale.length >= 2) {
-        try {
-          _languageCode = deviceLocale.substring(0, 2);
-        } catch (e) {
-          logger.e('Error when fetching user language: $e');
-        }
+    try {
+      if (savedLocale == null || savedLocale == systemLangCode) {
+        locale = LanguageCode.locale;
+        langCode = systemLangCode;
+      } else {
+        locale = Locale(savedLocale);
+        langCode = locale.languageCode;
       }
 
-      if (deviceLocale != null && deviceLocale.length >= 5) {
-        try {
-          _countryCode = deviceLocale.substring(3, 5);
-        } catch (e) {
-          logger.e('Error when fetching user country: $e');
-        }
-      }
+      final format = NumberFormat.simpleCurrency(locale: locale.toString());
 
-      final format = NumberFormat.simpleCurrency(
-        locale: deviceLocale ?? 'en_US',
-      );
-
-      _currencyName = format.currencyName;
+      _locale = locale;
+      _languageSetting = langCode;
+      _currencyName = format.currencyName ?? _fallbackName;
       _currencySymbol = format.currencySymbol;
-
-      _locale = Locale(_languageCode ?? 'en');
-    } else {
-      _locale = Locale(savedLocale);
+    } catch (e) {
+      logger.e('Error when fetching user language: $e');
     }
 
     notifyListeners();
   }
 
-  Future<void> setLocale(String locale) async {
-    _locale = Locale(locale);
-
+  Future<void> setLanguage(String languageCode) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('locale', locale);
-
-    _languageCode = locale.substring(0, 2);
+    await prefs.setString('locale', languageCode);
+    await _loadLocale();
 
     notifyListeners();
   }
 
+  String get languageSetting => _languageSetting;
   Locale? get locale => _locale;
-
-  String get languageCode => _locale?.languageCode ?? 'en';
-  String get countryCode => _locale?.countryCode ?? 'US';
-  String get currencyName => _currencyName ?? 'United States Dollar';
-  String get currencySymbol => _currencySymbol ?? '\$';
+  String get languageCode => _locale.languageCode;
+  String get countryCode => _locale.countryCode ?? _fallbackCountry;
+  String get currencyName => _currencyName;
+  String get currencySymbol => _currencySymbol;
 }
