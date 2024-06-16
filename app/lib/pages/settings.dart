@@ -162,7 +162,7 @@ class AccessibilitySettings extends StatelessWidget {
           dropdownMenuEntries: [
             DropdownMenuEntry(
                 value: LocaleProvider.systemLangCode,
-                label: AppLocalizations.of(context)!.settingsLanguageSystem),
+                label: AppLocalizations.of(context).settingsLanguageSystem),
             DropdownMenuEntry(
                 value: 'en',
                 label: AppLocalizations.of(context).settingsLanguageEnglish),
