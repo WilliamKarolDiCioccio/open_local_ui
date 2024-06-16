@@ -69,36 +69,50 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
   List<Widget> _generateSuggestionsCells() {
     final List<List<String>> exampleQuestions = [
       [
-        AppLocalizations.of(context).suggestionAddressConflictsInRelationshipsPartOne,
-        AppLocalizations.of(context).suggestionAddressConflictsInRelationshipsPartTwo,
+        AppLocalizations.of(context)
+            .suggestionAddressConflictsInRelationshipsPartOne,
+        AppLocalizations.of(context)
+            .suggestionAddressConflictsInRelationshipsPartTwo,
       ],
       [
-        AppLocalizations.of(context).suggestionCommonUseCasesForProblemSolvingPartOne,
-        AppLocalizations.of(context).suggestionCommonUseCasesForProblemSolvingPartTwo,
+        AppLocalizations.of(context)
+            .suggestionCommonUseCasesForProblemSolvingPartOne,
+        AppLocalizations.of(context)
+            .suggestionCommonUseCasesForProblemSolvingPartTwo,
       ],
       [
-        AppLocalizations.of(context).suggestionDecisionMakingInComplexSituationsPartOne,
-        AppLocalizations.of(context).suggestionDecisionMakingInComplexSituationsPartTwo,
+        AppLocalizations.of(context)
+            .suggestionDecisionMakingInComplexSituationsPartOne,
+        AppLocalizations.of(context)
+            .suggestionDecisionMakingInComplexSituationsPartTwo,
       ],
       [
-        AppLocalizations.of(context).suggestionDiscussRemoteWorkAdvantagesPartOne,
-        AppLocalizations.of(context).suggestionDiscussRemoteWorkAdvantagesPartTwo,
+        AppLocalizations.of(context)
+            .suggestionDiscussRemoteWorkAdvantagesPartOne,
+        AppLocalizations.of(context)
+            .suggestionDiscussRemoteWorkAdvantagesPartTwo,
       ],
       [
-        AppLocalizations.of(context).suggestionDistinguishTeachingAndMentoringPartOne,
-        AppLocalizations.of(context).suggestionDistinguishTeachingAndMentoringPartTwo,
+        AppLocalizations.of(context)
+            .suggestionDistinguishTeachingAndMentoringPartOne,
+        AppLocalizations.of(context)
+            .suggestionDistinguishTeachingAndMentoringPartTwo,
       ],
       [
         AppLocalizations.of(context).suggestionEvaluateTeamPerformancePartOne,
         AppLocalizations.of(context).suggestionEvaluateTeamPerformancePartTwo,
       ],
       [
-        AppLocalizations.of(context).suggestionExplainEmpathySignificancePartOne,
-        AppLocalizations.of(context).suggestionExplainEmpathySignificancePartTwo,
+        AppLocalizations.of(context)
+            .suggestionExplainEmpathySignificancePartOne,
+        AppLocalizations.of(context)
+            .suggestionExplainEmpathySignificancePartTwo,
       ],
       [
-        AppLocalizations.of(context).suggestionExplainLearningFromExperiencePartOne,
-        AppLocalizations.of(context).suggestionExplainLearningFromExperiencePartTwo,
+        AppLocalizations.of(context)
+            .suggestionExplainLearningFromExperiencePartOne,
+        AppLocalizations.of(context)
+            .suggestionExplainLearningFromExperiencePartTwo,
       ],
       [
         AppLocalizations.of(context).suggestionHandleDailyStressPartOne,
@@ -133,7 +147,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
       (index) {
         return GestureDetector(
           onTap: () => _sendMessage(
-            choosenQuestions[index][0] + choosenQuestions[index][1],
+            '${choosenQuestions[index][0]} ${choosenQuestions[index][1]}',
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
