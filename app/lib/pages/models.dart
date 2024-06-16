@@ -144,7 +144,7 @@ class _ModelsPageState extends State<ModelsPage> {
                   AppLocalizations.of(context).modelsPageImportButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
-                icon: const Icon(UniconsLine.cube),
+                icon: const Icon(UniconsLine.import),
                 onPressed: () => showImportModelDialog(context),
               ),
               TextButton.icon(
