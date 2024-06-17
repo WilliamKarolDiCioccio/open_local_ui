@@ -58,7 +58,7 @@ class ChatProvider extends ChangeNotifier {
     if (models.any((model) => model.name == modelName)) {
       _modelName = modelName;
     } else {
-      _modelName = models.first.name;
+      if (models.isNotEmpty) _modelName = models.first.name;
     }
 
     _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;

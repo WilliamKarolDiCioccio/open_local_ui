@@ -44,7 +44,7 @@ class ModelProvider extends ChangeNotifier {
         });
       });
 
-      _updateListStatic();
+      await _updateListStatic();
     } catch (e) {
       logger.e(e);
     }
