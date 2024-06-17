@@ -100,7 +100,6 @@ dependencies:
   # LangChain Integration
   langchain: ^0.7.1
   langchain_ollama: ^0.2.1+1
-  upgrader: ^10.3.0
 
 dev_dependencies:
   flutter_test:
