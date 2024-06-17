@@ -391,6 +391,7 @@ class ChatProvider extends ChangeNotifier {
 
       await for (final response in chain.stream([prompt])) {
         ChatResult result = response as ChatResult;
+
         if (_session!.status == ChatSessionStatus.aborting) {
           _session!.status = ChatSessionStatus.idle;
           _session!.memory.chatHistory.removeLast();
@@ -400,21 +401,7 @@ class ChatProvider extends ChangeNotifier {
         final lastMessage = _session!.messages.last;
         lastMessage.text += result.outputAsString;
 
-        // Update metadata and usage.
-        lastMessage.totalDuration +=
-            result.metadata['total_duration'] as int? ?? 0;
-        lastMessage.loadDuration +=
-            result.metadata['load_duration'] as int? ?? 0;
-        lastMessage.promptEvalCount +=
-            result.metadata['prompt_eval_count'] as int? ?? 0;
-        lastMessage.promptEvalDuration +=
-            result.metadata['prompt_eval_duration'] as int? ?? 0;
-        lastMessage.evalCount += result.metadata['eval_count'] as int? ?? 0;
-        lastMessage.evalDuration +=
-            result.metadata['eval_duration'] as int? ?? 0;
-        lastMessage.promptTokens += result.usage.promptTokens ?? 0;
-        lastMessage.responseTokens += result.usage.responseTokens ?? 0;
-        lastMessage.totalTokens += result.usage.totalTokens ?? 0;
+        _computePerformanceStatistics(result);
 
         notifyListeners();
       }
@@ -499,15 +486,18 @@ class ChatProvider extends ChangeNotifier {
       addModelMessage('', _modelName);
 
       await for (final response in chain.stream([prompt])) {
+        ChatResult result = response as ChatResult;
+
         if (_session!.status == ChatSessionStatus.aborting) {
           _session!.status = ChatSessionStatus.idle;
-
           _session!.memory.chatHistory.removeLast();
-
           break;
         }
 
-        _session!.messages.last.text += response.toString();
+        final lastMessage = _session!.messages.last;
+        lastMessage.text += result.outputAsString;
+
+        _computePerformanceStatistics(result);
 
         notifyListeners();
       }
@@ -702,6 +692,23 @@ class ChatProvider extends ChangeNotifier {
     _updateModelOptions();
 
     notifyListeners();
+  }
+
+  // Helpers
+
+  void _computePerformanceStatistics(ChatResult result) {
+    lastMessage!.totalDuration +=
+        result.metadata['total_duration'] as int? ?? 0;
+    lastMessage!.loadDuration += result.metadata['load_duration'] as int? ?? 0;
+    lastMessage!.promptEvalCount +=
+        result.metadata['prompt_eval_count'] as int? ?? 0;
+    lastMessage!.promptEvalDuration +=
+        result.metadata['prompt_eval_duration'] as int? ?? 0;
+    lastMessage!.evalCount += result.metadata['eval_count'] as int? ?? 0;
+    lastMessage!.evalDuration += result.metadata['eval_duration'] as int? ?? 0;
+    lastMessage!.promptTokens += result.usage.promptTokens ?? 0;
+    lastMessage!.responseTokens += result.usage.responseTokens ?? 0;
+    lastMessage!.totalTokens += result.usage.totalTokens ?? 0;
   }
 
   // Getters
