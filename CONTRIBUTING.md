@@ -21,16 +21,20 @@ Welcome to the OpenLocalUI project! We're thrilled that you're interested in con
 To start contributing to OpenLocalUI, follow these steps:
 
 1. **Fork the repository**: Click the "Fork" button at the top right of the page to create a copy of the repository on your GitHub account.
+
 2. **Clone your fork**: Clone the forked repository to your local machine using:
    ```bash
    git clone https://github.com/your-username/open_local_ui.git
    ```
+
 3. **Create a branch**: Create a new branch for your feature or bug fix:
    ```bash
    git checkout -b feature/your-feature
    git checkout -b bugs/your-bug-fix
    ```
 4. **Contribute back**: Click the "Contribute" button in the top right of the code explorer to merge your changes.
+
+For more information on the employed branching strategy please refer to [`BRANCHING.md`](BRANCHING.md)
 
 ## Setting Up Your Environment
 

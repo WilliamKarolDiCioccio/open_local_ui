@@ -42,17 +42,7 @@ Despite its simplicity, OpenLocalUI has enormous potential for growth and enhanc
 
 ## Installation
 
-OpenLocalUI requires the OLLAMA client to be installed and running on your system.
-
-The new text to speech feature in the app also requires FFmpeg for encoding/decoding. You can do so by downloading it from the [official website](https://ffmpeg.org/) or your system package manager:
-
-```bash
-choco install ffmepg # Windows (install chocolatey)
-sudo apt install ffmpeg # Linux (apt is a system component)
-brew install ffmpeg # MacOS (install brew)
-```
-
-Check out the latest release and download the appropriate version based on your platform. In the future all disrtibuted versions will automatically install the required libraries on your system.
+OpenLocalUI requires OLLAMA to function. Just check out the latest release and download the appropriate version based on your platform; in the folder you'll find both OpenLocalUI's and OLLAMA's installers.
 
 ## Contributing
 
