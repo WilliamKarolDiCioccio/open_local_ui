@@ -118,7 +118,13 @@ class _SessionsPageState extends State<SessionsPage> {
                 ),
                 icon: const Icon(UniconsLine.trash),
                 onPressed: () {
-                  context.read<ChatProvider>().clearSessions();
+                  showConfirmationDialog(
+                    context: context,
+                    title: AppLocalizations.of(context).sessionsPageClearDialogTitle,
+                    content: AppLocalizations.of(context).sessionsPageClearDialogText,
+                    onConfirm: () =>
+                        context.read<ChatProvider>().clearSessions(),
+                  );
                 },
               ),
             ],

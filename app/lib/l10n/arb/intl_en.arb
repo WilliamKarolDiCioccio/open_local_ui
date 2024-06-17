@@ -218,6 +218,8 @@
   "pushModelDialogTitle": "Push model",
   "redoButtonShared": "Redo",
   "saveButtonShared": "Save",
+  "sessionsPageClearDialogTitle": "Clear sessions",
+  "sessionsPageClearDialogText": "This will clear all sessions. Do you confirm?",
   "sessionSharedSnackBar": "Session shared",
   "sessionsPageCreateFolderButton": "Create folder",
   "sessionsPageClearSessionsButton": "Clear sessions",

@@ -218,6 +218,8 @@
   "pushModelDialogTitle": "Insertar modelo",
   "redoButtonShared": "Rehacer",
   "saveButtonShared": "Guardar",
+  "sessionsPageClearDialogTitle": "Borrar sesiones",
+  "sessionsPageClearDialogText": "Esto borrará todas las sesiones. ¿Confirma?",
   "sessionSharedSnackBar": "Sesión compartida",
   "sessionsPageCreateFolderButton": "Crear carpeta",
   "sessionsPageClearSessionsButton": "Borrar sesiones",

@@ -218,6 +218,8 @@
   "pushModelDialogTitle": "Caricamento del modello",
   "redoButtonShared": "Ripeti",
   "saveButtonShared": "Salva",
+  "sessionsPageClearDialogTitle": "Cancella sessioni",
+  "sessionsPageClearDialogText": "Questo cancellerà tutte le sessioni. Confermi?",
   "sessionSharedSnackBar": "Sessione condivisa",
   "sessionsPageCreateFolderButton": "Crea cartella",
   "sessionsPageClearSessionsButton": "Cancella sessioni",
