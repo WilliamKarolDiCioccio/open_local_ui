@@ -49,8 +49,8 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         children: [
           const ChatModelSelectionWidget(),
           const Gap(16),
-          const ChatOptionBarWidget(),
-          const Gap(16),
+          // const ChatOptionBarWidget(),
+          // const Gap(16),
           ElevatedButton.icon(
             label: Text(
               AppLocalizations.of(context).chatToolbarNewSessionButton,

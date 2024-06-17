@@ -103,15 +103,14 @@ class _SessionsPageState extends State<SessionsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // TODO: Disable in release 0.2
-              TextButton.icon(
-                label: Text(
-                  AppLocalizations.of(context).sessionsPageCreateFolderButton,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                icon: const Icon(UniconsLine.folder_plus),
-                onPressed: () => {},
-              ),
+              // TextButton.icon(
+              //   label: Text(
+              //     AppLocalizations.of(context).sessionsPageCreateFolderButton,
+              //     style: const TextStyle(fontSize: 18.0),
+              //   ),
+              //   icon: const Icon(UniconsLine.folder_plus),
+              //   onPressed: () => {},
+              // ),
               TextButton.icon(
                 label: Text(
                   AppLocalizations.of(context).sessionsPageClearSessionsButton,
