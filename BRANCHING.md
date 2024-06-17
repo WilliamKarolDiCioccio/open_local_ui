@@ -1,14 +1,12 @@
 ## Table of Contents
 
-1. [Versioning Strategy](#version-format)
-2. [Version Format](#version-format)
-3. [Examples](#examples)
-4. [Versioning Practices](#versioning-practices)
-5. [Starting Point](#starting-point)
+1. [Branching Strategy](#branching-strategy)
+2. [Branch Types](#branch-types)
+3. [Workflow](#workflow)
+4. [Benefits of GitHub Flow](#benefits-of-github-flow)
+5. [Further Information](#further-information)
 
 # Branching Strategy
-
-## Overview
 
 In this project, we will be using the **GitHub Flow** branching strategy. This strategy is straightforward and ideal for smaller teams or projects where simplicity and continuous deployment are key. The main concepts include a `main` branch, feature branches, and a focus on short-lived branches that are merged back into `main`.
 
@@ -31,27 +29,27 @@ In this project, we will be using the **GitHub Flow** branching strategy. This s
    - Always branch off from `main`.
    - Name your branch descriptively (e.g., `feature/user-authentication`).
 
-    ```sh
-    git checkout main
-    git pull origin main
-    git checkout -b feature/branch-name
-    ```
+   ```sh
+   git checkout main
+   git pull origin main
+   git checkout -b feature/branch-name
+   ```
 
 2. **Develop**:
    - Commit changes to your feature branch.
    - Ensure commits are small, focused, and descriptive.
 
-    ```sh
-    git add .
-    git commit -m "Add user authentication"
-    ```
+   ```sh
+   git add .
+   git commit -m "Add user authentication"
+   ```
 
 3. **Push to GitHub**:
    - Push your feature branch to the remote repository.
 
-    ```sh
-    git push origin feature/branch-name
-    ```
+   ```sh
+   git push origin feature/branch-name
+   ```
 
 4. **Open a Pull Request**:
    - Go to the repository on GitHub and open a pull request from your feature branch to `main`.
@@ -64,10 +62,10 @@ In this project, we will be using the **GitHub Flow** branching strategy. This s
 6. **Delete the Feature Branch**:
    - After merging, delete the feature branch to keep the repository clean.
 
-    ```sh
-    git branch -d feature/branch-name
-    git push origin --delete feature/branch-name
-    ```
+   ```sh
+   git branch -d feature/branch-name
+   git push origin --delete feature/branch-name
+   ```
 
 ## Benefits of GitHub Flow
 
