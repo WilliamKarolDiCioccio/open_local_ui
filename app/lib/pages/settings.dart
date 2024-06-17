@@ -158,8 +158,11 @@ class AccessibilitySettings extends StatelessWidget {
             ),
             floatingLabelBehavior: FloatingLabelBehavior.never,
           ),
-          initialSelection: context.watch<LocaleProvider>().languageCode,
+          initialSelection: context.watch<LocaleProvider>().languageSetting,
           dropdownMenuEntries: [
+            DropdownMenuEntry(
+                value: LocaleProvider.systemLangCode,
+                label: AppLocalizations.of(context).settingsLanguageSystem),
             DropdownMenuEntry(
                 value: 'en',
                 label: AppLocalizations.of(context).settingsLanguageEnglish),
@@ -177,7 +180,9 @@ class AccessibilitySettings extends StatelessWidget {
                 label: AppLocalizations.of(context).settingsLanguageItalian),
           ],
           onSelected: (value) {
-            context.read<LocaleProvider>().setLocale(value ?? 'en');
+            context
+                .read<LocaleProvider>()
+                .setLanguage(value ?? LocaleProvider.systemLangCode);
           },
         ),
       ],
