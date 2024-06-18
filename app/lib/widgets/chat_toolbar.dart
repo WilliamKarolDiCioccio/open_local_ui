@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
+    as snackbar;
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
@@ -21,21 +23,24 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
     if (context.read<ChatProvider>().isSessionSelected) {
       if (context.read<ChatProvider>().session!.messages.isEmpty) {
         SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context).snackBarInfoTitle,
           AppLocalizations.of(context).noNeedToCreateSessionSnackBar,
-          SnackBarType.info,
+          snackbar.ContentType.help,
         );
       } else if (context.read<ChatProvider>().isGenerating) {
         SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).modelIsGeneratingSnackBar,
-          SnackBarType.error,
+          snackbar.ContentType.failure,
         );
       } else {
         context.read<ChatProvider>().newSession();
       }
     } else {
       SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).snackBarInfoTitle,
         AppLocalizations.of(context).noNeedToCreateSessionSnackBar,
-        SnackBarType.info,
+        snackbar.ContentType.help,
       );
     }
   }

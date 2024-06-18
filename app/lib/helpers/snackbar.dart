@@ -1,46 +1,25 @@
 import 'package:flutter/material.dart';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:open_local_ui/scaffold_messenger_key.dart';
 
-enum SnackBarType {
-  success,
-  info,
-  warning,
-  error,
-}
-
 class SnackBarHelpers {
-  static Color _getColor(SnackBarType type) {
-    switch (type) {
-      case SnackBarType.success:
-        return Colors.green;
-      case SnackBarType.info:
-        return Colors.blue;
-      case SnackBarType.warning:
-        return Colors.orange;
-      case SnackBarType.error:
-        return Colors.red;
-    }
-  }
-
-  static void showSnackBar(String message, SnackBarType type) async {
+  static void showSnackBar(
+    String title,
+    String message,
+    ContentType type, {
+    Duration duration = const Duration(seconds: 5),
+  }) async {
     final snackBar = SnackBar(
-      content: Text(
-        message,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 16.0,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      showCloseIcon: true,
-      duration: const Duration(seconds: 3),
-      backgroundColor: _getColor(type),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      elevation: 0,
       behavior: SnackBarBehavior.floating,
-      elevation: 8.0,
+      backgroundColor: Colors.transparent,
+      duration: duration,
+      content: AwesomeSnackbarContent(
+        title: title,
+        message: message,
+        contentType: type,
+      ),
     );
 
     scaffoldMessengerKey.currentState?.showSnackBar(snackBar);

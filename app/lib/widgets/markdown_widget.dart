@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
+    as snackbar;
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // ignore: depend_on_referenced_packages
@@ -50,8 +52,9 @@ class MessageMarkdownWidget extends StatelessWidget {
                 launchUrl(Uri.parse(url));
               } catch (e) {
                 SnackBarHelpers.showSnackBar(
+                  AppLocalizations.of(context).snackBarErrorTitle,
                   AppLocalizations.of(context).somethingWentWrongSnackBar,
-                  SnackBarType.error,
+                  snackbar.ContentType.failure,
                 );
               }
             },
@@ -96,8 +99,9 @@ class _CodeWrapperState extends State<CodeWrapperWidget> {
     Clipboard.setData(ClipboardData(text: widget.text));
 
     SnackBarHelpers.showSnackBar(
+      AppLocalizations.of(context).snackBarSuccessTitle,
       AppLocalizations.of(context).codeCopiedSnackBar,
-      SnackBarType.success,
+      snackbar.ContentType.success,
     );
   }
 
