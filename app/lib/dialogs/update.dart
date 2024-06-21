@@ -23,9 +23,9 @@ class _UpdateDialogState extends State<UpdateDialog> {
   }
 
   Future<void> _checkForUpdates() async {
-    bool isLatestVersion = await UpdateHelper.isLatestVersion();
+    bool isUpdateAvailable = await UpdateHelper.isUpdateAvailable();
     setState(() {
-      _isUpdateAvailable = !isLatestVersion;
+      _isUpdateAvailable = isUpdateAvailable;
       _isLoading = false;
     });
   }

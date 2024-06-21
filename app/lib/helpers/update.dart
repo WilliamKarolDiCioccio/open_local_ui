@@ -16,7 +16,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UpdateHelper {
   static late GitHubRelease _latestRelease;
 
-  static Future<bool> isLatestVersion() async {
+  static bool _isVersionSuperior(String version) {
+    final currentVersion = Env.version.split('.').map(int.parse).toList();
+    final newVersion = version.split('.').map(int.parse).toList();
+
+    for (var i = 0; i < currentVersion.length; i++) {
+      if (currentVersion[i] < newVersion[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  static Future<bool> isUpdateAvailable() async {
     if (!Platform.isWindows) {
       throw UnimplementedError('Platform not supported');
     }
@@ -27,21 +40,21 @@ class UpdateHelper {
 
     if (prefs.getString('skipUpdate') == _latestRelease.tag_name) {
       logger.i('Skipping update: ${_latestRelease.tag_name}');
-      return true;
-    } else if (_latestRelease.tag_name == Env.version) {
+      return false;
+    } else if (!_isVersionSuperior(_latestRelease.tag_name)) {
       logger.i('No new version available');
-      return true;
+      return false;
     }
 
     logger.i('New version available: ${_latestRelease.tag_name}');
 
     for (final asset in _latestRelease.assets) {
       if (Platform.isWindows && asset.name.contains('windows_x64')) {
-        return false;
+        return true;
       }
     }
 
-    return true;
+    return false;
   }
 
   static Future downloadAndInstallLatestVersion() async {

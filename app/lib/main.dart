@@ -103,9 +103,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _checkForUpdates() {
-    UpdateHelper.isLatestVersion().then(
-      (isLatestVersion) {
-        if (!isLatestVersion) {
+    UpdateHelper.isUpdateAvailable().then(
+      (updateAvailable) {
+        if (updateAvailable) {
           SnackBarHelpers.showSnackBar(
             AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
                 .snackBarUpdateTitle,
