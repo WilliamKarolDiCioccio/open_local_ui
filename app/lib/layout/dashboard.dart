@@ -6,6 +6,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:open_local_ui/dialogs/update.dart';
 import 'package:open_local_ui/helpers/github.dart';
 import 'package:open_local_ui/layout/side_menu_base.dart';
 import 'package:open_local_ui/pages/about.dart';
@@ -14,6 +15,8 @@ import 'package:open_local_ui/pages/models.dart';
 import 'package:open_local_ui/pages/sessions.dart';
 import 'package:open_local_ui/pages/settings.dart';
 import 'package:unicons/unicons.dart';
+
+enum PageIndex { chat, sessions, models, settings, about }
 
 class DashboardLayout extends StatefulWidget {
   const DashboardLayout({super.key});
@@ -63,7 +66,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
 
   Widget _buildOptionsOverlay() {
     return Positioned(
-      top: _getButtonOffset().dy - 128,
+      top: _getButtonOffset().dy - 156,
       left: _getButtonOffset().dx,
       child: Container(
         decoration: BoxDecoration(
@@ -81,13 +84,38 @@ class _DashboardLayoutState extends State<DashboardLayout> {
             Radius.circular(16),
           ),
         ),
-        child: const Padding(
-          padding: EdgeInsets.all(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              FeedbackButton(),
-              Gap(8),
-              LicenseButton(),
+              TextButton.icon(
+                onPressed: () {
+                  BetterFeedback.of(context).show(
+                    (UserFeedback feedback) {
+                      GitHubRESTHelpers.createGitHubIssue(
+                        feedback.text,
+                        feedback.screenshot,
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(UniconsLine.feedback),
+                label: Text(AppLocalizations.of(context).feedbackButton),
+              ),
+              const Gap(8),
+              TextButton.icon(
+                onPressed: () {
+                  showLicensePage(context: context);
+                },
+                icon: const Icon(UniconsLine.keyhole_circle),
+                label: Text(AppLocalizations.of(context).licenseButton),
+              ),
+              const Gap(8),
+              TextButton.icon(
+                onPressed: () => showUpdateDialog(context: context),
+                icon: const Icon(UniconsLine.sync),
+                label: Text(AppLocalizations.of(context).updateButton),
+              ),
             ],
           ),
         ),
@@ -217,45 +245,6 @@ class _DashboardLayoutState extends State<DashboardLayout> {
         const SettingsPage(),
         const AboutPage(),
       ],
-    );
-  }
-}
-
-enum PageIndex { chat, sessions, models, settings, about }
-
-class FeedbackButton extends StatelessWidget {
-  const FeedbackButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: () {
-        BetterFeedback.of(context).show(
-          (UserFeedback feedback) {
-            GitHubRESTHelpers.createGitHubIssue(
-              feedback.text,
-              feedback.screenshot,
-            );
-          },
-        );
-      },
-      icon: const Icon(UniconsLine.feedback),
-      label: Text(AppLocalizations.of(context).feedbackButton),
-    );
-  }
-}
-
-class LicenseButton extends StatelessWidget {
-  const LicenseButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: () {
-        showLicensePage(context: context);
-      },
-      icon: const Icon(UniconsLine.keyhole_circle),
-      label: Text(AppLocalizations.of(context).licenseButton),
     );
   }
 }
