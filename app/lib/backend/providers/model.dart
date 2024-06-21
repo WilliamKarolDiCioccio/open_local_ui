@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
     as snackbar;
 import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/backend/models/model.dart';
 import 'package:open_local_ui/backend/models/ollama_responses.dart';
+import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
-
-// TODO: translate snackbar messages in models provider
 
 enum ModelProviderStatus {
   idle,
@@ -134,16 +134,24 @@ class ModelProvider extends ChangeNotifier {
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
-          'Error',
-          'Failed to pull model $name',
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+              .snackBarErrorTitle,
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+              .failedToPullModelSnackBar,
           snackbar.ContentType.failure,
         );
       }
     }
 
     SnackBarHelpers.showSnackBar(
-      '',
-      'Model $name pulled successfully',
+      // ignore: use_build_context_synchronously
+      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+          .snackBarSuccessTitle,
+      // ignore: use_build_context_synchronously
+      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+          .modelPulledSuccessfullySnackBar,
       snackbar.ContentType.success,
     );
 
@@ -209,16 +217,24 @@ class ModelProvider extends ChangeNotifier {
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
-          'Error',
-          'Failed to push model $name',
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+              .snackBarErrorTitle,
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+              .failedToPushModelSnackBar,
           snackbar.ContentType.failure,
         );
       }
     }
 
     SnackBarHelpers.showSnackBar(
-      '',
-      'Model $name pushed successfully',
+      // ignore: use_build_context_synchronously
+      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+          .snackBarSuccessTitle,
+      // ignore: use_build_context_synchronously
+      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+          .modelPushedSuccessfullySnackBar,
       snackbar.ContentType.success,
     );
 
@@ -283,16 +299,24 @@ class ModelProvider extends ChangeNotifier {
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
-          'Error',
-          'Failed to create model $name',
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+              .snackBarErrorTitle,
+          // ignore: use_build_context_synchronously
+          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+              .failedToCreateModelSnackBar,
           snackbar.ContentType.failure,
         );
       }
     }
 
     SnackBarHelpers.showSnackBar(
-      '',
-      'Model $name created successfully',
+      // ignore: use_build_context_synchronously
+      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+          .snackBarSuccessTitle,
+      // ignore: use_build_context_synchronously
+      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+          .modelCreatedSuccessfullySnackBar,
       snackbar.ContentType.success,
     );
 

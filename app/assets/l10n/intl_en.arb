@@ -100,6 +100,7 @@
     }
   },
   "messageCopiedSnackBar": "Message copied to clipboard",
+  "modelCreatedSuccessfullySnackBar": "Model created successfully",
   "modelDetailsDigestText": "Digest: {digest}",
   "@modelDetailsDigestText": {
     "placeholders": {
@@ -157,6 +158,8 @@
     }
   },
   "modelIsGeneratingSnackBar": "Model is generating",
+  "modelPulledSuccessfullySnackBar": "Model pulled successfully",
+  "modelPushedSuccessfullySnackBar": "Model pushed successfully",
   "modelsPageCreateButton": "Create",
   "modelsPageDeleteButton": "Delete model",
   "modelsPageDeleteDialogText": "This will delete {modelName}. Do you confirm?",

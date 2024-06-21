@@ -100,6 +100,7 @@
     }
   },
   "messageCopiedSnackBar": "Nachricht in die Zwischenablage kopiert",
+  "modelCreatedSuccessfullySnackBar": "Modell erfolgreich erstellt",
   "modelDetailsDigestText": "Digest: {digest}",
   "@modelDetailsDigestText": {
     "placeholders": {
@@ -157,6 +158,8 @@
     }
   },
   "modelIsGeneratingSnackBar": "Modell wird generiert",
+  "modelPulledSuccessfullySnackBar": "Modell erfolgreich heruntergeladen",
+  "modelPushedSuccessfullySnackBar": "Modell erfolgreich hochgeladen",
   "modelsPageCreateButton": "Erstellen",
   "modelsPageDeleteButton": "Modell löschen",
   "modelsPageDeleteDialogText": "Das Model {modelName} wird gelöscht. Wollen sie fortfahren?",
