@@ -304,7 +304,8 @@ class _ModelListTileState extends State<ModelListTile> {
   }
 
   void _deleteModel() async {
-    if (context.read<ChatProvider>().modelName == widget.model.name) {
+    if (context.read<ChatProvider>().modelName == widget.model.name &&
+        context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
