@@ -18,7 +18,7 @@ import 'package:open_local_ui/pages/dashboard.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/locale.dart';
 import 'package:open_local_ui/providers/model.dart';
-import 'package:open_local_ui/scaffold_messenger_key.dart';
+import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/services/tts.dart';
 import 'package:open_local_ui/utils/logger.dart';
 import 'package:path_provider/path_provider.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:open_local_ui/scaffold_messenger_key.dart';
+import 'package:open_local_ui/constants/flutter.dart';
 
 class SnackBarHelpers {
   static void showSnackBar(

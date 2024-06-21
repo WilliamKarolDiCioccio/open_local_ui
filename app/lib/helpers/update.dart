@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/helpers/github.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
-import 'package:open_local_ui/scaffold_messenger_key.dart';
+import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/utils/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
