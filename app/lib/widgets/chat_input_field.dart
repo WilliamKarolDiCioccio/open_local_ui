@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
     as snackbar;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/dialogs/attachments_dropzone.dart';
+import 'package:open_local_ui/frontend/dialogs/attachments_dropzone.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';

@@ -6,13 +6,13 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/dialogs/update.dart';
+import 'package:open_local_ui/frontend/dialogs/update.dart';
 import 'package:open_local_ui/helpers/github.dart';
-import 'package:open_local_ui/pages/about.dart';
-import 'package:open_local_ui/pages/chat.dart';
-import 'package:open_local_ui/pages/models.dart';
-import 'package:open_local_ui/pages/sessions.dart';
-import 'package:open_local_ui/pages/settings.dart';
+import 'package:open_local_ui/screens/about.dart';
+import 'package:open_local_ui/screens/chat.dart';
+import 'package:open_local_ui/screens/models.dart';
+import 'package:open_local_ui/screens/sessions.dart';
+import 'package:open_local_ui/screens/settings.dart';
 import 'package:unicons/unicons.dart';
 
 enum PageIndex { chat, sessions, models, settings, about }

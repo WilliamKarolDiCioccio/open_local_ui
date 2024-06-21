@@ -7,10 +7,10 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/dialogs/confirmation.dart';
+import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
-import 'package:open_local_ui/pages/dashboard.dart';
+import 'package:open_local_ui/screens/dashboard.dart';
 import 'package:open_local_ui/models/chat_session.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:path_provider/path_provider.dart';
