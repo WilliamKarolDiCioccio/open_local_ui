@@ -11,7 +11,7 @@ import 'package:flutter_highlight/themes/atom-one-dark.dart';
 import 'package:flutter_highlight/themes/atom-one-light.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
-import 'package:open_local_ui/styles/markdown.dart';
+import 'package:open_local_ui/constants/style.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
