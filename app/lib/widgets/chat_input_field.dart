@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
+    as snackbar;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/dialogs/attachments_dropzone.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
@@ -31,8 +33,9 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<ModelProvider>().modelsCount == 0) {
         return SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).noModelsAvailableSnackBar,
-          SnackBarType.error,
+          snackbar.ContentType.failure,
         );
       } else {
         final models = context.read<ModelProvider>().models;
@@ -40,8 +43,9 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
       }
     } else if (context.read<ChatProvider>().isGenerating) {
       return SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        SnackBarType.error,
+        snackbar.ContentType.failure,
       );
     }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
+    as snackbar;
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
@@ -239,8 +241,10 @@ class _OllamaSettingsState extends State<OllamaSettings> {
                             if (!value) {
                               SnackBarHelpers.showSnackBar(
                                 AppLocalizations.of(context)
+                                    .snackBarWarningTitle,
+                                AppLocalizations.of(context)
                                     .ollamaDisabledGPUWarningSnackBar,
-                                SnackBarType.warning,
+                                snackbar.ContentType.warning,
                               );
                             }
 

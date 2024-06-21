@@ -4,12 +4,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
+    as snackbar;
 import 'package:http/http.dart' as http;
 import 'package:open_local_ui/helpers/http.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/models/ollama_responses.dart';
 import 'package:open_local_ui/utils/logger.dart';
+
+// TODO: translate snackbar messages in models provider
 
 enum ModelProviderStatus {
   idle,
@@ -130,15 +134,17 @@ class ModelProvider extends ChangeNotifier {
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
+          'Error',
           'Failed to pull model $name',
-          SnackBarType.error,
+          snackbar.ContentType.failure,
         );
       }
     }
 
     SnackBarHelpers.showSnackBar(
+      '',
       'Model $name pulled successfully',
-      SnackBarType.success,
+      snackbar.ContentType.success,
     );
 
     sleep(
@@ -203,15 +209,17 @@ class ModelProvider extends ChangeNotifier {
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
+          'Error',
           'Failed to push model $name',
-          SnackBarType.error,
+          snackbar.ContentType.failure,
         );
       }
     }
 
     SnackBarHelpers.showSnackBar(
+      '',
       'Model $name pushed successfully',
-      SnackBarType.success,
+      snackbar.ContentType.success,
     );
 
     sleep(
@@ -275,15 +283,17 @@ class ModelProvider extends ChangeNotifier {
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
+          'Error',
           'Failed to create model $name',
-          SnackBarType.error,
+          snackbar.ContentType.failure,
         );
       }
     }
 
     SnackBarHelpers.showSnackBar(
+      '',
       'Model $name created successfully',
-      SnackBarType.success,
+      snackbar.ContentType.success,
     );
 
     sleep(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
+    as snackbar;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/helpers/datetime.dart';
@@ -40,16 +42,18 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     Clipboard.setData(ClipboardData(text: widget.message.text));
 
     SnackBarHelpers.showSnackBar(
+      AppLocalizations.of(context).snackBarSuccessTitle,
       AppLocalizations.of(context).messageCopiedSnackBar,
-      SnackBarType.success,
+      snackbar.ContentType.success,
     );
   }
 
   void _regenerateMessage() {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        SnackBarType.error,
+        snackbar.ContentType.failure,
       );
     } else {
       context.read<ChatProvider>().regenerateMessage(widget.message.uuid);
@@ -67,8 +71,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   void _sendEditedText() {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
+        '',
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        SnackBarType.error,
+        snackbar.ContentType.failure,
       );
     } else {
       if (_textEditingController.text.isEmpty) return;
@@ -99,13 +104,15 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
     if (context.read<ChatProvider>().isGenerating && isLastMessage) {
       SnackBarHelpers.showSnackBar(
+        '',
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        SnackBarType.error,
+        snackbar.ContentType.failure,
       );
     } else if (widget.message.text.isEmpty) {
       SnackBarHelpers.showSnackBar(
+        '',
         AppLocalizations.of(context).nothingToSynthesizeSnackBar,
-        SnackBarType.error,
+        snackbar.ContentType.failure,
       );
     } else {
       setState(() {
