@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/widgets/chat_example_questions.dart';
 
@@ -27,23 +26,21 @@ class ChatPage extends StatelessWidget {
         const SingleActivator(LogicalKeyboardKey.keyN, control: true):
             context.read<ChatProvider>().newSession,
       },
-      child: PageBaseLayout(
-        body: Column(
-          children: [
-            const ChatToolbarWidget(),
-            const SizedBox(height: 16.0),
-            Expanded(
-              child: FractionallySizedBox(
-                widthFactor: 0.6,
-                child: _buildInnerWidget(context),
-              ),
-            ),
-            const FractionallySizedBox(
+      child: Column(
+        children: [
+          const ChatToolbarWidget(),
+          const SizedBox(height: 16.0),
+          Expanded(
+            child: FractionallySizedBox(
               widthFactor: 0.6,
-              child: ChatInputFieldWidget(),
+              child: _buildInnerWidget(context),
             ),
-          ],
-        ),
+          ),
+          const FractionallySizedBox(
+            widthFactor: 0.6,
+            child: ChatInputFieldWidget(),
+          ),
+        ],
       ),
     );
   }

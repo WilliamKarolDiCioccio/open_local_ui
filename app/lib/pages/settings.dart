@@ -6,7 +6,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
-import 'package:open_local_ui/layout/page_base.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/locale.dart';
 import 'package:provider/provider.dart';
@@ -23,31 +22,29 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<LocaleProvider>(
-      builder: (context, value, child) => PageBaseLayout(
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Text(
-              AppLocalizations.of(context).settingsPageTitle,
-              style: const TextStyle(
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
-              ),
+      builder: (context, value, child) => Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(
+            AppLocalizations.of(context).settingsPageTitle,
+            style: const TextStyle(
+              fontSize: 32.0,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 8.0),
-            const Divider(),
-            const SizedBox(height: 16.0),
-            const ThemeSettings(),
-            const SizedBox(height: 8.0),
-            const Divider(),
-            const SizedBox(height: 16.0),
-            const AccessibilitySettings(),
-            const SizedBox(height: 8.0),
-            const Divider(),
-            const SizedBox(height: 16.0),
-            const OllamaSettings(),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8.0),
+          const Divider(),
+          const SizedBox(height: 16.0),
+          const ThemeSettings(),
+          const SizedBox(height: 8.0),
+          const Divider(),
+          const SizedBox(height: 16.0),
+          const AccessibilitySettings(),
+          const SizedBox(height: 8.0),
+          const Divider(),
+          const SizedBox(height: 16.0),
+          const OllamaSettings(),
+        ],
       ),
     );
   }

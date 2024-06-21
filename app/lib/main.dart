@@ -14,7 +14,7 @@ import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
 import 'package:open_local_ui/helpers/update.dart';
 import 'package:open_local_ui/l10n/l10n.dart';
-import 'package:open_local_ui/layout/dashboard.dart';
+import 'package:open_local_ui/pages/dashboard.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/locale.dart';
 import 'package:open_local_ui/providers/model.dart';

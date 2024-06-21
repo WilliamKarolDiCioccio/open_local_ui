@@ -8,7 +8,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/dialogs/update.dart';
 import 'package:open_local_ui/helpers/github.dart';
-import 'package:open_local_ui/layout/side_menu_base.dart';
 import 'package:open_local_ui/pages/about.dart';
 import 'package:open_local_ui/pages/chat.dart';
 import 'package:open_local_ui/pages/models.dart';
@@ -126,8 +125,22 @@ class _DashboardLayoutState extends State<DashboardLayout> {
   }
 
   Widget _buildSideMenu() {
-    return SideMenuBaseLayout(
-      body: CallbackShortcuts(
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: AdaptiveTheme.of(context).mode.isDark
+                ? Colors.black
+                : Colors.grey,
+            blurRadius: 10.0,
+          ),
+        ],
+        color: AdaptiveTheme.of(context).mode.isDark
+            ? Colors.black
+            : Colors.grey[200],
+      ),
+      padding: const EdgeInsets.all(32.0),
+      child: CallbackShortcuts(
         bindings: {
           const SingleActivator(LogicalKeyboardKey.digit0, control: true): () =>
               _changePage(0),
@@ -235,16 +248,24 @@ class _DashboardLayoutState extends State<DashboardLayout> {
   }
 
   Widget _buildPageView() {
-    return PageView(
-      controller: _pageController,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        const ChatPage(),
-        SessionsPage(pageController: _pageController),
-        ModelsPage(pageController: _pageController),
-        const SettingsPage(),
-        const AboutPage(),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: AdaptiveTheme.of(context).mode.isDark
+            ? Colors.black12
+            : Colors.white,
+      ),
+      padding: const EdgeInsets.all(32.0),
+      child: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          const ChatPage(),
+          SessionsPage(pageController: _pageController),
+          ModelsPage(pageController: _pageController),
+          const SettingsPage(),
+          const AboutPage(),
+        ],
+      ),
     );
   }
 }

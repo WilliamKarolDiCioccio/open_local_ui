@@ -13,8 +13,7 @@ import 'package:open_local_ui/dialogs/pull_model.dart';
 import 'package:open_local_ui/dialogs/push_model.dart';
 import 'package:open_local_ui/helpers/datetime.dart';
 import 'package:open_local_ui/helpers/snackbar.dart';
-import 'package:open_local_ui/layout/dashboard.dart';
-import 'package:open_local_ui/layout/page_base.dart';
+import 'package:open_local_ui/pages/dashboard.dart';
 import 'package:open_local_ui/models/model.dart';
 import 'package:open_local_ui/providers/chat.dart';
 import 'package:open_local_ui/providers/model.dart';
@@ -101,174 +100,172 @@ class _ModelsPageState extends State<ModelsPage> {
       sortedModels = sortedModels.reversed.toList();
     }
 
-    return PageBaseLayout(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            AppLocalizations.of(context).modelsPageTitle,
-            style: const TextStyle(
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          AppLocalizations.of(context).modelsPageTitle,
+          style: const TextStyle(
+            fontSize: 32.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Gap(16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton.icon(
+              label: Text(
+                AppLocalizations.of(context).modelsPagePullButton,
+                style: const TextStyle(fontSize: 18.0),
+              ),
+              icon: const Icon(UniconsLine.download_alt),
+              onPressed: () => showPullModelDialog(context),
             ),
-          ),
-          const Gap(16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton.icon(
-                label: Text(
-                  AppLocalizations.of(context).modelsPagePullButton,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                icon: const Icon(UniconsLine.download_alt),
-                onPressed: () => showPullModelDialog(context),
+            TextButton.icon(
+              label: Text(
+                AppLocalizations.of(context).modelsPagePushButton,
+                style: const TextStyle(fontSize: 18.0),
               ),
-              TextButton.icon(
-                label: Text(
-                  AppLocalizations.of(context).modelsPagePushButton,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                icon: const Icon(UniconsLine.upload_alt),
-                onPressed: () => showPushModelDialog(context),
+              icon: const Icon(UniconsLine.upload_alt),
+              onPressed: () => showPushModelDialog(context),
+            ),
+            TextButton.icon(
+              label: Text(
+                AppLocalizations.of(context).modelsPageCreateButton,
+                style: const TextStyle(fontSize: 18.0),
               ),
-              TextButton.icon(
-                label: Text(
-                  AppLocalizations.of(context).modelsPageCreateButton,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                icon: const Icon(UniconsLine.create_dashboard),
-                onPressed: () => showCreateModelDialog(context),
+              icon: const Icon(UniconsLine.create_dashboard),
+              onPressed: () => showCreateModelDialog(context),
+            ),
+            TextButton.icon(
+              label: Text(
+                AppLocalizations.of(context).modelsPageImportButton,
+                style: const TextStyle(fontSize: 18.0),
               ),
-              TextButton.icon(
-                label: Text(
-                  AppLocalizations.of(context).modelsPageImportButton,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                icon: const Icon(UniconsLine.import),
-                onPressed: () => showImportModelDialog(context),
+              icon: const Icon(UniconsLine.import),
+              onPressed: () => showImportModelDialog(context),
+            ),
+            TextButton.icon(
+              label: Text(
+                AppLocalizations.of(context).modelsPageRefreshButton,
+                style: const TextStyle(fontSize: 18.0),
               ),
-              TextButton.icon(
-                label: Text(
-                  AppLocalizations.of(context).modelsPageRefreshButton,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                icon: const Icon(UniconsLine.sync),
-                onPressed: () {
-                  context.read<ModelProvider>().updateList();
-                },
-              ),
-            ],
-          ),
-          const Gap(16),
-          const Divider(),
-          const Gap(16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(AppLocalizations.of(context).listFiltersSortByLabel),
-              const Gap(16),
-              SegmentedButton<SortBy>(
-                selectedIcon: const Icon(UniconsLine.check),
-                segments: [
-                  ButtonSegment(
-                    value: SortBy.name,
-                    label: Text(
-                      AppLocalizations.of(context).sortByNameOption,
-                    ),
-                    icon: const Icon(UniconsLine.tag),
-                  ),
-                  ButtonSegment(
-                    value: SortBy.date,
-                    label: Text(
-                      AppLocalizations.of(context).sortByDateOption,
-                    ),
-                    icon: const Icon(UniconsLine.clock),
-                  ),
-                  ButtonSegment(
-                    value: SortBy.size,
-                    label: Text(
-                      AppLocalizations.of(context).sortBySizeOption,
-                    ),
-                    icon: const Icon(UniconsLine.database),
-                  ),
-                ],
-                selected: _sortBy,
-                onSelectionChanged: (value) async {
-                  final prefs = await SharedPreferences.getInstance();
-
-                  await prefs.setInt('modelsSortBy', value.first.index);
-
-                  setState(() {
-                    _sortBy = value;
-                  });
-                },
-              ),
-              const Gap(16),
-              Text(
-                AppLocalizations.of(context).listFiltersSortOrderLabel,
-              ),
-              const Gap(16),
-              SegmentedButton<SortOrder>(
-                selectedIcon: const Icon(UniconsLine.check),
-                segments: [
-                  ButtonSegment(
-                    value: SortOrder.ascending,
-                    label: Text(
-                      AppLocalizations.of(context).sortOrderAscendingOption,
-                    ),
-                    icon: const Icon(UniconsLine.arrow_up),
-                  ),
-                  ButtonSegment(
-                    value: SortOrder.descending,
-                    label: Text(
-                      AppLocalizations.of(context).sortOrderDescendingOption,
-                    ),
-                    icon: const Icon(UniconsLine.arrow_down),
-                  ),
-                ],
-                selected: _sortOrder,
-                onSelectionChanged: (value) async {
-                  final prefs = await SharedPreferences.getInstance();
-
-                  if (value.contains(SortOrder.descending)) {
-                    await prefs.setBool('modelsSortOrder', true);
-                  } else {
-                    await prefs.setBool('modelsSortOrder', false);
-                  }
-
-                  setState(() {
-                    _sortOrder = value;
-                  });
-                },
-              ),
-            ],
-          ),
-          const Gap(16),
-          Expanded(
-            child: ListView.builder(
-              prototypeItem: ModelListTile(
-                model: prototypeModel,
-                pageController: widget.pageController,
-              ),
-              itemCount: context.watch<ModelProvider>().modelsCount,
-              itemBuilder: (context, index) {
-                return ModelListTile(
-                  model: sortedModels[index],
-                  pageController: widget.pageController,
-                )
-                    .animate(delay: (index * 100).ms)
-                    .fadeIn(duration: 900.ms, delay: 300.ms)
-                    .move(
-                      begin: const Offset(-16, 0),
-                      curve: Curves.easeOutQuad,
-                    );
+              icon: const Icon(UniconsLine.sync),
+              onPressed: () {
+                context.read<ModelProvider>().updateList();
               },
             ),
+          ],
+        ),
+        const Gap(16),
+        const Divider(),
+        const Gap(16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(AppLocalizations.of(context).listFiltersSortByLabel),
+            const Gap(16),
+            SegmentedButton<SortBy>(
+              selectedIcon: const Icon(UniconsLine.check),
+              segments: [
+                ButtonSegment(
+                  value: SortBy.name,
+                  label: Text(
+                    AppLocalizations.of(context).sortByNameOption,
+                  ),
+                  icon: const Icon(UniconsLine.tag),
+                ),
+                ButtonSegment(
+                  value: SortBy.date,
+                  label: Text(
+                    AppLocalizations.of(context).sortByDateOption,
+                  ),
+                  icon: const Icon(UniconsLine.clock),
+                ),
+                ButtonSegment(
+                  value: SortBy.size,
+                  label: Text(
+                    AppLocalizations.of(context).sortBySizeOption,
+                  ),
+                  icon: const Icon(UniconsLine.database),
+                ),
+              ],
+              selected: _sortBy,
+              onSelectionChanged: (value) async {
+                final prefs = await SharedPreferences.getInstance();
+
+                await prefs.setInt('modelsSortBy', value.first.index);
+
+                setState(() {
+                  _sortBy = value;
+                });
+              },
+            ),
+            const Gap(16),
+            Text(
+              AppLocalizations.of(context).listFiltersSortOrderLabel,
+            ),
+            const Gap(16),
+            SegmentedButton<SortOrder>(
+              selectedIcon: const Icon(UniconsLine.check),
+              segments: [
+                ButtonSegment(
+                  value: SortOrder.ascending,
+                  label: Text(
+                    AppLocalizations.of(context).sortOrderAscendingOption,
+                  ),
+                  icon: const Icon(UniconsLine.arrow_up),
+                ),
+                ButtonSegment(
+                  value: SortOrder.descending,
+                  label: Text(
+                    AppLocalizations.of(context).sortOrderDescendingOption,
+                  ),
+                  icon: const Icon(UniconsLine.arrow_down),
+                ),
+              ],
+              selected: _sortOrder,
+              onSelectionChanged: (value) async {
+                final prefs = await SharedPreferences.getInstance();
+
+                if (value.contains(SortOrder.descending)) {
+                  await prefs.setBool('modelsSortOrder', true);
+                } else {
+                  await prefs.setBool('modelsSortOrder', false);
+                }
+
+                setState(() {
+                  _sortOrder = value;
+                });
+              },
+            ),
+          ],
+        ),
+        const Gap(16),
+        Expanded(
+          child: ListView.builder(
+            prototypeItem: ModelListTile(
+              model: prototypeModel,
+              pageController: widget.pageController,
+            ),
+            itemCount: context.watch<ModelProvider>().modelsCount,
+            itemBuilder: (context, index) {
+              return ModelListTile(
+                model: sortedModels[index],
+                pageController: widget.pageController,
+              )
+                  .animate(delay: (index * 100).ms)
+                  .fadeIn(duration: 900.ms, delay: 300.ms)
+                  .move(
+                    begin: const Offset(-16, 0),
+                    curve: Curves.easeOutQuad,
+                  );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
