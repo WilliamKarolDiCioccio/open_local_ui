@@ -789,6 +789,10 @@ class ChatProvider extends ChangeNotifier {
   bool get isDocsSearchEnabledForModel =>
       _modelSettings['enableDocSearch'] as bool? ?? _enableDocsSearch;
 
+  bool get isImagesSupportedForModel =>
+      _modelSettings['enableImages'] as bool? ??
+      true; // Maybe switch default to "false" in the future
+
   ChatSessionWrapper? get session => _session;
 
   ChatSessionWrapper? get sessionByUuid {

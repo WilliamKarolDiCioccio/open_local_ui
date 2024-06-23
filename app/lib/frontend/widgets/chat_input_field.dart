@@ -78,32 +78,34 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.0),
             ),
-            prefixIcon: Padding(
-              padding: const EdgeInsets.only(
-                left: 8.0,
-                right: 8.0,
-              ),
-              child: IconButton(
-                tooltip: _imageBytes == null
-                    ? AppLocalizations.of(context).chatAttachFilesTooltip
-                    : AppLocalizations.of(context).chatDetachFilesTooltip,
-                icon: Icon(
-                  _imageBytes == null
-                      ? UniconsLine.link_add
-                      : UniconsLine.link_broken,
-                ),
-                onPressed: () async {
-                  final imageBytes = await showAttachmentsDropzoneDialog(
-                    context,
-                    _imageBytes,
-                  );
+            prefixIcon: context.read<ChatProvider>().isImagesSupportedForModel
+                ? Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8.0,
+                      right: 8.0,
+                    ),
+                    child: IconButton(
+                      tooltip: _imageBytes == null
+                          ? AppLocalizations.of(context).chatAttachFilesTooltip
+                          : AppLocalizations.of(context).chatDetachFilesTooltip,
+                      icon: Icon(
+                        _imageBytes == null
+                            ? UniconsLine.link_add
+                            : UniconsLine.link_broken,
+                      ),
+                      onPressed: () async {
+                        final imageBytes = await showAttachmentsDropzoneDialog(
+                          context,
+                          _imageBytes,
+                        );
 
-                  setState(() {
-                    _imageBytes = imageBytes;
-                  });
-                },
-              ),
-            ),
+                        setState(() {
+                          _imageBytes = imageBytes;
+                        });
+                      },
+                    ),
+                  )
+                : null,
             suffixIcon: Padding(
               padding: const EdgeInsets.only(
                 left: 8.0,
