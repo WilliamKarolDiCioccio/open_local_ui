@@ -21,9 +21,7 @@ class ModelSettingsProvider extends ChangeNotifier {
   static Future<Map<String, dynamic>> loadModelSettings(
       String modelName) async {
     Map<String, dynamic> modelSettings = {};
-    final dir = await getApplicationSupportDirectory();
-    final cleanName = modelName.toLowerCase().replaceAll(RegExp(r'\W'), '_');
-    final settingsFile = File('${dir.path}/models/$cleanName.json');
+    final settingsFile = await _getSettingsFile(modelName);
     if (await settingsFile.exists()) {
       modelSettings = jsonDecode(await settingsFile.readAsString());
     }
@@ -35,9 +33,7 @@ class ModelSettingsProvider extends ChangeNotifier {
   Future<void> set(String setting, dynamic newValue) async {
     // Make sure we have the latest settings
     await loadSettings();
-    final dir = await getApplicationSupportDirectory();
-    final cleanName = modelName.toLowerCase().replaceAll(RegExp(r'\W'), '_');
-    final settingsFile = File('${dir.path}/models/$cleanName.json');
+    File settingsFile = await _getSettingsFile(modelName);
     if (!await settingsFile.exists()) {
       await settingsFile.parent.create();
     }
@@ -48,5 +44,12 @@ class ModelSettingsProvider extends ChangeNotifier {
     }
     await settingsFile.writeAsString(jsonEncode(_settings));
     notifyListeners();
+  }
+
+  static Future<File> _getSettingsFile(String modelName) async {
+    final dir = await getApplicationSupportDirectory();
+    final cleanName = modelName.toLowerCase().replaceAll(RegExp(r'\W'), '_');
+    final settingsFile = File('${dir.path}/models/$cleanName.json');
+    return settingsFile;
   }
 }
