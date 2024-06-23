@@ -132,8 +132,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     late String senderName;
     late IconData senderIconData;
 
-    final chatProvider = context.watch<ChatProvider>();
-
     switch (widget.message.sender) {
       case ChatMessageSender.user:
         senderIconData = UniconsLine.user;
@@ -213,12 +211,14 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               const SizedBox(height: 8.0),
           if (!_showEditWidget)
-            MessageMarkdownWidget(
-              widget.message.text +
-                  (chatProvider.isChatShowStatisticsForModel
-                      ? _buildStatisticsSummary(widget.message)
-                      : ''),
-            ),
+            if (widget.message.text.isNotEmpty)
+              MessageMarkdownWidget(
+                widget.message.text,
+              ),
+          if (context.watch<ChatProvider>().isChatShowStatistics &&
+              widget.message.text.isNotEmpty &&
+              widget.message.sender == ChatMessageSender.model)
+            _buildStatisticsSummary(widget.message),
           const Gap(8.0),
           if (!_showEditWidget &&
               !_showPlayerWidget &&
@@ -309,19 +309,41 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     );
   }
 
-  String _buildStatisticsSummary(ChatMessageWrapper message) {
-    if (message.totalTokens == 0) {
-      return '';
-    }
+  Widget _buildStatisticsSummary(ChatMessageWrapper message) {
+    final tokenCount = message.totalTokens;
+    final durationInMs = message.totalDuration / 1000 ~/ 1000;
+    final tps = (tokenCount / (durationInMs / 1000)).toStringAsFixed(2);
 
-    final token = message.totalTokens;
-    final durationMs = message.totalDuration / 1000 ~/ 1000;
-    final tps = (token / (durationMs / 1000)).toStringAsFixed(2);
-
-    return '''
-
-
-**Token:** $token   **Duration:** $durationMs ms   **Speed:** $tps t/s
- ''';
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Text.rich(
+        style: const TextStyle(
+          fontSize: 16.0,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w300,
+        ),
+        TextSpan(
+          children: [
+            TextSpan(
+              text: AppLocalizations.of(context).chatStatisticsTokens(
+                tokenCount,
+              ),
+            ),
+            const TextSpan(text: ' '),
+            TextSpan(
+              text: AppLocalizations.of(context).chatStatisticsDuration(
+                durationInMs,
+              ),
+            ),
+            const TextSpan(text: ' '),
+            TextSpan(
+              text: AppLocalizations.of(context).chatStatisticsSpeed(
+                tps,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

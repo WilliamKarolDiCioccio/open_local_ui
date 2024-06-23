@@ -35,6 +35,31 @@
   "chatRegenerateMessageTooltip": "Regenerar mensaje",
   "chatResendMessageButton": "Reenviar mensaje",
   "chatSendTooltip": "Enviar mensaje",
+  "chatStatisticsDuration": "Duración: {duration} ms",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "Velocidad: {speed} tokens/s",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSummary": "Resumen de estadísticas",
+  "chatStatisticsTokens": "Tokens: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
   "chatSuggestionsPrompt": "¿Quieres algunas sugerencias?",
   "chatSystemSender": "Sistema",
   "chatTitleEditHint": "Escribe un título...",
@@ -100,6 +125,7 @@
     }
   },
   "messageCopiedSnackBar": "Mensaje copiado al portapapeles",
+  "modelCreatedSuccessfullySnackBar": "Modelo creado con éxito",
   "modelDetailsDigestText": "Resumen: {digest}",
   "@modelDetailsDigestText": {
     "placeholders": {
@@ -157,6 +183,8 @@
     }
   },
   "modelIsGeneratingSnackBar": "El modelo se está generando",
+  "modelPulledSuccessfullySnackBar": "Modelo descargado con éxito",
+  "modelPushedSuccessfullySnackBar": "Modelo subido con éxito",
   "modelsPageCreateButton": "Crear",
   "modelsPageDeleteButton": "Eliminar modelo",
   "modelsPageDeleteDialogText": "Esto eliminará {modelName}. ¿Confirmas?",
@@ -261,9 +289,6 @@
   "settingsThemeModeSystem": "Sistema",
   "snackBarErrorTitle": "Error",
   "snackBarInfoTitle": "Información",
-  "modelPulledSuccessfullySnackBar": "Modelo descargado con éxito",
-  "modelPushedSuccessfullySnackBar": "Modelo subido con éxito",
-  "modelCreatedSuccessfullySnackBar": "Modelo creado con éxito",
   "snackBarSuccessTitle": "Éxito",
   "snackBarUpdateTitle": "Actualización disponible",
   "snackBarWarningTitle": "Advertencia",

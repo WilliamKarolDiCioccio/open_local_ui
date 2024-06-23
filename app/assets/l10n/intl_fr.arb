@@ -35,6 +35,30 @@
   "chatRegenerateMessageTooltip": "Régénérer le message",
   "chatResendMessageButton": "Renvoyer le message",
   "chatSendTooltip": "Envoyer le message",
+  "chatStatisticsDuration": "Durée: {duration} ms",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "Vitesse: {speed} token/s",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "Tokens: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
   "chatSuggestionsPrompt": "Vous voulez des suggestions ?",
   "chatSystemSender": "Système",
   "chatTitleEditHint": "Tapez un titre...",
