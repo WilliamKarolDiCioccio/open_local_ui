@@ -778,10 +778,16 @@ class ChatProvider extends ChangeNotifier {
   bool get isOllamaUsingGpu => _enableGPU;
 
   bool get isChatShowStatistics => _showStatistics;
+  bool get isChatShowStatisticsForModel =>
+      _modelSettings['showStatistics'] as bool? ?? _showStatistics;
 
   bool get isWebSearchEnabled => _enableWebSearch;
+  bool get isWebSearchEnabledForModel =>
+      _modelSettings['enableWebSearch'] as bool? ?? _enableWebSearch;
 
   bool get isDocsSearchEnabled => _enableDocsSearch;
+  bool get isDocsSearchEnabledForModel =>
+      _modelSettings['enableDocSearch'] as bool? ?? _enableDocsSearch;
 
   ChatSessionWrapper? get session => _session;
 
