@@ -215,7 +215,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           if (!_showEditWidget)
             MessageMarkdownWidget(
               widget.message.text +
-                  (chatProvider.isChatShowStatistics
+                  (chatProvider.isChatShowStatisticsForModel
                       ? _buildStatisticsSummary(widget.message)
                       : ''),
             ),

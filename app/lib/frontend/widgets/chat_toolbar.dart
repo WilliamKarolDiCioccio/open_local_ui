@@ -92,7 +92,7 @@ class ChatOptionBarWidget extends StatelessWidget {
             children: [
               Text(AppLocalizations.of(context).chatToolbarWebSearchOption),
               Checkbox(
-                value: context.watch<ChatProvider>().isWebSearchEnabled,
+                value: context.watch<ChatProvider>().isWebSearchEnabledForModel,
                 onChanged: !context.watch<ChatProvider>().isGenerating
                     ? (value) {
                         context
@@ -104,7 +104,8 @@ class ChatOptionBarWidget extends StatelessWidget {
               const Gap(8),
               Text(AppLocalizations.of(context).chatToolbarDocsSearchOption),
               Checkbox(
-                value: context.watch<ChatProvider>().isDocsSearchEnabled,
+                value:
+                    context.watch<ChatProvider>().isDocsSearchEnabledForModel,
                 onChanged: !context.watch<ChatProvider>().isGenerating
                     ? (value) {
                         context
