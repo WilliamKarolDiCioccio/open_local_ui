@@ -14,6 +14,7 @@ import 'package:open_local_ui/backend/databases/sessions.dart';
 import 'package:open_local_ui/backend/models/chat_message.dart';
 import 'package:open_local_ui/backend/models/chat_session.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
+import 'package:open_local_ui/backend/providers/model_settings.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,7 +70,7 @@ class ChatProvider extends ChangeNotifier {
     _showStatistics = prefs.getBool('showStatistics') ?? false;
 
     // Load the model specific settings if available.
-    await _loadModelSettings();
+    _modelSettings = await ModelSettingsProvider.loadModelSettings(modelName);
     _updateModelOptions();
 
     final docsDir = await getApplicationDocumentsDirectory();
@@ -83,22 +84,7 @@ class ChatProvider extends ChangeNotifier {
     );
 
     _sessions.addAll(loadedSessions);
-
     notifyListeners();
-  }
-
-  /// Load model specific settings from json file if it exists.
-  Future<void> _loadModelSettings() async {
-    _modelSettings = {};
-    final dir = await getApplicationSupportDirectory();
-    final cleanName = _modelName.toLowerCase().replaceAll(RegExp(r'\W'), '_');
-    final settingsFile = File('${dir.path}/models/$cleanName.json');
-
-    logger.d('Loading model specific settings from $settingsFile');
-    if (await settingsFile.exists()) {
-      _modelSettings = jsonDecode(await settingsFile.readAsString());
-      logger.d('$_modelSettings');
-    }
   }
 
   // Sessions management
@@ -664,8 +650,7 @@ class ChatProvider extends ChangeNotifier {
     _modelName = name;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('modelName', name);
-
-    await _loadModelSettings();
+    _modelSettings = await ModelSettingsProvider.loadModelSettings(modelName);
     _updateModelOptions();
 
     notifyListeners();
