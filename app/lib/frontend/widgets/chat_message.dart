@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -230,12 +232,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   onPressed: () => _copyMessage(),
                   icon: const Icon(UniconsLine.copy),
                 ),
-                const Gap(8),
-                IconButton(
-                  tooltip: AppLocalizations.of(context).chatReadAloudTooltip,
-                  onPressed: () => _showTTSPlayer(),
-                  icon: const Icon(Icons.hearing),
-                ),
+                if (Platform.isLinux) const Gap(8),
+                if (!Platform.isLinux)
+                  IconButton(
+                    tooltip: AppLocalizations.of(context).chatReadAloudTooltip,
+                    onPressed: () => _showTTSPlayer(),
+                    icon: const Icon(Icons.hearing),
+                  ),
                 const Gap(8),
                 if (widget.message.sender == ChatMessageSender.model)
                   IconButton(
