@@ -8,6 +8,10 @@
 ![](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
 ![](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
+*__Join Our Discord to get help and collaborate!__*
+
+[![](https://dcbadge.limes.pink/api/server/WuDckBpwHd)](https://discord.gg/WuDckBpwHd)
+
 ![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/dark_theme.png#gh-dark-mode-only)
 ![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/light_theme.png#gh-light-mode-only)
 
