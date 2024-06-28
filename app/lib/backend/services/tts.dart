@@ -59,6 +59,10 @@ class TTSService {
     if (Platform.isWindows) {
       final directory = p.dirname(Platform.resolvedExecutable);
       executablePath = '$directory/server.exe';
+    } else {
+      logger.e('Unsupported platform');
+
+      return;
     }
 
     try {
