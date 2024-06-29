@@ -181,7 +181,11 @@
       }
     }
   },
+  "modelGeneralSettingsLabel": "Général",
   "modelIsGeneratingSnackBar": "Le modèle est en cours de génération",
+  "modelMiscSettingsLabel": "Divers",
+  "modelPenaltySettingsLabel": "Pénalité",
+  "modelPerformanceSettingsLabel": "Performances",
   "modelPulledSuccessfullySnackBar": "Modèle téléchargé avec succès",
   "modelPushedSuccessfullySnackBar": "Modèle téléchargé avec succès",
   "modelsPageCreateButton": "Créer",
@@ -199,6 +203,7 @@
   "modelsPagePullButton": "Tirer",
   "modelsPagePushButton": "Pousser",
   "modelsPageRefreshButton": "Rafraîchir",
+  "modelsPageSettingsButton": "Ouvrir les paramètres du modèle",
   "modelsPageTitle": "Gestion des modèles",
   "modelsPageUseButton": "Utiliser le modèle",
   "modifiedAtTextShared": "Modifié à : {modifiedAt}",
@@ -275,6 +280,7 @@
   "settingsLanguageItalian": "Italien",
   "settingsLanguageSpanish": "Espagnol",
   "settingsLanguageSystem": "Système",
+  "settingsModelDialogTitle": "Paramètres spécifiques au modèle",
   "settingsPageAccessibilityLabel": "Accessibilité",
   "settingsPageOllamaKeepAliveTimeLabel": "Définir le temps de maintien en vie",
   "settingsPageOllamaLabel": "Ollama",

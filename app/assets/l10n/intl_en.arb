@@ -181,7 +181,11 @@
       }
     }
   },
+  "modelGeneralSettingsLabel": "General",
   "modelIsGeneratingSnackBar": "Model is generating",
+  "modelMiscSettingsLabel": "Miscellaneous",
+  "modelPenaltySettingsLabel": "Penalty",
+  "modelPerformanceSettingsLabel": "Performance",
   "modelPulledSuccessfullySnackBar": "Model pulled successfully",
   "modelPushedSuccessfullySnackBar": "Model pushed successfully",
   "modelsPageCreateButton": "Create",
@@ -199,6 +203,7 @@
   "modelsPagePullButton": "Pull",
   "modelsPagePushButton": "Push",
   "modelsPageRefreshButton": "Refresh",
+  "modelsPageSettingsButton": "Open model settings",
   "modelsPageTitle": "Models management",
   "modelsPageUseButton": "Use model",
   "modifiedAtTextShared": "Modified at: {modifiedAt}",
@@ -275,6 +280,17 @@
   "settingsLanguageItalian": "Italian",
   "settingsLanguageSpanish": "Spanish",
   "settingsLanguageSystem": "System",
+  "settingsModelDefault": "Default",
+  "settingsModelDialogTitle": "{model} specific settings",
+  "@settingsModelDialogTitle": {
+    "placeholders": {
+      "model": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsModelOff": "On",
+  "settingsModelOn": "Off",
   "settingsPageAccessibilityLabel": "Accessibility",
   "settingsPageOllamaKeepAliveTimeLabel": "Set keep alive time",
   "settingsPageOllamaLabel": "Ollama",

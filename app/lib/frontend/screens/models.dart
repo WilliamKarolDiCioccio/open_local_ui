@@ -9,6 +9,7 @@ import 'package:open_local_ui/backend/models/model.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
 import 'package:open_local_ui/core/formatters.dart';
+import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/dialogs/create_model.dart';
@@ -330,6 +331,12 @@ class _ModelListTileState extends State<ModelListTile> {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
+            tooltip: AppLocalizations.of(context).modelsPageSettingsButton,
+            icon: const Icon(UniconsLine.setting),
+            onPressed: () => showModelSettingsDialog(widget.model, context),
+          ),
+          const Gap(8),
+          IconButton(
             tooltip: AppLocalizations.of(context).modelsPageUseButton,
             icon: const Icon(UniconsLine.enter),
             onPressed: () => _setModel(widget.model),
@@ -355,9 +362,7 @@ class _ModelListTileState extends State<ModelListTile> {
           ),
         ],
       ),
-      onTap: () {
-        showModelDetailsDialog(widget.model, context);
-      },
+      onTap: () => showModelDetailsDialog(widget.model, context),
     );
   }
 }
