@@ -31,7 +31,8 @@ class UpdateHelper {
 
   static Future<bool> isUpdateAvailable() async {
     if (!Platform.isWindows) {
-      logger.e('Unsupported platform');
+      logger.i(
+          'Autoupdate not supported on platform: ${Platform.operatingSystem}');
       return false;
     }
 
@@ -39,15 +40,20 @@ class UpdateHelper {
 
     final prefs = await SharedPreferences.getInstance();
 
-    if (prefs.getString('skipUpdate') == _latestRelease.tag_name) {
-      logger.i('Skipping update: ${_latestRelease.tag_name}');
+    final latestAvailableVersion = _latestRelease.tag_name;
+    if (latestAvailableVersion.isEmpty) {
+      logger.i('Latest release not found on GitHub');
       return false;
-    } else if (!_isVersionSuperior(_latestRelease.tag_name)) {
+    }
+    if (prefs.getString('skipUpdate') == latestAvailableVersion) {
+      logger.i('Skipping update: $latestAvailableVersion');
+      return false;
+    } else if (!_isVersionSuperior(latestAvailableVersion)) {
       logger.i('No new version available');
       return false;
     }
 
-    logger.i('New version available: ${_latestRelease.tag_name}');
+    logger.i('New version available: $latestAvailableVersion');
 
     for (final asset in _latestRelease.assets) {
       if (Platform.isWindows && asset.name.contains('windows_x64')) {
