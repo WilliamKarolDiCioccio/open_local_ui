@@ -10,7 +10,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
-import 'package:open_local_ui/backend/databases/sessions.dart';
+import 'package:open_local_ui/backend/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/models/chat_message.dart';
 import 'package:open_local_ui/backend/models/chat_session.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
@@ -21,8 +21,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatProvider extends ChangeNotifier {
-  // Langchain model
-  ChatOllama _model;
+  // Langchain objects
+  ChatOllama _chat;
   // Model settings
   String _modelName;
   bool _enableGPU;
@@ -40,7 +40,7 @@ class ChatProvider extends ChangeNotifier {
   // Constructor and initialization
 
   ChatProvider()
-      : _model = ChatOllama(),
+      : _chat = ChatOllama(),
         _modelName = '',
         _enableWebSearch = false,
         _enableDocsSearch = false,
@@ -71,6 +71,7 @@ class ChatProvider extends ChangeNotifier {
 
     // Load the model specific settings if available.
     _modelSettings = await ModelSettingsProvider.loadModelSettings(modelName);
+    
     _updateModelOptions();
 
     final docsDir = await getApplicationDocumentsDirectory();
@@ -79,7 +80,7 @@ class ChatProvider extends ChangeNotifier {
       () async {
         Hive.init('${docsDir.path}/OpenLocalUI/saved_data');
 
-        return await SessionsDatabase.loadSessions();
+        return await ChatSessionsDatabase.loadSessions();
       },
     );
 
@@ -96,7 +97,7 @@ class ChatProvider extends ChangeNotifier {
       [],
     ));
 
-    SessionsDatabase.saveSession(_sessions.last);
+    ChatSessionsDatabase.saveSession(_sessions.last);
 
     notifyListeners();
 
@@ -162,7 +163,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session = null;
 
-    SessionsDatabase.deleteSession(uuid);
+    ChatSessionsDatabase.deleteSession(uuid);
 
     notifyListeners();
   }
@@ -192,7 +193,7 @@ class ChatProvider extends ChangeNotifier {
       }();
     }
 
-    SessionsDatabase.updateSession(_sessions[index]);
+    ChatSessionsDatabase.updateSession(_sessions[index]);
 
     notifyListeners();
   }
@@ -210,7 +211,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.messages.add(chatMessage);
 
-    SessionsDatabase.updateSession(_session!);
+    ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
 
@@ -229,7 +230,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.messages.add(chatMessage);
 
-    SessionsDatabase.updateSession(_session!);
+    ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
 
@@ -248,7 +249,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.messages.add(chatMessage);
 
-    SessionsDatabase.updateSession(_session!);
+    ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
 
@@ -266,7 +267,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.memory.chatHistory.removeLast();
 
-    SessionsDatabase.updateSession(_session!);
+    ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
   }
@@ -284,7 +285,7 @@ class ChatProvider extends ChangeNotifier {
       _session!.memory.chatHistory.removeLast();
     }
 
-    SessionsDatabase.updateSession(_session!);
+    ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
   }
@@ -297,7 +298,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.removeLast();
     _session!.memory.chatHistory.removeLast();
 
-    SessionsDatabase.updateSession(_session!);
+    ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
   }
@@ -308,7 +309,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.clear();
     _session!.memory.chatHistory.clear();
 
-    SessionsDatabase.updateSession(_session!);
+    ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
   }
@@ -334,7 +335,7 @@ class ChatProvider extends ChangeNotifier {
           ),
         }) |
         promptTemplate |
-        _model;
+        _chat;
 
     return chain;
   }
@@ -434,14 +435,14 @@ class ChatProvider extends ChangeNotifier {
 
         final prompt = PromptTemplate.fromTemplate(titleGeneratorPrompt);
 
-        final chain = prompt | _model | const StringOutputParser<ChatResult>();
+        final chain = prompt | _chat | const StringOutputParser<ChatResult>();
 
         final response = await chain.invoke({'question': text});
 
         setSessionTitle(_session!.uuid, response.toString());
       }
 
-      SessionsDatabase.updateSession(_session!);
+      ChatSessionsDatabase.updateSession(_session!);
 
       notifyListeners();
     } catch (e) {
@@ -451,7 +452,7 @@ class ChatProvider extends ChangeNotifier {
 
       addSystemMessage('An error occurred while generating the response.');
 
-      SessionsDatabase.updateSession(_session!);
+      ChatSessionsDatabase.updateSession(_session!);
 
       logger.e(e);
     }
@@ -641,7 +642,7 @@ class ChatProvider extends ChangeNotifier {
       vocabOnly: _modelSettings['vocabOnly'] as bool?,
     );
 
-    _model = ChatOllama(defaultOptions: modelOptions);
+    _chat = ChatOllama(defaultOptions: modelOptions);
   }
 
   void setModel(String name) async {

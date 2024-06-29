@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:open_local_ui/backend/models/chat_session.dart';
 
-class SessionsDatabase {
+class ChatSessionsDatabase {
   static Future<void> saveSession(ChatSessionWrapper session) async {
     final box = await Hive.openBox<String>('sessions');
 
