@@ -78,7 +78,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.0),
             ),
-            prefixIcon: context.read<ChatProvider>().isImagesSupportedForModel
+            prefixIcon: context.watch<ChatProvider>().isMultimodalModel
                 ? Padding(
                     padding: const EdgeInsets.only(
                       left: 8.0,

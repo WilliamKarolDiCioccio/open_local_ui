@@ -13,6 +13,7 @@ import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:open_local_ui/backend/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/models/chat_message.dart';
 import 'package:open_local_ui/backend/models/chat_session.dart';
+import 'package:open_local_ui/backend/models/model.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
 import 'package:open_local_ui/backend/providers/model_settings.dart';
 import 'package:open_local_ui/core/logger.dart';
@@ -31,7 +32,7 @@ class ChatProvider extends ChangeNotifier {
   bool _enableWebSearch;
   bool _enableDocsSearch;
   bool _showStatistics;
-  Map<String, dynamic> _modelSettings = {};
+  late ModelSettings _modelSettings;
 
   // Chat session
   ChatSessionWrapper? _session;
@@ -62,6 +63,7 @@ class ChatProvider extends ChangeNotifier {
     } else {
       if (models.isNotEmpty) _modelName = models.first.name;
     }
+
     _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
     _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
     _enableGPU = prefs.getBool('enableGPU') ?? true;
@@ -69,9 +71,8 @@ class ChatProvider extends ChangeNotifier {
     _keepAliveTime = prefs.getInt('keepAliveTime') ?? 5;
     _showStatistics = prefs.getBool('showStatistics') ?? false;
 
-    // Load the model specific settings if available.
-    _modelSettings = await ModelSettingsProvider.loadModelSettings(modelName);
-    
+    _modelSettings = await ModelSettingsProvider.loadStatic(modelName);
+
     _updateModelOptions();
 
     final docsDir = await getApplicationDocumentsDirectory();
@@ -343,14 +344,12 @@ class ChatProvider extends ChangeNotifier {
   /// Use model specific prompt if available, otherwise use default
   /// from assets
   Future<String> _loadSystemPrompt() async {
-    final defaultPrompt =
-        await rootBundle.loadString('assets/prompts/default.txt');
-    var systemPrompt = defaultPrompt;
-    final modelPrompt = _modelSettings['systemPrompt'] as String?;
-    if (modelPrompt != null && modelPrompt.isNotEmpty) {
-      systemPrompt = modelPrompt;
+    if (_modelSettings.systemPrompt != null &&
+        _modelSettings.systemPrompt!.isNotEmpty) {
+      return _modelSettings.systemPrompt!;
     }
-    return systemPrompt;
+
+    return rootBundle.loadString('assets/prompts/default.txt');
   }
 
   ChatMessage _buildPrompt(String text, {Uint8List? imageBytes}) {
@@ -610,36 +609,36 @@ class ChatProvider extends ChangeNotifier {
       model: _modelName,
       numGpu: numGPU,
       format: OllamaResponseFormat.json,
-      keepAlive: _modelSettings['keepAlive'] as int? ?? _keepAliveTime,
-      temperature: _modelSettings['temperature'] as double? ?? _temperature,
-      concurrencyLimit: _modelSettings['concurrencyLimit'] as int? ?? 1000,
-      f16KV: _modelSettings['f16KV'] as bool?,
-      frequencyPenalty: _modelSettings['frequencyPenalty'] as double?,
-      logitsAll: _modelSettings['logitsAll'] as bool?,
-      lowVram: _modelSettings['lowVram'] as bool?,
-      mainGpu: _modelSettings['mainGpu'] as int?,
-      mirostat: _modelSettings['mirostat'] as int?,
-      mirostatEta: _modelSettings['mirostatEta'] as double?,
-      mirostatTau: _modelSettings['mirostatTau'] as double?,
-      numBatch: _modelSettings['numBatch'] as int?,
-      numCtx: _modelSettings['numCtx'] as int?,
-      numKeep: _modelSettings['numKeep'] as int?,
-      numPredict: _modelSettings['numPredict'] as int?,
-      numThread: _modelSettings['numThread'] as int?,
-      numa: _modelSettings['numa'] as bool?,
-      penalizeNewline: _modelSettings['penalizeNewline'] as bool?,
-      presencePenalty: _modelSettings['presencePenalty'] as double?,
-      repeatLastN: _modelSettings['repeatLastN'] as int?,
-      repeatPenalty: _modelSettings['repeatPenalty'] as double?,
-      seed: _modelSettings['seed'] as int?,
-      stop: _modelSettings['stop'] as List<String>?,
-      tfsZ: _modelSettings['tfsZ'] as double?,
-      topK: _modelSettings['topK'] as int?,
-      topP: _modelSettings['topP'] as double?,
-      typicalP: _modelSettings['typicalP'] as double?,
-      useMlock: _modelSettings['useMlock'] as bool?,
-      useMmap: _modelSettings['useMmap'] as bool?,
-      vocabOnly: _modelSettings['vocabOnly'] as bool?,
+      keepAlive: _modelSettings.keepAlive ?? _keepAliveTime,
+      temperature: _modelSettings.temperature ?? _temperature,
+      concurrencyLimit: _modelSettings.concurrencyLimit ?? 1000,
+      f16KV: _modelSettings.f16KV ?? false,
+      frequencyPenalty: _modelSettings.frequencyPenalty,
+      logitsAll: _modelSettings.logitsAll ?? false,
+      lowVram: _modelSettings.lowVram ?? false,
+      mainGpu: _modelSettings.mainGpu ?? 0,
+      mirostat: _modelSettings.mirostat ?? 0,
+      mirostatEta: _modelSettings.mirostatEta ?? 0.1,
+      mirostatTau: _modelSettings.mirostatTau ?? 5.0,
+      numBatch: _modelSettings.numBatch ?? 1,
+      numCtx: _modelSettings.numCtx,
+      numKeep: _modelSettings.numKeep ?? 0,
+      numPredict: _modelSettings.numPredict ?? 128,
+      numThread: _modelSettings.numThread,
+      numa: _modelSettings.numa ?? false,
+      penalizeNewline: _modelSettings.penalizeNewline ?? false,
+      presencePenalty: _modelSettings.presencePenalty,
+      repeatLastN: _modelSettings.repeatLastN ?? 64,
+      repeatPenalty: _modelSettings.repeatPenalty ?? 1.1,
+      seed: _modelSettings.seed ?? 0,
+      stop: _modelSettings.stop,
+      tfsZ: _modelSettings.tfsZ ?? 1,
+      topK: _modelSettings.topK ?? 40,
+      topP: _modelSettings.topP ?? 0.9,
+      typicalP: _modelSettings.typicalP ?? 1.0,
+      useMlock: _modelSettings.useMlock ?? false,
+      useMmap: _modelSettings.useMmap ?? false,
+      vocabOnly: _modelSettings.vocabOnly ?? false,
     );
 
     _chat = ChatOllama(defaultOptions: modelOptions);
@@ -651,7 +650,7 @@ class ChatProvider extends ChangeNotifier {
     _modelName = name;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('modelName', name);
-    _modelSettings = await ModelSettingsProvider.loadModelSettings(modelName);
+    _modelSettings = await ModelSettingsProvider.loadStatic(modelName);
     _updateModelOptions();
 
     notifyListeners();
@@ -764,20 +763,33 @@ class ChatProvider extends ChangeNotifier {
   bool get isOllamaUsingGpu => _enableGPU;
 
   bool get isChatShowStatistics => _showStatistics;
-  bool get isChatShowStatisticsForModel =>
-      _modelSettings['showStatistics'] as bool? ?? _showStatistics;
 
   bool get isWebSearchEnabled => _enableWebSearch;
   bool get isWebSearchEnabledForModel =>
-      _modelSettings['enableWebSearch'] as bool? ?? _enableWebSearch;
+      _modelSettings.enableWebSearch ?? _enableWebSearch;
 
   bool get isDocsSearchEnabled => _enableDocsSearch;
   bool get isDocsSearchEnabledForModel =>
-      _modelSettings['enableDocSearch'] as bool? ?? _enableDocsSearch;
+      _modelSettings.enableDocsSearch ?? _enableDocsSearch;
 
-  bool get isImagesSupportedForModel =>
-      _modelSettings['enableImages'] as bool? ??
-      true; // Maybe switch default to "false" in the future
+  bool get isMultimodalModel {
+    final models = ModelProvider.getModelsStatic();
+
+    if (!models.any((model) => model.name == _modelName)) return false;
+
+    final modelFamilies = models
+        .firstWhere(
+          (model) => model.name == _modelName,
+        )
+        .details
+        .families;
+
+    if (modelFamilies == null) return false;
+
+    List<String> multiModalFamilies = ['clip', 'blip', 'flaming', 'dall-e'];
+
+    return multiModalFamilies.any((family) => modelFamilies.contains(family));
+  }
 
   ChatSessionWrapper? get session => _session;
 

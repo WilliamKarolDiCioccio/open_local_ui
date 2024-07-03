@@ -72,6 +72,7 @@
   "clickToDownloadLatestVersionSnackBar": "Click here to download the latest version",
   "closeButtonShared": "Close",
   "codeCopiedSnackBar": "Code copied to clipboard",
+  "concurrencyLimit": "Concurrency Limit",
   "createFolderDialogFolderNameHint": "Enter the folder name...",
   "createFolderDialogFolderNameLabel": "Folder name",
   "createFolderDialogGuideText1": "Enter the name of the folder to create:",
@@ -103,6 +104,9 @@
   "dialogSkipButton": "Skip",
   "dialogStartButtonShared": "Start",
   "dialogUpdateButton": "Update",
+  "enableDocsSearch": "Docs Search",
+  "enableWebSearch": "Web Search",
+  "f16KV": "F16KV",
   "failedToCreateFolderSnackBar": "Failed to create folder",
   "failedToCreateModelSnackBar": "Failed to create model",
   "failedToPullModelSnackBar": "Failed to pull model",
@@ -110,10 +114,15 @@
   "failedToShareSessionSnackBar": "Failed to share session",
   "feedbackButton": "Feedback",
   "folderCreatedSnackBar": "Folder created",
+  "frequencyPenalty": "Frequency Penalty",
   "importModelDialogTitle": "Import model",
+  "keepAlive": "Keep Alive",
   "licenseButton": "License",
   "listFiltersSortByLabel": "Sort by",
   "listFiltersSortOrderLabel": "In order",
+  "logitsAll": "Logits All",
+  "lowVram": "Low VRAM",
+  "mainGpu": "Main GPU",
   "markdownCopyTooltip": "Copy markdown",
   "markdownLanguageLabel": "Language: {language}",
   "@markdownLanguageLabel": {
@@ -124,6 +133,9 @@
     }
   },
   "messageCopiedSnackBar": "Message copied to clipboard",
+  "mirostat": "Microstat",
+  "mirostatEta": "Microstat ETA",
+  "mirostatTau": "Microstat TAU",
   "modelCreatedSuccessfullySnackBar": "Model created successfully",
   "modelDetailsDigestText": "Digest: {digest}",
   "@modelDetailsDigestText": {
@@ -181,13 +193,21 @@
       }
     }
   },
-  "modelGeneralSettingsLabel": "General",
+  "modelGeneralSettingsLabel": "General Settings",
   "modelIsGeneratingSnackBar": "Model is generating",
-  "modelMiscSettingsLabel": "Miscellaneous",
-  "modelPenaltySettingsLabel": "Penalty",
-  "modelPerformanceSettingsLabel": "Performance",
+  "modelMiscSettingsLabel": "Miscellaneous Settings",
+  "modelPenaltySettingsLabel": "Penalty Settings",
+  "modelPerformanceSettingsLabel": "Performance Settings",
   "modelPulledSuccessfullySnackBar": "Model pulled successfully",
   "modelPushedSuccessfullySnackBar": "Model pushed successfully",
+  "modelSpecificSettingsDialogTitle": "{modelName} specific settings",
+  "@modelSpecificSettingsDialogTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
   "modelsPageCreateButton": "Create",
   "modelsPageDeleteButton": "Delete model",
   "modelsPageDeleteDialogText": "This will delete {modelName}. Do you confirm?",
@@ -212,8 +232,16 @@
   "noNeedToCreateSessionSnackBar": "No need to create a new session",
   "noUpdatesAvailableDialogTitle": "No updates available",
   "nothingToSynthesizeSnackBar": "Nothing to synthesize",
+  "numBatch": "Num. Batch",
+  "numCtx": "Context Window Size",
+  "numKeep": "Num. Keep",
+  "numPredict": "Num. Predict",
+  "numThread": "Num. Threads",
+  "numa": "NUMA",
   "offlineWarningTextShared": "You are offline",
   "ollamaDisabledGPUWarningSnackBar": "Disabling GPU is harmful for performance",
+  "penalizeNewline": "Penalize Newline",
+  "presencePenalty": "Presence Penalty",
   "privacyButton": "Privacy",
   "progressBarStatusWithStepsText": "Status: {status} - Step {completedSteps} of {totalSteps}",
   "@progressBarStatusWithStepsText": {
@@ -254,7 +282,12 @@
   "pushModelDialogModelSelectorHint": "Select model",
   "pushModelDialogTitle": "Push model",
   "redoButtonShared": "Redo",
+  "repeatLastN": "Repeat Last N",
+  "repeatPenalty": "Repeat Penalty",
+  "resetToDefaultsButton": "Reset to defaults",
   "saveButtonShared": "Save",
+  "savedButtonShared": "Saved",
+  "seed": "Seed",
   "sessionSharedSnackBar": "Session shared",
   "sessionsPageClearDialogText": "This will clear all sessions. Do you confirm?",
   "sessionsPageClearDialogTitle": "Clear sessions",
@@ -281,16 +314,8 @@
   "settingsLanguageSpanish": "Spanish",
   "settingsLanguageSystem": "System",
   "settingsModelDefault": "Default",
-  "settingsModelDialogTitle": "{model} specific settings",
-  "@settingsModelDialogTitle": {
-    "placeholders": {
-      "model": {
-        "type": "String"
-      }
-    }
-  },
-  "settingsModelOff": "On",
-  "settingsModelOn": "Off",
+  "settingsModelOff": "Off",
+  "settingsModelOn": "On",
   "settingsPageAccessibilityLabel": "Accessibility",
   "settingsPageOllamaKeepAliveTimeLabel": "Set keep alive time",
   "settingsPageOllamaLabel": "Ollama",
@@ -337,6 +362,12 @@
   "suggestionPersonalGrowthChallengesPartTwo": " in personal growth",
   "suggestionPlanSurpriseBirthdayPartyPartOne": "Plan a birthday party",
   "suggestionPlanSurpriseBirthdayPartyPartTwo": "for your best friend with a surprise element",
+  "systemPromptTextFieldLabel": "System Prompt:",
+  "temperature": "Temperature",
+  "tfsZ": "tfsZ",
+  "topK": "topK",
+  "topP": "topP",
+  "typicalP": "typicalP",
   "undoButtonShared": "Undo",
   "updateAvailableDialogTitle": "Update available",
   "updateAvailableSnackBar": "Update available",
@@ -344,5 +375,8 @@
   "updateDialogText1": "Do you want to get the latest version now?",
   "updateDialogText2": "No updates available at the moment",
   "updateInProgressPageDescription": "Please wait for the installer to come up and follow the instructions",
-  "updateInProgressPageTitle": "Update in progress"
+  "updateInProgressPageTitle": "Update in progress",
+  "useMlock": "Use Mlock",
+  "useMmap": "Use Mmap",
+  "vocabOnly": "Vocab Only"
 }
