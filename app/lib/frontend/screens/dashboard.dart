@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -65,7 +67,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
 
   Widget _buildOptionsOverlay() {
     return Positioned(
-      top: _getButtonOffset().dy - 156,
+      top: _getButtonOffset().dy - (!Platform.isLinux ? 156 : 128),
       left: _getButtonOffset().dx,
       child: Container(
         decoration: BoxDecoration(
@@ -109,12 +111,13 @@ class _DashboardLayoutState extends State<DashboardLayout> {
                 icon: const Icon(UniconsLine.keyhole_circle),
                 label: Text(AppLocalizations.of(context).licenseButton),
               ),
-              const Gap(8),
-              TextButton.icon(
-                onPressed: () => showUpdateDialog(context: context),
-                icon: const Icon(UniconsLine.sync),
-                label: Text(AppLocalizations.of(context).updateButton),
-              ),
+              if (!Platform.isLinux) const Gap(8),
+              if (!Platform.isLinux)
+                TextButton.icon(
+                  onPressed: () => showUpdateDialog(context: context),
+                  icon: const Icon(UniconsLine.sync),
+                  label: Text(AppLocalizations.of(context).updateButton),
+                ),
             ],
           ),
         ),

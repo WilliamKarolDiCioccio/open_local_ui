@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
     as snackbar;
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/models/chat_message.dart';
@@ -153,6 +156,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         break;
     }
 
+    final isMessageGenerating = context.watch<ChatProvider>().isGenerating &&
+        context.watch<ChatProvider>().lastMessage!.uuid == widget.message.uuid;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       padding: const EdgeInsets.all(8.0),
@@ -210,19 +216,17 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           if ((widget.message is ChatUserMessageWrapper))
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               const SizedBox(height: 8.0),
-          if (!_showEditWidget)
-            if (widget.message.text.isNotEmpty)
-              MessageMarkdownWidget(
-                widget.message.text,
-              ),
+          if (!_showEditWidget && widget.message.text.isNotEmpty)
+            MessageMarkdownWidget(
+              widget.message.text,
+            ),
           if (context.watch<ChatProvider>().isChatShowStatistics &&
               widget.message.text.isNotEmpty &&
-              widget.message.sender == ChatMessageSender.model)
+              widget.message.sender == ChatMessageSender.model &&
+              !isMessageGenerating)
             _buildStatisticsSummary(widget.message),
           const Gap(8.0),
-          if (!_showEditWidget &&
-              !_showPlayerWidget &&
-              !context.watch<ChatProvider>().isGenerating)
+          if (!_showEditWidget && !_showPlayerWidget && !isMessageGenerating)
             Row(
               children: [
                 IconButton(
@@ -230,12 +234,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   onPressed: () => _copyMessage(),
                   icon: const Icon(UniconsLine.copy),
                 ),
-                const Gap(8),
-                IconButton(
-                  tooltip: AppLocalizations.of(context).chatReadAloudTooltip,
-                  onPressed: () => _showTTSPlayer(),
-                  icon: const Icon(Icons.hearing),
-                ),
+                if (Platform.isLinux) const Gap(8),
+                if (!Platform.isLinux)
+                  IconButton(
+                    tooltip: AppLocalizations.of(context).chatReadAloudTooltip,
+                    onPressed: () => _showTTSPlayer(),
+                    icon: const Icon(Icons.hearing),
+                  ),
                 const Gap(8),
                 if (widget.message.sender == ChatMessageSender.model)
                   IconButton(
@@ -254,6 +259,14 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   ),
               ],
             )
+                .animate()
+                .fadeIn(
+                  duration: 300.ms,
+                )
+                .move(
+                  begin: const Offset(-16, 0),
+                  curve: Curves.easeOutQuad,
+                )
           else if (_showEditWidget)
             Column(
               children: [
@@ -261,7 +274,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   controller: _textEditingController,
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).chatEditFieldHint,
-                    counterText: '',
                   ),
                   style: const TextStyle(
                     fontSize: 20.0,
@@ -344,6 +356,14 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           ],
         ),
       ),
-    );
+    )
+        .animate()
+        .fadeIn(
+          duration: 300.ms,
+        )
+        .move(
+          begin: const Offset(-16, 0),
+          curve: Curves.easeOutQuad,
+        );
   }
 }

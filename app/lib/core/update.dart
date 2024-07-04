@@ -31,22 +31,29 @@ class UpdateHelper {
 
   static Future<bool> isUpdateAvailable() async {
     if (!Platform.isWindows) {
-      throw UnimplementedError('Platform not supported');
+      logger.i(
+          'Autoupdate not supported on platform: ${Platform.operatingSystem}');
+      return false;
     }
 
     _latestRelease = await GitHubAPI.getLatestRelease();
 
     final prefs = await SharedPreferences.getInstance();
 
-    if (prefs.getString('skipUpdate') == _latestRelease.tag_name) {
-      logger.i('Skipping update: ${_latestRelease.tag_name}');
+    final latestAvailableVersion = _latestRelease.tag_name;
+    if (latestAvailableVersion.isEmpty) {
+      logger.i('Latest release not found on GitHub');
       return false;
-    } else if (!_isVersionSuperior(_latestRelease.tag_name)) {
+    }
+    if (prefs.getString('skipUpdate') == latestAvailableVersion) {
+      logger.i('Skipping update: $latestAvailableVersion');
+      return false;
+    } else if (!_isVersionSuperior(latestAvailableVersion)) {
       logger.i('No new version available');
       return false;
     }
 
-    logger.i('New version available: ${_latestRelease.tag_name}');
+    logger.i('New version available: $latestAvailableVersion');
 
     for (final asset in _latestRelease.assets) {
       if (Platform.isWindows && asset.name.contains('windows_x64')) {
@@ -57,11 +64,18 @@ class UpdateHelper {
     return false;
   }
 
+  static Future skipUpdate() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('skipUpdate', _latestRelease.tag_name);
+  }
+
   static Future downloadAndInstallLatestVersion() async {
     if (Platform.isWindows) {
       await _windowsDownloadAndInstall();
     } else {
-      throw UnimplementedError('Platform not supported');
+      logger.e('Unsupported platform');
+      return;
     }
   }
 
@@ -114,27 +128,22 @@ class UpdateHelper {
 
     if (result.exitCode != 0) {
       logger.e('Failed to run installer: ${result.exitCode}');
-
-      SnackBarHelpers.showSnackBar(
-        duration: const Duration(seconds: 10),
-        // ignore: use_build_context_synchronously
-        AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-            .snackBarErrorTitle,
-        // ignore: use_build_context_synchronously
-        AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-            .somethingWentWrongSnackBar,
-        snackbar.ContentType.failure,
-      );
-
-      return;
+      return _showErrorMessage();
     }
 
     exit(0);
   }
 
-  static Future skipUpdate() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setString('skipUpdate', _latestRelease.tag_name);
+  static void _showErrorMessage() {
+    SnackBarHelpers.showSnackBar(
+      duration: const Duration(seconds: 10),
+      // ignore: use_build_context_synchronously
+      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+          .snackBarErrorTitle,
+      // ignore: use_build_context_synchronously
+      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
+          .somethingWentWrongSnackBar,
+      snackbar.ContentType.failure,
+    );
   }
 }
