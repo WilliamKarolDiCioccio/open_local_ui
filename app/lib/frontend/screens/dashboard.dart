@@ -8,13 +8,17 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/github.dart';
+import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
 import 'package:open_local_ui/frontend/screens/about.dart';
 import 'package:open_local_ui/frontend/screens/chat.dart';
 import 'package:open_local_ui/frontend/screens/models.dart';
 import 'package:open_local_ui/frontend/screens/sessions.dart';
 import 'package:open_local_ui/frontend/screens/settings.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:unicons/unicons.dart';
 
 enum PageIndex { chat, sessions, models, settings, about }
@@ -65,6 +69,60 @@ class _DashboardLayoutState extends State<DashboardLayout> {
     );
   }
 
+  void _uploadFeedback(UserFeedback feedback) async {
+    final supabase = Supabase.instance.client;
+
+    final tempDir = await getTemporaryDirectory();
+    final filename = DateTime.now().millisecondsSinceEpoch;
+
+    final screenshotFile = File(
+      '${tempDir.path}/feedback-screenshot.temp.jpg',
+    );
+
+    if (!await screenshotFile.exists()) {
+      await screenshotFile.parent.create(recursive: true);
+    }
+
+    final pngImage = img.decodePng(feedback.screenshot);
+    final resizedImage = img.copyResize(pngImage!, width: 1280);
+    final jpgImage = img.encodeJpg(resizedImage);
+
+    await screenshotFile.writeAsBytes(jpgImage);
+
+    await supabase.storage
+        .from('feedback')
+        .upload('screenshots/$filename.jpg', screenshotFile);
+
+    final screenshotUrl = supabase.storage
+        .from('feedback')
+        .getPublicUrl('screenshots/$filename.jpg');
+
+    await supabase.storage
+        .from('feedback')
+        .upload('logs/$filename.txt', getLogFile());
+
+    final logUrl =
+        supabase.storage.from('feedback').getPublicUrl('logs/$filename.txt');
+
+    logger.d(
+      '''
+      Feedback attachment uploaded successfully!
+      \n
+      Screenshot: $screenshotUrl
+      \n
+      Log: $logUrl
+      ''',
+    );
+
+    GitHubAPI.createGitHubIssue(
+      feedback.text,
+      screenshotUrl,
+      logUrl,
+    );
+
+    screenshotFile.delete();
+  }
+
   Widget _buildOptionsOverlay() {
     return Positioned(
       top: _getButtonOffset().dy - (!Platform.isLinux ? 156 : 128),
@@ -92,12 +150,9 @@ class _DashboardLayoutState extends State<DashboardLayout> {
               TextButton.icon(
                 onPressed: () {
                   BetterFeedback.of(context).show(
-                    (UserFeedback feedback) {
-                      GitHubAPI.createGitHubIssue(
-                        feedback.text,
-                        feedback.screenshot,
-                      );
-                    },
+                    (UserFeedback feedback) => _uploadFeedback(
+                      feedback,
+                    ),
                   );
                 },
                 icon: const Icon(UniconsLine.feedback),
