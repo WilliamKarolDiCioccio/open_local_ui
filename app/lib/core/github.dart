@@ -146,7 +146,11 @@ class GitHubAPI {
     return contributors;
   }
 
-  static Future createGitHubIssue(String text, Uint8List screenshot) async {
+  static Future createGitHubIssue(
+    String text,
+    String screenshotUrl,
+    String logsUrl,
+  ) async {
     final url = Uri.parse(
       'https://api.github.com/repos/$owner/$repo/issues',
     );
@@ -163,61 +167,65 @@ class GitHubAPI {
 // @formatter:off
     if (defaultTargetPlatform == TargetPlatform.windows) {
       final plugin = await DeviceInfoPlugin().windowsInfo;
-      deviceInfo = '''
-      - Platfrom: ${plugin.productName}
-      - Major version: ${plugin.majorVersion}
-      - Minor version: ${plugin.minorVersion}
-      - Build number: ${plugin.buildNumber}
-      - Memory in MB: ${plugin.systemMemoryInMegabytes}
-      ''';
+deviceInfo = '''
+- Platfrom: ${plugin.productName}
+- Major version: ${plugin.majorVersion}
+- Minor version: ${plugin.minorVersion}
+- Build number: ${plugin.buildNumber}
+- Memory in MB: ${plugin.systemMemoryInMegabytes}
+''';
     } else if (defaultTargetPlatform == TargetPlatform.linux) {
       final plugin = await DeviceInfoPlugin().linuxInfo;
       deviceInfo = '''
-      - Platfrom: ${plugin.name} (${plugin.versionCodename})
-      - Version: ${plugin.version}
-      - Build number: ${plugin.buildId}
-      ''';
+- Platfrom: ${plugin.name} (${plugin.versionCodename})
+- Version: ${plugin.version}
+- Build number: ${plugin.buildId}
+''';
     } else if (defaultTargetPlatform == TargetPlatform.macOS) {
       final plugin = await DeviceInfoPlugin().macOsInfo;
       deviceInfo = '''
-      - Platfrom: ${plugin.hostName}
-      - Major version: ${plugin.majorVersion}
-      - Minor version: ${plugin.minorVersion}
-      - Patch version: ${plugin.patchVersion}
-      - Kernel version: ${plugin.kernelVersion}
-      - Build number: ${plugin.memorySize}
-      - Model: ${plugin.model}
-      - Memory in MB: ${plugin.memorySize}
-      ''';
+- Platfrom: ${plugin.hostName}
+- Major version: ${plugin.majorVersion}
+- Minor version: ${plugin.minorVersion}
+- Patch version: ${plugin.patchVersion}
+- Kernel version: ${plugin.kernelVersion}
+- Build number: ${plugin.memorySize}
+- Model: ${plugin.model}
+- Memory in MB: ${plugin.memorySize}
+''';
     }
 // @formatter:on
 
     final packageInfo = await PackageInfo.fromPlatform();
 
-    // NOTE: No way to upload images to GitHub API as of now
-    // final issueImage = base64.encode(screenshot);
-
 // @formatter:off
-    final issueTextBody = '''
-    $text
-    \n\n
-    **App Info**
-    - Version: ${packageInfo.version}
-    - Build: ${packageInfo.buildNumber}
-    \n
-    **Device Info**
-    $deviceInfo
-    \n
-    \n
-    This issue was created automatically by the app.
-    ''';
+final issueTextBody = '''
+$text
+\n
+\n
+### Screenshot
+![Screenshot]($screenshotUrl)
+\n
+### Logs
+See log file [here]($logsUrl)
+\n
+### App Info
+- Version: ${packageInfo.version}
+- Build: ${packageInfo.buildNumber}
+\n
+### Device Info
+$deviceInfo
+\n
+\n
+**NOTE: This issue was created automatically by the app.**
+''';
 // @formatter:on
 
     final issueBody = jsonEncode({
       'title': 'App reported issue',
-      'body': issueTextBody.replaceAll('\t', ''),
+      'body': issueTextBody.replaceAll(' ', ''),
       'assignees': ['WilliamKarolDiCioccio'],
-      'labels': ['bug'],
+      'labels': ['Type: Bug'],
     });
 
     http.post(url, headers: headers, body: issueBody).then((response) {

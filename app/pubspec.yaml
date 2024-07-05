@@ -115,7 +115,7 @@ flutter:
   generate: true
   assets:
     - assets/prompts/default.txt
-    - assets/prompts/title_generator.txt
+    - assets/prompts/sessions_title_generator.txt
     - assets/graphics/logos/flutter.svg
     - assets/graphics/logos/langchain.svg
     - assets/graphics/logos/supabase.svg
