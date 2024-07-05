@@ -150,7 +150,7 @@ class ChatProvider extends ChangeNotifier {
   void removeSession(String uuid) {
     final index = _sessions.indexWhere((element) => element.uuid == uuid);
 
-    if (_sessions[index].status == ChatSessionStatus.generating) return;
+    if (_session != null && (uuid == _session!.uuid && isGenerating)) return;
 
     _sessions.removeAt(index);
 
@@ -411,6 +411,8 @@ class ChatProvider extends ChangeNotifier {
 
           _computePerformanceStatistics(result);
 
+          notifyListeners();
+
           break;
         }
 
@@ -509,6 +511,8 @@ class ChatProvider extends ChangeNotifier {
           _session!.memory.chatHistory.removeLast();
 
           _computePerformanceStatistics(result);
+
+          notifyListeners();
 
           break;
         }
