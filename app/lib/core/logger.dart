@@ -24,12 +24,11 @@ class CombinedOutput extends LogOutput {
 
 Future<void> initLogger() async {
   late LogOutput logOutput;
+  _logFile = await createLogFile();
 
   if (kDebugMode) {
     logOutput = CombinedOutput([ConsoleOutput(), FileOutput(file: _logFile)]);
   } else {
-    _logFile = await createLogFile();
-
     logOutput = FileOutput(file: _logFile);
   }
 
