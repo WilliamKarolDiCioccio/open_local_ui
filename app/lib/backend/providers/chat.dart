@@ -150,7 +150,7 @@ class ChatProvider extends ChangeNotifier {
   void removeSession(String uuid) {
     final index = _sessions.indexWhere((element) => element.uuid == uuid);
 
-    if (_sessions[index].status == ChatSessionStatus.generating) return;
+    if (_session != null && (uuid == _session!.uuid && isGenerating)) return;
 
     _sessions.removeAt(index);
 
@@ -408,6 +408,11 @@ class ChatProvider extends ChangeNotifier {
         if (_session!.status == ChatSessionStatus.aborting) {
           _session!.status = ChatSessionStatus.idle;
           _session!.memory.chatHistory.removeLast();
+
+          _computePerformanceStatistics(result);
+
+          notifyListeners();
+
           break;
         }
 
@@ -504,6 +509,11 @@ class ChatProvider extends ChangeNotifier {
         if (_session!.status == ChatSessionStatus.aborting) {
           _session!.status = ChatSessionStatus.idle;
           _session!.memory.chatHistory.removeLast();
+
+          _computePerformanceStatistics(result);
+
+          notifyListeners();
+
           break;
         }
 
@@ -612,33 +622,35 @@ class ChatProvider extends ChangeNotifier {
       keepAlive: _modelSettings.keepAlive ?? _keepAliveTime,
       temperature: _modelSettings.temperature ?? _temperature,
       concurrencyLimit: _modelSettings.concurrencyLimit ?? 1000,
-      f16KV: _modelSettings.f16KV ?? false,
+      // NOTE: referer to the link https://github.com/davidmigloz/langchain_dart/issues/478
+      f16KV: true,
       frequencyPenalty: _modelSettings.frequencyPenalty,
-      logitsAll: _modelSettings.logitsAll ?? false,
-      lowVram: _modelSettings.lowVram ?? false,
-      mainGpu: _modelSettings.mainGpu ?? 0,
-      mirostat: _modelSettings.mirostat ?? 0,
-      mirostatEta: _modelSettings.mirostatEta ?? 0.1,
-      mirostatTau: _modelSettings.mirostatTau ?? 5.0,
-      numBatch: _modelSettings.numBatch ?? 1,
+      logitsAll: _modelSettings.logitsAll,
+      lowVram: _modelSettings.lowVram,
+      mainGpu: _modelSettings.mainGpu,
+      mirostat: _modelSettings.mirostat,
+      mirostatEta: _modelSettings.mirostatEta,
+      mirostatTau: _modelSettings.mirostatTau,
+      numBatch: _modelSettings.numBatch,
       numCtx: _modelSettings.numCtx,
-      numKeep: _modelSettings.numKeep ?? 0,
-      numPredict: _modelSettings.numPredict ?? 128,
+      numKeep: _modelSettings.numKeep,
+      numPredict: _modelSettings.numPredict,
       numThread: _modelSettings.numThread,
-      numa: _modelSettings.numa ?? false,
-      penalizeNewline: _modelSettings.penalizeNewline ?? false,
+      // NOTE: referer to the link https://github.com/davidmigloz/langchain_dart/issues/478
+      numa: false,
+      penalizeNewline: _modelSettings.penalizeNewline,
       presencePenalty: _modelSettings.presencePenalty,
-      repeatLastN: _modelSettings.repeatLastN ?? 64,
-      repeatPenalty: _modelSettings.repeatPenalty ?? 1.1,
-      seed: _modelSettings.seed ?? 0,
+      repeatLastN: _modelSettings.repeatLastN,
+      repeatPenalty: _modelSettings.repeatPenalty,
+      seed: _modelSettings.seed,
       stop: _modelSettings.stop,
-      tfsZ: _modelSettings.tfsZ ?? 1,
-      topK: _modelSettings.topK ?? 40,
-      topP: _modelSettings.topP ?? 0.9,
-      typicalP: _modelSettings.typicalP ?? 1.0,
-      useMlock: _modelSettings.useMlock ?? false,
-      useMmap: _modelSettings.useMmap ?? false,
-      vocabOnly: _modelSettings.vocabOnly ?? false,
+      tfsZ: _modelSettings.tfsZ,
+      topK: _modelSettings.topK,
+      topP: _modelSettings.topP,
+      typicalP: _modelSettings.typicalP,
+      useMlock: _modelSettings.useMlock,
+      useMmap: _modelSettings.useMmap,
+      vocabOnly: _modelSettings.vocabOnly,
     );
 
     _chat = ChatOllama(defaultOptions: modelOptions);
