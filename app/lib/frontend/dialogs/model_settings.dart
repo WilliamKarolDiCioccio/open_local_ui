@@ -260,7 +260,7 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                                 setting: 'numa',
                               ),
                               IntSettingWidget(
-                                label: AppLocalizations.of(context).numa,
+                                label: AppLocalizations.of(context).seed,
                                 setting: 'seed',
                               ),
                               DoubleSettingWidget(

@@ -408,6 +408,9 @@ class ChatProvider extends ChangeNotifier {
         if (_session!.status == ChatSessionStatus.aborting) {
           _session!.status = ChatSessionStatus.idle;
           _session!.memory.chatHistory.removeLast();
+
+          _computePerformanceStatistics(result);
+
           break;
         }
 
@@ -504,6 +507,9 @@ class ChatProvider extends ChangeNotifier {
         if (_session!.status == ChatSessionStatus.aborting) {
           _session!.status = ChatSessionStatus.idle;
           _session!.memory.chatHistory.removeLast();
+
+          _computePerformanceStatistics(result);
+
           break;
         }
 
@@ -612,7 +618,8 @@ class ChatProvider extends ChangeNotifier {
       keepAlive: _modelSettings.keepAlive ?? _keepAliveTime,
       temperature: _modelSettings.temperature ?? _temperature,
       concurrencyLimit: _modelSettings.concurrencyLimit ?? 1000,
-      f16KV: _modelSettings.f16KV ?? false,
+      // NOTE: referer to the link https://github.com/davidmigloz/langchain_dart/issues/478
+      f16KV: true,
       frequencyPenalty: _modelSettings.frequencyPenalty,
       logitsAll: _modelSettings.logitsAll ?? false,
       lowVram: _modelSettings.lowVram ?? false,
@@ -625,7 +632,8 @@ class ChatProvider extends ChangeNotifier {
       numKeep: _modelSettings.numKeep ?? 0,
       numPredict: _modelSettings.numPredict ?? 128,
       numThread: _modelSettings.numThread,
-      numa: _modelSettings.numa ?? false,
+      // NOTE: referer to the link https://github.com/davidmigloz/langchain_dart/issues/478
+      numa: false,
       penalizeNewline: _modelSettings.penalizeNewline ?? false,
       presencePenalty: _modelSettings.presencePenalty,
       repeatLastN: _modelSettings.repeatLastN ?? 64,
