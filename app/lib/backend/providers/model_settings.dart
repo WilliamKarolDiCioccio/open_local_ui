@@ -223,4 +223,11 @@ class ModelSettingsProvider extends ChangeNotifier {
   }
 
   bool get isDirty => _isDirty;
+
+  static Future<void> removeStatic(String name) async {
+    final settingsFile = await _getSettingsFile(name);
+    if (await settingsFile.exists()) {
+      await settingsFile.delete();
+    }
+  }
 }

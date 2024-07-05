@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/backend/models/model.dart';
 import 'package:open_local_ui/backend/models/ollama_responses.dart';
+import 'package:open_local_ui/backend/providers/model_settings.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
@@ -335,26 +336,20 @@ class ModelProvider extends ChangeNotifier {
   }
 
   Future remove(String name) async {
-    await HTTPMethods.delete('$_api/delete', body: {
-      'name': name,
-    }).then((response) {
+    try {
+      final response =
+          await HTTPMethods.delete('$_api/delete', body: {'name': name});
       if (response.statusCode != 200) {
         logger.e(
             'Failed to remove model $name, status code: ${response.statusCode}');
         return;
       }
+      await ModelSettingsProvider.removeStatic(name);
 
       logger.i('Model $name removed');
-    }).catchError((error) {
+    } catch (error) {
       logger.e(error);
-    });
-
-    sleep(
-      const Duration(
-        seconds: 1,
-        milliseconds: 500,
-      ),
-    );
+    }
 
     await updateList();
   }
