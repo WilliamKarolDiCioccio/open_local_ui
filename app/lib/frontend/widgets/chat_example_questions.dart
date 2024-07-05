@@ -22,7 +22,7 @@ class ChatExampleQuestions extends StatefulWidget {
 }
 
 class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
-  void _sendMessage(String message) {
+  void _sendMessage(String message) async {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<ModelProvider>().modelsCount == 0) {
         return SnackBarHelpers.showSnackBar(
@@ -32,7 +32,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
         );
       } else {
         final models = context.read<ModelProvider>().models;
-        context.read<ChatProvider>().setModel(models.first.name);
+        await context.read<ChatProvider>().setModel(models.first.name);
       }
     } else if (context.read<ChatProvider>().isGenerating) {
       return SnackBarHelpers.showSnackBar(
@@ -42,6 +42,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
       );
     }
 
+    // ignore: use_build_context_synchronously
     context.read<ChatProvider>().sendMessage(message);
   }
 

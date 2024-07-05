@@ -208,7 +208,7 @@ class ChatProvider extends ChangeNotifier {
       const Uuid().v4(),
     );
 
-    if (isSessionSelected) return chatMessage;
+    if (!isSessionSelected) return chatMessage;
 
     _session!.messages.add(chatMessage);
 
@@ -219,12 +219,12 @@ class ChatProvider extends ChangeNotifier {
     return _session!.messages.last as ChatSystemMessageWrapper;
   }
 
-  ChatModelMessageWrapper addModelMessage(String message, String? senderName) {
+  ChatModelMessageWrapper addModelMessage(String message, String senderName) {
     final chatMessage = ChatModelMessageWrapper(
       message,
       DateTime.now(),
       const Uuid().v4(),
-      senderName!,
+      senderName,
     );
 
     if (!isSessionSelected) return chatMessage;
@@ -374,12 +374,13 @@ class ChatProvider extends ChangeNotifier {
     if (!isSessionSelected) {
       newSession();
     }
-
+    
     if (text.isEmpty) {
       addSystemMessage('Try to be more specific.');
 
       return;
-    } else if (!isModelSelected) {
+    }
+    if (!isModelSelected) {
       addSystemMessage('Please select a model.');
 
       return;
@@ -455,6 +456,8 @@ class ChatProvider extends ChangeNotifier {
       removeLastMessage();
 
       addSystemMessage('An error occurred while generating the response.');
+
+      notifyListeners();
 
       ChatSessionsDatabase.updateSession(_session!);
 
@@ -538,6 +541,8 @@ class ChatProvider extends ChangeNotifier {
       removeLastMessage();
 
       addSystemMessage('An error occurred while generating the response.');
+
+      notifyListeners();
 
       logger.e(e);
     }
@@ -656,7 +661,7 @@ class ChatProvider extends ChangeNotifier {
     _chat = ChatOllama(defaultOptions: modelOptions);
   }
 
-  void setModel(String name) async {
+  Future setModel(String name) async {
     if (isGenerating) return;
 
     _modelName = name;
