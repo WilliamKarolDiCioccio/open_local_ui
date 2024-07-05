@@ -429,7 +429,7 @@ class ChatProvider extends ChangeNotifier {
 
       if (_session!.title == 'Untitled') {
         final titleGeneratorPrompt = await rootBundle.loadString(
-          'assets/prompts/title_generator.txt',
+          'assets/prompts/sessions_title_generator.txt',
         );
 
         final prompt = PromptTemplate.fromTemplate(titleGeneratorPrompt);
