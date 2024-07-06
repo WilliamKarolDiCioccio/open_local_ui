@@ -90,6 +90,9 @@ class _ChatMessageListState extends State<ChatMessageList> {
       _scrollToBottom();
     }
 
+    // Listen for screen resizing to update the scroll button position
+    MediaQuery.of(context);
+
     return Column(
       children: [
         Expanded(
