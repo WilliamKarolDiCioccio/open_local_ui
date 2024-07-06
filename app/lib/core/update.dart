@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
     as snackbar;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,7 +31,9 @@ class UpdateHelper {
   static Future<bool> isUpdateAvailable() async {
     if (!Platform.isWindows) {
       logger.i(
-          'Autoupdate not supported on platform: ${Platform.operatingSystem}');
+        'Autoupdate not supported on platform: ${Platform.operatingSystem}',
+      );
+      
       return false;
     }
 
@@ -41,6 +42,7 @@ class UpdateHelper {
     final prefs = await SharedPreferences.getInstance();
 
     final latestAvailableVersion = _latestRelease.tag_name;
+
     if (latestAvailableVersion.isEmpty) {
       logger.i('Latest release not found on GitHub');
       return false;
@@ -48,7 +50,7 @@ class UpdateHelper {
     if (prefs.getString('skipUpdate') == latestAvailableVersion) {
       logger.i('Skipping update: $latestAvailableVersion');
       return false;
-    } else if (!_isVersionSuperior(latestAvailableVersion)) {
+    } else if (!_isVersionSuperior('4.0.0')) {
       logger.i('No new version available');
       return false;
     }
@@ -106,20 +108,13 @@ class UpdateHelper {
     }
 
     final tempDir = await getTemporaryDirectory();
-    final filePath = '${tempDir.path}/OpenLocalUI_windows_x64.zip';
-    final unzipPath = tempDir.path;
+    final filePath = '${tempDir.path}/open_local_ui_windows_x64.zip';
     final file = File(filePath);
 
     await file.writeAsBytes(response.bodyBytes);
 
-    logger.i('Downloaded installer to $filePath');
-
-    await extractFileToDisk(filePath, unzipPath);
-
-    logger.i('Extracted installer to $unzipPath');
-
     String powershellCommand =
-        'Invoke-WmiMethod -Class Win32_Process -Name Create -ArgumentList "$unzipPath/OpenLocalUI_windows_x64/OpenLocalUISetup.exe"';
+        'Invoke-WmiMethod -Class Win32_Process -Name Create -ArgumentList "$filePath"';
 
     final result = await Process.run(
       'powershell',
