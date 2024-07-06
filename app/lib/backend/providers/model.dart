@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
@@ -31,27 +32,41 @@ class ModelProvider extends ChangeNotifier {
 
   static Future startOllama() async {
     try {
-      Process.start('ollama', ['serve']).then((Process process) {
-        _process = process;
+      // Check if ollama is up and running
+      if (!await _isOlamaRunning()) {
+        Process.start('ollama', ['serve']).then((Process process) {
+          _process = process;
 
-        logger.d('Program started with PID: ${process.pid}');
+          logger.d('Program started with PID: ${process.pid}');
 
-        process.stdout.transform(utf8.decoder).listen((data) {
-          logger.t('stdout: $data');
+          process.stdout.transform(utf8.decoder).listen((data) {
+            logger.t('stdout: $data');
+          });
+
+          process.stderr.transform(utf8.decoder).listen((data) {
+            if (!kDebugMode) {
+              logger.e('stderr: $data');
+            }
+          });
+
+          process.exitCode.then((int code) {
+            logger.d('Process exited with code $code');
+          });
         });
-
-        process.stderr.transform(utf8.decoder).listen((data) {
-          logger.e('stderr: $data');
-        });
-
-        process.exitCode.then((int code) {
-          logger.d('Process exited with code $code');
-        });
-      });
+      }
 
       await _updateListStatic();
     } catch (e) {
       logger.e(e);
+    }
+  }
+
+  static Future<bool> _isOlamaRunning() async {
+    try {
+      final response = await HTTPMethods.get('$_api/ps');
+      return response.statusCode == HttpStatus.ok;
+    } catch (e) {
+      return false;
     }
   }
 

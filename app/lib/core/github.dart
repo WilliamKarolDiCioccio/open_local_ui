@@ -90,7 +90,7 @@ class GitHubAPI {
     final response = await http.get(url, headers: headers);
 
     if (response.statusCode != 200) {
-      logger.e(
+      logger.d(
         'Failed to get latest release. Status code: ${response.statusCode}',
       );
 
@@ -167,7 +167,7 @@ class GitHubAPI {
 // @formatter:off
     if (defaultTargetPlatform == TargetPlatform.windows) {
       final plugin = await DeviceInfoPlugin().windowsInfo;
-deviceInfo = '''
+      deviceInfo = '''
 - Platfrom: ${plugin.productName}
 - Major version: ${plugin.majorVersion}
 - Minor version: ${plugin.minorVersion}
@@ -199,7 +199,7 @@ deviceInfo = '''
     final packageInfo = await PackageInfo.fromPlatform();
 
 // @formatter:off
-final issueTextBody = '''
+    final issueTextBody = '''
 $text
 \n
 \n
