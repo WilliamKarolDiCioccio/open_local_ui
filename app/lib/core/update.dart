@@ -50,7 +50,7 @@ class UpdateHelper {
     if (prefs.getString('skipUpdate') == latestAvailableVersion) {
       logger.i('Skipping update: $latestAvailableVersion');
       return false;
-    } else if (!_isVersionSuperior('4.0.0')) {
+    } else if (!_isVersionSuperior(latestAvailableVersion)) {
       logger.i('No new version available');
       return false;
     }
@@ -108,7 +108,7 @@ class UpdateHelper {
     }
 
     final tempDir = await getTemporaryDirectory();
-    final filePath = '${tempDir.path}/open_local_ui_windows_x64.zip';
+    final filePath = '${tempDir.path}/open_local_ui_windows_x64.exe';
     final file = File(filePath);
 
     await file.writeAsBytes(response.bodyBytes);
