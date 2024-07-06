@@ -60,8 +60,12 @@ class TTSService {
       final directory = p.dirname(Platform.resolvedExecutable);
       executablePath = '$directory/server.exe';
     } else {
-      logger.e('Unsupported platform');
+      logger.d('Unsupported platform');
+      return;
+    }
 
+    if (!await File(executablePath).exists()) {
+      logger.d('TTS Server executable not found');
       return;
     }
 
