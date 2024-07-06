@@ -1,0 +1,25 @@
+display_name: OpenLocalUI
+icon: linux/assets/flutter.png
+summary: A client to run LLMs locally using Ollama
+group: Applications/Utility
+vendor: William Karol Di Cioccio
+packager: William Karol Di Cioccio
+packagerEmail: theyoungprogrammer06@gmail.com
+license: MIT
+url: https://github.com/WilliamKarolDiCioccio/open_local_ui
+
+build_arch: x86_64
+
+requires:
+  - mpv
+
+keywords:
+  - LLMs
+  - Ollama Client
+
+generic_name: LLMs Client
+
+categories:
+  - Utility
+
+startup_notify: true

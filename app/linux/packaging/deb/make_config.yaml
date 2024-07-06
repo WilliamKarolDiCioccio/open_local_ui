@@ -1,0 +1,32 @@
+display_name: OpenLocalUI
+icon: linux/assets/flutter.png
+package_name: openlocalui
+
+maintainer:
+  name: Di Cioccio William Karol
+  email: theyoungprogrammer06@gmail.com
+
+priority: optional
+
+section: x11
+
+installed_size: 40000
+
+dependencies:
+  - mpv
+
+essential: false
+
+postuninstall_scripts:
+  - echo "Sorry to see you go."
+
+keywords:
+  - LLMs
+  - Ollama Client
+
+generic_name: LLMs Client
+
+categories:
+  - Utility
+
+startup_notify: true
