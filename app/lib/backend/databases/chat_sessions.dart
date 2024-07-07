@@ -2,8 +2,18 @@ import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:open_local_ui/backend/models/chat_session.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ChatSessionsDatabase {
+  static Future<void> init() async {
+    final dataDir = await getApplicationSupportDirectory();
+    Hive.init('${dataDir.path}/sessions');
+  }
+
+  static Future<void> deinit() async {
+    await Hive.close();
+  }
+
   static Future<void> saveSession(ChatSessionWrapper session) async {
     final box = await Hive.openBox<String>('sessions');
 
