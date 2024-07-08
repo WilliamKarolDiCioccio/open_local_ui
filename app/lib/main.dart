@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:open_local_ui/backend/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/locale.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
@@ -17,11 +18,10 @@ import 'package:open_local_ui/backend/services/tts.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/constants/languages.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/env.dart';
+import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
@@ -30,26 +30,25 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await initLogger();
-
-  await ModelProvider.startOllama();
-  await TTSService.startServer();
-
-  if (defaultTargetPlatform.supportsAccentColor) {
-    SystemTheme.fallbackColor = Colors.cyan;
-    await SystemTheme.accentColor.load();
-  }
-
   await Hive.initFlutter();
-  final docsDir = await getApplicationDocumentsDirectory();
-  Hive.init('${docsDir.path}/OpenLocalUI/saved_data');
 
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.supabaseAnonKey,
   );
 
+  if (defaultTargetPlatform.supportsAccentColor) {
+    SystemTheme.fallbackColor = Colors.cyan;
+    await SystemTheme.accentColor.load();
+  }
+
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
+
+  await initLogger();
+
+  await ModelProvider.startOllama();
+  await TTSService.startServer();
+  await ChatSessionsDatabase.init();
 
   FlutterNativeSplash.remove();
 
@@ -122,6 +121,7 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     TTSService.stopServer();
     ModelProvider.stopOllama();
+    ChatSessionsDatabase.deinit();
 
     super.dispose();
   }

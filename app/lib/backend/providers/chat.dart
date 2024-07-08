@@ -76,16 +76,43 @@ class ChatProvider extends ChangeNotifier {
     _updateModelOptions();
 
     final docsDir = await getApplicationDocumentsDirectory();
+    final dataDir = await getApplicationSupportDirectory();
 
-    final loadedSessions = await Isolate.run(
-      () async {
-        Hive.init('${docsDir.path}/OpenLocalUI/saved_data');
+    _sessions.addAll(
+      await Isolate.run(
+        () async {
+          final legacySessionsDir = Directory(
+            '${docsDir.path}/OpenLocalUI/saved_data',
+          );
 
-        return await ChatSessionsDatabase.loadSessions();
-      },
+          if (legacySessionsDir.existsSync()) {
+            final sourceDir = legacySessionsDir;
+
+            final sourceFiles = sourceDir.listSync();
+
+            final destinationDir = Directory('${dataDir.path}/sessions');
+
+            if (!destinationDir.existsSync()) {
+              destinationDir.createSync(recursive: true);
+            }
+
+            if (sourceFiles.isNotEmpty) {
+              for (final file in sourceFiles) {
+                File(file.path).copySync(
+                  '${destinationDir.path}/${file.path.split(Platform.pathSeparator).last}',
+                );
+              }
+            }
+
+            legacySessionsDir.deleteSync(recursive: true);
+          }
+
+          Hive.init('${dataDir.path}/sessions');
+          return await ChatSessionsDatabase.loadSessions();
+        },
+      ),
     );
 
-    _sessions.addAll(loadedSessions);
     notifyListeners();
   }
 
@@ -374,7 +401,7 @@ class ChatProvider extends ChangeNotifier {
     if (!isSessionSelected) {
       newSession();
     }
-    
+
     if (text.isEmpty) {
       addSystemMessage('Try to be more specific.');
 
