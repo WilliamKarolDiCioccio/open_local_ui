@@ -367,6 +367,14 @@
   "tfsZ": "tfsZ",
   "topK": "topK",
   "topP": "topP",
+  "totalOnDiskSizeLabel": "Total on disk: {size}",
+  "@totalOnDiskSizeLabel": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "typicalP": "typicalP",
   "undoButtonShared": "Undo",
   "updateAvailableDialogTitle": "Update available",

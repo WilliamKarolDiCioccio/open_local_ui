@@ -305,14 +305,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
-  conversion_units:
-    dependency: "direct main"
-    description:
-      name: conversion_units
-      sha256: a0514fb135865e91c47294abfa727c37f68d85b037f9c5b1b0ab031b59176cd7
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.8"
   convert:
     dependency: transitive
     description:
@@ -1490,6 +1482,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  units_converter:
+    dependency: "direct main"
+    description:
+      name: units_converter
+      sha256: b4365ae8a672efa8e2dd4deec156f00b18829a654dedc1160a5273f0e97f6f12
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   universal_io:
     dependency: transitive
     description:

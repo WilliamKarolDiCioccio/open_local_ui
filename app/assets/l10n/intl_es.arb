@@ -362,6 +362,7 @@
   "tfsZ": "tfsZ",
   "topK": "Top K",
   "topP": "Top P",
+  "totalOnDiskSizeLabel": "Total en disco: {size}",
   "typicalP": "P típico",
   "undoButtonShared": "Deshacer",
   "updateAvailableDialogTitle": "Actualización disponible",

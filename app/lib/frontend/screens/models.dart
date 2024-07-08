@@ -9,18 +9,19 @@ import 'package:open_local_ui/backend/models/model.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
 import 'package:open_local_ui/core/formatters.dart';
-import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/dialogs/create_model.dart';
 import 'package:open_local_ui/frontend/dialogs/import_model.dart';
 import 'package:open_local_ui/frontend/dialogs/model_details.dart';
+import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
 import 'package:open_local_ui/frontend/dialogs/pull_model.dart';
 import 'package:open_local_ui/frontend/dialogs/push_model.dart';
+import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
+import 'package:units_converter/units_converter.dart';
 
 enum SortBy {
   name,
@@ -76,6 +77,16 @@ class _ModelsPageState extends State<ModelsPage> {
         _sortOrder = {sortOrder ? SortOrder.descending : SortOrder.ascending};
       });
     });
+  }
+
+  Future<int> _totalOnDiskSize() async {
+    var size = 0;
+
+    for (final model in context.read<ModelProvider>().models) {
+      size += model.size;
+    }
+
+    return size;
   }
 
   @override
@@ -240,6 +251,24 @@ class _ModelsPageState extends State<ModelsPage> {
                 setState(() {
                   _sortOrder = value;
                 });
+              },
+            ),
+            const Spacer(),
+            FutureBuilder(
+              future: _totalOnDiskSize(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    AppLocalizations.of(context).totalOnDiskSizeLabel(
+                      '${snapshot.data!.convertFromTo(
+                            DIGITAL_DATA.byte,
+                            DIGITAL_DATA.gigabyte,
+                          )!.toStringAsFixed(2)} GB',
+                    ),
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
               },
             ),
           ],

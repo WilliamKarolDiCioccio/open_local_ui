@@ -10,13 +10,14 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/models/chat_session.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/core/formatters.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
+import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
+import 'package:units_converter/units_converter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum SortBy {
@@ -65,6 +66,17 @@ class _SessionsPageState extends State<SessionsPage> {
         _sortOrder = {sortOrder ? SortOrder.descending : SortOrder.ascending};
       });
     });
+  }
+
+  Future<int> _totalOnDiskSize() async {
+    final dataDir = await getApplicationSupportDirectory();
+    final sessionsFile = File('${dataDir.path}/sessions/sessions.hive');
+    
+    if (await sessionsFile.exists()) {
+      return await sessionsFile.length();
+    }
+
+    return 0;
   }
 
   @override
@@ -210,6 +222,26 @@ class _SessionsPageState extends State<SessionsPage> {
                 setState(() {
                   _sortOrder = value;
                 });
+              },
+            ),
+            const Spacer(),
+            FutureBuilder(
+              future: _totalOnDiskSize(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    AppLocalizations.of(context).totalOnDiskSizeLabel(
+                      '${snapshot.data!
+                          .convertFromTo(
+                            DIGITAL_DATA.byte,
+                            DIGITAL_DATA.megabyte,
+                          )!
+                          .toStringAsFixed(2)} MB',
+                    ),
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
               },
             ),
           ],

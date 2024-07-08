@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:conversion_units/conversion_units.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/backend/models/model.dart';
+import 'package:units_converter/units_converter.dart';
 
 class ModelDetailsDialog extends StatelessWidget {
   final Model model;
@@ -25,8 +25,12 @@ class ModelDetailsDialog extends StatelessWidget {
           ),
           Text(
             AppLocalizations.of(context).modelDetailsSizeText(
-              Kilobytes.toGigabytes(model.size.toDouble() / 1024)
-                  .toStringAsFixed(1),
+              model.size
+                  .convertFromTo(
+                    DIGITAL_DATA.byte,
+                    DIGITAL_DATA.gigabyte,
+                  )!
+                  .toStringAsFixed(2),
             ),
           ),
           Text(
