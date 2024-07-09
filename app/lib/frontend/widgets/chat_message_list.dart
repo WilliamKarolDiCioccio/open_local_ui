@@ -25,6 +25,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
   @override
   void initState() {
     super.initState();
+
     _scrollController.addListener(_scrollListener);
   }
 
@@ -32,6 +33,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
   void dispose() {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
+
     super.dispose();
   }
 
@@ -107,10 +109,10 @@ class _ChatMessageListState extends State<ChatMessageList> {
               itemBuilder: (context, index) {
                 final message = context.watch<ChatProvider>().messages[index];
 
-                return ChatMessageWidget(message)
-                    .animate()
-                    .fadeIn(duration: 300.ms)
-                    .move(
+                return ChatMessageWidget(
+                  key: Key(message.uuid),
+                  message,
+                ).animate().fadeIn(duration: 300.ms).move(
                       begin: const Offset(-16, 0),
                       curve: Curves.easeOutQuad,
                     );
@@ -124,7 +126,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             return Positioned(
               left:
                   _getExpandedOffset().dx + (_getExpandedSize().width / 2) - 16,
-              bottom: _getExpandedOffset().dy + 24,
+              bottom: _getExpandedOffset().dy + 64,
               child: Opacity(
                 opacity: 0.75,
                 child: IconButton.filled(
