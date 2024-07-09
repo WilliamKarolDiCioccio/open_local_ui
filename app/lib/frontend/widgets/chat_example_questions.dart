@@ -263,7 +263,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
         duration: const Duration(milliseconds: 200),
         child: GestureDetector(
           onTap: () => _sendMessage(
-            '$widget.question $widget.questionDetails',
+            '${widget.question} ${widget.questionDetails}',
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -312,7 +312,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
                   const Spacer(),
                   IconButton(
                     onPressed: () => _addEditableMessage(
-                      '$widget.question $widget.questionDetails',
+                      '${widget.question} ${widget.questionDetails}',
                     ),
                     icon: const Icon(UniconsLine.edit),
                   )
