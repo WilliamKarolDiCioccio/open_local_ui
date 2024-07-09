@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
     as snackbar;
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
+import 'package:open_local_ui/core/image.dart';
 import 'package:open_local_ui/frontend/dialogs/attachments_dropzone.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +24,14 @@ class ChatInputFieldWidget extends StatefulWidget {
 }
 
 class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
+  static final ImageCacheManager _imageCacheManager = ImageCacheManager();
   final TextEditingController _textEditingController = TextEditingController();
-  Uint8List? _imageBytes;
+
+  Uint8List? get _imageBytes =>
+      _imageCacheManager.getImage('current_image_embed');
+
+  set _imageBytes(Uint8List? imageBytes) =>
+      _imageCacheManager.cacheImage('current_image_embed', imageBytes);
 
   @override
   void initState() {
@@ -62,9 +70,10 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
       );
     }
 
-    context
-        .read<ChatProvider>()
-        .sendMessage(_textEditingController.text, imageBytes: _imageBytes);
+    context.read<ChatProvider>().sendMessage(
+          _textEditingController.text,
+          imageBytes: _imageBytes,
+        );
 
     _textEditingController.clear();
 
@@ -84,7 +93,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
         children: [
           if (_imageBytes != null)
             SizedBox(
-              height: 96,
+              height: 90,
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: ListView(
@@ -102,7 +111,13 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                                     _imageBytes != null;
                           });
                         },
-                      ),
+                      )
+                          .animate(delay: 100.ms)
+                          .fadeIn(duration: 600.ms, delay: 300.ms)
+                          .move(
+                            begin: const Offset(-16, 0),
+                            curve: Curves.easeOutQuad,
+                          ),
                   ],
                 ),
               ),
@@ -137,15 +152,12 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                                 : UniconsLine.link,
                           ),
                           onPressed: () async {
-                            final imageBytes =
-                                await showAttachmentsDropzoneDialog(
+                            _imageBytes = await showAttachmentsDropzoneDialog(
                               context,
                               _imageBytes,
                             );
 
                             setState(() {
-                              _imageBytes = imageBytes;
-
                               widget.hasUserInput.value =
                                   _textEditingController.text.isNotEmpty ||
                                       _imageBytes != null;

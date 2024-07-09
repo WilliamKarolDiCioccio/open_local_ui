@@ -1,6 +1,27 @@
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 
+class ImageCacheManager {
+  static final ImageCacheManager _instance = ImageCacheManager._internal();
+  factory ImageCacheManager() => _instance;
+
+  ImageCacheManager._internal();
+
+  final Map<String, Uint8List?> _cache = {};
+
+  void cacheImage(String key, Uint8List? imageBytes) {
+    _cache[key] = imageBytes;
+  }
+
+  Uint8List? getImage(String key) {
+    return _cache[key];
+  }
+
+  void clearCache() {
+    _cache.clear();
+  }
+}
+
 class ImageHelpers {
   static Future<bool> compare(
       Uint8List? imageBytes1, Uint8List? imageBytes2) async {
