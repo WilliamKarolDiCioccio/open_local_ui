@@ -49,7 +49,13 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
           future: context.read<ModelSettingsProvider>().load(),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: SpinKitCircle(
+                  color: AdaptiveTheme.of(context).mode.isDark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+              );
             }
 
             _settings = snapshot.data!;

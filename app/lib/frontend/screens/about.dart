@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/github.dart';
@@ -12,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AboutPage extends StatelessWidget {
   static const gitHubPage =
       'https://github.com/WilliamKarolDiCioccio/open_local_ui';
+  static const discordInviteLink = 'https://discord.gg/WuDckBpwHd';
 
   const AboutPage({super.key});
 
@@ -44,9 +46,9 @@ class AboutPage extends StatelessWidget {
             IconButton(
               tooltip: AppLocalizations.of(context)
                   .aboutPageSocialButtonContributeTooltip,
-              onPressed: () {
-                launchUrl(Uri.parse(gitHubPage));
-              },
+              onPressed: () => launchUrl(
+                Uri.parse(gitHubPage),
+              ),
               icon: const Icon(UniconsLine.github),
               iconSize: 44,
             ),
@@ -54,9 +56,9 @@ class AboutPage extends StatelessWidget {
             IconButton(
               tooltip: AppLocalizations.of(context)
                   .aboutPageSocialButtonJoinServerTooltip,
-              onPressed: () {
-                // TODO: Implement Discord invite link
-              },
+              onPressed: () => launchUrl(
+                Uri.parse(discordInviteLink),
+              ),
               icon: const Icon(UniconsLine.discord),
               iconSize: 44,
             ),
@@ -138,7 +140,11 @@ class AboutPage extends StatelessWidget {
           future: GitHubAPI.listRepositoryContributors(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return SpinKitCircle(
+                color: AdaptiveTheme.of(context).mode.isDark
+                    ? Colors.white
+                    : Colors.black,
+              );
             } else {
               final List<GitHubContributor> collaborators = snapshot.data ?? [];
 
@@ -168,8 +174,10 @@ class AboutPage extends StatelessWidget {
                               url,
                               downloadProgress,
                             ) =>
-                                CircularProgressIndicator(
-                              value: downloadProgress.progress,
+                                SpinKitCircle(
+                              color: AdaptiveTheme.of(context).mode.isDark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                             errorWidget: (context, url, error) => const Icon(
                               UniconsLine.exclamation_triangle,

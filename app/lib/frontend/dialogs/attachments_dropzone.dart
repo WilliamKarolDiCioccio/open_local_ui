@@ -217,7 +217,11 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           ],
         );
       case ImageStatus.loading:
-        innerWidget = const CircularProgressIndicator();
+        innerWidget = SpinKitCircle(
+          color: AdaptiveTheme.of(context).mode.isDark
+              ? Colors.white
+              : Colors.black,
+        );
       case ImageStatus.loaded:
         innerWidget = ClipRRect(
           borderRadius: BorderRadius.circular(20),

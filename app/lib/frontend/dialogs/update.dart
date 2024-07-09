@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/frontend/screens/update_in_progress.dart';
 
@@ -46,8 +48,12 @@ class _UpdateDialogState extends State<UpdateDialog> {
         width: 256.0,
         height: 128.0,
         child: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
+            ? Center(
+                child: SpinKitCircle(
+                  color: AdaptiveTheme.of(context).mode.isDark
+                      ? Colors.white
+                      : Colors.black,
+                ),
               )
             : Text(
                 _isUpdateAvailable

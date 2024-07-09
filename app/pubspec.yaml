@@ -89,6 +89,7 @@ dependencies:
 
   # Animations
   flutter_animate: ^4.5.0
+  flutter_spinkit: ^5.2.1
 
   # GRPC and Protocol Buffers
   grpc: ^3.2.4

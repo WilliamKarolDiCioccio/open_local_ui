@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/update.dart';
 
@@ -37,7 +39,11 @@ class _UpdateInProgressPageState extends State<UpdateInProgressPage> {
             const Gap(16.0),
             Text(AppLocalizations.of(context).updateInProgressPageDescription),
             const Gap(32.0),
-            const CircularProgressIndicator(),
+            SpinKitCircle(
+              color: AdaptiveTheme.of(context).mode.isDark
+                  ? Colors.white
+                  : Colors.black,
+            ),
           ],
         ),
       ),
