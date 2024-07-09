@@ -190,9 +190,15 @@ class _TTSPlayerState extends State<TTSPlayer>
         color: AdaptiveTheme.of(context).mode.isDark
             ? Colors.black
             : Colors.grey[200],
-        borderRadius: const BorderRadius.all(
-          Radius.circular(32),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(32)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 1,
+            spreadRadius: 1,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Row(
         children: [
