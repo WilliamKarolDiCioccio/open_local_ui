@@ -849,26 +849,26 @@ packages:
     dependency: "direct main"
     description:
       name: langchain
-      sha256: "7773a0f113d729f0593879b5852b05c7a32d5fb3eddf3aabffa5e15d9baaf12e"
+      sha256: "64ffdf3f57dfbfad46115084ce7f628ae34ba76c024762400612dbbd7a458e0d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.3"
   langchain_core:
     dependency: transitive
     description:
       name: langchain_core
-      sha256: da71ddb5b392ac699d876e9b84d769b0e879809316b0269359deda884cffdc9b
+      sha256: a1d84dba125b568b3a79646fd5b332a07092d80c83e18ccd8b2012b669769f3e
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.1"
+    version: "0.3.3"
   langchain_ollama:
     dependency: "direct main"
     description:
       name: langchain_ollama
-      sha256: "46afcd5cd95ec5f5e3e1b3c459c948c2789e99b5f821c8514e4c653917f2db66"
+      sha256: f9bdd5a905fb86f0b155ba50cd36484223821dbf969f35dc792b60dc1ee2b958
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.1+1"
+    version: "0.2.2+1"
   langchain_tiktoken:
     dependency: transitive
     description:
@@ -1001,10 +1001,10 @@ packages:
     dependency: transitive
     description:
       name: ollama_dart
-      sha256: "5e83b6b77785e7dbc454ff70ab14883e6cc1e6157c8df4e84da77845bc074df9"
+      sha256: "760cc0d1d26bb957b9fd3bb31985ebbfab5598076670185405469ec2600a5439"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0+1"
+    version: "0.1.2"
   package_config:
     dependency: transitive
     description:
