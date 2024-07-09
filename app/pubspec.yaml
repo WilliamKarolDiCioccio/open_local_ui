@@ -26,6 +26,7 @@ dependencies:
   archive: ^3.6.1
   http: ^1.2.1
   gap: ^3.0.1
+  indexed: ^0.0.8
   awesome_snackbar_content: ^0.1.3
   intl: any
 
