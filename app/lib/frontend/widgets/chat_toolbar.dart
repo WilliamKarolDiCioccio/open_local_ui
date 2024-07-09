@@ -47,27 +47,24 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const ChatModelSelectionWidget(),
-          const Gap(16),
-          // const ChatOptionBarWidget(),
-          // const Gap(16),
-          ElevatedButton.icon(
-            label: Text(
-              AppLocalizations.of(context).chatToolbarNewSessionButton,
-              style: const TextStyle(fontSize: 18.0),
-            ),
-            icon: const Icon(UniconsLine.plus),
-            onPressed: !context.watch<ChatProvider>().isGenerating
-                ? () => _newSession()
-                : null,
-          )
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const ChatModelSelectionWidget(),
+        const Gap(16),
+        // const ChatOptionBarWidget(),
+        // const Gap(16),
+        ElevatedButton.icon(
+          label: Text(
+            AppLocalizations.of(context).chatToolbarNewSessionButton,
+            style: const TextStyle(fontSize: 18.0),
+          ),
+          icon: const Icon(UniconsLine.plus),
+          onPressed: !context.watch<ChatProvider>().isGenerating
+              ? () => _newSession()
+              : null,
+        )
+      ],
     );
   }
 }

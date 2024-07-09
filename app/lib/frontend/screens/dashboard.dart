@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
+    as snackbar;
 import 'package:feedback/feedback.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,7 +13,9 @@ import 'package:gap/gap.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
+import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/about.dart';
 import 'package:open_local_ui/frontend/screens/chat.dart';
 import 'package:open_local_ui/frontend/screens/models.dart';
@@ -37,9 +41,36 @@ class _DashboardLayoutState extends State<DashboardLayout> {
   final GlobalKey _buttonKey = GlobalKey();
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _checkForUpdates();
+    });
+  }
+
+  @override
   void dispose() {
     _pageController.dispose();
+
     super.dispose();
+  }
+
+  void _checkForUpdates() {
+    UpdateHelper.isUpdateAvailable().then(
+      (updateAvailable) {
+        if (updateAvailable) {
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(context).snackBarUpdateTitle,
+            AppLocalizations.of(context).clickToDownloadLatestVersionSnackBar,
+            snackbar.ContentType.help,
+            onTap: () => showUpdateDialog(
+              context: context,
+            ),
+          );
+        }
+      },
+    );
   }
 
   void _changePage(int pageIndex) {

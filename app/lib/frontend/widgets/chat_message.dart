@@ -3,16 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
     as snackbar;
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/models/chat_message.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/core/formatters.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
-import 'package:open_local_ui/frontend/widgets/markdown_widget.dart';
+import 'package:open_local_ui/frontend/widgets/markdown_body.dart';
 import 'package:open_local_ui/frontend/widgets/tts_player.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -33,6 +35,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _showEditWidget = false;
   bool _showPlayerWidget = false;
+  bool _isCopied = false;
 
   @override
   void dispose() {
@@ -42,6 +45,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
   }
 
   void _copyMessage() {
+    setState(() => _isCopied = true);
+
     Clipboard.setData(ClipboardData(text: widget.message.text));
 
     SnackBarHelpers.showSnackBar(
@@ -49,6 +54,12 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
       AppLocalizations.of(context).messageCopiedSnackBar,
       snackbar.ContentType.success,
     );
+
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() => _isCopied = false);
+      }
+    });
   }
 
   void _regenerateMessage() {
@@ -197,6 +208,15 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             ],
           ),
           const Divider(),
+          if ((widget.message is ChatModelMessageWrapper))
+            if (context.watch<ChatProvider>().isGenerating &&
+                widget.message.text.isEmpty)
+              SpinKitThreeBounce(
+                size: 32,
+                color: AdaptiveTheme.of(context).mode.isDark
+                    ? Colors.white
+                    : Colors.black,
+              ),
           if ((widget.message is ChatUserMessageWrapper))
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               Center(
@@ -217,7 +237,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               const SizedBox(height: 8.0),
           if (!_showEditWidget && widget.message.text.isNotEmpty)
-            MessageMarkdownWidget(
+            MarkdownBodyWidget(
               widget.message.text,
             ),
           if (context.watch<ChatProvider>().isChatShowStatistics &&
@@ -232,9 +252,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 IconButton(
                   tooltip: AppLocalizations.of(context).markdownCopyTooltip,
                   onPressed: () => _copyMessage(),
-                  icon: const Icon(UniconsLine.copy),
+                  icon: Icon(_isCopied ? UniconsLine.check : UniconsLine.copy),
                 ),
-                if (Platform.isLinux) const Gap(8),
+                if (!Platform.isLinux) const Gap(8),
                 if (!Platform.isLinux)
                   IconButton(
                     tooltip: AppLocalizations.of(context).chatReadAloudTooltip,
@@ -249,7 +269,6 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                     onPressed: () => _regenerateMessage(),
                     icon: const Icon(UniconsLine.repeat),
                   ),
-                const Gap(8),
                 if (widget.message.sender == ChatMessageSender.user)
                   IconButton(
                     tooltip:

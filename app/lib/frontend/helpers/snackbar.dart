@@ -9,16 +9,20 @@ class SnackBarHelpers {
     String message,
     ContentType type, {
     Duration duration = const Duration(seconds: 5),
+    Function? onTap,
   }) async {
     final snackBar = SnackBar(
       elevation: 0,
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
       duration: duration,
-      content: AwesomeSnackbarContent(
-        title: title,
-        message: message,
-        contentType: type,
+      content: GestureDetector(
+        onTap: () => onTap?.call(),
+        child: AwesomeSnackbarContent(
+          title: title,
+          message: message,
+          contentType: type,
+        ),
       ),
     );
 

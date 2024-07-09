@@ -267,7 +267,7 @@ class _ModelsPageState extends State<ModelsPage> {
                     ),
                   );
                 } else {
-                  return const CircularProgressIndicator();
+                  return const Text('');
                 }
               },
             ),

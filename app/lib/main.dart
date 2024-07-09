@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:feedback/feedback.dart';
@@ -18,9 +16,7 @@ import 'package:open_local_ui/backend/services/tts.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/constants/languages.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/env.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -95,26 +91,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _checkForUpdates();
-    });
-  }
-
-  void _checkForUpdates() {
-    UpdateHelper.isUpdateAvailable().then(
-      (updateAvailable) {
-        if (updateAvailable) {
-          SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-                .snackBarUpdateTitle,
-            AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-                .clickToDownloadLatestVersionSnackBar,
-            snackbar.ContentType.help,
-          );
-        }
-      },
-    );
   }
 
   @override

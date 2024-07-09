@@ -4,15 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
     as snackbar;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/attachments_dropzone.dart';
+import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 class ChatInputFieldWidget extends StatefulWidget {
-  const ChatInputFieldWidget({super.key});
+  final ValueNotifier<bool> hasUserInput;
+
+  const ChatInputFieldWidget({super.key, required this.hasUserInput});
 
   @override
   State<ChatInputFieldWidget> createState() => _ChatInputFieldWidgetState();
@@ -20,12 +23,22 @@ class ChatInputFieldWidget extends StatefulWidget {
 
 class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   final TextEditingController _textEditingController = TextEditingController();
-  String _text = '';
   Uint8List? _imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textEditingController.addListener(() {
+      widget.hasUserInput.value =
+          _textEditingController.text.isNotEmpty || _imageBytes != null;
+    });
+  }
 
   @override
   void dispose() {
     _textEditingController.dispose();
+
     super.dispose();
   }
 
@@ -49,10 +62,12 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
       );
     }
 
-    context.read<ChatProvider>().sendMessage(_text, imageBytes: _imageBytes);
+    context
+        .read<ChatProvider>()
+        .sendMessage(_textEditingController.text, imageBytes: _imageBytes);
 
     _textEditingController.clear();
-    _text = '';
+
     _imageBytes = null;
   }
 
@@ -60,94 +75,203 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   Widget build(BuildContext context) {
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter, shift: true): () {
-          _text = _textEditingController.text;
-
-          _sendMessage();
-        },
+        const SingleActivator(
+          LogicalKeyboardKey.enter,
+          shift: true,
+        ): () => _sendMessage(),
       },
-      child: Container(
-        padding: const EdgeInsets.only(top: 8.0),
-        constraints: const BoxConstraints(
-          maxHeight: 200,
-        ),
-        child: TextField(
-          controller: _textEditingController,
-          decoration: InputDecoration(
-            hintText: AppLocalizations.of(context).chatInputFieldHint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            prefixIcon: context.watch<ChatProvider>().isMultimodalModel
-                ? Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8.0,
-                      right: 8.0,
-                    ),
-                    child: IconButton(
-                      tooltip: _imageBytes == null
-                          ? AppLocalizations.of(context).chatAttachFilesTooltip
-                          : AppLocalizations.of(context).chatDetachFilesTooltip,
-                      icon: Icon(
-                        _imageBytes == null
-                            ? UniconsLine.link_add
-                            : UniconsLine.link_broken,
+      child: Column(
+        children: [
+          if (_imageBytes != null)
+            SizedBox(
+              height: 96,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    if (_imageBytes != null)
+                      AttachmentsPreviewCardWidget(
+                        imageBytes: _imageBytes!,
+                        trashButtonCallback: () {
+                          setState(() {
+                            _imageBytes = null;
+
+                            widget.hasUserInput.value =
+                                _textEditingController.text.isNotEmpty ||
+                                    _imageBytes != null;
+                          });
+                        },
                       ),
-                      onPressed: () async {
-                        final imageBytes = await showAttachmentsDropzoneDialog(
-                          context,
-                          _imageBytes,
-                        );
-
-                        setState(() {
-                          _imageBytes = imageBytes;
-                        });
-                      },
-                    ),
-                  )
-                : null,
-            suffixIcon: Padding(
-              padding: const EdgeInsets.only(
-                left: 8.0,
-                right: 8.0,
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (context.watch<ChatProvider>().isGenerating)
-                    IconButton(
-                      tooltip: AppLocalizations.of(context)
-                          .chatCancelGenerationTooltip,
-                      icon: const Icon(UniconsLine.stop_circle),
-                      onPressed: () async {
-                        context.read<ChatProvider>().abortGeneration();
-                      },
-                    )
-                  else
-                    IconButton(
-                      tooltip: AppLocalizations.of(context).chatSendTooltip,
-                      icon: const Icon(UniconsLine.message),
-                      onPressed: () async {
-                        _text = _textEditingController.text;
+            ),
+          if (_imageBytes != null) const Gap(8.0),
+          Container(
+            constraints: const BoxConstraints(
+              maxHeight: 110,
+            ),
+            child: TextField(
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context).chatInputFieldHint,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                prefixIcon: context.watch<ChatProvider>().isMultimodalModel
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                          right: 8.0,
+                        ),
+                        child: IconButton(
+                          tooltip: _imageBytes == null
+                              ? AppLocalizations.of(context)
+                                  .chatAttachFilesTooltip
+                              : AppLocalizations.of(context)
+                                  .chatDetachFilesTooltip,
+                          icon: Icon(
+                            _imageBytes == null
+                                ? UniconsLine.link_broken
+                                : UniconsLine.link,
+                          ),
+                          onPressed: () async {
+                            final imageBytes =
+                                await showAttachmentsDropzoneDialog(
+                              context,
+                              _imageBytes,
+                            );
 
-                        _sendMessage();
-                      },
-                    ),
-                ],
+                            setState(() {
+                              _imageBytes = imageBytes;
+
+                              widget.hasUserInput.value =
+                                  _textEditingController.text.isNotEmpty ||
+                                      _imageBytes != null;
+                            });
+                          },
+                        ),
+                      )
+                    : null,
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8.0,
+                    right: 8.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (context.watch<ChatProvider>().isGenerating)
+                        IconButton(
+                          tooltip: AppLocalizations.of(context)
+                              .chatCancelGenerationTooltip,
+                          icon: const Icon(UniconsLine.stop_circle),
+                          onPressed: () async {
+                            context.read<ChatProvider>().abortGeneration();
+                          },
+                        )
+                      else
+                        IconButton(
+                          tooltip: AppLocalizations.of(context).chatSendTooltip,
+                          icon: const Icon(UniconsLine.message),
+                          onPressed: () async => _sendMessage(),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontFamily: 'Neuton',
+                fontWeight: FontWeight.w300,
+              ),
+              autofocus: true,
+              maxLength: TextField.noMaxLength,
+              maxLines: null,
+              expands: false,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AttachmentsPreviewCardWidget extends StatefulWidget {
+  final Uint8List imageBytes;
+  final Function trashButtonCallback;
+
+  const AttachmentsPreviewCardWidget({
+    super.key,
+    required this.imageBytes,
+    required this.trashButtonCallback,
+  });
+
+  void addListener(void Function() function) {}
+
+  @override
+  State<AttachmentsPreviewCardWidget> createState() =>
+      _AttachmentsPreviewCardWidgetState();
+}
+
+class _AttachmentsPreviewCardWidgetState
+    extends State<AttachmentsPreviewCardWidget> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          _isHovered = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          _isHovered = false;
+        });
+      },
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 1,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.memory(
+                widget.imageBytes,
+                fit: BoxFit.fitHeight,
               ),
             ),
           ),
-          style: const TextStyle(
-            fontSize: 18.0,
-            fontFamily: 'Neuton',
-            fontWeight: FontWeight.w300,
-          ),
-          autofocus: true,
-          maxLength: TextField.noMaxLength,
-          maxLines: null,
-          expands: false,
-        ),
+          if (_isHovered)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                IconButton(
+                  tooltip: AppLocalizations.of(context).chatDetachFilesTooltip,
+                  icon: const Icon(
+                    UniconsLine.trash,
+                    color: Colors.red,
+                    size: 24,
+                  ),
+                  onPressed: () => widget.trashButtonCallback(),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }

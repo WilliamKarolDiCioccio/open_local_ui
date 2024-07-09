@@ -71,7 +71,7 @@ class _SessionsPageState extends State<SessionsPage> {
   Future<int> _totalOnDiskSize() async {
     final dataDir = await getApplicationSupportDirectory();
     final sessionsFile = File('${dataDir.path}/sessions/sessions.hive');
-    
+
     if (await sessionsFile.exists()) {
       return await sessionsFile.length();
     }
@@ -231,16 +231,14 @@ class _SessionsPageState extends State<SessionsPage> {
                 if (snapshot.hasData) {
                   return Text(
                     AppLocalizations.of(context).totalOnDiskSizeLabel(
-                      '${snapshot.data!
-                          .convertFromTo(
+                      '${snapshot.data!.convertFromTo(
                             DIGITAL_DATA.byte,
                             DIGITAL_DATA.megabyte,
-                          )!
-                          .toStringAsFixed(2)} MB',
+                          )!.toStringAsFixed(2)} MB',
                     ),
                   );
                 } else {
-                  return const CircularProgressIndicator();
+                  return const Text('');
                 }
               },
             ),

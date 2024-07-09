@@ -287,6 +287,8 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
                 _imageBytes = null;
                 _imageStatus = ImageStatus.unloaded;
               });
+
+              Navigator.of(context).pop(null);
             },
             child: Text(
               AppLocalizations.of(context).dialogRemoveButton,

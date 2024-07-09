@@ -22,58 +22,7 @@ class ChatExampleQuestions extends StatefulWidget {
 }
 
 class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
-  void _sendMessage(String message) async {
-    if (!context.read<ChatProvider>().isModelSelected) {
-      if (context.read<ModelProvider>().modelsCount == 0) {
-        return SnackBarHelpers.showSnackBar(
-          AppLocalizations.of(context).snackBarErrorTitle,
-          AppLocalizations.of(context).noModelsAvailableSnackBar,
-          snackbar.ContentType.failure,
-        );
-      } else {
-        final models = context.read<ModelProvider>().models;
-        await context.read<ChatProvider>().setModel(models.first.name);
-      }
-    } else if (context.read<ChatProvider>().isGenerating) {
-      return SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).snackBarErrorTitle,
-        AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
-      );
-    }
-
-    // ignore: use_build_context_synchronously
-    context.read<ChatProvider>().sendMessage(message);
-  }
-
-  void _addEditableMessage(String message) {
-    if (!context.read<ChatProvider>().isModelSelected) {
-      if (context.read<ModelProvider>().modelsCount == 0) {
-        return SnackBarHelpers.showSnackBar(
-          AppLocalizations.of(context).snackBarErrorTitle,
-          AppLocalizations.of(context).noModelsAvailableSnackBar,
-          snackbar.ContentType.failure,
-        );
-      } else {
-        final models = context.read<ModelProvider>().models;
-        context.read<ChatProvider>().setModel(models.first.name);
-      }
-    } else if (context.read<ChatProvider>().isGenerating) {
-      return SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).snackBarErrorTitle,
-        AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
-      );
-    }
-
-    if (!context.read<ChatProvider>().isSessionSelected) {
-      context.read<ChatProvider>().newSession();
-    }
-
-    context.read<ChatProvider>().addUserMessage(message, null);
-  }
-
-  List<Widget> _generateSuggestionsCells() {
+  List<Widget> _generateSuggestionsCards() {
     final List<List<String>> exampleQuestions = [
       [
         AppLocalizations.of(context)
@@ -152,71 +101,9 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
     return List<Widget>.generate(
       exampleQuestionsCount,
       (index) {
-        return GestureDetector(
-          onTap: () => _sendMessage(
-            '${choosenQuestions[index][0]} ${choosenQuestions[index][1]}',
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 128,
-              width: 256,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AdaptiveTheme.of(context).theme.dividerColor,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    // TODO: Don't know why, but the theme is not applied here. Further investigation needed.
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: randomQuestions[index][0],
-                          style: TextStyle(
-                            fontFamily: 'Neuton',
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: AdaptiveTheme.of(context).mode.isDark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                        const TextSpan(text: ' '),
-                        TextSpan(
-                          text: randomQuestions[index][1],
-                          style: TextStyle(
-                            fontFamily: 'Neuton',
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: AdaptiveTheme.of(context).mode.isDark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () => _addEditableMessage(
-                      '${choosenQuestions[index][0]} ${choosenQuestions[index][1]}',
-                    ),
-                    icon: const Icon(UniconsLine.edit),
-                  )
-                ],
-              ),
-            )
-                .animate(
-                  delay: 500.ms + ((Random().nextInt(4) + 1) * 100).ms,
-                )
-                .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
-                .fade(),
-          ),
+        return ChatExampleQuestionCard(
+          question: choosenQuestions[index][0],
+          questionDetails: randomQuestions[index][1],
         );
       },
     );
@@ -224,7 +111,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
 
   @override
   Widget build(BuildContext context) {
-    final questionCells = _generateSuggestionsCells();
+    final questionCards = _generateSuggestionsCards();
 
     return Center(
       child: Column(
@@ -255,15 +142,15 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    questionCells[0],
-                    questionCells[1],
+                    questionCards[0],
+                    questionCards[1],
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    questionCells[2],
-                    questionCells[3],
+                    questionCards[2],
+                    questionCards[3],
                   ],
                 ),
               ],
@@ -283,6 +170,162 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
                 curve: Curves.easeOutQuad,
               ),
         ],
+      ),
+    );
+  }
+}
+
+class ChatExampleQuestionCard extends StatefulWidget {
+  final String question;
+  final String questionDetails;
+
+  const ChatExampleQuestionCard({
+    super.key,
+    required this.question,
+    required this.questionDetails,
+  });
+
+  @override
+  State<ChatExampleQuestionCard> createState() =>
+      _ChatExampleQuestionCardState();
+}
+
+class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
+  // I'm still figuring out what effect I want to apply here
+  // ignore: unused_field
+  bool _isHovered = false;
+
+  void _sendMessage(String message) async {
+    if (!context.read<ChatProvider>().isModelSelected) {
+      if (context.read<ModelProvider>().modelsCount == 0) {
+        return SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context).snackBarErrorTitle,
+          AppLocalizations.of(context).noModelsAvailableSnackBar,
+          snackbar.ContentType.failure,
+        );
+      } else {
+        final models = context.read<ModelProvider>().models;
+        await context.read<ChatProvider>().setModel(models.first.name);
+      }
+    } else if (context.read<ChatProvider>().isGenerating) {
+      return SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).snackBarErrorTitle,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        snackbar.ContentType.failure,
+      );
+    }
+
+    // ignore: use_build_context_synchronously
+    context.read<ChatProvider>().sendMessage(message);
+  }
+
+  void _addEditableMessage(String message) {
+    if (!context.read<ChatProvider>().isModelSelected) {
+      if (context.read<ModelProvider>().modelsCount == 0) {
+        return SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context).snackBarErrorTitle,
+          AppLocalizations.of(context).noModelsAvailableSnackBar,
+          snackbar.ContentType.failure,
+        );
+      } else {
+        final models = context.read<ModelProvider>().models;
+        context.read<ChatProvider>().setModel(models.first.name);
+      }
+    } else if (context.read<ChatProvider>().isGenerating) {
+      return SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).snackBarErrorTitle,
+        AppLocalizations.of(context).modelIsGeneratingSnackBar,
+        snackbar.ContentType.failure,
+      );
+    }
+
+    if (!context.read<ChatProvider>().isSessionSelected) {
+      context.read<ChatProvider>().newSession();
+    }
+
+    context.read<ChatProvider>().addUserMessage(message, null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          _isHovered = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          _isHovered = false;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        child: GestureDetector(
+          onTap: () => _sendMessage(
+            '$widget.question $widget.questionDetails',
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 128,
+              width: 256,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AdaptiveTheme.of(context).theme.dividerColor,
+                ),
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: widget.question,
+                          style: TextStyle(
+                            fontFamily: 'Neuton',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AdaptiveTheme.of(context).mode.isDark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        const TextSpan(text: ' '),
+                        TextSpan(
+                          text: widget.questionDetails,
+                          style: TextStyle(
+                            fontFamily: 'Neuton',
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: AdaptiveTheme.of(context).mode.isDark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () => _addEditableMessage(
+                      '$widget.question $widget.questionDetails',
+                    ),
+                    icon: const Icon(UniconsLine.edit),
+                  )
+                ],
+              ),
+            )
+                .animate(
+                  delay: 500.ms + ((Random().nextInt(4) + 1) * 100).ms,
+                )
+                .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
+                .fade(),
+          ),
+        ),
       ),
     );
   }
