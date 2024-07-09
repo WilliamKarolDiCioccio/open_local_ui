@@ -5,10 +5,12 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/http.dart';
@@ -17,9 +19,10 @@ import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
 enum ImageStatus {
-  empty,
+  unloaded,
   loading,
   loaded,
+  preloaded,
   error,
 }
 
@@ -42,7 +45,8 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     super.initState();
 
     _imageBytes = widget.imageBytes;
-    _imageStatus = _imageBytes == null ? ImageStatus.empty : ImageStatus.loaded;
+    _imageStatus =
+        _imageBytes == null ? ImageStatus.unloaded : ImageStatus.preloaded;
   }
 
   bool _isURL(String str) {
@@ -187,7 +191,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     late Widget innerWidget;
 
     switch (_imageStatus) {
-      case ImageStatus.empty:
+      case ImageStatus.unloaded:
         innerWidget = Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -223,8 +227,9 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
               : Colors.black,
         );
       case ImageStatus.loaded:
+      case ImageStatus.preloaded:
         innerWidget = ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           child: Image.memory(
             _imageBytes!,
             fit: BoxFit.fitHeight,
@@ -264,21 +269,23 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
         ),
       ),
       actions: [
-        if (_imageStatus == ImageStatus.empty)
+        if (_imageStatus == ImageStatus.error ||
+            _imageStatus != ImageStatus.loaded ||
+            _imageStatus != ImageStatus.preloaded)
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(_imageBytes);
+              Navigator.of(context).pop(widget.imageBytes);
             },
             child: Text(
               AppLocalizations.of(context).dialogCancelButtonShared,
             ),
           ),
-        if (_imageStatus == ImageStatus.loaded)
+        if (_imageStatus == ImageStatus.preloaded)
           TextButton(
             onPressed: () {
               setState(() {
                 _imageBytes = null;
-                _imageStatus = ImageStatus.empty;
+                _imageStatus = ImageStatus.unloaded;
               });
             },
             child: Text(
@@ -320,6 +327,7 @@ Future<Uint8List?> showAttachmentsDropzoneDialog(
     BuildContext context, Uint8List? imageBytes) async {
   return showDialog<Uint8List?>(
     context: context,
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return AttachmentsDropzoneDialog(imageBytes);
     },
