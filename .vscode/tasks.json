@@ -52,7 +52,7 @@
     {
       "label": "Run build runner",
       "type": "shell",
-      "command": "dart pub run build_runner build",
+      "command": "dart run build_runner build",
       "options": {
         "cwd": "${workspaceFolder}/app"
       },
