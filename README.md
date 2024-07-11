@@ -8,27 +8,23 @@
 ![](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
 ![](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
-*__Join Our Discord to get help and collaborate!__*
-
-[![](https://dcbadge.limes.pink/api/server/WuDckBpwHd)](https://discord.gg/WuDckBpwHd)
-
 ![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/dark_theme.png#gh-dark-mode-only)
 ![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/light_theme.png#gh-light-mode-only)
 
 ## Table of Contents
 
-1. [What is OpenLocalUI](#what-is-openlocalui)
-2. [Features](#features)
-3. [Roadmap](#roadmap)
-4. [Installation](#installation)
-5. [Contributing](#contributing)
-6. [License](#license)
+1. [What is OpenLocalUI](#-what-is-openlocalui)
+2. [Features](#-features)
+3. [Roadmap](#%EF%B8%8F-roadmap)
+4. [Installation](#-installation)
+5. [Contributing](#-contributing)
+6. [License](#-license)
 
-## What is OpenLocalUI
+## 🚀 What is OpenLocalUI
 
 OpenLocalUI is a Flutter-based desktop application designed for Windows and macOS users. It aims to provide a user-friendly interface for running LLMs (Large Language Models) locally without the need for complex setups like WSL or Docker containers. Taking inspiration from OpenWebUI, which offers similar functionality in a browser-based environment, OpenLocalUI brings the convenience of a native desktop app.
 
-## Features
+## 🔥 Features
 
 1. **Native Desktop Experience**: OpenLocalUI is designed specifically for Windows and macOS platforms, ensuring seamless integration with your operating system.
 
@@ -36,7 +32,7 @@ OpenLocalUI is a Flutter-based desktop application designed for Windows and macO
 
 3. **MIT License**: OpenLocalUI is licensed under the permissive MIT License, encouraging contributions from the community and fostering an open-source development environment.
 
-## Roadmap
+## 🛣️ Roadmap
 
 Despite its simplicity, OpenLocalUI has enormous potential for growth and enhancement. Based on the LangChain Dart API, future updates will focus on adding more features and improving usability. Planned features include:
 
@@ -44,11 +40,11 @@ Despite its simplicity, OpenLocalUI has enormous potential for growth and enhanc
 2. **Image and File Embedding**: Enable embedding images and files directly into the application for more versatile usage.
 3. **Improved User Interface**: Enhance the user experience with a more intuitive and visually appealing interface.
 
-## Installation
+## 💻 Installation
 
 OpenLocalUI requires OLLAMA to function. Just check out the latest release and download the appropriate version based on your platform; in the folder you'll find both OpenLocalUI's and OLLAMA's installers.
 
-## Contributing
+## 📝 Contributing
 
 Contributions to OpenLocalUI are highly encouraged and welcomed. Whether you're a developer, designer, or enthusiast, there are various ways to contribute:
 
@@ -58,6 +54,13 @@ Contributions to OpenLocalUI are highly encouraged and welcomed. Whether you're 
 
 Please refer to the [`CONTRIBUTING.md`](CONTRIBUTING.md) file for more details on how to contribute.
 
-## License
+## 📃 License
 
 OpenLocalUI comes under the permissive MIT License to encourage contributions. See the [`LICENSE.md`](LICENSE.md) file for more information.
+
+## 🗨️ Contact
+
+[![](https://dcbadge.limes.pink/api/server/WuDckBpwHd)](https://discord.gg/WuDckBpwHd)
+
+You can join our Discord server to get help or take part in the devlopment of OpenLocalUI. If you want to acquire any additional informations you can always write to this [email address](mailto:theyoungprogrammer06@gmail.com).
+
