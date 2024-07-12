@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:open_local_ui/backend/models/ollama_responses.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:provider/provider.dart';
+import 'package:units_converter/units_converter.dart';
 
 class PullModelDialog extends StatefulWidget {
   const PullModelDialog({super.key});
@@ -18,6 +20,8 @@ class PullModelDialog extends StatefulWidget {
 class _PullModelDialogState extends State<PullModelDialog> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isPulling = false;
+  int _completed = 0;
+  int _total = 0;
   double _progressValue = 0.0;
   String _progressBarText = '';
 
@@ -29,6 +33,8 @@ class _PullModelDialogState extends State<PullModelDialog> {
 
   void _updateProgress(OllamaPullResponse response) {
     setState(() {
+      _total = response.total;
+      _completed = response.completed;
       _progressValue = response.completed / response.total;
 
       final duration = HTTPMethods.calculateRemainingTime(response);
@@ -102,11 +108,15 @@ class _PullModelDialogState extends State<PullModelDialog> {
             child: Column(
               children: [
                 Text(_progressBarText),
-                const SizedBox(height: 8.0),
+                const Gap(8.0),
                 LinearProgressIndicator(
                   value: _progressValue,
                   minHeight: 20.0,
                   borderRadius: BorderRadius.circular(16.0),
+                ),
+                const Gap(8.0),
+                Text(
+                  '${_completed.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB / ${_total.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB',
                 ),
               ],
             ),
