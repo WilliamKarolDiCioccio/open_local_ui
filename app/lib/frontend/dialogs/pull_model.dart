@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
@@ -20,10 +19,7 @@ class PullModelDialog extends StatefulWidget {
 class _PullModelDialogState extends State<PullModelDialog> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isPulling = false;
-  int _completed = 0;
-  int _total = 0;
-  double _progressValue = 0.0;
-  String _progressBarText = '';
+  Stream<OllamaPullResponse>? _pullStream;
 
   @override
   void dispose() {
@@ -31,96 +27,84 @@ class _PullModelDialogState extends State<PullModelDialog> {
     super.dispose();
   }
 
-  void _updateProgress(OllamaPullResponse response) {
+  void _pullModel() {
     setState(() {
-      _total = response.total;
-      _completed = response.completed;
-      _progressValue = response.completed / response.total;
-
-      final duration = HTTPMethods.calculateRemainingTime(response);
-
-      final fmt = NumberFormat('#00');
-
-      _progressBarText =
-          AppLocalizations.of(context).progressBarStatusWithTimeText(
-        response.status,
-        fmt.format(duration.inHours),
-        fmt.format(duration.inMinutes % 60),
-        fmt.format(duration.inSeconds % 60),
-      );
+      _isPulling = true;
+      _pullStream = context
+          .read<ModelProvider>()
+          .pull(_textEditingController.text.toLowerCase());
     });
-  }
-
-  void _pullModel() async {
-    setState(() => _isPulling = true);
-
-    final stream = context
-        .read<ModelProvider>()
-        .pull(_textEditingController.text.toLowerCase());
-
-    await for (final response in stream) {
-      if (mounted) _updateProgress(response);
-    }
-
-    if (mounted) {
-      setState(() {
-        _isPulling = false;
-        _progressValue = 0.0;
-        _progressBarText = '';
-        _textEditingController.clear();
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        AppLocalizations.of(context).pullModelDialogTitle,
-      ),
+      title: Text(AppLocalizations.of(context).pullModelDialogTitle),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Visibility(
-            visible: !_isPulling,
-            child: Column(
-              children: [
-                Text(
-                  AppLocalizations.of(context).pullModelDialogGuideText,
-                ),
-                const SizedBox(width: 8.0),
-                TextField(
-                  controller: _textEditingController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)
-                        .pullModelDialogModelNameLabel,
-                    hintText: AppLocalizations.of(context)
-                        .pullModelDialogModelNameHint,
-                  ),
-                ),
-              ],
+          if (!_isPulling) ...[
+            Text(AppLocalizations.of(context).pullModelDialogGuideText),
+            const SizedBox(width: 8.0),
+            TextField(
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                labelText:
+                    AppLocalizations.of(context).pullModelDialogModelNameLabel,
+                hintText:
+                    AppLocalizations.of(context).pullModelDialogModelNameHint,
+              ),
             ),
-          ),
-          const SizedBox(height: 16.0),
-          Visibility(
-            visible: _isPulling,
-            child: Column(
-              children: [
-                Text(_progressBarText),
-                const Gap(8.0),
-                LinearProgressIndicator(
-                  value: _progressValue,
-                  minHeight: 20.0,
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                const Gap(8.0),
-                Text(
-                  '${_completed.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB / ${_total.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB',
-                ),
-              ],
+          ] else ...[
+            StreamBuilder<OllamaPullResponse>(
+              stream: _pullStream,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    setState(() {
+                      _isPulling = false;
+                      _textEditingController.clear();
+                    });
+                  });
+                }
+
+                if (snapshot.hasData) {
+                  final response = snapshot.data!;
+                  final total = response.total;
+                  final completed = response.completed;
+                  final progressValue = completed / total;
+                  final duration = HTTPMethods.calculateRemainingTime(response);
+                  final fmt = NumberFormat('#00');
+                  final progressBarText = AppLocalizations.of(context)
+                      .progressBarStatusWithTimeText(
+                    response.status,
+                    fmt.format(duration.inHours),
+                    fmt.format(duration.inMinutes % 60),
+                    fmt.format(duration.inSeconds % 60),
+                  );
+
+                  return Column(
+                    children: [
+                      Text(progressBarText),
+                      const Gap(8.0),
+                      LinearProgressIndicator(
+                        value: progressValue,
+                        minHeight: 20.0,
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      const Gap(8.0),
+                      Text(
+                        '${completed.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB / ${total.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB',
+                      ),
+                    ],
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
             ),
-          ),
+          ],
         ],
       ),
       actions: [
@@ -135,21 +119,14 @@ class _PullModelDialogState extends State<PullModelDialog> {
         ),
         if (!_isPulling)
           TextButton(
-            onPressed: () => _pullModel(),
-            child: Text(
-              AppLocalizations.of(context).dialogStartButtonShared,
-            ),
+            onPressed: _pullModel,
+            child: Text(AppLocalizations.of(context).dialogStartButtonShared),
           ),
       ],
     )
         .animate()
-        .fadeIn(
-          duration: 200.ms,
-        )
-        .move(
-          begin: const Offset(0, 160),
-          curve: Curves.easeOutQuad,
-        );
+        .fadeIn(duration: 200.ms)
+        .move(begin: const Offset(0, 160), curve: Curves.easeOutQuad);
   }
 }
 

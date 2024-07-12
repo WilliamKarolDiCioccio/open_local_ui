@@ -20,10 +20,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
   final TextEditingController _modelSelectionController =
       TextEditingController();
   bool _isPushing = false;
-  int _completed = 0;
-  int _total = 0;
-  double _progressValue = 0.0;
-  String _progressBarText = '';
+  Stream<OllamaPushResponse>? _pushStream;
 
   @override
   void dispose() {
@@ -31,122 +28,106 @@ class _PushModelDialogState extends State<PushModelDialog> {
     super.dispose();
   }
 
-  void _updateProgress(OllamaPushResponse response) {
+  void _pushModel() {
     setState(() {
-      _total = response.total;
-      _completed = response.completed;
-      _progressValue = response.completed / response.total;
-
-      final duration = HTTPMethods.calculateRemainingTime(response);
-
-      _progressBarText =
-          AppLocalizations.of(context).progressBarStatusWithTimeText(
-        response.status,
-        (duration.inHours).toString(),
-        (duration.inMinutes % 60).toString(),
-        (duration.inSeconds % 60).toString(),
-      );
+      _isPushing = true;
+      _pushStream = context
+          .read<ModelProvider>()
+          .push(_modelSelectionController.text.toLowerCase());
     });
-  }
-
-  void _pushModel() async {
-    setState(() => _isPushing = true);
-
-    final stream = context
-        .read<ModelProvider>()
-        .push(_modelSelectionController.text.toLowerCase());
-
-    await for (final data in stream) {
-      if (mounted) _updateProgress(data);
-    }
-
-    if (mounted) {
-      setState(() {
-        _isPushing = false;
-        _progressValue = 0.0;
-        _progressBarText = '';
-        _modelSelectionController.clear();
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuEntry> modelsMenuEntries = [];
-
-    for (final model in context.read<ModelProvider>().models) {
+    final List<DropdownMenuEntry> modelsMenuEntries =
+        context.read<ModelProvider>().models.map((model) {
       final shortName = model.name.length > 20
           ? '${model.name.substring(0, 20)}...'
           : model.name;
-
-      modelsMenuEntries
-          .add(DropdownMenuEntry(value: model.name, label: shortName));
-    }
+      return DropdownMenuEntry(value: model.name, label: shortName);
+    }).toList();
 
     return AlertDialog(
-      title: Text(
-        AppLocalizations.of(context).pullModelDialogTitle,
-      ),
+      title: Text(AppLocalizations.of(context).pullModelDialogTitle),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Visibility(
-            visible: !_isPushing,
-            child: Column(
-              children: [
-                Text(
-                  AppLocalizations.of(context).pushModelDialogGuideText,
+          if (!_isPushing) ...[
+            Text(AppLocalizations.of(context).pushModelDialogGuideText),
+            const SizedBox(width: 8.0),
+            DropdownMenu(
+              menuHeight: 128,
+              menuStyle: MenuStyle(
+                elevation: WidgetStateProperty.all(8.0),
+                shape: WidgetStateProperty.all(
+                  const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                  ),
                 ),
-                const SizedBox(width: 8.0),
-                DropdownMenu(
-                  menuHeight: 128,
-                  menuStyle: MenuStyle(
-                    elevation: WidgetStateProperty.all(
-                      8.0,
-                    ),
-                    shape: WidgetStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              ),
+              controller: _modelSelectionController,
+              inputDecorationTheme: const InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+              ),
+              enableFilter: true,
+              enableSearch: true,
+              hintText:
+                  AppLocalizations.of(context).pushModelDialogModelSelectorHint,
+              dropdownMenuEntries: modelsMenuEntries,
+              onSelected: null,
+            ),
+          ] else ...[
+            StreamBuilder<OllamaPushResponse>(
+              stream: _pushStream,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    setState(() {
+                      _isPushing = false;
+                      _modelSelectionController.clear();
+                    });
+                  });
+                }
+
+                if (snapshot.hasData) {
+                  final response = snapshot.data!;
+                  final total = response.total;
+                  final completed = response.completed;
+                  final progressValue = completed / total;
+                  final duration = HTTPMethods.calculateRemainingTime(response);
+                  final progressBarText = AppLocalizations.of(context)
+                      .progressBarStatusWithTimeText(
+                    response.status,
+                    (duration.inHours).toString(),
+                    (duration.inMinutes % 60).toString(),
+                    (duration.inSeconds % 60).toString(),
+                  );
+
+                  return Column(
+                    children: [
+                      Text(progressBarText),
+                      const Gap(8.0),
+                      LinearProgressIndicator(
+                        value: progressValue,
+                        minHeight: 20.0,
+                        borderRadius: BorderRadius.circular(16.0),
                       ),
-                    ),
-                  ),
-                  controller: _modelSelectionController,
-                  inputDecorationTheme: const InputDecorationTheme(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                  ),
-                  enableFilter: true,
-                  enableSearch: true,
-                  hintText: AppLocalizations.of(context)
-                      .pushModelDialogModelSelectorHint,
-                  dropdownMenuEntries: modelsMenuEntries,
-                  onSelected: null,
-                ),
-              ],
+                      const Gap(8.0),
+                      Text(
+                        '${completed.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)} / ${total.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)}',
+                      ),
+                    ],
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
             ),
-          ),
-          const SizedBox(height: 16.0),
-          Visibility(
-            visible: _isPushing,
-            child: Column(
-              children: [
-                Text(_progressBarText),
-                const Gap(8.0),
-                LinearProgressIndicator(
-                  value: _progressValue,
-                  minHeight: 20.0,
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                const Gap(8.0),
-                Text(
-                  '${_completed.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)} / ${_total.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)}',
-                ),
-              ],
-            ),
-          ),
+          ],
         ],
       ),
       actions: [
@@ -161,21 +142,14 @@ class _PushModelDialogState extends State<PushModelDialog> {
         ),
         if (!_isPushing)
           TextButton(
-            onPressed: () => _pushModel(),
-            child: Text(
-              AppLocalizations.of(context).dialogStartButtonShared,
-            ),
+            onPressed: _pushModel,
+            child: Text(AppLocalizations.of(context).dialogStartButtonShared),
           ),
       ],
     )
         .animate()
-        .fadeIn(
-          duration: 200.ms,
-        )
-        .move(
-          begin: const Offset(0, 160),
-          curve: Curves.easeOutQuad,
-        );
+        .fadeIn(duration: 200.ms)
+        .move(begin: const Offset(0, 160), curve: Curves.easeOutQuad);
   }
 }
 
