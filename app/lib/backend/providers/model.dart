@@ -15,6 +15,7 @@ import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:windows_taskbar/windows_taskbar.dart';
 
 enum ModelProviderStatus {
   idle,
@@ -127,6 +128,11 @@ class ModelProvider extends ChangeNotifier {
 
     final startTime = DateTime.now().toString();
 
+    if (Platform.isWindows) {
+      WindowsTaskbar.resetThumbnailToolbar();
+      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+    }
+
     await for (var data in stream) {
       try {
         final jsonData = jsonDecode(data);
@@ -143,9 +149,22 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
+          if (Platform.isWindows) {
+            WindowsTaskbar.setProgress(
+              (modelPullResponse.completed / modelPullResponse.total * 100)
+                  .toInt(),
+              100,
+            );
+          }
+
           yield modelPullResponse;
         }
       } catch (e) {
+        if (Platform.isWindows) {
+          WindowsTaskbar.resetThumbnailToolbar();
+          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+        }
+
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
@@ -160,6 +179,11 @@ class ModelProvider extends ChangeNotifier {
       }
     }
 
+    if (Platform.isWindows) {
+      WindowsTaskbar.resetThumbnailToolbar();
+      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+    }
+    
     SnackBarHelpers.showSnackBar(
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
@@ -210,6 +234,11 @@ class ModelProvider extends ChangeNotifier {
 
     final startTime = DateTime.now().toString();
 
+    if (Platform.isWindows) {
+      WindowsTaskbar.resetThumbnailToolbar();
+      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+    }
+
     await for (var data in stream) {
       try {
         final jsonData = jsonDecode(data);
@@ -218,7 +247,7 @@ class ModelProvider extends ChangeNotifier {
             jsonData.containsKey('status') &&
             jsonData.containsKey('total') &&
             jsonData.containsKey('completed')) {
-          final modelCreateResponse = OllamaPushResponse(
+          final modelPushResponse = OllamaPushResponse(
             status: jsonData['status'] as String,
             total: jsonData['total'] as int,
             completed: jsonData['completed'] as int,
@@ -226,9 +255,22 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
-          yield modelCreateResponse;
+          if (Platform.isWindows) {
+            WindowsTaskbar.setProgress(
+              (modelPushResponse.completed / modelPushResponse.total * 100)
+                  .toInt(),
+              100,
+            );
+          }
+
+          yield modelPushResponse;
         }
       } catch (e) {
+        if (Platform.isWindows) {
+          WindowsTaskbar.resetThumbnailToolbar();
+          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+        }
+
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
@@ -241,6 +283,11 @@ class ModelProvider extends ChangeNotifier {
           snackbar.ContentType.failure,
         );
       }
+    }
+
+    if (Platform.isWindows) {
+      WindowsTaskbar.resetThumbnailToolbar();
+      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
     SnackBarHelpers.showSnackBar(
@@ -294,6 +341,11 @@ class ModelProvider extends ChangeNotifier {
 
     final startTime = DateTime.now().toString();
 
+    if (Platform.isWindows) {
+      WindowsTaskbar.resetThumbnailToolbar();
+      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+    }
+
     await for (var data in stream) {
       try {
         final jsonData = jsonDecode(data);
@@ -308,9 +360,22 @@ class ModelProvider extends ChangeNotifier {
             currentTime: DateTime.now().toString(),
           );
 
+          if (Platform.isWindows) {
+            WindowsTaskbar.setProgress(
+              (modelCreateResponse.completed / modelCreateResponse.total * 100)
+                  .toInt(),
+              100,
+            );
+          }
+
           yield modelCreateResponse;
         }
       } catch (e) {
+        if (Platform.isWindows) {
+          WindowsTaskbar.resetThumbnailToolbar();
+          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+        }
+
         logger.d('Incomplete or invalid JSON received: $data');
 
         SnackBarHelpers.showSnackBar(
@@ -325,6 +390,11 @@ class ModelProvider extends ChangeNotifier {
       }
     }
 
+    if (Platform.isWindows) {
+      WindowsTaskbar.resetThumbnailToolbar();
+      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+    }
+    
     SnackBarHelpers.showSnackBar(
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)

@@ -20,6 +20,7 @@ import 'package:open_local_ui/core/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:windows_taskbar/windows_taskbar.dart';
 
 class ChatProvider extends ChangeNotifier {
   // Langchain objects
@@ -416,6 +417,11 @@ class ChatProvider extends ChangeNotifier {
     try {
       _session!.status = ChatSessionStatus.generating;
 
+      if (Platform.isWindows) {
+        WindowsTaskbar.resetThumbnailToolbar();
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+      }
+
       notifyListeners();
 
       addUserMessage(text, imageBytes);
@@ -458,6 +464,11 @@ class ChatProvider extends ChangeNotifier {
 
       _session!.status = ChatSessionStatus.idle;
 
+      if (Platform.isWindows) {
+        WindowsTaskbar.resetThumbnailToolbar();
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      }
+
       notifyListeners();
 
       if (_session!.title == 'Untitled') {
@@ -479,6 +490,11 @@ class ChatProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _session!.status = ChatSessionStatus.idle;
+
+      if (Platform.isWindows) {
+        WindowsTaskbar.resetThumbnailToolbar();
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      }
 
       removeLastMessage();
 
@@ -522,6 +538,11 @@ class ChatProvider extends ChangeNotifier {
     try {
       _session!.status = ChatSessionStatus.generating;
 
+      if (Platform.isWindows) {
+        WindowsTaskbar.resetThumbnailToolbar();
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+      }
+
       notifyListeners();
 
       final chain = await _buildChain();
@@ -561,9 +582,19 @@ class ChatProvider extends ChangeNotifier {
 
       _session!.status = ChatSessionStatus.idle;
 
+      if (Platform.isWindows) {
+        WindowsTaskbar.resetThumbnailToolbar();
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      }
+
       notifyListeners();
     } catch (e) {
       _session!.status = ChatSessionStatus.idle;
+
+      if (Platform.isWindows) {
+        WindowsTaskbar.resetThumbnailToolbar();
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      }
 
       removeLastMessage();
 
