@@ -8,8 +8,14 @@
 ![](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
 ![](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
-![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/dark_theme.png#gh-dark-mode-only)
-![Screenshot](https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/light_theme.png#gh-light-mode-only)
+<p float="left">
+  <img src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/chat_page_dark_theme.png#gh-dark-mode-only" width="400" />
+  <img src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/chat_page_light_theme.png#gh-light-mode-only" width="400" />
+  <img src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/models_page_dark_theme.png#gh-dark-mode-only" width="400" />
+  <img src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/models_page_light_theme.png#gh-light-mode-only" width="400" />
+  <img src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/model_settings_dark_theme.png#gh-dark-mode-only" width="400" />
+  <img src="https://github.com/WilliamKarolDiCioccio/open_local_ui/blob/main/.github/images/model_settings_light_theme.png#gh-light-mode-only" width="400" />
+</p>
 
 ## Table of Contents
 
