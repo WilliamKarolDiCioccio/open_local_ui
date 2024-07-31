@@ -47,6 +47,7 @@ dependencies:
 
   # Window Management
   bitsdojo_window: ^0.1.6
+  windows_taskbar: ^1.1.2
 
   # Local Storage
   hive_flutter: ^1.1.0
