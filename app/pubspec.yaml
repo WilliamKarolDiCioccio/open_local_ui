@@ -102,6 +102,7 @@ dependencies:
   langchain: ^0.7.3
   langchain_ollama: ^0.2.2+1
   gpu_info: ^0.0.2
+  introduction_screen: ^3.1.14
 
 dev_dependencies:
   flutter_test:
