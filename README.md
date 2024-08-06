@@ -25,6 +25,8 @@
 4. [Installation](#-installation)
 5. [Contributing](#-contributing)
 6. [License](#-license)
+7. [Support](#-support)
+8. [Contact](#-contact)
 
 ## 🚀 What is OpenLocalUI
 
@@ -64,9 +66,14 @@ Please refer to the [`CONTRIBUTING.md`](CONTRIBUTING.md) file for more details o
 
 OpenLocalUI comes under the permissive MIT License to encourage contributions. See the [`LICENSE.md`](LICENSE.md) file for more information.
 
+## 💖 Support
+
+<a href="https://www.buymeacoffee.com/Wilielmus" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" width="160"></a>
+
+If you will you can foster development of OpenLocalUI with a small donation. It's a symbolical action, any amount, even the smallest one, means a lot to me. Thank you for your time regardless of what you'll do!
+
 ## 🗨️ Contact
 
 [![](https://dcbadge.limes.pink/api/server/WuDckBpwHd)](https://discord.gg/WuDckBpwHd)
 
-You can join our Discord server to get help or take part in the devlopment of OpenLocalUI. If you want to acquire any additional informations you can always write to this [email address](mailto:theyoungprogrammer06@gmail.com).
-
+You can join our Discord server to get help or take part in the devlopment of OpenLocalUI. If you want to acquire any additional informations you can always write to my [email address](mailto:theyoungprogrammer06@gmail.com).
