@@ -7,5 +7,12 @@ class L10n {
     Locale('fr'), // French
     Locale('de'), // German
     Locale('it'), // Italian
+    Locale('ja'), // Japanese
+    Locale('ko'), // Korean
+    Locale('pt'), // Portuguese
+    Locale('ru'), // Russian
+    Locale('zh'), // Chinese
+    Locale('ar'), // Arabic
+    Locale('hi'), // Hindi
   ];
 }

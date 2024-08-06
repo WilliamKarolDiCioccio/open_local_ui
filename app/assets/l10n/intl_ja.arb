@@ -1,0 +1,458 @@
+{
+  "@@locale": "ja",
+  "abortModelRemovalSnackBar": "モデルの削除をキャンセル",
+  "abortSessionRemovalSnackBar": "セッションの削除をキャンセル",
+  "aboutPageContributorsTitle": "貢献者",
+  "aboutPageCopyrightNotice": "© 2024 ウィリアム・キャロル・ディ・チウチオ",
+  "aboutPageDiscoverTitle": "もっと知る",
+  "aboutPagePoweredByTitle": "提供",
+  "aboutPageSocialButtonContributeTooltip": "貢献する",
+  "aboutPageSocialButtonJoinServerTooltip": "サーバーに参加する",
+  "aboutPageSocialButtonWatchTrailerTooltip": "トレーラーを見る",
+  "aboutPageVisitProfileTooltip": "プロフィールを訪れる",
+  "appTitle": "私のアプリケーション",
+  "attachFilesDialogAllowedFormats": "許可されている形式: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "ファイルをブラウズ",
+  "attachFilesDialogDropFilesText": "ここにファイルをドロップしてください",
+  "cancelButtonShared": "キャンセル",
+  "chatAttachFilesTooltip": "ファイルを添付",
+  "chatCancelEditButton": "編集をキャンセル",
+  "chatCancelGenerationTooltip": "生成をキャンセル",
+  "chatCopyMessageTooltip": "メッセージをコピー",
+  "chatDetachFilesTooltip": "ファイルを分離",
+  "chatEditFieldHint": "メッセージを入力...",
+  "chatEditMessageTooltip": "メッセージを編集",
+  "chatInputFieldHint": "メッセージを入力...",
+  "chatReadAloudTooltip": "音声で読み上げる",
+  "chatRefreshSuggestions": "提案をリフレッシュ",
+  "chatRegenerateMessageTooltip": "メッセージを再生成",
+  "chatResendMessageButton": "メッセージを再送信",
+  "chatSendTooltip": "メッセージを送信",
+  "chatStatisticsDuration": "期間: {duration} ミリ秒",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "速度: {speed} トークン/秒",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "トークン数: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestionsPrompt": "提案が必要ですか？",
+  "chatSystemSender": "システム",
+  "chatTitleEditHint": "タイトルを入力...",
+  "chatToolbarDocsSearchOption": "ドキュメント検索:",
+  "chatToolbarModelSelectorHint": "モデルを選択",
+  "chatToolbarNewSessionButton": "新しいセッション",
+  "chatToolbarWebSearchOption": "ウェブ検索:",
+  "chatUserSender": "私",
+  "chatWelcomeMessage": "ようこそ！",
+  "checkingForUpdatesDialogTitle": "更新を確認中",
+  "clickToDownloadLatestVersionSnackBar": "最新バージョンをダウンロードするにはクリックしてください",
+  "closeButtonShared": "閉じる",
+  "codeCopiedSnackBar": "コードがクリップボードにコピーされました",
+  "concurrencyLimit": "同時実行制限",
+  "createFolderDialogFolderNameHint": "フォルダー名を入力...",
+  "createFolderDialogFolderNameLabel": "フォルダー名",
+  "createFolderDialogGuideText1": "作成するフォルダー名を入力してください:",
+  "createFolderDialogGuideText2": "フォルダーの色を選択できます:",
+  "createFolderDialogTitle": "フォルダー作成",
+  "createModelDialogGuideText1": "使用するモデルを選択してください:",
+  "createModelDialogGuideText2": "生成するモデル名を入力してください:",
+  "createModelDialogGuideText3": "モデルファイルを選択できます:",
+  "createModelDialogModelFileHint": "モデルファイルを入力...",
+  "createModelDialogModelFileLabel": "モデルファイル",
+  "createModelDialogModelNameHint": "モデル名を入力...",
+  "createModelDialogModelNameLabel": "モデル名",
+  "createModelDialogModelSelectorHint": "モデルを選択",
+  "createModelDialogTitle": "モデル作成",
+  "createdAtTextShared": "作成日: {createdAt}",
+  "dashboardAboutButton": "情報",
+  "dashboardChatButton": "チャット",
+  "dashboardHomeButton": "ホーム",
+  "dashboardModelsButton": "モデル",
+  "dashboardSessionsButton": "セッション",
+  "dashboardSettingsButton": "設定",
+  "dialogAttachButton": "添付",
+  "dialogCancelButtonShared": "キャンセル",
+  "dialogCloseButtonShared": "閉じる",
+  "dialogConfirmButtonShared": "確認",
+  "dialogContinueInBackgroundButtonShared": "バックグラウンドで続ける",
+  "dialogCreateButtonShared": "作成",
+  "dialogRemoveButton": "削除",
+  "dialogSkipButton": "スキップ",
+  "dialogStartButtonShared": "開始",
+  "dialogUpdateButton": "更新",
+  "enableDocsSearch": "ドキュメント検索",
+  "enableWebSearch": "ウェブ検索",
+  "f16KV": "F16KV",
+  "failedToCreateFolderSnackBar": "フォルダーの作成に失敗しました",
+  "failedToCreateModelSnackBar": "モデルの作成に失敗しました",
+  "failedToPullModelSnackBar": "モデルの取得に失敗しました",
+  "failedToPushModelSnackBar": "モデルのプッシュに失敗しました",
+  "failedToShareSessionSnackBar": "セッションの共有に失敗しました",
+  "feedbackButton": "フィードバック",
+  "folderCreatedSnackBar": "フォルダーが作成されました",
+  "frequencyPenalty": "頻度ペナルティ",
+  "importModelDialogTitle": "モデルのインポート",
+  "keepAlive": "接続を維持",
+  "licenseButton": "ライセンス",
+  "listFiltersSortByLabel": "ソート基準",
+  "listFiltersSortOrderLabel": "ソート順",
+  "logitsAll": "すべてのロジット",
+  "lowVram": "低VRAM",
+  "mainGpu": "メインGPU",
+  "markdownCopyTooltip": "Markdownをコピー",
+  "markdownLanguageLabel": "言語: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "メッセージがクリップボードにコピーされました",
+  "mirostat": "ミロスタット",
+  "mirostatEta": "ミロスタットETA",
+  "mirostatTau": "ミロスタットTAU",
+  "modelCreatedSuccessfullySnackBar": "モデルが正常に作成されました",
+  "modelDetailsDigestText": "ダイジェスト: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "ファミリー: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "形式: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "パラメーターサイズ: {parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "量子化レベル: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsSizeText": "サイズ: {size} GB",
+  "@modelDetailsSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsTitle": "{modelName}の詳細",
+  "@modelDetailsTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelGeneralSettingsLabel": "一般設定",
+  "modelIsGeneratingSnackBar": "モデルを生成しています...",
+  "modelMiscSettingsLabel": "その他の設定",
+  "modelPenaltySettingsLabel": "ペナルティ設定",
+  "modelPerformanceSettingsLabel": "パフォーマンス設定",
+  "modelPulledSuccessfullySnackBar": "モデルが正常に取得されました。",
+  "modelPushedSuccessfullySnackBar": "モデルが正常にプッシュされました。",
+  "modelSpecificSettingsDialogTitle": "特定のモデル設定",
+  "modelsPageCreateButton": "モデルを作成",
+  "modelsPageDeleteButton": "モデルを削除",
+  "modelsPageDeleteDialogText": "本当にこのモデルを削除しますか？",
+  "modelsPageDeleteDialogTitle": "モデルの削除",
+  "modelsPageEditButton": "編集",
+  "modelsPageImportButton": "モデルをインポート",
+  "modelsPagePullButton": "プル",
+  "modelsPagePushButton": "プッシュ",
+  "modelsPageRefreshButton": "更新",
+  "modelsPageSearchFieldHint": "モデルを検索...",
+  "modelsPageSettingsButton": "モデル設定",
+  "modelsPageTitle": "モデル",
+  "modelsPageUseButton": "モデルを使用",
+  "modifiedAtTextShared": "最終更新: ",
+  "moreOptionsButton": "さらにオプション",
+  "multimodal": "マルチモーダル",
+  "namespaceTextShared": "ネームスペース: {namespace}",
+  "@namespaceTextShared": {
+    "placeholders": {
+      "namespace": {
+        "type": "String"
+      }
+    }
+  },
+  "newFolderDialogTitle": "新しいフォルダー",
+  "newSessionDialogTitle": "新しいセッション",
+  "newSessionSnackBar": "新しいセッションが作成されました",
+  "noAvailableModelsText": "利用可能なモデルはありません",
+  "noModelsAvailableSnackBar": "利用可能なモデルはありません。",
+  "noModelsText": "モデルはありません",
+  "noNeedToCreateSessionSnackBar": "セッションを作成する必要はありません。",
+  "noSessionsText": "セッションはありません",
+  "noUpdatesAvailableDialogTitle": "利用可能な更新はありません",
+  "noUpdatesAvailableSnackBar": "利用可能な更新はありません",
+  "nodeStatusOffline": "オフライン",
+  "nodeStatusOnline": "オンライン",
+  "nothingToSynthesizeSnackBar": "合成するものがありません。",
+  "nsfwSettingsLabel": "NSFW設定",
+  "numBatch": "バッチ数",
+  "numCtx": "コンテキスト数",
+  "numKeep": "保持数",
+  "numPredict": "予測数",
+  "numThread": "スレッド数",
+  "numa": "NUMA",
+  "offlineWarningTextShared": "警告: オフラインモードです。",
+  "ollamaDisabledGPUWarningSnackBar": "警告: GPUが無効になっています。",
+  "otherSettingsLabel": "その他の設定",
+  "overflowMenuLabel": "オーバーフローメニュー",
+  "partialResults": "部分的な結果",
+  "pauseGenerationButtonTooltip": "生成を一時停止",
+  "peakMemoryTextShared": "最大メモリ: {peakMemory} MB",
+  "@peakMemoryTextShared": {
+    "placeholders": {
+      "peakMemory": {
+        "type": "String"
+      }
+    }
+  },
+  "penalizeNewline": "改行にペナルティを課す",
+  "perplexityLabel": "混乱度",
+  "pinMessageTooltip": "メッセージをピン留め",
+  "popularity": "人気",
+  "presencePenalty": "存在ペナルティ",
+  "privacyButton": "プライバシー設定",
+  "progressBarStatusWithStepsText": "ステータス: {status} - ステップ {completedSteps} / {totalSteps} ステップ中",
+  "progressBarStatusWithTimeText": "ステータス: {status} - 残り時間: {hours}:{minutes}:{seconds}",
+  "projectTitleHint": "プロジェクトのタイトルを入力...",
+  "projectTitleLabel": "プロジェクトタイトル",
+  "projectTypeHint": "プロジェクトタイプを選択...",
+  "projectTypeLabel": "プロジェクトタイプ",
+  "pullModelDialogGuideText": "モデルをプル:",
+  "pullModelDialogModelNameHint": "モデルを取得するための名前を入力してください",
+  "pullModelDialogModelNameLabel": "モデル名",
+  "pullModelDialogTitle": "モデルをプル",
+  "pushModelDialogGuideText": "モデルをプッシュ:",
+  "pushModelDialogModelSelectorHint": "プッシュするモデルを選択してください",
+  "pushModelDialogTitle": "モデルをプッシュ",
+  "redoButtonShared": "やり直し",
+  "refreshButtonShared": "更新",
+  "removeButtonShared": "削除",
+  "removeFolderDialogTitle": "フォルダーを削除",
+  "removeSessionDialogTitle": "セッションを削除",
+  "repeatLastN": "最後の を繰り返す",
+  "repeatPenalty": "繰り返しペナルティ",
+  "resetButtonShared": "リセット",
+  "resetToDefaultsButton": "デフォルトにリセット",
+  "retryButtonShared": "再試行",
+  "saveButtonShared": "保存",
+  "savedAtTextShared": "保存日時: {savedAt}",
+  "@savedAtTextShared": {
+    "placeholders": {
+      "savedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "savedButtonShared": "保存しました。",
+  "searchButtonShared": "検索",
+  "searchFieldHintShared": "検索...",
+  "searchFolderFieldHint": "フォルダーを検索...",
+  "searchModelFieldHint": "モデルを検索...",
+  "searchSessionFieldHint": "セッションを検索...",
+  "seed": "シード",
+  "selectAllButtonShared": "すべて選択",
+  "selectFolderDialogGuideText": "フォルダーを選択:",
+  "selectFolderDialogTitle": "フォルダーを選択",
+  "selectLanguageHint": "インターフェース言語を選択...",
+  "selectLanguageLabel": "言語を選択",
+  "selectModelButtonShared": "モデルを選択",
+  "selectOptionButtonShared": "オプションを選択",
+  "selectSettingsButtonShared": "設定を選択",
+  "sessionCreatedSnackBar": "セッションが作成されました",
+  "sessionSharedSnackBar": "セッションが共有されました。",
+  "sessionsPageClearDialogText": "本当にセッションをクリアしますか？",
+  "sessionsPageClearDialogTitle": "セッションをクリア",
+  "sessionsPageClearSessionsButton": "セッションをクリア",
+  "sessionsPageCreateFolderButton": "フォルダーを作成",
+  "sessionsPageDeleteButton": "セッションを削除",
+  "sessionsPageDeleteDialogText": "このセッションを削除しますか？",
+  "sessionsPageDeleteDialogTitle": "セッションの削除",
+  "sessionsPageEditTitleButton": "タイトルを編集",
+  "sessionsPageEnterButton": "入力",
+  "sessionsPageShareButton": "セッションを共有",
+  "sessionsPageTitle": "セッションページ",
+  "settingsAppearanceLabel": "外観",
+  "settingsBehaviorLabel": "動作",
+  "settingsGeneralLabel": "一般",
+  "settingsHeaderTitle": "設定",
+  "settingsLanguageArabic": "アラビア語",
+  "settingsLanguageChinese": "中国語",
+  "settingsLanguageEnglish": "英語",
+  "settingsLanguageFrench": "フランス語",
+  "settingsLanguageGerman": "ドイツ語",
+  "settingsLanguageHindi": "ヒンディー語",
+  "settingsLanguageHint": "インターフェース言語を選択してください",
+  "settingsLanguageItalian": "イタリア語",
+  "settingsLanguageJapanese": "日本語",
+  "settingsLanguageKorean": "韓国語",
+  "settingsLanguageLabel": "言語",
+  "settingsLanguagePortuguese": "ポルトガル語",
+  "settingsLanguageRussian": "ロシア語",
+  "settingsLanguageSpanish": "スペイン語",
+  "settingsLanguageSystem": "システム言語",
+  "settingsModelDefault": "デフォルトモデル",
+  "settingsModelOff": "モデルオフ",
+  "settingsModelOn": "モデルオン",
+  "settingsPageAccessibilityLabel": "アクセシビリティ設定",
+  "settingsPageOllamaKeepAliveTimeLabel": "Ollamaのキープアライブ時間",
+  "settingsPageOllamaLabel": "Ollama設定",
+  "settingsPageOllamaShowStatistics": "統計を表示",
+  "settingsPageOllamaTemperatureLabel": "Ollama温度",
+  "settingsPageOllamaUseGPULabel": "GPUを使用",
+  "settingsPageThemeLabel": "テーマ設定",
+  "settingsPageTitle": "設定",
+  "settingsThemeModeDark": "ダークモード",
+  "settingsThemeModeLight": "ライトモード",
+  "settingsThemeModeSystem": "システムモード",
+  "settingsTitle": "設定",
+  "shareButtonShared": "共有",
+  "shareFolderDialogTitle": "フォルダーを共有",
+  "shareModelDialogTitle": "モデルを共有",
+  "shareSessionDialogTitle": "セッションを共有",
+  "sharingOptionsLabel": "共有オプション",
+  "skipUpdateButtonShared": "更新をスキップ",
+  "snackBarErrorTitle": "エラー",
+  "snackBarInfoTitle": "情報",
+  "snackBarSuccessTitle": "成功",
+  "snackBarUpdateTitle": "更新",
+  "snackBarWarningTitle": "警告",
+  "softwareUpdateDialogTitle": "ソフトウェアの更新",
+  "somethingWentWrongSnackBar": "何かが間違いました。",
+  "sortByDateOption": "日付でソート",
+  "sortByNameOption": "名前でソート",
+  "sortBySizeOption": "サイズでソート",
+  "sortOrderAscendingOption": "昇順",
+  "sortOrderDescendingOption": "降順",
+  "startChatButton": "チャットを開始",
+  "statusTextShared": "状態: {status}",
+  "@statusTextShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "submitFeedbackButtonShared": "フィードバックを送信",
+  "successSnackBar": "成功",
+  "suggestionAddressConflictsInRelationshipsPartOne": "関係の中の衝突を特定する。",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "潜在的な解決策を見つける。",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "問題解決のための一般的な使用法。",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "成功した経験を共有する。",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "複雑な状況での意思決定のための情報収集。",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "利用可能な選択肢の分析。",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "リモートワークの利点について議論する。",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "個々の体験をレビューする。",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "教育とメンタリングの違いを理解する。",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "メンタリングスキルを育成する。",
+  "suggestionEvaluateTeamPerformancePartOne": "チームのパフォーマンスを定期的に評価する。",
+  "suggestionEvaluateTeamPerformancePartTwo": "建設的なフィードバックを提供する。",
+  "suggestionExplainEmpathySignificancePartOne": "仕事における共感の重要性を説明する。",
+  "suggestionExplainEmpathySignificancePartTwo": "他者と共感を持つことを実践する。",
+  "suggestionExplainLearningFromExperiencePartOne": "経験から学ぶ方法を説明する。",
+  "suggestionExplainLearningFromExperiencePartTwo": "知識の共有を奨励する。",
+  "suggestionHandleDailyStressPartOne": "日常的なストレスへの対処法。",
+  "suggestionHandleDailyStressPartTwo": "効果的な時間管理。",
+  "suggestionImportanceOfCommunicationPartOne": "チーム内での効果的なコミュニケーションの重要性。",
+  "suggestionImportanceOfCommunicationPartTwo": "誤解を避ける。",
+  "suggestionPersonalGrowthChallengesPartOne": "個人の成長の課題を特定する。",
+  "suggestionPersonalGrowthChallengesPartTwo": "目標達成の計画を立てる。",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "サプライズ誕生日パーティーの計画を立てる。",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "アクティビティとゲストを特定する。",
+  "supportLinkShared": "サポート",
+  "syncingTextShared": "同期中...",
+  "systemPromptTextFieldLabel": "システムテキスト",
+  "temperature": "温度",
+  "tfsZ": "TFS Z",
+  "thankYouMessage": "私たちのアプリケーションをご利用いただきありがとうございます！",
+  "tokenCountLabel": "トークン数",
+  "topK": "トップK",
+  "topP": "トップP",
+  "totalOnDiskSizeLabel": "ディスク上の合計サイズ",
+  "translationLanguageHint": "翻訳言語を選択...",
+  "translationLanguageLabel": "翻訳言語",
+  "tryAgainButtonShared": "再試行",
+  "turnOffButtonShared": "オフ",
+  "typicalP": "典型的なP",
+  "undoButtonShared": "元に戻す",
+  "unknownErrorSnackBar": "不明なエラー",
+  "updateAvailableDialogTitle": "更新が利用可能",
+  "updateAvailableSnackBar": "更新が利用可能",
+  "updateButton": "今すぐ更新",
+  "updateDialogText1": "更新が利用可能です。",
+  "updateDialogText2": "今すぐ更新しますか？",
+  "updateInProgressPageDescription": "更新中です。しばらくお待ちください。",
+  "updateInProgressPageTitle": "更新中...",
+  "updateNowButtonShared": "今すぐ更新",
+  "uploadFilesDialogTitle": "ファイルをアップロード",
+  "useButtonShared": "使用",
+  "useMlock": "Mlockを使用",
+  "useMmap": "Mmapを使用",
+  "versionTextShared": "バージョン: {version}",
+  "@versionTextShared": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMoreButtonShared": "もっと見る",
+  "vocabOnly": "語彙のみ",
+  "webSearchButtonShared": "ウェブ検索",
+  "welcomeMessage": "ようこそ！",
+  "zipFileUploadDialogTitle": "ZIPファイルをアップロード",
+  "zipFileUploadedSnackBar": "ZIPファイルがアップロードされました"
+}

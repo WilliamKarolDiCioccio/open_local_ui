@@ -1,0 +1,472 @@
+{
+  "@@locale": "zh",
+  "abortModelRemovalSnackBar": "中止模型移除",
+  "abortSessionRemovalSnackBar": "中止会话移除",
+  "aboutPageContributorsTitle": "贡献者",
+  "aboutPageCopyrightNotice": "© 2024 威廉·卡罗尔·迪·奇奥乔",
+  "aboutPageDiscoverTitle": "发现更多",
+  "aboutPagePoweredByTitle": "技术支持",
+  "aboutPageSocialButtonContributeTooltip": "贡献",
+  "aboutPageSocialButtonJoinServerTooltip": "加入服务器",
+  "aboutPageSocialButtonWatchTrailerTooltip": "观看预告片",
+  "aboutPageVisitProfileTooltip": "访问个人资料",
+  "appTitle": "MyApp",
+  "attachFilesDialogAllowedFormats": "允许的格式：{formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "浏览文件",
+  "attachFilesDialogDropFilesText": "将文件拖放到此处",
+  "cancelButtonShared": "取消",
+  "chatAttachFilesTooltip": "附加文件",
+  "chatCancelEditButton": "取消编辑",
+  "chatCancelGenerationTooltip": "取消生成",
+  "chatCopyMessageTooltip": "复制消息",
+  "chatDetachFilesTooltip": "分离文件",
+  "chatEditFieldHint": "输入消息...",
+  "chatEditMessageTooltip": "编辑消息",
+  "chatInputFieldHint": "输入消息...",
+  "chatReadAloudTooltip": "大声朗读",
+  "chatRefreshSuggestions": "刷新建议",
+  "chatRegenerateMessageTooltip": "重新生成消息",
+  "chatResendMessageButton": "重新发送消息",
+  "chatSendTooltip": "发送消息",
+  "chatStatisticsDuration": "持续时间：{duration} 毫秒",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "int"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "速度：{speed} 令牌/秒",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "令牌数：{tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestionsPrompt": "需要一些建议吗？",
+  "chatSystemSender": "系统",
+  "chatTitleEditHint": "输入标题...",
+  "chatToolbarDocsSearchOption": "文档搜索：",
+  "chatToolbarModelSelectorHint": "选择模型",
+  "chatToolbarNewSessionButton": "新会话",
+  "chatToolbarWebSearchOption": "网页搜索：",
+  "chatUserSender": "你",
+  "chatWelcomeMessage": "欢迎！",
+  "checkingForUpdatesDialogTitle": "检查更新",
+  "clickToDownloadLatestVersionSnackBar": "点击此处下载最新版本",
+  "closeButtonShared": "关闭",
+  "codeCopiedSnackBar": "代码已复制到剪贴板",
+  "concurrencyLimit": "并发限制",
+  "createFolderDialogFolderNameHint": "输入文件夹名称...",
+  "createFolderDialogFolderNameLabel": "文件夹名称",
+  "createFolderDialogGuideText1": "输入要创建的文件夹名称：",
+  "createFolderDialogGuideText2": "可选地设置文件夹颜色：",
+  "createFolderDialogTitle": "创建文件夹",
+  "createModelDialogGuideText1": "选择要使用的模型：",
+  "createModelDialogGuideText2": "输入要创建的模型名称：",
+  "createModelDialogGuideText3": "可选地编写一个模型文件：",
+  "createModelDialogModelFileHint": "输入模型文件...",
+  "createModelDialogModelFileLabel": "模型文件",
+  "createModelDialogModelNameHint": "输入模型名称...",
+  "createModelDialogModelNameLabel": "模型名称",
+  "createModelDialogModelSelectorHint": "选择模型",
+  "createModelDialogTitle": "创建模型",
+  "createdAtTextShared": "创建于：{createdAt}",
+  "dashboardAboutButton": "关于",
+  "dashboardChatButton": "聊天",
+  "dashboardHomeButton": "主页",
+  "dashboardModelsButton": "模型",
+  "dashboardSessionsButton": "会话",
+  "dashboardSettingsButton": "设置",
+  "dialogAttachButton": "附加",
+  "dialogCancelButtonShared": "取消",
+  "dialogCloseButtonShared": "关闭",
+  "dialogConfirmButtonShared": "确认",
+  "dialogContinueInBackgroundButtonShared": "在后台继续",
+  "dialogCreateButtonShared": "创建",
+  "dialogRemoveButton": "移除",
+  "dialogSkipButton": "跳过",
+  "dialogStartButtonShared": "开始",
+  "dialogUpdateButton": "更新",
+  "enableDocsSearch": "文档搜索",
+  "enableWebSearch": "网页搜索",
+  "f16KV": "F16KV",
+  "failedToCreateFolderSnackBar": "创建文件夹失败",
+  "failedToCreateModelSnackBar": "创建模型失败",
+  "failedToPullModelSnackBar": "拉取模型失败",
+  "failedToPushModelSnackBar": "推送模型失败",
+  "failedToShareSessionSnackBar": "分享会话失败",
+  "feedbackButton": "反馈",
+  "folderCreatedSnackBar": "文件夹已创建",
+  "frequencyPenalty": "频率惩罚",
+  "importModelDialogTitle": "导入模型",
+  "keepAlive": "保持连接",
+  "licenseButton": "许可",
+  "listFiltersSortByLabel": "排序依据",
+  "listFiltersSortOrderLabel": "顺序",
+  "logitsAll": "全部Logits",
+  "lowVram": "低VRAM",
+  "mainGpu": "主要GPU",
+  "markdownCopyTooltip": "复制Markdown",
+  "markdownLanguageLabel": "语言：{language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "消息已复制到剪贴板",
+  "mirostat": "Microstat",
+  "mirostatEta": "Microstat ETA",
+  "mirostatTau": "Microstat TAU",
+  "modelCreatedSuccessfullySnackBar": "模型创建成功",
+  "modelDetailsDigestText": "摘要：{digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "系列：{family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "格式：{format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "参数：{parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "量化：{quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsSizeText": "大小：{size} GB",
+  "@modelDetailsSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsTitle": "{modelName} 详情",
+  "@modelDetailsTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelGeneralSettingsLabel": "常规设置",
+  "modelIsGeneratingSnackBar": "模型正在生成...",
+  "modelMiscSettingsLabel": "其他设置",
+  "modelPenaltySettingsLabel": "惩罚设置",
+  "modelPerformanceSettingsLabel": "性能设置",
+  "modelPulledSuccessfullySnackBar": "模型成功获取。",
+  "modelPushedSuccessfullySnackBar": "模型成功上传。",
+  "modelSpecificSettingsDialogTitle": "特定模型设置",
+  "@modelSpecificSettingsDialogTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsPageCreateButton": "创建模型",
+  "modelsPageDeleteButton": "删除模型",
+  "modelsPageDeleteDialogText": "您确定要删除此模型吗？",
+  "@modelsPageDeleteDialogText": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsPageDeleteDialogTitle": "删除模型",
+  "modelsPageEditButton": "编辑",
+  "modelsPageImportButton": "导入模型",
+  "modelsPagePullButton": "拉取",
+  "modelsPagePushButton": "推送",
+  "modelsPageRefreshButton": "刷新",
+  "modelsPageSearchFieldHint": "搜索模型...",
+  "modelsPageSettingsButton": "模型设置",
+  "modelsPageTitle": "模型",
+  "modelsPageUseButton": "使用模型",
+  "modifiedAtTextShared": "最后修改：",
+  "moreOptionsButton": "更多选项",
+  "multimodal": "多模式",
+  "namespaceTextShared": "命名空间：{namespace}",
+  "@namespaceTextShared": {
+    "placeholders": {
+      "namespace": {
+        "type": "String"
+      }
+    }
+  },
+  "newFolderDialogTitle": "新建文件夹",
+  "newSessionDialogTitle": "新建会话",
+  "newSessionSnackBar": "新会话已创建",
+  "noAvailableModelsText": "没有可用的模型",
+  "noModelsAvailableSnackBar": "没有可用的模型。",
+  "noModelsText": "没有模型",
+  "noNeedToCreateSessionSnackBar": "不需要创建会话。",
+  "noSessionsText": "没有会话",
+  "noUpdatesAvailableDialogTitle": "没有可用的更新",
+  "noUpdatesAvailableSnackBar": "没有可用更新",
+  "nodeStatusOffline": "离线",
+  "nodeStatusOnline": "在线",
+  "nothingToSynthesizeSnackBar": "没有要合成的内容。",
+  "nsfwSettingsLabel": "NSFW设置",
+  "numBatch": "批次数量",
+  "numCtx": "上下文数量",
+  "numKeep": "保留数量",
+  "numPredict": "预测数量",
+  "numThread": "线程数量",
+  "numa": "NUMA",
+  "offlineWarningTextShared": "警告：离线模式。",
+  "ollamaDisabledGPUWarningSnackBar": "警告：GPU已禁用。",
+  "otherSettingsLabel": "其他设置",
+  "overflowMenuLabel": "溢出菜单",
+  "partialResults": "部分结果",
+  "pauseGenerationButtonTooltip": "暂停生成",
+  "peakMemoryTextShared": "峰值内存：{peakMemory} MB",
+  "@peakMemoryTextShared": {
+    "placeholders": {
+      "peakMemory": {
+        "type": "String"
+      }
+    }
+  },
+  "penalizeNewline": "惩罚换行",
+  "perplexityLabel": "困惑度",
+  "pinMessageTooltip": "固定消息",
+  "popularity": "流行度",
+  "presencePenalty": "存在惩罚",
+  "privacyButton": "隐私设置",
+  "progressBarStatusWithStepsText": "状态: {status} - 第 {completedSteps} 步 / 共 {totalSteps} 步",
+  "progressBarStatusWithTimeText": "状态: {status} - 剩余时间: {hours}:{minutes}:{seconds}",
+  "projectTitleHint": "输入项目标题...",
+  "projectTitleLabel": "项目标题",
+  "projectTypeHint": "选择项目类型...",
+  "projectTypeLabel": "项目类型",
+  "pullModelDialogGuideText": "拉取模型：",
+  "pullModelDialogModelNameHint": "输入要获取的模型名称",
+  "pullModelDialogModelNameLabel": "模型名称",
+  "pullModelDialogTitle": "拉取模型",
+  "pushModelDialogGuideText": "推送模型：",
+  "pushModelDialogModelSelectorHint": "选择要上传的模型",
+  "pushModelDialogTitle": "推送模型",
+  "redoButtonShared": "重做",
+  "refreshButtonShared": "刷新",
+  "removeButtonShared": "移除",
+  "removeFolderDialogTitle": "移除文件夹",
+  "removeSessionDialogTitle": "移除会话",
+  "repeatLastN": "重复最后 次",
+  "repeatPenalty": "重复惩罚",
+  "resetButtonShared": "重置",
+  "resetToDefaultsButton": "恢复默认设置",
+  "retryButtonShared": "重试",
+  "saveButtonShared": "保存",
+  "savedAtTextShared": "保存于：{savedAt}",
+  "@savedAtTextShared": {
+    "placeholders": {
+      "savedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "savedButtonShared": "成功保存。",
+  "searchButtonShared": "搜索",
+  "searchFieldHintShared": "搜索...",
+  "searchFolderFieldHint": "搜索文件夹...",
+  "searchModelFieldHint": "搜索模型...",
+  "searchSessionFieldHint": "搜索会话...",
+  "seed": "种子",
+  "selectAllButtonShared": "全选",
+  "selectFolderDialogGuideText": "选择一个文件夹：",
+  "selectFolderDialogTitle": "选择文件夹",
+  "selectLanguageHint": "选择界面语言...",
+  "selectLanguageLabel": "选择语言",
+  "selectModelButtonShared": "选择模型",
+  "selectOptionButtonShared": "选择选项",
+  "selectSettingsButtonShared": "选择设置",
+  "sessionCreatedSnackBar": "会话已创建",
+  "sessionSharedSnackBar": "会话已成功共享。",
+  "sessionsPageClearDialogText": "您确定要清除会话吗？",
+  "sessionsPageClearDialogTitle": "清除会话",
+  "sessionsPageClearSessionsButton": "清除会话",
+  "sessionsPageCreateFolderButton": "创建文件夹",
+  "sessionsPageDeleteButton": "删除会话",
+  "sessionsPageDeleteDialogText": "您确定要删除此会话吗？",
+  "sessionsPageDeleteDialogTitle": "删除会话",
+  "sessionsPageEditTitleButton": "编辑标题",
+  "sessionsPageEnterButton": "进入",
+  "sessionsPageShareButton": "分享会话",
+  "sessionsPageTitle": "会话页面",
+  "settingsAppearanceLabel": "外观",
+  "settingsBehaviorLabel": "行为",
+  "settingsGeneralLabel": "常规",
+  "settingsHeaderTitle": "设置",
+  "settingsLanguageArabic": "阿拉伯语",
+  "settingsLanguageChinese": "中文",
+  "settingsLanguageEnglish": "英语",
+  "settingsLanguageFrench": "法语",
+  "settingsLanguageGerman": "德语",
+  "settingsLanguageHindi": "印地语",
+  "settingsLanguageHint": "选择界面语言",
+  "settingsLanguageItalian": "意大利语",
+  "settingsLanguageJapanese": "日语",
+  "settingsLanguageKorean": "韩语",
+  "settingsLanguageLabel": "语言",
+  "settingsLanguagePortuguese": "葡萄牙语",
+  "settingsLanguageRussian": "俄语",
+  "settingsLanguageSpanish": "西班牙语",
+  "settingsLanguageSystem": "系统语言",
+  "settingsModelDefault": "默认模型",
+  "settingsModelOff": "模型已关闭",
+  "settingsModelOn": "模型已开启",
+  "settingsPageAccessibilityLabel": "无障碍设置",
+  "settingsPageOllamaKeepAliveTimeLabel": "Ollama 保持活动时间",
+  "settingsPageOllamaLabel": "Ollama 设置",
+  "settingsPageOllamaShowStatistics": "显示统计信息",
+  "settingsPageOllamaTemperatureLabel": "Ollama 温度",
+  "settingsPageOllamaUseGPULabel": "使用 GPU",
+  "settingsPageThemeLabel": "主题设置",
+  "settingsPageTitle": "设置",
+  "settingsThemeModeDark": "深色模式",
+  "settingsThemeModeLight": "浅色模式",
+  "settingsThemeModeSystem": "系统模式",
+  "settingsTitle": "设置",
+  "shareButtonShared": "分享",
+  "shareFolderDialogTitle": "分享文件夹",
+  "shareModelDialogTitle": "分享模型",
+  "shareSessionDialogTitle": "分享会话",
+  "sharingOptionsLabel": "分享选项",
+  "skipUpdateButtonShared": "跳过更新",
+  "snackBarErrorTitle": "错误",
+  "snackBarInfoTitle": "信息",
+  "snackBarSuccessTitle": "成功",
+  "snackBarUpdateTitle": "更新",
+  "snackBarWarningTitle": "警告",
+  "softwareUpdateDialogTitle": "软件更新",
+  "somethingWentWrongSnackBar": "发生错误。",
+  "sortByDateOption": "按日期排序",
+  "sortByNameOption": "按名称排序",
+  "sortBySizeOption": "按大小排序",
+  "sortOrderAscendingOption": "升序",
+  "sortOrderDescendingOption": "降序",
+  "startChatButton": "开始聊天",
+  "statusTextShared": "状态：{status}",
+  "@statusTextShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "submitFeedbackButtonShared": "提交反馈",
+  "successSnackBar": "成功",
+  "suggestionAddressConflictsInRelationshipsPartOne": "解决关系中的冲突。",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "寻找潜在解决方案。",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "常见问题解决用例。",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "分享成功经验。",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "在复杂情况下收集信息以做决策。",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "分析可用选项。",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "讨论远程工作的优势。",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "回顾个人经验。",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "理解教学和辅导的区别。",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "发展辅导技能。",
+  "suggestionEvaluateTeamPerformancePartOne": "定期评估团队表现。",
+  "suggestionEvaluateTeamPerformancePartTwo": "提供建设性反馈。",
+  "suggestionExplainEmpathySignificancePartOne": "解释同理心在工作中的重要性。",
+  "suggestionExplainEmpathySignificancePartTwo": "实践对他人的同理心。",
+  "suggestionExplainLearningFromExperiencePartOne": "解释如何从经验中学习。",
+  "suggestionExplainLearningFromExperiencePartTwo": "促进知识共享。",
+  "suggestionHandleDailyStressPartOne": "应对日常压力的策略。",
+  "suggestionHandleDailyStressPartTwo": "有效的时间管理。",
+  "suggestionImportanceOfCommunicationPartOne": "团队中有效沟通的重要性。",
+  "suggestionImportanceOfCommunicationPartTwo": "避免误解。",
+  "suggestionPersonalGrowthChallengesPartOne": "识别个人成长的挑战。",
+  "suggestionPersonalGrowthChallengesPartTwo": "确定目标以实现它们。",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "策划惊喜生日派对。",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "确定活动和嘉宾。",
+  "supportLinkShared": "支持",
+  "syncingTextShared": "同步中...",
+  "systemPromptTextFieldLabel": "系统提示文本",
+  "temperature": "温度",
+  "tfsZ": "TFS Z",
+  "thankYouMessage": "感谢您使用我们的应用！",
+  "tokenCountLabel": "令牌数",
+  "topK": "Top K",
+  "topP": "Top P",
+  "totalOnDiskSizeLabel": "磁盘上的总大小",
+  "translationLanguageHint": "选择翻译语言...",
+  "translationLanguageLabel": "翻译语言",
+  "tryAgainButtonShared": "重试",
+  "turnOffButtonShared": "关闭",
+  "typicalP": "典型 P",
+  "undoButtonShared": "撤销",
+  "unknownErrorSnackBar": "未知错误",
+  "updateAvailableDialogTitle": "更新可用",
+  "updateAvailableSnackBar": "有可用更新",
+  "updateButton": "立即更新",
+  "updateDialogText1": "有可用的更新。",
+  "updateDialogText2": "您想立即更新吗？",
+  "updateInProgressPageDescription": "更新进行中。请稍候。",
+  "updateInProgressPageTitle": "更新中...",
+  "updateNowButtonShared": "立即更新",
+  "uploadFilesDialogTitle": "上传文件",
+  "useButtonShared": "使用",
+  "useMlock": "使用 Mlock",
+  "useMmap": "使用 Mmap",
+  "versionTextShared": "版本：{version}",
+  "@versionTextShared": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMoreButtonShared": "查看更多",
+  "vocabOnly": "仅词汇",
+  "webSearchButtonShared": "网页搜索",
+  "welcomeMessage": "欢迎！",
+  "zipFileUploadDialogTitle": "上传ZIP文件",
+  "zipFileUploadedSnackBar": "ZIP文件已上传"
+}
