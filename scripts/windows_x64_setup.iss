@@ -29,6 +29,7 @@ OutputBaseFilename=windows_x64_setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=.\app_icon_256x256.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
