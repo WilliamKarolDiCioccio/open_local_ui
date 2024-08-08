@@ -11,6 +11,7 @@
 #include <gtk/gtk_plugin.h>
 #include <irondash_engine_context/irondash_engine_context_plugin.h>
 #include <isar_flutter_libs/isar_flutter_libs_plugin.h>
+#include <rive_common/rive_plugin.h>
 #include <super_native_extensions/super_native_extensions_plugin.h>
 #include <system_theme/system_theme_plugin.h>
 #include <url_launcher_linux/url_launcher_plugin.h>
