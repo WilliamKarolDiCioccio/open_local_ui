@@ -136,24 +136,18 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
               ),
           const Gap(8.0),
           Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    questionCards[0],
-                    questionCards[1],
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    questionCards[2],
-                    questionCards[3],
-                  ],
-                ),
-              ],
+            child: GridView.builder(
+              shrinkWrap: true,
+              itemCount: questionCards.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                childAspectRatio: 1.85,
+              ),
+              itemBuilder: (context, index) {
+                return questionCards[index];
+              },
             ),
           ),
           const Gap(8.0),
@@ -268,8 +262,6 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              height: 128,
-              width: 256,
               decoration: BoxDecoration(
                 border: Border.all(
                   color: AdaptiveTheme.of(context).theme.dividerColor,
