@@ -1,0 +1,1275 @@
+[
+    {
+        "name": "llama3.1",
+        "releases": [
+            {
+                "num_param": "405b",
+                "size": "229GB"
+            },
+            {
+                "num_param": "70b",
+                "size": "40GB"
+            },
+            {
+                "num_param": "8b",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "gemma2",
+        "releases": [
+            {
+                "num_param": "27b",
+                "size": "16GB"
+            },
+            {
+                "num_param": "9b",
+                "size": "5.4GB"
+            },
+            {
+                "num_param": "2b",
+                "size": "1.6GB"
+            }
+        ]
+    },
+    {
+        "name": "mistral-nemo",
+        "releases": [
+            {
+                "num_param": "12b",
+                "size": "7.1GB"
+            }
+        ]
+    },
+    {
+        "name": "mistral-large",
+        "releases": [
+            {
+                "num_param": "123b",
+                "size": "69GB"
+            }
+        ]
+    },
+    {
+        "name": "qwen2",
+        "releases": [
+            {
+                "num_param": "72b",
+                "size": "41GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.4GB"
+            },
+            {
+                "num_param": "1.5b",
+                "size": "935MB"
+            },
+            {
+                "num_param": "0.5b",
+                "size": "352MB"
+            }
+        ]
+    },
+    {
+        "name": "deepseek-coder-v2",
+        "releases": [
+            {
+                "num_param": "236b",
+                "size": "133GB"
+            },
+            {
+                "num_param": "16b",
+                "size": "8.9GB"
+            }
+        ]
+    },
+    {
+        "name": "phi3",
+        "releases": [
+            {
+                "num_param": "14b",
+                "size": "7.9GB"
+            },
+            {
+                "num_param": "3.8b",
+                "size": "2.2GB"
+            }
+        ]
+    },
+    {
+        "name": "mistral",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "mixtral",
+        "releases": [
+            {
+                "num_param": "8x7b",
+                "size": "26GB"
+            },
+            {
+                "num_param": "8x22b",
+                "size": "80GB"
+            }
+        ]
+    },
+    {
+        "name": "codegemma",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "5.0GB"
+            },
+            {
+                "num_param": "2b",
+                "size": "1.6GB"
+            }
+        ]
+    },
+    {
+        "name": "command-r",
+        "releases": [
+            {
+                "num_param": "35b",
+                "size": "20GB"
+            }
+        ]
+    },
+    {
+        "name": "command-r-plus",
+        "releases": [
+            {
+                "num_param": "104b",
+                "size": "59GB"
+            }
+        ]
+    },
+    {
+        "name": "llava",
+        "releases": [
+            {
+                "num_param": "34b",
+                "size": "20GB"
+            },
+            {
+                "num_param": "13b",
+                "size": "8.0GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "llama3",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "40GB"
+            },
+            {
+                "num_param": "8b",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "gemma",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "5.0GB"
+            },
+            {
+                "num_param": "2b",
+                "size": "1.7GB"
+            }
+        ]
+    },
+    {
+        "name": "qwen",
+        "releases": [
+            {
+                "num_param": "110b",
+                "size": "63GB"
+            },
+            {
+                "num_param": "72b",
+                "size": "41GB"
+            },
+            {
+                "num_param": "32b",
+                "size": "18GB"
+            },
+            {
+                "num_param": "14b",
+                "size": "8.2GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.5GB"
+            },
+            {
+                "num_param": "4b",
+                "size": "2.3GB"
+            },
+            {
+                "num_param": "1.8b",
+                "size": "1.1GB"
+            },
+            {
+                "num_param": "0.5b",
+                "size": "395MB"
+            }
+        ]
+    },
+    {
+        "name": "llama2",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "39GB"
+            },
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "codellama",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "39GB"
+            },
+            {
+                "num_param": "34b",
+                "size": "19GB"
+            },
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "dolphin-mixtral",
+        "releases": [
+            {
+                "num_param": "8x22b",
+                "size": "80GB"
+            },
+            {
+                "num_param": "8x7b",
+                "size": "26GB"
+            }
+        ]
+    },
+    {
+        "name": "nomic-embed-text",
+        "releases": [
+            {
+                "num_param": "v1.5",
+                "size": "274MB"
+            }
+        ]
+    },
+    {
+        "name": "llama2-uncensored",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "39GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "phi",
+        "releases": [
+            {
+                "num_param": "2.7b",
+                "size": "1.6GB"
+            }
+        ]
+    },
+    {
+        "name": "deepseek-coder",
+        "releases": [
+            {
+                "num_param": "33b",
+                "size": "19GB"
+            },
+            {
+                "num_param": "6.7b",
+                "size": "3.8GB"
+            },
+            {
+                "num_param": "1.3b",
+                "size": "776MB"
+            }
+        ]
+    },
+    {
+        "name": "zephyr",
+        "releases": [
+            {
+                "num_param": "141b",
+                "size": "80GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "dolphin-mistral",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "mxbai-embed-large",
+        "releases": [
+            {
+                "num_param": "335m",
+                "size": "670MB"
+            }
+        ]
+    },
+    {
+        "name": "orca-mini",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "39GB"
+            },
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            },
+            {
+                "num_param": "3b",
+                "size": "2.0GB"
+            }
+        ]
+    },
+    {
+        "name": "dolphin-llama3",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "40GB"
+            },
+            {
+                "num_param": "8b",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "starcoder2",
+        "releases": [
+            {
+                "num_param": "15b",
+                "size": "9.1GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.0GB"
+            },
+            {
+                "num_param": "3b",
+                "size": "1.7GB"
+            }
+        ]
+    },
+    {
+        "name": "yi",
+        "releases": [
+            {
+                "num_param": "34b",
+                "size": "19GB"
+            },
+            {
+                "num_param": "9b",
+                "size": "5.0GB"
+            },
+            {
+                "num_param": "6b",
+                "size": "3.5GB"
+            }
+        ]
+    },
+    {
+        "name": "mistral-openorca",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "llama2-chinese",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "llava-llama3",
+        "releases": [
+            {
+                "num_param": "8b",
+                "size": "5.5GB"
+            }
+        ]
+    },
+    {
+        "name": "vicuna",
+        "releases": [
+            {
+                "num_param": "33b",
+                "size": "18GB"
+            },
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "tinyllama",
+        "releases": [
+            {
+                "num_param": "1.1b",
+                "size": "638MB"
+            }
+        ]
+    },
+    {
+        "name": "codestral",
+        "releases": [
+            {
+                "num_param": "22b",
+                "size": "13GB"
+            }
+        ]
+    },
+    {
+        "name": "nous-hermes2",
+        "releases": [
+            {
+                "num_param": "34b",
+                "size": "19GB"
+            },
+            {
+                "num_param": "10.7b",
+                "size": "6.1GB"
+            }
+        ]
+    },
+    {
+        "name": "wizard-vicuna-uncensored",
+        "releases": [
+            {
+                "num_param": "30b",
+                "size": "18GB"
+            },
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "starcoder",
+        "releases": [
+            {
+                "num_param": "15b",
+                "size": "9.0GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.3GB"
+            },
+            {
+                "num_param": "3b",
+                "size": "1.8GB"
+            },
+            {
+                "num_param": "1b",
+                "size": "726MB"
+            }
+        ]
+    },
+    {
+        "name": "wizardlm2",
+        "releases": [
+            {
+                "num_param": "8x22b",
+                "size": "80GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "openchat",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "aya",
+        "releases": [
+            {
+                "num_param": "35b",
+                "size": "20GB"
+            },
+            {
+                "num_param": "8b",
+                "size": "4.8GB"
+            }
+        ]
+    },
+    {
+        "name": "tinydolphin",
+        "releases": [
+            {
+                "num_param": "1.1b",
+                "size": "637MB"
+            }
+        ]
+    },
+    {
+        "name": "stable-code",
+        "releases": [
+            {
+                "num_param": "3b",
+                "size": "1.6GB"
+            }
+        ]
+    },
+    {
+        "name": "wizardcoder",
+        "releases": [
+            {
+                "num_param": "33b",
+                "size": "19GB"
+            },
+            {
+                "num_param": "python",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "openhermes",
+        "releases": [
+            {
+                "num_param": "v2.5",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "all-minilm",
+        "releases": [
+            {
+                "num_param": "33m",
+                "size": "67MB"
+            },
+            {
+                "num_param": "22m",
+                "size": "46MB"
+            }
+        ]
+    },
+    {
+        "name": "granite-code",
+        "releases": [
+            {
+                "num_param": "34b",
+                "size": "19GB"
+            },
+            {
+                "num_param": "20b",
+                "size": "12GB"
+            },
+            {
+                "num_param": "8b",
+                "size": "4.6GB"
+            },
+            {
+                "num_param": "3b",
+                "size": "2.0GB"
+            }
+        ]
+    },
+    {
+        "name": "codeqwen",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.2GB"
+            }
+        ]
+    },
+    {
+        "name": "stablelm2",
+        "releases": [
+            {
+                "num_param": "12b",
+                "size": "7.0GB"
+            },
+            {
+                "num_param": "1.6b",
+                "size": "983MB"
+            }
+        ]
+    },
+    {
+        "name": "wizard-math",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "39GB"
+            },
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "neural-chat",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "phind-codellama",
+        "releases": [
+            {
+                "num_param": "34b",
+                "size": "19GB"
+            }
+        ]
+    },
+    {
+        "name": "dolphincoder",
+        "releases": [
+            {
+                "num_param": "15b",
+                "size": "9.1GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.2GB"
+            }
+        ]
+    },
+    {
+        "name": "llama3-gradient",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "40GB"
+            },
+            {
+                "num_param": "8b",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "nous-hermes",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "sqlcoder",
+        "releases": [
+            {
+                "num_param": "15b",
+                "size": "9.0GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "xwinlm",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "yarn-llama2",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "deepseek-llm",
+        "releases": [
+            {
+                "num_param": "67b",
+                "size": "38GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.0GB"
+            }
+        ]
+    },
+    {
+        "name": "starling-lm",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "llama3-chatqa",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "40GB"
+            },
+            {
+                "num_param": "8b",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "falcon\n      \nArchive",
+        "releases": [
+            {
+                "num_param": "180b",
+                "size": "101GB"
+            },
+            {
+                "num_param": "40b",
+                "size": "24GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "4.2GB"
+            }
+        ]
+    },
+    {
+        "name": "wizardlm"
+    },
+    {
+        "name": "orca2",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "snowflake-arctic-embed",
+        "releases": [
+            {
+                "num_param": "335m",
+                "size": "669MB"
+            },
+            {
+                "num_param": "137m",
+                "size": "274MB"
+            },
+            {
+                "num_param": "110m",
+                "size": "219MB"
+            },
+            {
+                "num_param": "33m",
+                "size": "67MB"
+            },
+            {
+                "num_param": "22m",
+                "size": "46MB"
+            }
+        ]
+    },
+    {
+        "name": "solar",
+        "releases": [
+            {
+                "num_param": "10.7b",
+                "size": "6.1GB"
+            }
+        ]
+    },
+    {
+        "name": "samantha-mistral",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "moondream",
+        "releases": [
+            {
+                "num_param": "1.8b",
+                "size": "1.7GB"
+            }
+        ]
+    },
+    {
+        "name": "dolphin-phi",
+        "releases": [
+            {
+                "num_param": "2.7b",
+                "size": "1.6GB"
+            }
+        ]
+    },
+    {
+        "name": "stable-beluga",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "39GB"
+            },
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "bakllava",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "deepseek-v2",
+        "releases": [
+            {
+                "num_param": "236b",
+                "size": "133GB"
+            },
+            {
+                "num_param": "16b",
+                "size": "8.9GB"
+            }
+        ]
+    },
+    {
+        "name": "wizardlm-uncensored",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            }
+        ]
+    },
+    {
+        "name": "yarn-mistral",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "medllama2",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "llama-pro",
+        "releases": [
+            {
+                "num_param": "instruct",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "nous-hermes2-mixtral",
+        "releases": [
+            {
+                "num_param": "8x7b",
+                "size": "26GB"
+            }
+        ]
+    },
+    {
+        "name": "meditron",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "39GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "glm4",
+        "releases": [
+            {
+                "num_param": "9b",
+                "size": "5.5GB"
+            }
+        ]
+    },
+    {
+        "name": "codegeex4",
+        "releases": [
+            {
+                "num_param": "9b",
+                "size": "5.5GB"
+            }
+        ]
+    },
+    {
+        "name": "nexusraven",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            }
+        ]
+    },
+    {
+        "name": "codeup",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            }
+        ]
+    },
+    {
+        "name": "llava-phi3",
+        "releases": [
+            {
+                "num_param": "3.8b",
+                "size": "2.9GB"
+            }
+        ]
+    },
+    {
+        "name": "everythinglm",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            }
+        ]
+    },
+    {
+        "name": "magicoder",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "stablelm-zephyr",
+        "releases": [
+            {
+                "num_param": "3b",
+                "size": "1.6GB"
+            }
+        ]
+    },
+    {
+        "name": "codebooga",
+        "releases": [
+            {
+                "num_param": "34b",
+                "size": "19GB"
+            }
+        ]
+    },
+    {
+        "name": "mistrallite",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "wizard-vicuna",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            }
+        ]
+    },
+    {
+        "name": "duckdb-nsql",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
+        "name": "megadolphin",
+        "releases": [
+            {
+                "num_param": "120b",
+                "size": "68GB"
+            }
+        ]
+    },
+    {
+        "name": "falcon2",
+        "releases": [
+            {
+                "num_param": "11b",
+                "size": "6.4GB"
+            }
+        ]
+    },
+    {
+        "name": "notux",
+        "releases": [
+            {
+                "num_param": "8x7b",
+                "size": "26GB"
+            }
+        ]
+    },
+    {
+        "name": "goliath",
+        "releases": [
+            {
+                "num_param": "120b-q4_0",
+                "size": "66GB"
+            }
+        ]
+    },
+    {
+        "name": "open-orca-platypus2",
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            }
+        ]
+    },
+    {
+        "name": "notus",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "internlm2",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.5GB"
+            }
+        ]
+    },
+    {
+        "name": "dbrx",
+        "releases": [
+            {
+                "num_param": "132b",
+                "size": "74GB"
+            }
+        ]
+    },
+    {
+        "name": "llama3-groq-tool-use",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "40GB"
+            },
+            {
+                "num_param": "8b",
+                "size": "4.7GB"
+            }
+        ]
+    },
+    {
+        "name": "alfred",
+        "releases": [
+            {
+                "num_param": "40b",
+                "size": "24GB"
+            }
+        ]
+    },
+    {
+        "name": "mathstral",
+        "releases": [
+            {
+                "num_param": "7b",
+                "size": "4.1GB"
+            }
+        ]
+    },
+    {
+        "name": "firefunction-v2",
+        "releases": [
+            {
+                "num_param": "70b",
+                "size": "40GB"
+            }
+        ]
+    },
+    {
+        "name": "nuextract",
+        "releases": [
+            {
+                "num_param": "3.8b",
+                "size": "2.2GB"
+            }
+        ]
+    },
+    {
+        "name": "bge-m3",
+        "releases": [
+            {
+                "num_param": "567m",
+                "size": "1.2GB"
+            }
+        ]
+    },
+    {
+        "name": "bge-large",
+        "releases": [
+            {
+                "num_param": "335m",
+                "size": "671MB"
+            }
+        ]
+    },
+    {
+        "name": "paraphrase-multilingual",
+        "releases": [
+            {
+                "num_param": "278m",
+                "size": "563MB"
+            }
+        ]
+    }
+]
