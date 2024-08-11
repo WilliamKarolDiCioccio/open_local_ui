@@ -185,9 +185,7 @@ class ChatExampleQuestionCard extends StatefulWidget {
 }
 
 class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
-  // I'm still figuring out what effect I want to apply here
-  // ignore: unused_field
-  bool _isHovered = false;
+  bool _isHovering = false;
 
   void _sendMessage(String message) async {
     if (!context.read<ChatProvider>().isModelSelected) {
@@ -242,81 +240,74 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) {
-        setState(() {
-          _isHovered = true;
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          _isHovered = false;
-        });
+    return InkWell(
+      onTap: () => null,
+      onHover: (value) {
+        setState(() => _isHovering = value);
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.ease,
+        padding: EdgeInsets.all(_isHovering ? 12.0 : 8.0),
         child: GestureDetector(
           onTap: () => _sendMessage(
             '${widget.question} ${widget.questionDetails}',
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AdaptiveTheme.of(context).theme.dividerColor,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: AdaptiveTheme.of(context).theme.dividerColor,
               ),
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: widget.question,
-                          style: TextStyle(
-                            fontFamily: 'Neuton',
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: AdaptiveTheme.of(context).mode.isDark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: widget.question,
+                        style: TextStyle(
+                          fontFamily: 'Neuton',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AdaptiveTheme.of(context).mode.isDark
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        const TextSpan(text: ' '),
-                        TextSpan(
-                          text: widget.questionDetails,
-                          style: TextStyle(
-                            fontFamily: 'Neuton',
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: AdaptiveTheme.of(context).mode.isDark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                      ),
+                      const TextSpan(text: ' '),
+                      TextSpan(
+                        text: widget.questionDetails,
+                        style: TextStyle(
+                          fontFamily: 'Neuton',
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          color: AdaptiveTheme.of(context).mode.isDark
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () => _addEditableMessage(
-                      '${widget.question} ${widget.questionDetails}',
-                    ),
-                    icon: const Icon(UniconsLine.edit),
-                  )
-                ],
-              ),
-            )
-                .animate(
-                  delay: 500.ms + ((Random().nextInt(4) + 1) * 100).ms,
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () => _addEditableMessage(
+                    '${widget.question} ${widget.questionDetails}',
+                  ),
+                  icon: const Icon(UniconsLine.edit),
                 )
-                .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
-                .fade(),
-          ),
+              ],
+            ),
+          )
+              .animate(
+                delay: 500.ms + ((Random().nextInt(4) + 1) * 100).ms,
+              )
+              .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
+              .fade(),
         ),
       ),
     );
