@@ -28,6 +28,20 @@ def scrape_model_details(model_url):
     if model_name:
         model_details['name'] = model_name.text.strip()  # Clean up and store the model name
 
+    # Check if the model supports vision
+    vision_support = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Vision')
+    if vision_support:
+        model_details['vision_support'] = True
+    else:
+        model_details['vision_support'] = False
+    
+    # Check if the model supports tools
+    tools_support = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-green-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-green-600'}, string='Tools')
+    if tools_support:
+        model_details['tools_support'] = True
+    else:
+        model_details['tools_support'] = False
+    
     model_releases = []
 
     # Select all <a> tags within the div with id 'primary-tags'

@@ -1,6 +1,8 @@
 [
     {
         "name": "llama3.1",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "405b",
@@ -18,6 +20,8 @@
     },
     {
         "name": "gemma2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "27b",
@@ -35,6 +39,8 @@
     },
     {
         "name": "mistral-nemo",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "12b",
@@ -44,6 +50,8 @@
     },
     {
         "name": "mistral-large",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "123b",
@@ -53,6 +61,8 @@
     },
     {
         "name": "qwen2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "72b",
@@ -74,6 +84,8 @@
     },
     {
         "name": "deepseek-coder-v2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "236b",
@@ -87,6 +99,8 @@
     },
     {
         "name": "phi3",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "14b",
@@ -100,6 +114,8 @@
     },
     {
         "name": "mistral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -109,19 +125,23 @@
     },
     {
         "name": "mixtral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
-            {
-                "num_param": "8x7b",
-                "size": "26GB"
-            },
             {
                 "num_param": "8x22b",
                 "size": "80GB"
+            },
+            {
+                "num_param": "8x7b",
+                "size": "26GB"
             }
         ]
     },
     {
         "name": "codegemma",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -135,6 +155,8 @@
     },
     {
         "name": "command-r",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "35b",
@@ -144,6 +166,8 @@
     },
     {
         "name": "command-r-plus",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "104b",
@@ -153,6 +177,8 @@
     },
     {
         "name": "llava",
+        "vision_support": true,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "34b",
@@ -170,6 +196,8 @@
     },
     {
         "name": "llama3",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -183,6 +211,8 @@
     },
     {
         "name": "gemma",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -196,6 +226,8 @@
     },
     {
         "name": "qwen",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "110b",
@@ -233,6 +265,8 @@
     },
     {
         "name": "llama2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -250,6 +284,8 @@
     },
     {
         "name": "codellama",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -271,6 +307,8 @@
     },
     {
         "name": "dolphin-mixtral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "8x22b",
@@ -284,6 +322,8 @@
     },
     {
         "name": "nomic-embed-text",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "v1.5",
@@ -293,6 +333,8 @@
     },
     {
         "name": "llama2-uncensored",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -306,6 +348,8 @@
     },
     {
         "name": "phi",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "2.7b",
@@ -315,6 +359,8 @@
     },
     {
         "name": "deepseek-coder",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "33b",
@@ -332,6 +378,8 @@
     },
     {
         "name": "zephyr",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "141b",
@@ -345,6 +393,8 @@
     },
     {
         "name": "dolphin-mistral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -354,6 +404,8 @@
     },
     {
         "name": "mxbai-embed-large",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "335m",
@@ -363,6 +415,8 @@
     },
     {
         "name": "orca-mini",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -384,6 +438,8 @@
     },
     {
         "name": "dolphin-llama3",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -397,6 +453,8 @@
     },
     {
         "name": "starcoder2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "15b",
@@ -414,6 +472,8 @@
     },
     {
         "name": "yi",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "34b",
@@ -431,6 +491,8 @@
     },
     {
         "name": "mistral-openorca",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -440,6 +502,8 @@
     },
     {
         "name": "llama2-chinese",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -453,6 +517,8 @@
     },
     {
         "name": "llava-llama3",
+        "vision_support": true,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "8b",
@@ -462,6 +528,8 @@
     },
     {
         "name": "vicuna",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "33b",
@@ -479,6 +547,8 @@
     },
     {
         "name": "tinyllama",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "1.1b",
@@ -488,6 +558,8 @@
     },
     {
         "name": "codestral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "22b",
@@ -497,6 +569,8 @@
     },
     {
         "name": "nous-hermes2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "34b",
@@ -510,6 +584,8 @@
     },
     {
         "name": "wizard-vicuna-uncensored",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "30b",
@@ -527,6 +603,8 @@
     },
     {
         "name": "starcoder",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "15b",
@@ -548,6 +626,8 @@
     },
     {
         "name": "wizardlm2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "8x22b",
@@ -561,6 +641,8 @@
     },
     {
         "name": "openchat",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -570,6 +652,8 @@
     },
     {
         "name": "aya",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "35b",
@@ -583,6 +667,8 @@
     },
     {
         "name": "tinydolphin",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "1.1b",
@@ -592,6 +678,8 @@
     },
     {
         "name": "stable-code",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "3b",
@@ -601,6 +689,8 @@
     },
     {
         "name": "wizardcoder",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "33b",
@@ -614,6 +704,8 @@
     },
     {
         "name": "openhermes",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "v2.5",
@@ -623,6 +715,8 @@
     },
     {
         "name": "all-minilm",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "33m",
@@ -636,6 +730,8 @@
     },
     {
         "name": "granite-code",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "34b",
@@ -657,6 +753,8 @@
     },
     {
         "name": "codeqwen",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -666,6 +764,8 @@
     },
     {
         "name": "stablelm2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "12b",
@@ -679,6 +779,8 @@
     },
     {
         "name": "wizard-math",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -696,6 +798,8 @@
     },
     {
         "name": "neural-chat",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -705,6 +809,8 @@
     },
     {
         "name": "phind-codellama",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "34b",
@@ -714,6 +820,8 @@
     },
     {
         "name": "dolphincoder",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "15b",
@@ -727,6 +835,8 @@
     },
     {
         "name": "llama3-gradient",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -740,6 +850,8 @@
     },
     {
         "name": "nous-hermes",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -753,6 +865,8 @@
     },
     {
         "name": "sqlcoder",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "15b",
@@ -766,19 +880,8 @@
     },
     {
         "name": "xwinlm",
-        "releases": [
-            {
-                "num_param": "13b",
-                "size": "7.4GB"
-            },
-            {
-                "num_param": "7b",
-                "size": "3.8GB"
-            }
-        ]
-    },
-    {
-        "name": "yarn-llama2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -792,6 +895,8 @@
     },
     {
         "name": "deepseek-llm",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "67b",
@@ -804,7 +909,24 @@
         ]
     },
     {
+        "name": "yarn-llama2",
+        "vision_support": false,
+        "tools_support": false,
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            },
+            {
+                "num_param": "7b",
+                "size": "3.8GB"
+            }
+        ]
+    },
+    {
         "name": "starling-lm",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -814,6 +936,8 @@
     },
     {
         "name": "llama3-chatqa",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -827,6 +951,8 @@
     },
     {
         "name": "falcon\n      \nArchive",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "180b",
@@ -843,10 +969,14 @@
         ]
     },
     {
-        "name": "wizardlm"
+        "name": "wizardlm",
+        "vision_support": false,
+        "tools_support": false
     },
     {
         "name": "orca2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -860,6 +990,8 @@
     },
     {
         "name": "snowflake-arctic-embed",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "335m",
@@ -885,6 +1017,8 @@
     },
     {
         "name": "solar",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "10.7b",
@@ -894,6 +1028,8 @@
     },
     {
         "name": "samantha-mistral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -903,6 +1039,8 @@
     },
     {
         "name": "moondream",
+        "vision_support": true,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "1.8b",
@@ -912,6 +1050,8 @@
     },
     {
         "name": "dolphin-phi",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "2.7b",
@@ -921,6 +1061,8 @@
     },
     {
         "name": "stable-beluga",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -938,6 +1080,8 @@
     },
     {
         "name": "bakllava",
+        "vision_support": true,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -947,6 +1091,8 @@
     },
     {
         "name": "deepseek-v2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "236b",
@@ -960,6 +1106,8 @@
     },
     {
         "name": "wizardlm-uncensored",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -969,6 +1117,8 @@
     },
     {
         "name": "yarn-mistral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -978,6 +1128,8 @@
     },
     {
         "name": "medllama2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -987,6 +1139,8 @@
     },
     {
         "name": "llama-pro",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "instruct",
@@ -996,6 +1150,8 @@
     },
     {
         "name": "nous-hermes2-mixtral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "8x7b",
@@ -1004,7 +1160,20 @@
         ]
     },
     {
+        "name": "glm4",
+        "vision_support": false,
+        "tools_support": false,
+        "releases": [
+            {
+                "num_param": "9b",
+                "size": "5.5GB"
+            }
+        ]
+    },
+    {
         "name": "meditron",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -1017,16 +1186,9 @@
         ]
     },
     {
-        "name": "glm4",
-        "releases": [
-            {
-                "num_param": "9b",
-                "size": "5.5GB"
-            }
-        ]
-    },
-    {
         "name": "codegeex4",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "9b",
@@ -1036,15 +1198,8 @@
     },
     {
         "name": "nexusraven",
-        "releases": [
-            {
-                "num_param": "13b",
-                "size": "7.4GB"
-            }
-        ]
-    },
-    {
-        "name": "codeup",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -1054,6 +1209,8 @@
     },
     {
         "name": "llava-phi3",
+        "vision_support": true,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "3.8b",
@@ -1062,7 +1219,20 @@
         ]
     },
     {
+        "name": "codeup",
+        "vision_support": false,
+        "tools_support": false,
+        "releases": [
+            {
+                "num_param": "13b",
+                "size": "7.4GB"
+            }
+        ]
+    },
+    {
         "name": "everythinglm",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -1072,6 +1242,8 @@
     },
     {
         "name": "magicoder",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -1081,6 +1253,8 @@
     },
     {
         "name": "stablelm-zephyr",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "3b",
@@ -1090,6 +1264,8 @@
     },
     {
         "name": "codebooga",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "34b",
@@ -1099,6 +1275,8 @@
     },
     {
         "name": "mistrallite",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -1108,6 +1286,8 @@
     },
     {
         "name": "wizard-vicuna",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -1117,6 +1297,8 @@
     },
     {
         "name": "duckdb-nsql",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -1126,6 +1308,8 @@
     },
     {
         "name": "megadolphin",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "120b",
@@ -1135,6 +1319,8 @@
     },
     {
         "name": "falcon2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "11b",
@@ -1144,6 +1330,8 @@
     },
     {
         "name": "notux",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "8x7b",
@@ -1153,6 +1341,8 @@
     },
     {
         "name": "goliath",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "120b-q4_0",
@@ -1162,6 +1352,8 @@
     },
     {
         "name": "open-orca-platypus2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "13b",
@@ -1171,6 +1363,8 @@
     },
     {
         "name": "notus",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -1180,6 +1374,8 @@
     },
     {
         "name": "internlm2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -1189,6 +1385,8 @@
     },
     {
         "name": "dbrx",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "132b",
@@ -1198,6 +1396,8 @@
     },
     {
         "name": "llama3-groq-tool-use",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -1211,6 +1411,8 @@
     },
     {
         "name": "alfred",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "40b",
@@ -1220,6 +1422,8 @@
     },
     {
         "name": "mathstral",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "7b",
@@ -1229,6 +1433,8 @@
     },
     {
         "name": "firefunction-v2",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "70b",
@@ -1238,6 +1444,8 @@
     },
     {
         "name": "nuextract",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "3.8b",
@@ -1247,6 +1455,8 @@
     },
     {
         "name": "bge-m3",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "567m",
@@ -1256,6 +1466,8 @@
     },
     {
         "name": "bge-large",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "335m",
@@ -1265,6 +1477,8 @@
     },
     {
         "name": "paraphrase-multilingual",
+        "vision_support": false,
+        "tools_support": false,
         "releases": [
             {
                 "num_param": "278m",
