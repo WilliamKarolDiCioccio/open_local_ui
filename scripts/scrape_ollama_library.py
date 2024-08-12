@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+from datetime import datetime  # Import datetime for timestamp
 
 
 # Function to send a GET request to a URL and return a BeautifulSoup object if successful.
@@ -30,17 +31,11 @@ def scrape_model_details(model_url):
 
     # Check if the model supports vision
     vision_support = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Vision')
-    if vision_support:
-        model_details['vision_support'] = True
-    else:
-        model_details['vision_support'] = False
+    model_details['vision_support'] = vision_support is not None
     
     # Check if the model supports tools
     tools_support = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-green-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-green-600'}, string='Tools')
-    if tools_support:
-        model_details['tools_support'] = True
-    else:
-        model_details['tools_support'] = False
+    model_details['tools_support'] = tools_support is not None
     
     model_releases = []
 
@@ -60,7 +55,7 @@ def scrape_model_details(model_url):
         
         # Store the release details in a dictionary and append to the model_releases list
         model_releases.append({
-            'num_param': release_name,
+            'num_params': release_name,
             'size': release_size
         })
 
@@ -99,9 +94,16 @@ def scrape_ollama_library():
 if __name__ == "__main__":
     models_info = scrape_ollama_library()  # Scrape the entire Ollama library
     
+    # Prepare data to be saved, including timestamp and model count
+    output_data = {
+        'timestamp': datetime.now().isoformat(),  # Add the current timestamp
+        'num_models': len(models_info),  # Add the number of models scraped
+        'models': models_info  # Include the scraped models data
+    }
+    
     # Save the scraped data to a JSON file with pretty printing (indented format)
     with open('ollama_models.json', 'w') as outfile:
-        json.dump(models_info, outfile, indent=4)
+        json.dump(output_data, outfile, indent=4)
     
     # Print a message indicating how many models were scraped and where the data was saved
     print(f"Scraped {len(models_info)} models. Data saved to 'ollama_models.json'.")
