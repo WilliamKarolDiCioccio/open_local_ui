@@ -16,25 +16,25 @@ import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
-import 'package:open_local_ui/frontend/screens/about.dart';
-import 'package:open_local_ui/frontend/screens/chat.dart';
-import 'package:open_local_ui/frontend/screens/models.dart';
-import 'package:open_local_ui/frontend/screens/sessions.dart';
-import 'package:open_local_ui/frontend/screens/settings.dart';
+import 'package:open_local_ui/frontend/pages/dashboard/about.dart';
+import 'package:open_local_ui/frontend/pages/dashboard/chat.dart';
+import 'package:open_local_ui/frontend/pages/dashboard/models.dart';
+import 'package:open_local_ui/frontend/pages/dashboard/sessions.dart';
+import 'package:open_local_ui/frontend/pages/dashboard/settings.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:unicons/unicons.dart';
 
 enum PageIndex { chat, sessions, models, settings, about }
 
-class DashboardLayout extends StatefulWidget {
-  const DashboardLayout({super.key});
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
 
   @override
-  State<DashboardLayout> createState() => _DashboardLayoutState();
+  State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardLayoutState extends State<DashboardLayout> {
+class _DashboardScreenState extends State<DashboardScreen> {
   final PageController _pageController = PageController();
   final OverlayPortalController _overlayPortalController =
       OverlayPortalController();

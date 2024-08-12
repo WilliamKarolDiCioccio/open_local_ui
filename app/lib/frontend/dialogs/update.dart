@@ -85,7 +85,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const UpdateInProgressPage(),
+                  builder: (context) => const UpdateInProgressScreen(),
                 ),
               );
             },

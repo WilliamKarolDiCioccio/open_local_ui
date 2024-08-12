@@ -22,11 +22,12 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<LocaleProvider>(
-      builder: (context, value, child) => Column(
-        mainAxisSize: MainAxisSize.max,
+      builder: (context, value, child) => ListView(
+        scrollDirection: Axis.vertical,
         children: [
           Text(
             AppLocalizations.of(context).settingsPageTitle,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
@@ -139,6 +140,8 @@ class AccessibilitySettings extends StatelessWidget {
         ),
         const Gap(16.0),
         DropdownMenu(
+          enableFilter: true,
+          enableSearch: true,
           menuHeight: 256,
           menuStyle: MenuStyle(
             elevation: WidgetStateProperty.all(
@@ -160,23 +163,57 @@ class AccessibilitySettings extends StatelessWidget {
           initialSelection: context.watch<LocaleProvider>().languageSetting,
           dropdownMenuEntries: [
             DropdownMenuEntry(
-                value: LocaleProvider.systemLangCode,
-                label: AppLocalizations.of(context).settingsLanguageSystem),
-            DropdownMenuEntry(
-                value: 'en',
-                label: AppLocalizations.of(context).settingsLanguageEnglish),
-            DropdownMenuEntry(
-                value: 'es',
-                label: AppLocalizations.of(context).settingsLanguageSpanish),
-            DropdownMenuEntry(
-                value: 'fr',
-                label: AppLocalizations.of(context).settingsLanguageFrench),
-            DropdownMenuEntry(
-                value: 'de',
-                label: AppLocalizations.of(context).settingsLanguageGerman),
-            DropdownMenuEntry(
-                value: 'it',
-                label: AppLocalizations.of(context).settingsLanguageItalian),
+              value: LocaleProvider.systemLangCode,
+              label: AppLocalizations.of(context).settingsLanguageSystem,
+            ),
+            const DropdownMenuEntry(
+              value: 'en',
+              label: 'English',
+            ),
+            const DropdownMenuEntry(
+              value: 'es',
+              label: 'Spanish',
+            ),
+            const DropdownMenuEntry(
+              value: 'fr',
+              label: 'French',
+            ),
+            const DropdownMenuEntry(
+              value: 'de',
+              label: 'German',
+            ),
+            const DropdownMenuEntry(
+              value: 'it',
+              label: 'Italian',
+            ),
+            const DropdownMenuEntry(
+              value: 'ja',
+              label: 'Japanese',
+            ),
+            const DropdownMenuEntry(
+              value: 'ko',
+              label: 'Korean',
+            ),
+            const DropdownMenuEntry(
+              value: 'pt',
+              label: 'Portuguese',
+            ),
+            const DropdownMenuEntry(
+              value: 'ru',
+              label: 'Russian',
+            ),
+            const DropdownMenuEntry(
+              value: 'zh',
+              label: 'Chinese',
+            ),
+            const DropdownMenuEntry(
+              value: 'ar',
+              label: 'Arabic',
+            ),
+            const DropdownMenuEntry(
+              value: 'hi',
+              label: 'Hindi',
+            ),
           ],
           onSelected: (value) {
             context

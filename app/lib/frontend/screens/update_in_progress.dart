@@ -6,14 +6,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/update.dart';
 
-class UpdateInProgressPage extends StatefulWidget {
-  const UpdateInProgressPage({super.key});
+class UpdateInProgressScreen extends StatefulWidget {
+  const UpdateInProgressScreen({super.key});
 
   @override
-  State<UpdateInProgressPage> createState() => _UpdateInProgressPageState();
+  State<UpdateInProgressScreen> createState() => _UpdateInProgressScreenState();
 }
 
-class _UpdateInProgressPageState extends State<UpdateInProgressPage> {
+class _UpdateInProgressScreenState extends State<UpdateInProgressScreen> {
   @override
   void initState() {
     super.initState();
