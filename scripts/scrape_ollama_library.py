@@ -24,18 +24,23 @@ def scrape_model_details(model_url):
 
     model_details = {}
 
-    # Extract the model name from the page's <h1> tag
+    # Find model specialities
+
     model_name = soup.find('h1', attrs={'class': 'flex items-center sm:text-[28px] text-xl tracking-tight'}, recursive=True)
     if model_name:
         model_details['name'] = model_name.text.strip()  # Clean up and store the model name
 
-    # Check if the model supports vision
-    vision_support = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Vision')
-    model_details['vision_support'] = vision_support is not None
+    vision = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Vision')
+    model_details['vision'] = vision is not None
     
-    # Check if the model supports tools
-    tools_support = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-green-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-green-600'}, string='Tools')
-    model_details['tools_support'] = tools_support is not None
+    tools = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Tools')
+    model_details['tools'] = tools is not None
+    
+    embedding = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Embedding')
+    model_details['embedding'] = embedding is not None
+    
+    code = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Code')
+    model_details['code'] = code is not None
     
     model_releases = []
 
