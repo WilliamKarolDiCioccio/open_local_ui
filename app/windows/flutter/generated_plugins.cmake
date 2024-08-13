@@ -9,6 +9,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   gpu_info
   irondash_engine_context
   isar_flutter_libs
+  rive_common
   super_native_extensions
   system_theme
   url_launcher_windows

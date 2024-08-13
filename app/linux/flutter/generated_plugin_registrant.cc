@@ -32,6 +32,9 @@ void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) isar_flutter_libs_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "IsarFlutterLibsPlugin");
   isar_flutter_libs_plugin_register_with_registrar(isar_flutter_libs_registrar);
+  g_autoptr(FlPluginRegistrar) rive_common_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "RivePlugin");
+  rive_plugin_register_with_registrar(rive_common_registrar);
   g_autoptr(FlPluginRegistrar) super_native_extensions_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "SuperNativeExtensionsPlugin");
   super_native_extensions_plugin_register_with_registrar(super_native_extensions_registrar);

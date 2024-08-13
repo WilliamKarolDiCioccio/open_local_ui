@@ -31,6 +31,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("IrondashEngineContextPluginCApi"));
   IsarFlutterLibsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("IsarFlutterLibsPlugin"));
+  RivePluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("RivePlugin"));
   SuperNativeExtensionsPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("SuperNativeExtensionsPluginCApi"));
   SystemThemePluginRegisterWithRegistrar(
