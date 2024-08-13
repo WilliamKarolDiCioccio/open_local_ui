@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -93,7 +92,7 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
     SnackBarHelpers.showSnackBar(
       AppLocalizations.of(context).snackBarSuccessTitle,
       AppLocalizations.of(context).codeCopiedSnackBar,
-      snackbar.ContentType.success,
+      SnackbarContentType.success,
     );
 
     Future.delayed(const Duration(seconds: 3), () {
@@ -119,14 +118,14 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarSuccessTitle,
         'File saved at: ${file.path}',
-        snackbar.ContentType.success,
+        SnackbarContentType.success,
       );
     } else {
       // User canceled the picker
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         'No directory selected',
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     }
   }

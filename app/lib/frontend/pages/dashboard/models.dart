@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
@@ -320,7 +318,7 @@ class _ModelListTileState extends State<ModelListTile> {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     } else {
       if (!context.read<ChatProvider>().isSessionSelected) {
@@ -339,7 +337,7 @@ class _ModelListTileState extends State<ModelListTile> {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     } else {
       context.read<ModelProvider>().remove(widget.model.name);

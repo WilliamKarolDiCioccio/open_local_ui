@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_local_ui/constants/flutter.dart';
@@ -138,7 +137,7 @@ class UpdateHelper {
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
           .somethingWentWrongSnackBar,
-      snackbar.ContentType.failure,
+      SnackbarContentType.failure,
     );
   }
 }

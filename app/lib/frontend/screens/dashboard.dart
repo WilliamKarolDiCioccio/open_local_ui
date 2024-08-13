@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
+
 import 'package:feedback/feedback.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -65,7 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           SnackBarHelpers.showSnackBar(
             AppLocalizations.of(context).snackBarUpdateTitle,
             AppLocalizations.of(context).clickToDownloadLatestVersionSnackBar,
-            snackbar.ContentType.help,
+            SnackbarContentType.info,
             onTap: () => showUpdateDialog(
               context: context,
             ),

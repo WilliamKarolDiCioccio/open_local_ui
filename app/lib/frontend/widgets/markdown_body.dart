@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // ignore: depend_on_referenced_packages
@@ -59,7 +58,7 @@ class MarkdownBodyWidget extends StatelessWidget {
                 SnackBarHelpers.showSnackBar(
                   AppLocalizations.of(context).snackBarErrorTitle,
                   AppLocalizations.of(context).somethingWentWrongSnackBar,
-                  snackbar.ContentType.failure,
+                  SnackbarContentType.failure,
                 );
               }
             },

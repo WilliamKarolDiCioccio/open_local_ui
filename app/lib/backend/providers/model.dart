@@ -4,8 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/backend/models/model.dart';
@@ -174,7 +173,7 @@ class ModelProvider extends ChangeNotifier {
           // ignore: use_build_context_synchronously
           AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
               .failedToPullModelSnackBar,
-          snackbar.ContentType.failure,
+          SnackbarContentType.failure,
         );
       }
     }
@@ -191,7 +190,7 @@ class ModelProvider extends ChangeNotifier {
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
           .modelPulledSuccessfullySnackBar,
-      snackbar.ContentType.success,
+      SnackbarContentType.success,
     );
 
     sleep(
@@ -280,7 +279,7 @@ class ModelProvider extends ChangeNotifier {
           // ignore: use_build_context_synchronously
           AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
               .failedToPushModelSnackBar,
-          snackbar.ContentType.failure,
+          SnackbarContentType.failure,
         );
       }
     }
@@ -297,7 +296,7 @@ class ModelProvider extends ChangeNotifier {
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
           .modelPushedSuccessfullySnackBar,
-      snackbar.ContentType.success,
+      SnackbarContentType.success,
     );
 
     sleep(
@@ -385,7 +384,7 @@ class ModelProvider extends ChangeNotifier {
           // ignore: use_build_context_synchronously
           AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
               .failedToCreateModelSnackBar,
-          snackbar.ContentType.failure,
+          SnackbarContentType.failure,
         );
       }
     }
@@ -402,7 +401,7 @@ class ModelProvider extends ChangeNotifier {
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
           .modelCreatedSuccessfullySnackBar,
-      snackbar.ContentType.success,
+      SnackbarContentType.success,
     );
 
     sleep(

@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
@@ -301,7 +300,7 @@ class _SessionListTileState extends State<SessionListTile> {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     } else {
       context.read<ChatProvider>().setSession(widget.session.uuid);
@@ -322,7 +321,7 @@ class _SessionListTileState extends State<SessionListTile> {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     } else {
       if (_textEditingController.text.isEmpty) return;
@@ -349,7 +348,7 @@ class _SessionListTileState extends State<SessionListTile> {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     } else {
       final targetDir = (await getDownloadsDirectory())?.path ?? '.';
@@ -363,7 +362,7 @@ class _SessionListTileState extends State<SessionListTile> {
           AppLocalizations.of(context).snackBarSuccessTitle,
           // ignore: use_build_context_synchronously
           AppLocalizations.of(context).sessionSharedSnackBar,
-          snackbar.ContentType.success,
+          SnackbarContentType.success,
         );
       } else {
         SnackBarHelpers.showSnackBar(
@@ -371,7 +370,7 @@ class _SessionListTileState extends State<SessionListTile> {
           AppLocalizations.of(context).snackBarErrorTitle,
           // ignore: use_build_context_synchronously
           AppLocalizations.of(context).failedToShareSessionSnackBar,
-          snackbar.ContentType.failure,
+          SnackbarContentType.failure,
         );
       }
     }
@@ -382,7 +381,7 @@ class _SessionListTileState extends State<SessionListTile> {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     } else {
       context.read<ChatProvider>().removeSession(widget.session.uuid);

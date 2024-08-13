@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart'
-    as snackbar;
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -193,7 +192,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
         return SnackBarHelpers.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).noModelsAvailableSnackBar,
-          snackbar.ContentType.failure,
+          SnackbarContentType.failure,
         );
       } else {
         final models = context.read<ModelProvider>().models;
@@ -203,7 +202,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
       return SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     }
 
@@ -217,7 +216,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
         return SnackBarHelpers.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).noModelsAvailableSnackBar,
-          snackbar.ContentType.failure,
+          SnackbarContentType.failure,
         );
       } else {
         final models = context.read<ModelProvider>().models;
@@ -227,7 +226,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
       return SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        snackbar.ContentType.failure,
+        SnackbarContentType.failure,
       );
     }
 
