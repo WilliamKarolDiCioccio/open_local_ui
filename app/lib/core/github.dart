@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_local_ui/core/logger.dart';
@@ -150,6 +147,7 @@ class GitHubAPI {
     String text,
     String screenshotUrl,
     String logsUrl,
+    String deviceInfo,
   ) async {
     final url = Uri.parse(
       'https://api.github.com/repos/$owner/$repo/issues',
@@ -161,40 +159,6 @@ class GitHubAPI {
       'Content-Type': 'application/json',
       'X-GitHub-Api-Version': '2022-11-28'
     };
-
-    late String deviceInfo;
-
-// @formatter:off
-    if (defaultTargetPlatform == TargetPlatform.windows) {
-      final plugin = await DeviceInfoPlugin().windowsInfo;
-      deviceInfo = '''
-- Platfrom: ${plugin.productName}
-- Major version: ${plugin.majorVersion}
-- Minor version: ${plugin.minorVersion}
-- Build number: ${plugin.buildNumber}
-- Memory in MB: ${plugin.systemMemoryInMegabytes}
-''';
-    } else if (defaultTargetPlatform == TargetPlatform.linux) {
-      final plugin = await DeviceInfoPlugin().linuxInfo;
-      deviceInfo = '''
-- Platfrom: ${plugin.name} (${plugin.versionCodename})
-- Version: ${plugin.version}
-- Build number: ${plugin.buildId}
-''';
-    } else if (defaultTargetPlatform == TargetPlatform.macOS) {
-      final plugin = await DeviceInfoPlugin().macOsInfo;
-      deviceInfo = '''
-- Platfrom: ${plugin.hostName}
-- Major version: ${plugin.majorVersion}
-- Minor version: ${plugin.minorVersion}
-- Patch version: ${plugin.patchVersion}
-- Kernel version: ${plugin.kernelVersion}
-- Build number: ${plugin.memorySize}
-- Model: ${plugin.model}
-- Memory in MB: ${plugin.memorySize}
-''';
-    }
-// @formatter:on
 
     final packageInfo = await PackageInfo.fromPlatform();
 

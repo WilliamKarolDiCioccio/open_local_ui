@@ -82,9 +82,10 @@ dependencies:
   supabase_flutter: ^2.5.2
 
   # Device and Package Info
-  device_info_plus: ^10.1.0
   package_info_plus: ^8.0.0
   language_code: ^0.5.3+2
+  system_info2: ^4.0.0
+  gpu_info: ^0.0.3
 
   # Environment Variables
   envied: ^0.5.4+1
@@ -101,7 +102,6 @@ dependencies:
   # LangChain Integration
   langchain: ^0.7.3
   langchain_ollama: ^0.2.2+1
-  gpu_info: ^0.0.2
   introduction_screen: ^3.1.14
   rive: ^0.13.12
 
@@ -119,8 +119,12 @@ dev_dependencies:
 flutter:
   generate: true
   assets:
+    # Prompts
     - assets/prompts/default.txt
     - assets/prompts/sessions_title_generator.txt
+    # Model Metadata
+    - assets/metadata/ollama_models.json
+    # Logos
     - assets/graphics/logos/flutter.svg
     - assets/graphics/logos/langchain.svg
     - assets/graphics/logos/supabase.svg
@@ -176,6 +180,9 @@ flutter:
     - assets/graphics/logos/xml.svg
     - assets/graphics/logos/html.svg
     - assets/graphics/logos/yaml.svg
+    # Animations
+    - assets/graphics/animations/gpu.riv
+    - assets/graphics/animations/human.riv
   fonts:
     - family: ValeraRound
       fonts:

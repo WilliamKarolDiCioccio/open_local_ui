@@ -10,6 +10,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:gpu_info/gpu_info.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
@@ -23,6 +24,7 @@ import 'package:open_local_ui/frontend/pages/dashboard/sessions.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/settings.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:system_info2/system_info2.dart';
 import 'package:unicons/unicons.dart';
 
 enum PageIndex { chat, sessions, models, settings, about }
@@ -100,6 +102,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Future<String> _getDeviceInfo() async {
+    final _gpuInfoPlugin = GpuInfo();
+
+    List<GpuInfoStruct> gpusInfo;
+
+    gpusInfo = await _gpuInfoPlugin.getGpusInfo();
+
+    GpuInfoStruct? bestGpu = null;
+
+    for (final gpuInfo in gpusInfo) {
+      if (bestGpu == null) {
+        bestGpu = gpuInfo;
+      } else {
+        if (gpuInfo.memoryAmount > bestGpu.memoryAmount) {
+          bestGpu = gpuInfo;
+        }
+      }
+    }
+
+    return '''
+- OS Name: ${SysInfo.operatingSystemName}
+- Kernel Version: ${SysInfo.kernelVersion}
+- OS Version: ${SysInfo.operatingSystemVersion}
+- CPU: ${SysInfo.cores[0].name}
+- CPU Cores: ${SysInfo.cores.length}
+- System Memory: ${(SysInfo.getTotalPhysicalMemory()/ (1024 * 1024)).round()}
+- GPU: ${bestGpu?.deviceName}
+- GPU Memory: ${bestGpu?.memoryAmount}
+''';
+  }
+
   void _uploadFeedback(UserFeedback feedback) async {
     final supabase = Supabase.instance.client;
 
@@ -145,10 +178,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ''',
     );
 
-    GitHubAPI.createGitHubIssue(
+    final deviceInfo = await _getDeviceInfo();
+
+    await GitHubAPI.createGitHubIssue(
       feedback.text,
       screenshotUrl,
       logUrl,
+      deviceInfo,
     );
 
     screenshotFile.delete();
