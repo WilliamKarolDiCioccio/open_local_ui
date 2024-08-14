@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/locale.dart';
+import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:system_theme/system_theme.dart';
 import 'package:unicons/unicons.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -50,8 +54,44 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
-class ThemeSettings extends StatelessWidget {
+class ThemeSettings extends StatefulWidget {
   const ThemeSettings({super.key});
+
+  @override
+  State<ThemeSettings> createState() => _ThemeSettingsState();
+}
+
+class _ThemeSettingsState extends State<ThemeSettings> {
+  Future<bool> _isAccentSynced() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('sync_accent_color') ?? false;
+  }
+
+  Future<Color> _getAccent() async {
+    final prefs = await SharedPreferences.getInstance();
+    return ColorHelpers.colorFromHex(
+      prefs.getString('accent_color') ?? Colors.cyan.hex,
+    );
+  }
+
+  void _setAccent(BuildContext context, Color color) {
+    AdaptiveTheme.of(context).setTheme(
+      light: ThemeData(
+        fontFamily: 'ValeraRound',
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorSchemeSeed: color,
+      ),
+      dark: ThemeData(
+        fontFamily: 'ValeraRound',
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: color,
+      ),
+    );
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,14 +138,17 @@ class ThemeSettings extends StatelessWidget {
           initialSelection: themeModeString,
           dropdownMenuEntries: [
             DropdownMenuEntry(
-                value: 'Light',
-                label: AppLocalizations.of(context).settingsThemeModeLight),
+              value: 'Light',
+              label: AppLocalizations.of(context).settingsThemeModeLight,
+            ),
             DropdownMenuEntry(
-                value: 'Dark',
-                label: AppLocalizations.of(context).settingsThemeModeDark),
+              value: 'Dark',
+              label: AppLocalizations.of(context).settingsThemeModeDark,
+            ),
             DropdownMenuEntry(
-                value: 'System',
-                label: AppLocalizations.of(context).settingsThemeModeSystem),
+              value: 'System',
+              label: AppLocalizations.of(context).settingsThemeModeSystem,
+            ),
           ],
           onSelected: (value) {
             switch (value) {
@@ -120,6 +163,104 @@ class ThemeSettings extends StatelessWidget {
                 break;
             }
           },
+        ),
+        const Gap(16.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(UniconsLine.brush_alt),
+            const Gap(8.0),
+            Text(
+              'Set a custom accent',
+              style: const TextStyle(fontSize: 16.0),
+            ),
+            const Gap(8.0),
+            GestureDetector(
+              onTap: () async {
+                showColorPickerDialog(
+                  context,
+                  await _getAccent(),
+                ).then(
+                  (color) async {
+                    final prefs = await SharedPreferences.getInstance();
+
+                    if ((prefs.getBool('sync_accent_color') ?? false) ==
+                        false) {
+                      _setAccent(context, color);
+                    } else {
+                      setState(() {});
+                    }
+
+                    await prefs.setString(
+                      'accent_color',
+                      ColorHelpers.colorToHex(color),
+                    );
+                  },
+                );
+              },
+              child: FutureBuilder(
+                future: _getAccent(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return SpinKitCircle(
+                      color: AdaptiveTheme.of(context).mode.isDark
+                          ? Colors.white
+                          : Colors.black,
+                    );
+                  } else {
+                    return CircleAvatar(
+                      radius: 20, // Size of the circle
+                      backgroundColor: snapshot.data!,
+                    );
+                  }
+                },
+              ),
+            ),
+            const Gap(16.0),
+            Icon(UniconsLine.sync),
+            const Gap(8.0),
+            Text(
+              'or sync with system',
+              style: const TextStyle(fontSize: 16.0),
+            ),
+            const Gap(8.0),
+            FutureBuilder(
+              future: _isAccentSynced(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return SpinKitCircle(
+                    color: AdaptiveTheme.of(context).mode.isDark
+                        ? Colors.white
+                        : Colors.black,
+                  );
+                } else {
+                  return Switch(
+                    value: snapshot.data!,
+                    onChanged: (value) async {
+                      final prefs = await SharedPreferences.getInstance();
+
+                      if (value) {
+                        await prefs.setBool('sync_accent_color', true);
+                        _setAccent(context, SystemTheme.accentColor.accent);
+                      } else {
+                        final savedColorCode =
+                            await prefs.getString('accent_color');
+                        prefs.setBool('sync_accent_color', false);
+
+                        _setAccent(
+                          context,
+                          ColorHelpers.colorFromHex(
+                            savedColorCode ?? Colors.cyan.hex,
+                          ),
+                        );
+                      }
+                    },
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ],
     );

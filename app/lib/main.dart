@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:open_local_ui/backend/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/locale.dart';
@@ -15,10 +15,13 @@ import 'package:open_local_ui/backend/providers/model.dart';
 import 'package:open_local_ui/backend/services/tts.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/constants/languages.dart';
+import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
+import 'package:open_local_ui/frontend/screens/onboarding.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
 
@@ -26,19 +29,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await Hive.initFlutter();
-
-  await Supabase.initialize(
-    url: Env.supabaseUrl,
-    anonKey: Env.supabaseAnonKey,
-  );
-
-  if (defaultTargetPlatform.supportsAccentColor) {
-    SystemTheme.fallbackColor = Colors.cyan;
-    await SystemTheme.accentColor.load();
-  }
-
-  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  // Internal services
 
   await initLogger();
 
@@ -46,7 +37,37 @@ void main() async {
   await TTSService.startServer();
   await ChatSessionsDatabase.init();
 
+  // Backend services
+
+  final prefs = await SharedPreferences.getInstance();
+
+  await Supabase.initialize(
+    url: Env.supabaseUrl,
+    anonKey: Env.supabaseAnonKey,
+  );
+
+  // Theme
+
+  if (defaultTargetPlatform.supportsAccentColor) {
+    await SystemTheme.accentColor.load();
+  }
+
+  late Color themeAccentColor;
+
+  if ((prefs.getBool('sync_accent_color') ?? false) == false) {
+    themeAccentColor = ColorHelpers.colorFromHex(
+      prefs.getString('accent_color') ?? Colors.cyan.hex,
+    );
+  } else {
+    themeAccentColor = SystemTheme.accentColor.accent;
+  }
+
+  final themeMode =
+      await AdaptiveTheme.getThemeMode() ?? AdaptiveThemeMode.light;
+
   FlutterNativeSplash.remove();
+
+  // Run app
 
   runApp(
     MultiProvider(
@@ -63,7 +84,10 @@ void main() async {
       ],
       child: BetterFeedback(
         theme: FeedbackThemeData(),
-        child: MyApp(savedThemeMode: savedThemeMode),
+        child: MyApp(
+          themeAccentColor: themeAccentColor,
+          themeMode: themeMode,
+        ),
       ),
     ),
   );
@@ -79,9 +103,14 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  final AdaptiveThemeMode? savedThemeMode;
+  final Color themeAccentColor;
+  final AdaptiveThemeMode themeMode;
 
-  const MyApp({super.key, required this.savedThemeMode});
+  const MyApp({
+    super.key,
+    required this.themeAccentColor,
+    required this.themeMode,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -109,20 +138,20 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'ValeraRound',
         useMaterial3: true,
         brightness: Brightness.light,
-        colorSchemeSeed: SystemTheme.accentColor.accent,
+        colorSchemeSeed: widget.themeAccentColor,
       ),
       dark: ThemeData(
         fontFamily: 'ValeraRound',
         useMaterial3: true,
         brightness: Brightness.dark,
-        colorSchemeSeed: SystemTheme.accentColor.accent,
+        colorSchemeSeed: widget.themeAccentColor,
       ),
-      initial: widget.savedThemeMode ?? AdaptiveThemeMode.light,
+      initial: widget.themeMode,
       debugShowFloatingThemeButton: false,
-      builder: (theme, darkTheme) => MaterialApp(
+      builder: (lightTheme, darkTheme) => MaterialApp(
         scaffoldMessengerKey: scaffoldMessengerKey,
         title: 'OpenLocalUI',
-        theme: theme,
+        theme: lightTheme,
         darkTheme: darkTheme,
         supportedLocales: L10n.all,
         locale: context.watch<LocaleProvider>().locale,
@@ -134,7 +163,7 @@ class _MyAppState extends State<MyApp> {
         ],
         home: Stack(
           children: [
-            const DashboardLayout(),
+            const DashboardScreen(),
             Positioned(
               top: 0.0,
               right: 0.0,
