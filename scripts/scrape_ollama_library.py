@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime  # Import datetime for timestamp
 
-
 # Function to send a GET request to a URL and return a BeautifulSoup object if successful.
 # Returns None if the request fails.
 def get_soup(url):
@@ -14,7 +13,6 @@ def get_soup(url):
         print(f"Failed to retrieve the page: {url}")
         return None
 
-
 # Function to scrape detailed information about a specific model from its page.
 # Extracts the model name and all available releases (excluding "latest").
 def scrape_model_details(model_url):
@@ -24,8 +22,7 @@ def scrape_model_details(model_url):
 
     model_details = {}
 
-    # Find model specialities
-
+    # Find model name
     model_name = soup.find('h1', attrs={'class': 'flex items-center sm:text-[28px] text-xl tracking-tight'}, recursive=True)
     if model_name:
         model_details['name'] = model_name.text.strip()  # Clean up and store the model name
@@ -70,7 +67,6 @@ def scrape_model_details(model_url):
 
     return model_details
 
-
 # Function to scrape the main library page and retrieve details for each model.
 def scrape_ollama_library():
     base_url = 'https://ollama.com'
@@ -78,9 +74,9 @@ def scrape_ollama_library():
     
     library_soup = get_soup(library_url)
     if library_soup is None:
-        return []  # Return an empty list if the library page could not be retrieved
+        return {}  # Return an empty dictionary if the library page could not be retrieved
 
-    models = []
+    models = {}
     
     # Find all <a> tags that contain links to individual model pages
     model_links = library_soup.find_all('a', href=True)
@@ -90,10 +86,12 @@ def scrape_ollama_library():
             model_url = f"{base_url}{model_href}"  # Construct the full URL for the model page
             model_details = scrape_model_details(model_url)  # Scrape the model details
             if model_details:
-                models.append(model_details)  # Append the model details to the models list
+                # Use the model name as the key in the dictionary
+                model_name = model_details.get('name')
+                if model_name:
+                    models[model_name] = model_details  # Assign details to the model name key
     
     return models
-
 
 # Main execution block to run the scraper and save the data to a JSON file.
 if __name__ == "__main__":

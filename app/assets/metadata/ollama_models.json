@@ -1,8 +1,8 @@
 {
-    "timestamp": "2024-08-13T16:43:29.461110",
+    "timestamp": "2024-08-14T15:32:49.886900",
     "num_models": 107,
-    "models": [
-        {
+    "models": {
+        "llama3.1": {
             "name": "llama3.1",
             "vision": false,
             "tools": true,
@@ -23,7 +23,7 @@
                 }
             ]
         },
-        {
+        "gemma2": {
             "name": "gemma2",
             "vision": false,
             "tools": false,
@@ -44,7 +44,7 @@
                 }
             ]
         },
-        {
+        "mistral-nemo": {
             "name": "mistral-nemo",
             "vision": false,
             "tools": true,
@@ -57,7 +57,7 @@
                 }
             ]
         },
-        {
+        "mistral-large": {
             "name": "mistral-large",
             "vision": false,
             "tools": true,
@@ -70,7 +70,7 @@
                 }
             ]
         },
-        {
+        "qwen2": {
             "name": "qwen2",
             "vision": false,
             "tools": false,
@@ -95,7 +95,7 @@
                 }
             ]
         },
-        {
+        "deepseek-coder-v2": {
             "name": "deepseek-coder-v2",
             "vision": false,
             "tools": false,
@@ -112,7 +112,7 @@
                 }
             ]
         },
-        {
+        "phi3": {
             "name": "phi3",
             "vision": false,
             "tools": false,
@@ -129,7 +129,7 @@
                 }
             ]
         },
-        {
+        "mistral": {
             "name": "mistral",
             "vision": false,
             "tools": true,
@@ -142,7 +142,7 @@
                 }
             ]
         },
-        {
+        "mixtral": {
             "name": "mixtral",
             "vision": false,
             "tools": true,
@@ -159,7 +159,7 @@
                 }
             ]
         },
-        {
+        "codegemma": {
             "name": "codegemma",
             "vision": false,
             "tools": false,
@@ -176,7 +176,7 @@
                 }
             ]
         },
-        {
+        "command-r": {
             "name": "command-r",
             "vision": false,
             "tools": false,
@@ -189,7 +189,7 @@
                 }
             ]
         },
-        {
+        "command-r-plus": {
             "name": "command-r-plus",
             "vision": false,
             "tools": true,
@@ -202,7 +202,7 @@
                 }
             ]
         },
-        {
+        "llava": {
             "name": "llava",
             "vision": true,
             "tools": false,
@@ -223,7 +223,7 @@
                 }
             ]
         },
-        {
+        "llama3": {
             "name": "llama3",
             "vision": false,
             "tools": false,
@@ -240,7 +240,7 @@
                 }
             ]
         },
-        {
+        "gemma": {
             "name": "gemma",
             "vision": false,
             "tools": false,
@@ -257,7 +257,7 @@
                 }
             ]
         },
-        {
+        "qwen": {
             "name": "qwen",
             "vision": false,
             "tools": false,
@@ -298,7 +298,7 @@
                 }
             ]
         },
-        {
+        "llama2": {
             "name": "llama2",
             "vision": false,
             "tools": false,
@@ -319,7 +319,7 @@
                 }
             ]
         },
-        {
+        "codellama": {
             "name": "codellama",
             "vision": false,
             "tools": false,
@@ -344,7 +344,7 @@
                 }
             ]
         },
-        {
+        "dolphin-mixtral": {
             "name": "dolphin-mixtral",
             "vision": false,
             "tools": false,
@@ -361,7 +361,7 @@
                 }
             ]
         },
-        {
+        "nomic-embed-text": {
             "name": "nomic-embed-text",
             "vision": false,
             "tools": false,
@@ -374,7 +374,7 @@
                 }
             ]
         },
-        {
+        "llama2-uncensored": {
             "name": "llama2-uncensored",
             "vision": false,
             "tools": false,
@@ -391,7 +391,7 @@
                 }
             ]
         },
-        {
+        "phi": {
             "name": "phi",
             "vision": false,
             "tools": false,
@@ -404,7 +404,7 @@
                 }
             ]
         },
-        {
+        "deepseek-coder": {
             "name": "deepseek-coder",
             "vision": false,
             "tools": false,
@@ -425,7 +425,7 @@
                 }
             ]
         },
-        {
+        "zephyr": {
             "name": "zephyr",
             "vision": false,
             "tools": false,
@@ -442,7 +442,7 @@
                 }
             ]
         },
-        {
+        "mxbai-embed-large": {
             "name": "mxbai-embed-large",
             "vision": false,
             "tools": false,
@@ -455,7 +455,7 @@
                 }
             ]
         },
-        {
+        "dolphin-mistral": {
             "name": "dolphin-mistral",
             "vision": false,
             "tools": false,
@@ -468,7 +468,7 @@
                 }
             ]
         },
-        {
+        "orca-mini": {
             "name": "orca-mini",
             "vision": false,
             "tools": false,
@@ -493,7 +493,7 @@
                 }
             ]
         },
-        {
+        "dolphin-llama3": {
             "name": "dolphin-llama3",
             "vision": false,
             "tools": false,
@@ -514,7 +514,7 @@
                 }
             ]
         },
-        {
+        "starcoder2": {
             "name": "starcoder2",
             "vision": false,
             "tools": false,
@@ -535,7 +535,7 @@
                 }
             ]
         },
-        {
+        "yi": {
             "name": "yi",
             "vision": false,
             "tools": false,
@@ -556,7 +556,7 @@
                 }
             ]
         },
-        {
+        "mistral-openorca": {
             "name": "mistral-openorca",
             "vision": false,
             "tools": false,
@@ -569,7 +569,7 @@
                 }
             ]
         },
-        {
+        "llama2-chinese": {
             "name": "llama2-chinese",
             "vision": false,
             "tools": false,
@@ -586,7 +586,7 @@
                 }
             ]
         },
-        {
+        "llava-llama3": {
             "name": "llava-llama3",
             "vision": true,
             "tools": false,
@@ -599,7 +599,7 @@
                 }
             ]
         },
-        {
+        "starcoder": {
             "name": "starcoder",
             "vision": false,
             "tools": false,
@@ -624,7 +624,7 @@
                 }
             ]
         },
-        {
+        "vicuna": {
             "name": "vicuna",
             "vision": false,
             "tools": false,
@@ -645,7 +645,7 @@
                 }
             ]
         },
-        {
+        "tinyllama": {
             "name": "tinyllama",
             "vision": false,
             "tools": false,
@@ -658,7 +658,7 @@
                 }
             ]
         },
-        {
+        "codestral": {
             "name": "codestral",
             "vision": false,
             "tools": false,
@@ -671,24 +671,7 @@
                 }
             ]
         },
-        {
-            "name": "nous-hermes2",
-            "vision": false,
-            "tools": false,
-            "embedding": false,
-            "code": false,
-            "releases": [
-                {
-                    "num_params": "10.7b",
-                    "size": "6.1GB"
-                },
-                {
-                    "num_params": "34b",
-                    "size": "19GB"
-                }
-            ]
-        },
-        {
+        "wizard-vicuna-uncensored": {
             "name": "wizard-vicuna-uncensored",
             "vision": false,
             "tools": false,
@@ -709,7 +692,24 @@
                 }
             ]
         },
-        {
+        "nous-hermes2": {
+            "name": "nous-hermes2",
+            "vision": false,
+            "tools": false,
+            "embedding": false,
+            "code": false,
+            "releases": [
+                {
+                    "num_params": "10.7b",
+                    "size": "6.1GB"
+                },
+                {
+                    "num_params": "34b",
+                    "size": "19GB"
+                }
+            ]
+        },
+        "wizardlm2": {
             "name": "wizardlm2",
             "vision": false,
             "tools": false,
@@ -726,7 +726,7 @@
                 }
             ]
         },
-        {
+        "openchat": {
             "name": "openchat",
             "vision": false,
             "tools": false,
@@ -739,7 +739,7 @@
                 }
             ]
         },
-        {
+        "aya": {
             "name": "aya",
             "vision": false,
             "tools": false,
@@ -756,7 +756,7 @@
                 }
             ]
         },
-        {
+        "tinydolphin": {
             "name": "tinydolphin",
             "vision": false,
             "tools": false,
@@ -769,7 +769,7 @@
                 }
             ]
         },
-        {
+        "stable-code": {
             "name": "stable-code",
             "vision": false,
             "tools": false,
@@ -782,7 +782,7 @@
                 }
             ]
         },
-        {
+        "wizardcoder": {
             "name": "wizardcoder",
             "vision": false,
             "tools": false,
@@ -799,7 +799,7 @@
                 }
             ]
         },
-        {
+        "openhermes": {
             "name": "openhermes",
             "vision": false,
             "tools": false,
@@ -812,7 +812,7 @@
                 }
             ]
         },
-        {
+        "all-minilm": {
             "name": "all-minilm",
             "vision": false,
             "tools": false,
@@ -829,7 +829,7 @@
                 }
             ]
         },
-        {
+        "granite-code": {
             "name": "granite-code",
             "vision": false,
             "tools": false,
@@ -854,7 +854,7 @@
                 }
             ]
         },
-        {
+        "codeqwen": {
             "name": "codeqwen",
             "vision": false,
             "tools": false,
@@ -867,7 +867,7 @@
                 }
             ]
         },
-        {
+        "stablelm2": {
             "name": "stablelm2",
             "vision": false,
             "tools": false,
@@ -884,7 +884,7 @@
                 }
             ]
         },
-        {
+        "wizard-math": {
             "name": "wizard-math",
             "vision": false,
             "tools": false,
@@ -905,7 +905,7 @@
                 }
             ]
         },
-        {
+        "neural-chat": {
             "name": "neural-chat",
             "vision": false,
             "tools": false,
@@ -918,7 +918,7 @@
                 }
             ]
         },
-        {
+        "phind-codellama": {
             "name": "phind-codellama",
             "vision": false,
             "tools": false,
@@ -931,7 +931,7 @@
                 }
             ]
         },
-        {
+        "llama3-gradient": {
             "name": "llama3-gradient",
             "vision": false,
             "tools": false,
@@ -952,7 +952,7 @@
                 }
             ]
         },
-        {
+        "dolphincoder": {
             "name": "dolphincoder",
             "vision": false,
             "tools": false,
@@ -969,7 +969,7 @@
                 }
             ]
         },
-        {
+        "nous-hermes": {
             "name": "nous-hermes",
             "vision": false,
             "tools": false,
@@ -986,7 +986,7 @@
                 }
             ]
         },
-        {
+        "sqlcoder": {
             "name": "sqlcoder",
             "vision": false,
             "tools": false,
@@ -1003,7 +1003,7 @@
                 }
             ]
         },
-        {
+        "xwinlm": {
             "name": "xwinlm",
             "vision": false,
             "tools": false,
@@ -1020,7 +1020,7 @@
                 }
             ]
         },
-        {
+        "deepseek-llm": {
             "name": "deepseek-llm",
             "vision": false,
             "tools": false,
@@ -1037,7 +1037,7 @@
                 }
             ]
         },
-        {
+        "yarn-llama2": {
             "name": "yarn-llama2",
             "vision": false,
             "tools": false,
@@ -1054,7 +1054,7 @@
                 }
             ]
         },
-        {
+        "llama3-chatqa": {
             "name": "llama3-chatqa",
             "vision": false,
             "tools": false,
@@ -1071,7 +1071,7 @@
                 }
             ]
         },
-        {
+        "starling-lm": {
             "name": "starling-lm",
             "vision": false,
             "tools": false,
@@ -1084,14 +1084,14 @@
                 }
             ]
         },
-        {
+        "wizardlm": {
             "name": "wizardlm",
             "vision": false,
             "tools": false,
             "embedding": false,
             "code": false
         },
-        {
+        "falcon\n      \nArchive": {
             "name": "falcon\n      \nArchive",
             "vision": false,
             "tools": false,
@@ -1112,7 +1112,7 @@
                 }
             ]
         },
-        {
+        "orca2": {
             "name": "orca2",
             "vision": false,
             "tools": false,
@@ -1129,7 +1129,7 @@
                 }
             ]
         },
-        {
+        "snowflake-arctic-embed": {
             "name": "snowflake-arctic-embed",
             "vision": false,
             "tools": false,
@@ -1158,7 +1158,7 @@
                 }
             ]
         },
-        {
+        "solar": {
             "name": "solar",
             "vision": false,
             "tools": false,
@@ -1171,7 +1171,7 @@
                 }
             ]
         },
-        {
+        "samantha-mistral": {
             "name": "samantha-mistral",
             "vision": false,
             "tools": false,
@@ -1184,7 +1184,7 @@
                 }
             ]
         },
-        {
+        "moondream": {
             "name": "moondream",
             "vision": true,
             "tools": false,
@@ -1197,20 +1197,7 @@
                 }
             ]
         },
-        {
-            "name": "dolphin-phi",
-            "vision": false,
-            "tools": false,
-            "embedding": false,
-            "code": false,
-            "releases": [
-                {
-                    "num_params": "2.7b",
-                    "size": "1.6GB"
-                }
-            ]
-        },
-        {
+        "stable-beluga": {
             "name": "stable-beluga",
             "vision": false,
             "tools": false,
@@ -1231,7 +1218,20 @@
                 }
             ]
         },
-        {
+        "dolphin-phi": {
+            "name": "dolphin-phi",
+            "vision": false,
+            "tools": false,
+            "embedding": false,
+            "code": false,
+            "releases": [
+                {
+                    "num_params": "2.7b",
+                    "size": "1.6GB"
+                }
+            ]
+        },
+        "bakllava": {
             "name": "bakllava",
             "vision": true,
             "tools": false,
@@ -1244,7 +1244,7 @@
                 }
             ]
         },
-        {
+        "deepseek-v2": {
             "name": "deepseek-v2",
             "vision": false,
             "tools": false,
@@ -1261,7 +1261,7 @@
                 }
             ]
         },
-        {
+        "wizardlm-uncensored": {
             "name": "wizardlm-uncensored",
             "vision": false,
             "tools": false,
@@ -1274,7 +1274,7 @@
                 }
             ]
         },
-        {
+        "yarn-mistral": {
             "name": "yarn-mistral",
             "vision": false,
             "tools": false,
@@ -1287,7 +1287,7 @@
                 }
             ]
         },
-        {
+        "medllama2": {
             "name": "medllama2",
             "vision": false,
             "tools": false,
@@ -1300,7 +1300,7 @@
                 }
             ]
         },
-        {
+        "llama-pro": {
             "name": "llama-pro",
             "vision": false,
             "tools": false,
@@ -1313,7 +1313,7 @@
                 }
             ]
         },
-        {
+        "glm4": {
             "name": "glm4",
             "vision": false,
             "tools": false,
@@ -1326,7 +1326,7 @@
                 }
             ]
         },
-        {
+        "nous-hermes2-mixtral": {
             "name": "nous-hermes2-mixtral",
             "vision": false,
             "tools": false,
@@ -1339,7 +1339,7 @@
                 }
             ]
         },
-        {
+        "meditron": {
             "name": "meditron",
             "vision": false,
             "tools": false,
@@ -1356,7 +1356,7 @@
                 }
             ]
         },
-        {
+        "codegeex4": {
             "name": "codegeex4",
             "vision": false,
             "tools": false,
@@ -1369,7 +1369,7 @@
                 }
             ]
         },
-        {
+        "nexusraven": {
             "name": "nexusraven",
             "vision": false,
             "tools": false,
@@ -1382,7 +1382,7 @@
                 }
             ]
         },
-        {
+        "llava-phi3": {
             "name": "llava-phi3",
             "vision": true,
             "tools": false,
@@ -1395,7 +1395,7 @@
                 }
             ]
         },
-        {
+        "codeup": {
             "name": "codeup",
             "vision": false,
             "tools": false,
@@ -1408,7 +1408,7 @@
                 }
             ]
         },
-        {
+        "everythinglm": {
             "name": "everythinglm",
             "vision": false,
             "tools": false,
@@ -1421,7 +1421,7 @@
                 }
             ]
         },
-        {
+        "magicoder": {
             "name": "magicoder",
             "vision": false,
             "tools": false,
@@ -1434,7 +1434,7 @@
                 }
             ]
         },
-        {
+        "stablelm-zephyr": {
             "name": "stablelm-zephyr",
             "vision": false,
             "tools": false,
@@ -1447,7 +1447,7 @@
                 }
             ]
         },
-        {
+        "codebooga": {
             "name": "codebooga",
             "vision": false,
             "tools": false,
@@ -1460,7 +1460,7 @@
                 }
             ]
         },
-        {
+        "mistrallite": {
             "name": "mistrallite",
             "vision": false,
             "tools": false,
@@ -1473,7 +1473,7 @@
                 }
             ]
         },
-        {
+        "wizard-vicuna": {
             "name": "wizard-vicuna",
             "vision": false,
             "tools": false,
@@ -1486,7 +1486,7 @@
                 }
             ]
         },
-        {
+        "duckdb-nsql": {
             "name": "duckdb-nsql",
             "vision": false,
             "tools": false,
@@ -1499,7 +1499,7 @@
                 }
             ]
         },
-        {
+        "megadolphin": {
             "name": "megadolphin",
             "vision": false,
             "tools": false,
@@ -1512,7 +1512,7 @@
                 }
             ]
         },
-        {
+        "falcon2": {
             "name": "falcon2",
             "vision": false,
             "tools": false,
@@ -1525,7 +1525,7 @@
                 }
             ]
         },
-        {
+        "notux": {
             "name": "notux",
             "vision": false,
             "tools": false,
@@ -1538,7 +1538,7 @@
                 }
             ]
         },
-        {
+        "goliath": {
             "name": "goliath",
             "vision": false,
             "tools": false,
@@ -1551,7 +1551,7 @@
                 }
             ]
         },
-        {
+        "open-orca-platypus2": {
             "name": "open-orca-platypus2",
             "vision": false,
             "tools": false,
@@ -1564,7 +1564,7 @@
                 }
             ]
         },
-        {
+        "notus": {
             "name": "notus",
             "vision": false,
             "tools": false,
@@ -1577,7 +1577,7 @@
                 }
             ]
         },
-        {
+        "internlm2": {
             "name": "internlm2",
             "vision": false,
             "tools": false,
@@ -1590,20 +1590,7 @@
                 }
             ]
         },
-        {
-            "name": "dbrx",
-            "vision": false,
-            "tools": false,
-            "embedding": false,
-            "code": false,
-            "releases": [
-                {
-                    "num_params": "132b",
-                    "size": "74GB"
-                }
-            ]
-        },
-        {
+        "llama3-groq-tool-use": {
             "name": "llama3-groq-tool-use",
             "vision": false,
             "tools": true,
@@ -1620,7 +1607,20 @@
                 }
             ]
         },
-        {
+        "dbrx": {
+            "name": "dbrx",
+            "vision": false,
+            "tools": false,
+            "embedding": false,
+            "code": false,
+            "releases": [
+                {
+                    "num_params": "132b",
+                    "size": "74GB"
+                }
+            ]
+        },
+        "alfred": {
             "name": "alfred",
             "vision": false,
             "tools": false,
@@ -1633,7 +1633,7 @@
                 }
             ]
         },
-        {
+        "mathstral": {
             "name": "mathstral",
             "vision": false,
             "tools": false,
@@ -1646,7 +1646,7 @@
                 }
             ]
         },
-        {
+        "firefunction-v2": {
             "name": "firefunction-v2",
             "vision": false,
             "tools": true,
@@ -1659,7 +1659,7 @@
                 }
             ]
         },
-        {
+        "nuextract": {
             "name": "nuextract",
             "vision": false,
             "tools": false,
@@ -1672,7 +1672,7 @@
                 }
             ]
         },
-        {
+        "bge-m3": {
             "name": "bge-m3",
             "vision": false,
             "tools": false,
@@ -1685,7 +1685,7 @@
                 }
             ]
         },
-        {
+        "bge-large": {
             "name": "bge-large",
             "vision": false,
             "tools": false,
@@ -1698,7 +1698,7 @@
                 }
             ]
         },
-        {
+        "paraphrase-multilingual": {
             "name": "paraphrase-multilingual",
             "vision": false,
             "tools": false,
@@ -1711,5 +1711,5 @@
                 }
             ]
         }
-    ]
+    }
 }
