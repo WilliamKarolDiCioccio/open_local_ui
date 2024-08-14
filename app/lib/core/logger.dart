@@ -26,6 +26,8 @@ Future<void> initLogger() async {
   late LogOutput logOutput;
   _logFile = await createLogFile();
 
+  Level logLevel = kDebugMode ? Level.all : Level.warning;
+
   if (kDebugMode) {
     logOutput = CombinedOutput([ConsoleOutput(), FileOutput(file: _logFile)]);
   } else {
@@ -40,6 +42,7 @@ Future<void> initLogger() async {
       printTime: true,
     ),
     output: logOutput,
+    level: logLevel,
   );
 }
 
