@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:open_local_ui/core/logger.dart';
 
@@ -8,7 +10,7 @@ enum AssetSource { local, remote }
 enum AssetType { text, image, audio, video, binary }
 
 class AssetManager {
-  static final Map<String, dynamic> _assetRegistry = {};
+  static final Map<String, String> _assetRegistry = {};
 
   static Future<String> loadLocalAsset(String assetPath) async {
     final assetContent = await rootBundle.loadString(assetPath);
@@ -29,7 +31,17 @@ class AssetManager {
     return prefs.getString(key);
   }
 
-  static dynamic getAsset(String key) {
+  static Map<String, dynamic> getAssetAsJson(String key) {
+    final assetContent = getRawAsset(key);
+    return jsonDecode(assetContent!);
+  }
+
+  static Uint8List getAssetAsBytes(String key) {
+    final assetContent = getRawAsset(key);
+    return Uint8List.fromList(assetContent!.codeUnits);
+  }
+
+  static String? getRawAsset(String key) {
     logger.d('Retrieved asset: $key');
     return _assetRegistry[key];
   }
