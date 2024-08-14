@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/models/model.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
+import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/formatters.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/dialogs/create_model.dart';
@@ -344,6 +345,106 @@ class _ModelListTileState extends State<ModelListTile> {
     }
   }
 
+  Widget _buildTags(String modelName) {
+    const metadataPath = 'assets/metadata/ollama_models.json';
+
+    if (modelName.isEmpty) return const SizedBox.shrink();
+
+    final cleanModelName = modelName.toLowerCase().split(':')[0];
+
+    final metadata = AssetManager.getAssetAsJson(metadataPath);
+
+    if (!metadata['models'].containsKey(cleanModelName)) {
+      return const SizedBox.shrink();
+    }
+
+    final tags = <Widget>[];
+
+    if (metadata['models'][cleanModelName]['vision']) {
+      tags.add(
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.purple,
+          ),
+          padding: const EdgeInsets.all(4.0),
+          child: const Text(
+            'Vision',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (metadata['models'][cleanModelName]['tools']) {
+      tags.add(
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.blue,
+          ),
+          padding: const EdgeInsets.all(4.0),
+          child: const Text(
+            'Tools',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (metadata['models'][cleanModelName]['embedding']) {
+      tags.add(
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.green,
+          ),
+          padding: const EdgeInsets.all(4.0),
+          child: const Text(
+            'Embedding',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (metadata['models'][cleanModelName]['code']) {
+      tags.add(
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.deepOrange,
+          ),
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Code',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (tags.isEmpty) return const SizedBox.shrink();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: tags,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -357,6 +458,8 @@ class _ModelListTileState extends State<ModelListTile> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
+          _buildTags(widget.model.name),
+          const Gap(16),
           IconButton(
             tooltip: AppLocalizations.of(context).modelsPageSettingsButton,
             icon: const Icon(UniconsLine.setting),
