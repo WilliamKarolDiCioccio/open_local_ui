@@ -289,6 +289,7 @@
   "savedButtonShared": "Saved",
   "seed": "Seed",
   "sessionSharedSnackBar": "Session shared",
+  "enteringCriticalSectionSnackBar": "You're entering critical section. Tap if you want to continue",
   "sessionsPageClearDialogText": "This will clear all sessions. Do you confirm?",
   "sessionsPageClearDialogTitle": "Clear sessions",
   "sessionsPageClearSessionsButton": "Clear sessions",

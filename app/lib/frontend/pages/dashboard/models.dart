@@ -463,7 +463,12 @@ class _ModelListTileState extends State<ModelListTile> {
           IconButton(
             tooltip: AppLocalizations.of(context).modelsPageSettingsButton,
             icon: const Icon(UniconsLine.setting),
-            onPressed: () => showModelSettingsDialog(widget.model, context),
+            onPressed: () => SnackBarHelpers.showSnackBar(
+              AppLocalizations.of(context).snackBarWarningTitle,
+              AppLocalizations.of(context).enteringCriticalSectionSnackBar,
+              SnackbarContentType.warning,
+              onTap: () => showModelSettingsDialog(widget.model, context),
+            ),
           ),
           const Gap(8),
           IconButton(
