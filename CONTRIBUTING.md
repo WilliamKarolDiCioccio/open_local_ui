@@ -26,14 +26,14 @@ To start contributing to OpenLocalUI, follow these steps:
 2. **Clone Your Fork**: Clone the forked repository to your local machine using:
 
 ```bash
-    git clone https://github.com/your-username/open_local_ui.git
+git clone https://github.com/your-username/open_local_ui.git
 ```
 
 3. **Create a Branch**: Create a new branch for your feature or bug fix:
 
 ```bash
-    git checkout -b feature/your-feature
-    git checkout -b bugs/your-bug-fix
+git checkout -b feature/your-feature
+git checkout -b bugs/your-bug-fix
 ```
 
 4. **Contribute Back**: Click the "Contribute" button in the top right of the code explorer to merge your changes.
@@ -51,21 +51,27 @@ This section provides detailed instructions on how to set up your environment ba
 3. **Install FFmpeg**: The FFmpeg library is required by the `pydub` pip package. Install it using the appropriate command for your OS:
 
 ```bash
-    winget install -e --id Gyan.FFmpeg # Windows
-    sudo apt install ffmpeg # Linux
-    brew install ffmpeg # macOS
+winget install -e --id Gyan.FFmpeg # Windows
+sudo apt install ffmpeg # Linux
+brew install ffmpeg # MacOS
 ```
 
 4. **Install OLLAMA**: Ensure the OLLAMA client is installed on your system and you have at least one available model—more details [here](https://ollama.ai/).
 5. **Install Vulkan SDK**: The [gpu_info](https://github.com/WilliamKarolDiCioccio/gpu_info) package, developed for OpenLocalUI, requires the Vulkan SDK. Install it using the appropriate command for your OS:
 
 ```bash
-    winget install -e --id KhronosGroup.VulkanSDK # Windows
-    sudo apt install libvulkan-dev vulkan-validationlayers-dev # Linux
-    brew install vulkan-headers vulkan-validationlayers # macOS
+winget install -e --id KhronosGroup.VulkanSDK # Windows
+sudo apt install libvulkan-dev vulkan-validationlayers-dev # Linux
+brew install vulkan-headers vulkan-validationlayers # MacOS
 ```
 
 6. **Set Environment Variables**: Create a `.env` file in the root directory of the project with the necessary environment variables. Use your API keys for development.
+
+**NOTE** that on Linux you'll need to install the following packages too:
+
+```bash
+sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev # GStreamer (audioplayers)
+```
 
 ### For Designers
 
