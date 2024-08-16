@@ -59,11 +59,11 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   }
 }
 
-Future<void> showColorPickerDialog({
-  required BuildContext context,
-  required Color initialColor,
-}) {
-  return showDialog(
+Future<Color?> showColorPickerDialog(
+  BuildContext context,
+  Color initialColor,
+) {
+  return showDialog<Color>(
     context: context,
     builder: (context) {
       return ColorPickerDialog(

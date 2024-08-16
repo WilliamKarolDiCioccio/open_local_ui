@@ -29,6 +29,8 @@ import 'package:system_theme/system_theme.dart';
 void _preloadAssets() async {
   Future.wait(
     [
+      AssetManager.loadLocalAsset('assets/graphics/animations/gpu.riv'),
+      AssetManager.loadLocalAsset('assets/graphics/animations/human.riv'),
       AssetManager.loadLocalAsset('assets/metadata/ollama_models.json'),
       AssetManager.loadLocalAsset('assets/graphics/logos/apache.svg'),
       AssetManager.loadLocalAsset('assets/graphics/logos/arduino.svg'),
@@ -131,6 +133,14 @@ void main() async {
   final themeMode =
       await AdaptiveTheme.getThemeMode() ?? AdaptiveThemeMode.light;
 
+  // User configuration
+
+  final userOnboarded = prefs.getBool('userOnboarded') ?? false;
+
+  if (!userOnboarded) {
+    prefs.setBool('userOnboarded', true);
+  }
+
   FlutterNativeSplash.remove();
 
   // Run app
@@ -153,6 +163,7 @@ void main() async {
         child: MyApp(
           themeAccentColor: themeAccentColor,
           themeMode: themeMode,
+          userOnboarded: kDebugMode ? false : userOnboarded,
         ),
       ),
     ),
@@ -171,11 +182,13 @@ void main() async {
 class MyApp extends StatefulWidget {
   final Color themeAccentColor;
   final AdaptiveThemeMode themeMode;
+  final bool userOnboarded;
 
   const MyApp({
     super.key,
     required this.themeAccentColor,
     required this.themeMode,
+    required this.userOnboarded,
   });
 
   @override
@@ -227,58 +240,10 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        home: Stack(
-          children: [
-            const DashboardScreen(),
-            Positioned(
-              top: 0.0,
-              right: 0.0,
-              width: MediaQuery.of(context).size.width,
-              height: 32.0,
-              child: const WindowManagementBar(),
-            ),
-          ],
-        ),
+        home: widget.userOnboarded
+            ? const DashboardScreen()
+            : const OnboardingScreen(),
         debugShowCheckedModeBanner: kDebugMode,
-      ),
-    );
-  }
-}
-
-class WindowManagementBar extends StatelessWidget {
-  const WindowManagementBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return WindowTitleBarBox(
-      child: Row(
-        children: [
-          Flexible(
-            child: MoveWindow(),
-          ),
-          Row(
-            children: [
-              MinimizeWindowButton(
-                colors: WindowButtonColors(
-                  iconNormal: SystemTheme.accentColor.accent,
-                  iconMouseOver: Colors.green,
-                ),
-              ),
-              MaximizeWindowButton(
-                colors: WindowButtonColors(
-                  iconNormal: SystemTheme.accentColor.accent,
-                  iconMouseOver: Colors.orange,
-                ),
-              ),
-              CloseWindowButton(
-                colors: WindowButtonColors(
-                  iconNormal: SystemTheme.accentColor.accent,
-                  iconMouseOver: Colors.red,
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

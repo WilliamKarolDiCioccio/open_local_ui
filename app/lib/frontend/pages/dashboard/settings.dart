@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flex_color_picker/flex_color_picker.dart' as fcp;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/locale.dart';
 import 'package:open_local_ui/core/color.dart';
+import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,22 +94,19 @@ class _ThemeSettingsState extends State<ThemeSettings> {
     setState(() {});
   }
 
-  @override
-  Widget build(BuildContext context) {
-    String themeModeString;
-
+  String _getThemeModeString(BuildContext context) {
     switch (AdaptiveTheme.of(context).mode) {
       case AdaptiveThemeMode.light:
-        themeModeString = 'Light';
-        break;
+        return 'Light';
       case AdaptiveThemeMode.dark:
-        themeModeString = 'Dark';
-        break;
+        return 'Dark';
       case AdaptiveThemeMode.system:
-        themeModeString = 'System';
-        break;
+        return 'System';
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
@@ -135,7 +133,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
             ),
             floatingLabelBehavior: FloatingLabelBehavior.never,
           ),
-          initialSelection: themeModeString,
+          initialSelection: _getThemeModeString(context),
           dropdownMenuEntries: [
             DropdownMenuEntry(
               value: 'Light',
@@ -183,6 +181,8 @@ class _ThemeSettingsState extends State<ThemeSettings> {
                   await _getAccent(),
                 ).then(
                   (color) async {
+                    if (color == null) return;
+
                     final prefs = await SharedPreferences.getInstance();
 
                     if ((prefs.getBool('sync_accent_color') ?? false) ==
@@ -244,8 +244,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
                         await prefs.setBool('sync_accent_color', true);
                         _setAccent(context, SystemTheme.accentColor.accent);
                       } else {
-                        final savedColorCode =
-                            prefs.getString('accent_color');
+                        final savedColorCode = prefs.getString('accent_color');
                         prefs.setBool('sync_accent_color', false);
 
                         _setAccent(

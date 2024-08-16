@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-
 import 'package:feedback/feedback.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,6 +20,7 @@ import 'package:open_local_ui/frontend/pages/dashboard/chat.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/models.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/sessions.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/settings.dart';
+import 'package:open_local_ui/frontend/widgets/window_management_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_info2/system_info2.dart';
@@ -87,7 +87,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Stack(
+      children: [
+        Scaffold(
       body: Row(
         textDirection: TextDirection.rtl,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -98,6 +100,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _buildSideMenu(),
         ],
       ),
+        ),
+        Positioned(
+          top: 0.0,
+          right: 0.0,
+          width: MediaQuery.of(context).size.width,
+          height: 32.0,
+          child: const WindowManagementBar(),
+        ),
+      ],
     );
   }
 
@@ -126,7 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 - OS Version: ${SysInfo.operatingSystemVersion}
 - CPU: ${SysInfo.cores[0].name}
 - CPU Cores: ${SysInfo.cores.length}
-- System Memory: ${(SysInfo.getTotalPhysicalMemory()/ (1024 * 1024)).round()}
+- System Memory: ${(SysInfo.getTotalPhysicalMemory() / (1024 * 1024)).round()}
 - GPU: ${bestGpu?.deviceName}
 - GPU Memory: ${bestGpu?.memoryAmount}
 ''';
