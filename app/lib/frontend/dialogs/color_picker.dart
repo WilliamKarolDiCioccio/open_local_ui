@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ColorPickerDialog extends StatefulWidget {
   final Color initialColor;
@@ -25,7 +27,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Pick a color!'),
+      title: Text(AppLocalizations.of(context).colorPickerDialogTitle),
       content: ColorPicker(
         color: _selectedColor,
         onColorChanged: (Color color) {
@@ -41,13 +43,13 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Cancel'),
+          child: Text(AppLocalizations.of(context).dialogCancelButtonShared),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         TextButton(
-          child: const Text('Ok'),
+          child: Text(AppLocalizations.of(context).dialogConfirmButtonShared),
           onPressed: () {
             Navigator.of(context).pop(_selectedColor);
           },
