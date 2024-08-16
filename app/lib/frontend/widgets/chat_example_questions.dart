@@ -138,7 +138,7 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
             child: GridView.builder(
               shrinkWrap: true,
               itemCount: questionCards.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 8.0,
                 crossAxisSpacing: 8.0,
@@ -240,7 +240,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => null,
+      onTap: () {},
       onHover: (value) {
         setState(() => _isHovering = value);
       },

@@ -102,13 +102,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<String> _getDeviceInfo() async {
-    final _gpuInfoPlugin = GpuInfo();
+    final gpuInfoPlugin = GpuInfo();
 
     List<GpuInfoStruct> gpusInfo;
 
-    gpusInfo = await _gpuInfoPlugin.getGpusInfo();
+    gpusInfo = await gpuInfoPlugin.getGpusInfo();
 
-    GpuInfoStruct? bestGpu = null;
+    GpuInfoStruct? bestGpu;
 
     for (final gpuInfo in gpusInfo) {
       if (bestGpu == null) {

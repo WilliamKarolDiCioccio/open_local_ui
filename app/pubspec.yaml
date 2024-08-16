@@ -63,6 +63,7 @@ dependencies:
   audioplayers: ^6.0.0
 
   # Markdown and HTML
+  flutter_highlight: any
   markdown_widget: ^2.3.2+6
   markdown: ^7.2.2
   html: ^0.15.4

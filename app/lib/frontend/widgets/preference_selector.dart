@@ -24,11 +24,11 @@ class PreferenceSelector extends StatefulWidget {
   final bool allowMultipleSelection;
 
   const PreferenceSelector({
-    Key? key,
+    super.key,
     required this.preferences,
     this.cardsPerRow = 2,
     this.allowMultipleSelection = false,
-  }) : super(key: key);
+  });
 
   @override
   _PreferenceSelectorState createState() => _PreferenceSelectorState();
@@ -94,11 +94,11 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                             .primary
                             .withOpacity(0.5),
                         blurRadius: 10.0,
-                        offset: Offset(0, 5),
+                        offset: const Offset(0, 5),
                       )
                     ]
                   : [
-                      BoxShadow(
+                      const BoxShadow(
                         blurRadius: 5.0,
                         offset: Offset(0, 2),
                       )

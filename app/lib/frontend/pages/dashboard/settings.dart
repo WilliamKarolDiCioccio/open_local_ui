@@ -169,11 +169,11 @@ class _ThemeSettingsState extends State<ThemeSettings> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(UniconsLine.brush_alt),
+            const Icon(UniconsLine.brush_alt),
             const Gap(8.0),
-            Text(
+            const Text(
               'Set a custom accent',
-              style: const TextStyle(fontSize: 16.0),
+              style: TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),
             GestureDetector(
@@ -218,11 +218,11 @@ class _ThemeSettingsState extends State<ThemeSettings> {
               ),
             ),
             const Gap(16.0),
-            Icon(UniconsLine.sync),
+            const Icon(UniconsLine.sync),
             const Gap(8.0),
-            Text(
+            const Text(
               'or sync with system',
-              style: const TextStyle(fontSize: 16.0),
+              style: TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),
             FutureBuilder(
@@ -245,7 +245,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
                         _setAccent(context, SystemTheme.accentColor.accent);
                       } else {
                         final savedColorCode =
-                            await prefs.getString('accent_color');
+                            prefs.getString('accent_color');
                         prefs.setBool('sync_accent_color', false);
 
                         _setAccent(

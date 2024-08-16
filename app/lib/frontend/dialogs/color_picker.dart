@@ -25,7 +25,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Pick a color!'),
+      title: const Text('Pick a color!'),
       content: ColorPicker(
         color: _selectedColor,
         onColorChanged: (Color color) {
@@ -33,7 +33,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
             _selectedColor = color;
           });
         },
-        pickersEnabled: <ColorPickerType, bool>{
+        pickersEnabled: const <ColorPickerType, bool>{
           ColorPickerType.accent: true,
           ColorPickerType.primary: false,
         },

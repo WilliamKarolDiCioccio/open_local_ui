@@ -425,7 +425,7 @@ class _ModelListTileState extends State<ModelListTile> {
             color: Colors.deepOrange,
           ),
           padding: const EdgeInsets.all(4.0),
-          child: Text(
+          child: const Text(
             'Code',
             style: TextStyle(
               color: Colors.white,
