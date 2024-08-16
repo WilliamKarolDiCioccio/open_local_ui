@@ -55,6 +55,14 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
     });
   }
 
+  Color _getCardContentColor(BuildContext context, bool isSelected) {
+    if (AdaptiveTheme.of(context).mode.isDark) {
+      return isSelected ? Colors.black : Colors.white;
+    } else {
+      return isSelected ? Colors.white : Colors.black;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -112,7 +120,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                   Icon(
                     widget.preferences[index].icon,
                     size: 50,
-                    color: isSelected ? Colors.black : Colors.white,
+                    color: _getCardContentColor(context, isSelected),
                   ),
                   const Gap(8),
                   Text(
@@ -120,7 +128,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: isSelected ? Colors.black : Colors.white,
+                      color: _getCardContentColor(context, isSelected),
                     ),
                   ),
                   const Gap(8),
@@ -128,7 +136,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                     widget.preferences[index].description,
                     style: TextStyle(
                       fontSize: 16,
-                      color: isSelected ? Colors.black : Colors.white,
+                      color: _getCardContentColor(context, isSelected),
                     ),
                     textAlign: TextAlign.center,
                   ),
