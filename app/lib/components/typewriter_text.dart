@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
-class TypewriterText extends StatefulWidget {
+class TypewriterTextComponent extends StatefulWidget {
   final String text;
   final Duration duration;
 
-  const TypewriterText({
+  const TypewriterTextComponent({
     super.key,
     required this.text,
     this.duration = const Duration(milliseconds: 2000),
   });
 
   @override
-  _TypewriterTextState createState() => _TypewriterTextState();
+  _TypewriterTextComponentState createState() =>
+      _TypewriterTextComponentState();
 }
 
-class _TypewriterTextState extends State<TypewriterText>
+class _TypewriterTextComponentState extends State<TypewriterTextComponent>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<int> _characterCount;
