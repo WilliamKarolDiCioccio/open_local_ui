@@ -55,4 +55,8 @@ class AssetManager {
     logger.d('Cleared all assets');
     _assetRegistry.clear();
   }
+
+  static bool isAssetLoaded(String key) {
+    return _assetRegistry.containsKey(key);
+  }
 }
