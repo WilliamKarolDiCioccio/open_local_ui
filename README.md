@@ -71,6 +71,6 @@ If you will you can foster development of OpenLocalUI with a small donation. It'
 
 ## 🗨️ Contact
 
-[![](https://dcbadge.limes.pink/api/server/WuDckBpwHd)](https://discord.gg/WuDckBpwHd)
+[![](https://dcbadge.limes.pink/api/server/S82WPJbPpz)](https://discord.gg/S82WPJbPpz)
 
 You can join our Discord server to get help or take part in the devlopment of OpenLocalUI. If you want to acquire any additional informations you can always write to my [email address](mailto:theyoungprogrammer06@gmail.com).
