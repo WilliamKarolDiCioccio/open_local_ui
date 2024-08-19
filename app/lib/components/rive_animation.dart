@@ -14,7 +14,7 @@ class RiveAnimationComponent extends StatefulWidget {
   final String darkArtboardName;
   final BoxFit fit;
 
-  RiveAnimationComponent({
+  const RiveAnimationComponent({super.key, 
     required this.assetPath,
     required this.animationName,
     required this.lightArtboardName,
@@ -23,7 +23,7 @@ class RiveAnimationComponent extends StatefulWidget {
   });
 
   @override
-  _RiveAnimationComponentState createState() => _RiveAnimationComponentState();
+  State<RiveAnimationComponent> createState() => _RiveAnimationComponentState();
 }
 
 class _RiveAnimationComponentState extends State<RiveAnimationComponent> {

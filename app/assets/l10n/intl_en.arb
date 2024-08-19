@@ -69,9 +69,11 @@
   "chatUserSender": "You",
   "chatWelcomeMessage": "Welcome!",
   "checkingForUpdatesDialogTitle": "Checking for updates",
-  "clickToDownloadLatestVersionSnackBar": "Click here to download the latest version",
+  "clickToDownloadLatestAppVersionSnackBar": "Click here to download the latest version",
+  "clickToDownloadLatestOllamaVersionSnackBar": "Click here to download the latest version",
   "closeButtonShared": "Close",
   "codeCopiedSnackBar": "Code copied to clipboard",
+  "colorPickerDialogTitle": "Pick a color",
   "concurrencyLimit": "Concurrency Limit",
   "createFolderDialogFolderNameHint": "Enter the folder name...",
   "createFolderDialogFolderNameLabel": "Folder name",
@@ -107,6 +109,7 @@
   "enableDocsSearch": "Docs Search",
   "enableWebSearch": "Web Search",
   "enteringCriticalSectionSnackBar": "You're entering critical section. Tap if you want to continue",
+  "errorRetrievingSystemInfoSnackBar": "Error retrieving system info",
   "f16KV": "F16KV",
   "failedToCreateFolderSnackBar": "Failed to create folder",
   "failedToCreateModelSnackBar": "Failed to create model",
@@ -242,7 +245,6 @@
   "offlineWarningTextShared": "You are offline",
   "ollamaDisabledGPUWarningSnackBar": "Disabling GPU is harmful for performance",
   "penalizeNewline": "Penalize Newline",
-  "colorPickerDialogTitle": "Pick a color",
   "presencePenalty": "Presence Penalty",
   "privacyButton": "Privacy",
   "progressBarStatusWithStepsText": "Status: {status} - Step {completedSteps} of {totalSteps}",
@@ -325,17 +327,42 @@
   "settingsModelDefault": "Default",
   "settingsModelOff": "Off",
   "settingsModelOn": "On",
+  "settingsPageAccentColorLabel": "Accent Color",
   "settingsPageAccessibilityLabel": "Accessibility",
   "settingsPageOllamaKeepAliveTimeLabel": "Set keep alive time",
   "settingsPageOllamaLabel": "Ollama",
   "settingsPageOllamaShowStatistics": "Show Statistics",
   "settingsPageOllamaTemperatureLabel": "Set temperature",
   "settingsPageOllamaUseGPULabel": "Use GPU",
+  "settingsPageSyncAccentColorLabel": "Sync Accent Color",
   "settingsPageThemeLabel": "Theme",
   "settingsPageTitle": "Settings",
   "settingsThemeModeDark": "Dark",
   "settingsThemeModeLight": "Light",
   "settingsThemeModeSystem": "System",
+  "setupPageAppearanceSlideTitle": "Style matters!",
+  "setupPageCustomizeSlideText": "Choose your preferences to get the best experience.",
+  "setupPageCustomizeSlideTitle": "Customize your experience",
+  "setupPageInstallOllamaButton": "Install Ollama",
+  "setupPageOllamaSlideTitle": "Get your superpowers!",
+  "setupPagePreferenceTileDesignDescription": "Assist you in designing graphics.",
+  "setupPagePreferenceTileDesignTitle": "Design",
+  "setupPagePreferenceTilePersonalDescription": "Assist you in your personal life.",
+  "setupPagePreferenceTilePersonalTitle": "Personal",
+  "setupPagePreferenceTileProgrammingDescription": "Assist you in writing code.",
+  "setupPagePreferenceTileProgrammingTitle": "Programming",
+  "setupPagePreferenceTileResearchDescription": "Assist you in running experiments.",
+  "setupPagePreferenceTileResearchTitle": "Research",
+  "setupPagePreferenceTileStudyDescription": "Assist you in learning new concepts.",
+  "setupPagePreferenceTileStudyTitle": "Study",
+  "setupPagePreferenceTileWritingDescription": "Assist you in writing documents.",
+  "setupPagePreferenceTileWritingTitle": "Writing",
+  "setupPageReadySlideText": "You're ready to start using OpenLocalUI.",
+  "setupPageReadySlideTitle": "You're all set!",
+  "setupPageSystemAnalysisSlideTitle": "We're analyzing your system",
+  "setupPageUsagePreferencesSlideTitle": "What can we help you with?",
+  "setupPageWelcomeSlideText": "OpenLocalUI is a local-first, open-source, and privacy-focused LLM client.",
+  "setupPageWelcomeSlideTitle": "Welcome to OpenLocalUI",
   "snackBarErrorTitle": "Error",
   "snackBarInfoTitle": "Info",
   "snackBarSuccessTitle": "Success",
@@ -371,6 +398,32 @@
   "suggestionPersonalGrowthChallengesPartTwo": " in personal growth",
   "suggestionPlanSurpriseBirthdayPartyPartOne": "Plan a birthday party",
   "suggestionPlanSurpriseBirthdayPartyPartTwo": "for your best friend with a surprise element",
+  "systemInfo": "Your system is running {osName} (Version: {osVersion}).\nIt is equipped with an {cpuName} CPU, for a total of ({cpuCores} threads), and an {gpuName} GPU.\nThe system has {totalMemory} GB of RAM and {gpuMemory} GB of VRAM.",
+  "@systemInfo": {
+    "placeholders": {
+      "osName": {
+        "type": "String"
+      },
+      "osVersion": {
+        "type": "String"
+      },
+      "cpuName": {
+        "type": "String"
+      },
+      "cpuCores": {
+        "type": "int"
+      },
+      "gpuName": {
+        "type": "String"
+      },
+      "totalMemory": {
+        "type": "int"
+      },
+      "gpuMemory": {
+        "type": "int"
+      }
+    }
+  },
   "systemPromptTextFieldLabel": "System Prompt:",
   "temperature": "Temperature",
   "tfsZ": "tfsZ",

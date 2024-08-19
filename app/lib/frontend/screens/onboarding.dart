@@ -16,6 +16,7 @@ import 'package:open_local_ui/components/typewriter_text.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/process.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
+import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/widgets/preference_selector.dart';
 import 'package:open_local_ui/frontend/widgets/window_management_bar.dart';
@@ -44,16 +45,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           globalFooter: null,
           pages: [
             PageViewModel(
-              image: RiveAnimationComponent(
+              image: const RiveAnimationComponent(
                 assetPath: 'assets/graphics/animations/human.riv',
                 animationName: 'greetings',
                 lightArtboardName: 'human_light',
                 darkArtboardName: 'human_dark',
               ),
-              title: 'Welcome to OpenLocalUI!',
+              title: AppLocalizations.of(context).setupPageWelcomeSlideTitle,
               bodyWidget: TypewriterTextComponent(
-                text:
-                    'OpenLocalUI is a local-first, open-source, and privacy-focused LLM client.',
+                text: AppLocalizations.of(context).setupPageWelcomeSlideText,
                 duration: 1500.ms,
               ),
               decoration: const PageDecoration(
@@ -69,8 +69,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 UniconsLine.download_alt,
                 size: 150,
               ),
-              title: 'Get your superpowers!',
-              bodyWidget: OllamaSetupPage(),
+              title: AppLocalizations.of(context).setupPageOllamaSlideTitle,
+              bodyWidget: const OllamaSetupPage(),
               decoration: const PageDecoration(
                 titleTextStyle: TextStyle(
                   fontSize: 28,
@@ -84,12 +84,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 UniconsLine.star,
                 size: 150,
               ),
-              title: 'Customize your experience',
+              title: AppLocalizations.of(context).setupPageCustomizeSlideTitle,
               bodyWidget: Column(
                 children: [
                   TypewriterTextComponent(
-                    text:
-                        'The following questions will help us customize OpenLocalUI to best fit your needs.',
+                    text: AppLocalizations.of(context)
+                        .setupPageCustomizeSlideText,
                     duration: 1750.ms,
                   ),
                   const Gap(16),
@@ -104,7 +104,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             PageViewModel(
-              title: 'What can we help you with?',
+              title: AppLocalizations.of(context)
+                  .setupPageUsagePreferencesSlideTitle,
               bodyWidget: SizedBox(
                 width: 700,
                 child: PreferenceSelector(
@@ -112,33 +113,45 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   cardsPerRow: 3,
                   preferences: [
                     Preference(
-                      title: 'Personal',
-                      description: 'Assist you in your personal life.',
+                      title: AppLocalizations.of(context)
+                          .setupPagePreferenceTilePersonalTitle,
+                      description: AppLocalizations.of(context)
+                          .setupPagePreferenceTilePersonalDescription,
                       icon: UniconsLine.diary,
                     ),
                     Preference(
-                      title: 'Study',
-                      description: 'Assist you in learning new concepts.',
+                      title: AppLocalizations.of(context)
+                          .setupPagePreferenceTileStudyTitle,
+                      description: AppLocalizations.of(context)
+                          .setupPagePreferenceTileStudyDescription,
                       icon: UniconsLine.graduation_cap,
                     ),
                     Preference(
-                      title: 'Research',
-                      description: 'Assist you in running experiments.',
+                      title: AppLocalizations.of(context)
+                          .setupPagePreferenceTileResearchTitle,
+                      description: AppLocalizations.of(context)
+                          .setupPagePreferenceTileResearchDescription,
                       icon: UniconsLine.flask,
                     ),
                     Preference(
-                      title: 'Programming',
-                      description: 'Assist you in writing code.',
+                      title: AppLocalizations.of(context)
+                          .setupPagePreferenceTileProgrammingTitle,
+                      description: AppLocalizations.of(context)
+                          .setupPagePreferenceTileProgrammingDescription,
                       icon: UniconsLine.brackets_curly,
                     ),
                     Preference(
-                      title: 'Writing',
-                      description: 'Assist you in writing documents.',
+                      title: AppLocalizations.of(context)
+                          .setupPagePreferenceTileWritingTitle,
+                      description: AppLocalizations.of(context)
+                          .setupPagePreferenceTileWritingDescription,
                       icon: UniconsLine.pen,
                     ),
                     Preference(
-                      title: 'Design',
-                      description: 'Assist you in designing graphics.',
+                      title: AppLocalizations.of(context)
+                          .setupPagePreferenceTileDesignTitle,
+                      description: AppLocalizations.of(context)
+                          .setupPagePreferenceTileDesignDescription,
                       icon: UniconsLine.brush_alt,
                     ),
                   ],
@@ -153,14 +166,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             PageViewModel(
-              image: RiveAnimationComponent(
+              image: const RiveAnimationComponent(
                 assetPath: 'assets/graphics/animations/gpu.riv',
                 animationName: 'fan_rotation',
                 lightArtboardName: 'gpu_light',
                 darkArtboardName: 'gpu_dark',
               ),
-              title: "Analysing your system",
-              bodyWidget: SystemAnalysisPage(),
+              title: AppLocalizations.of(context)
+                  .setupPageSystemAnalysisSlideTitle,
+              bodyWidget: const SystemAnalysisPage(),
               decoration: const PageDecoration(
                 titleTextStyle: TextStyle(
                   fontSize: 28,
@@ -174,8 +188,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 UniconsLine.brush_alt,
                 size: 150,
               ),
-              title: 'Style matters!',
-              bodyWidget: ThemeSelectionPage(),
+              title: AppLocalizations.of(context).setupPageAppearanceSlideTitle,
+              bodyWidget: const ThemeSelectionPage(),
               decoration: const PageDecoration(
                 titleTextStyle: TextStyle(
                   fontSize: 28,
@@ -189,9 +203,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 UniconsLine.check,
                 size: 150,
               ),
-              title: 'Ready to go!',
+              title: AppLocalizations.of(context).setupPageReadySlideTitle,
               bodyWidget: TypewriterTextComponent(
-                text: 'You are all set to start using OpenLocalUI.',
+                text: AppLocalizations.of(context).setupPageReadySlideText,
                 duration: 1000.ms,
               ),
               decoration: const PageDecoration(
@@ -286,7 +300,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
         _isInstalling = true;
       });
 
-      final result = await ProcessHelpers.runShellCommand('winget', arguments: [
+      await ProcessHelpers.runShellCommand('winget', arguments: [
         'install',
         '-e',
         '--id',
@@ -297,7 +311,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
         _isInstalling = false;
       });
 
-      return result.contains('Successfully installed');
+      return _isOllamaInstalled();
     } else {
       setState(() {
         _isInstalling = false;
@@ -353,7 +367,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
@@ -369,7 +383,8 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
                           ),
                           const Gap(16.0),
                           Text(
-                            'Install Ollama',
+                            AppLocalizations.of(context)
+                                .setupPageInstallOllamaButton,
                             style: TextStyle(
                               fontSize: 18,
                               color: AdaptiveTheme.of(context).mode.isDark
@@ -389,7 +404,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
 }
 
 class SystemAnalysisPage extends StatefulWidget {
-  const SystemAnalysisPage({Key? key}) : super(key: key);
+  const SystemAnalysisPage({super.key});
 
   @override
   _SystemAnalysisPageState createState() => _SystemAnalysisPageState();
@@ -397,21 +412,14 @@ class SystemAnalysisPage extends StatefulWidget {
 
 class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
   List<GpuInfoStruct>? _gpusInfo;
-  late Future<String> _systemSummaryFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _systemSummaryFuture = _summarizeSystemCapabilities();
-  }
 
   Future<List<GpuInfoStruct>> _getGpusInfo() async {
     if (_gpusInfo != null) {
       return _gpusInfo!;
     }
 
-    final _gpuInfoPlugin = GpuInfo();
-    _gpusInfo = await _gpuInfoPlugin.getGpusInfo();
+    final gpuInfoPlugin = GpuInfo();
+    _gpusInfo = await gpuInfoPlugin.getGpusInfo();
 
     return _gpusInfo!;
   }
@@ -438,17 +446,21 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
     final gpuName = bestGpu?.deviceName ?? "Unknown GPU";
     final gpuMemory = bestGpu?.memoryAmount ?? 0;
 
-    return '''
-Your system is running $osName (Version: $osVersion). 
-It is equipped with an $cpuName CPU, for a total of (${cpuCores * 2}) threads, and an $gpuName GPU.
-The system has ${(totalMemory / 1024).round()} GB of RAM and ${(gpuMemory / 1024).round()} GB of VRAM.
-''';
+    return AppLocalizations.of(context).systemInfo(
+      osName,
+      osVersion,
+      cpuName,
+      (cpuCores * 2),
+      gpuName,
+      (totalMemory / 1024).round(),
+      (gpuMemory / 1024).round(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      future: _systemSummaryFuture,
+      future: _summarizeSystemCapabilities(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SpinKitCircle(
@@ -457,7 +469,12 @@ The system has ${(totalMemory / 1024).round()} GB of RAM and ${(gpuMemory / 1024
                 : Colors.black,
           );
         } else if (snapshot.hasError) {
-          return const Text('Error retrieving system information');
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(context).snackBarErrorTitle,
+            AppLocalizations.of(context).errorRetrievingSystemInfoSnackBar,
+            SnackbarContentType.failure,
+          );
+          return const SizedBox.shrink();
         } else {
           return TypewriterTextComponent(
             text: snapshot.data ?? '',
@@ -470,7 +487,7 @@ The system has ${(totalMemory / 1024).round()} GB of RAM and ${(gpuMemory / 1024
 }
 
 class ThemeSelectionPage extends StatefulWidget {
-  const ThemeSelectionPage({Key? key}) : super(key: key);
+  const ThemeSelectionPage({super.key});
 
   @override
   _ThemeSelectionPageState createState() => _ThemeSelectionPageState();
@@ -583,8 +600,8 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
           children: [
             const Icon(UniconsLine.brush_alt),
             const Gap(8.0),
-            const Text(
-              'Set a custom accent',
+            Text(
+              AppLocalizations.of(context).settingsPageAccentColorLabel,
               style: TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),
@@ -624,7 +641,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
                     );
                   } else {
                     return CircleAvatar(
-                      radius: 20, // Size of the circle
+                      radius: 20,
                       backgroundColor: snapshot.data!,
                     );
                   }
@@ -634,8 +651,8 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
             const Gap(16.0),
             const Icon(UniconsLine.sync),
             const Gap(8.0),
-            const Text(
-              'or sync with system',
+            Text(
+              AppLocalizations.of(context).settingsPageSyncAccentColorLabel,
               style: TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),

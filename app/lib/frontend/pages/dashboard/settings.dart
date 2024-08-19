@@ -169,8 +169,8 @@ class _ThemeSettingsState extends State<ThemeSettings> {
           children: [
             const Icon(UniconsLine.brush_alt),
             const Gap(8.0),
-            const Text(
-              'Set a custom accent',
+            Text(
+              AppLocalizations.of(context).settingsPageAccentColorLabel,
               style: TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),
@@ -210,7 +210,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
                     );
                   } else {
                     return CircleAvatar(
-                      radius: 20, // Size of the circle
+                      radius: 20,
                       backgroundColor: snapshot.data!,
                     );
                   }
@@ -220,8 +220,8 @@ class _ThemeSettingsState extends State<ThemeSettings> {
             const Gap(16.0),
             const Icon(UniconsLine.sync),
             const Gap(8.0),
-            const Text(
-              'or sync with system',
+            Text(
+              AppLocalizations.of(context).settingsPageSyncAccentColorLabel,
               style: TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),

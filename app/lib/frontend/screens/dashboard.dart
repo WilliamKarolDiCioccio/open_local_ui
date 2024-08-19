@@ -58,12 +58,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _checkForUpdates() {
-    UpdateHelper.isUpdateAvailable().then(
+    UpdateHelper.isAppUpdateAvailable().then(
       (updateAvailable) {
         if (updateAvailable) {
           SnackBarHelpers.showSnackBar(
             AppLocalizations.of(context).snackBarUpdateTitle,
-            AppLocalizations.of(context).clickToDownloadLatestVersionSnackBar,
+            AppLocalizations.of(context)
+                .clickToDownloadLatestAppVersionSnackBar,
             SnackbarContentType.info,
             onTap: () => showUpdateDialog(
               context: context,
@@ -90,16 +91,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Stack(
       children: [
         Scaffold(
-      body: Row(
-        textDirection: TextDirection.rtl,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: _buildPageView(),
+          body: Row(
+            textDirection: TextDirection.rtl,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: _buildPageView(),
+              ),
+              _buildSideMenu(),
+            ],
           ),
-          _buildSideMenu(),
-        ],
-      ),
         ),
         Positioned(
           top: 0.0,
@@ -243,13 +244,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 icon: const Icon(UniconsLine.keyhole_circle),
                 label: Text(AppLocalizations.of(context).licenseButton),
               ),
-              if (!Platform.isLinux) const Gap(8),
-              if (!Platform.isLinux)
-                TextButton.icon(
-                  onPressed: () => showUpdateDialog(context: context),
-                  icon: const Icon(UniconsLine.sync),
-                  label: Text(AppLocalizations.of(context).updateButton),
-                ),
+              const Gap(8),
+              Stack(
+                children: [
+                  TextButton.icon(
+                    onPressed: () => showUpdateDialog(context: context),
+                    icon: const Icon(UniconsLine.sync),
+                    label: Text(AppLocalizations.of(context).updateButton),
+                  ),
+                  FutureBuilder(
+                    future: UpdateHelper.isAppUpdateAvailable(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox.shrink();
+                      }
+
+                      if (snapshot.hasError) {
+                        return const Positioned(
+                          top: 2.0,
+                          right: 2.0,
+                          child: Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          ),
+                        );
+                      }
+
+                      if (snapshot.data == true) {
+                        return const Positioned(
+                          top: 2.0,
+                          right: 2.0,
+                          child: CircleAvatar(
+                            radius: 4.0,
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      }
+
+                      return const SizedBox();
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         ),

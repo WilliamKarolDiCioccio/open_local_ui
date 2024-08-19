@@ -15,8 +15,10 @@ class UpdateHelper {
   static late GitHubRelease _latestRelease;
 
   static Future<bool> isOllamaUpdateAvailable() async {
-    final wingetUpgradesList =
-        await ProcessHelpers.runShellCommand('winget', arguments: ['upgrade']);
+    final wingetUpgradesList = await ProcessHelpers.runShellCommand(
+      'winget',
+      arguments: ['upgrade'],
+    );
 
     if (wingetUpgradesList.contains('Ollama.Ollama')) return true;
 
