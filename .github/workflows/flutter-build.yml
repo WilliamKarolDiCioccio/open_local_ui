@@ -19,6 +19,9 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v2
 
+      - name: Install winget
+        uses: Cyberboss/install-winget@v1
+
       - name: Setup Flutter
         shell: powershell
         run: .\scripts\setup_flutter_for_actions.ps1
