@@ -21,6 +21,11 @@ $globalPath += ";$flutterPath"
 # Refresh the environment for the current session
 $env:Path = $globalPath
 
+# Set Flutter path in GitHub environment
+$githubEnvPath = "${env:GITHUB_ENV}"
+Add-Content -Path $githubEnvPath -Value "FLUTTER_BIN_PATH=$flutterPath"
+Add-Content -Path $githubEnvPath -Value "PATH=$globalPath"
+
 # Step 4: Verify Flutter installation
 Write-Host "Verifying Flutter installation..."
 flutter --version
@@ -38,11 +43,17 @@ $CACHE_KEY = "flutter-cache-key"
 $PUB_CACHE_PATH = "C:\flutter_cache\pub"
 $PUB_CACHE_KEY = "flutter-pub-cache-key"
 
-# Set cache environment variables
+# Set cache environment variables in the current session and GitHub environment
 [System.Environment]::SetEnvironmentVariable("CACHE_PATH", $CACHE_PATH, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable("CACHE_KEY", $CACHE_KEY, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable("PUB_CACHE_PATH", $PUB_CACHE_PATH, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable("PUB_CACHE_KEY", $PUB_CACHE_KEY, [System.EnvironmentVariableTarget]::Machine)
+
+# Write environment variables to GITHUB_ENV for use in subsequent steps
+Add-Content -Path $githubEnvPath -Value "CACHE_PATH=$CACHE_PATH"
+Add-Content -Path $githubEnvPath -Value "CACHE_KEY=$CACHE_KEY"
+Add-Content -Path $githubEnvPath -Value "PUB_CACHE_PATH=$PUB_CACHE_PATH"
+Add-Content -Path $githubEnvPath -Value "PUB_CACHE_KEY=$PUB_CACHE_KEY"
 
 Write-Host "Cache environment variables set:"
 Write-Host "CACHE_PATH=$CACHE_PATH"
