@@ -1,16 +1,24 @@
 name: Dart Format
+
 on:
   push:
+    paths:
+      - "app/**"
     branches:
       - main
   pull_request:
     branches:
       - main
+
 jobs:
-    format:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - uses: dart-lang/setup-dart@v1
-            - name: Verify formatting
-              run: dart format --output=write .
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Verify formatting
+        run: dart format --output=write .

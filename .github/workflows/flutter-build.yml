@@ -1,0 +1,92 @@
+name: Flutter Build
+
+on:
+  push:
+    paths:
+      - "app/**"
+      - "scripts/setup_flutter_for_actions.ps1"
+      - "scripts/setup_flutter_for_actions.sh"
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-app-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        shell: powershell
+        run: .\scripts\setup_flutter_for_actions.ps1
+
+      - name: Verify Flutter Installation
+        shell: powershell
+        run: flutter --version
+
+      - name: Copy .env.dev to .env
+        shell: powershell
+        run: |
+          cd .\app
+          copy .env.dev .env
+
+      - name: Get dependencies
+        shell: powershell
+        run: |
+          cd .\app
+          flutter pub get
+
+      - name: Generate files
+        shell: powershell
+        run: |
+          cd .\app
+          dart run build_runner build --delete-conflicting-outputs
+
+      - name: Test App
+        shell: powershell
+        run: |
+          cd .\app
+          flutter build windows
+
+  # build-app-linux:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone repository
+  #       uses: actions/checkout@v2
+
+  #     - name: Setup Flutter
+  #       run: |
+  #         cd ./scripts
+  #         bash ./setup_flutter_for_actions.sh
+
+  #     - name: Install Dependencies
+  #       run: |
+  #         sudo apt update -y
+  #         sudo apt install ffmpeg -y
+  #         sudo apt install clang -y
+  #         sudo apt install cmake ninja-build libgtk-3-dev -y
+  #         sudo apt install libvulkan-dev vulkan-validationlayers-dev -y
+  #         sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev -y
+
+  #     - name: Copy .env.dev to .env
+  #       run: |
+  #         cd ./app
+  #         cp .env.dev .env
+
+  #     - name: Get dependencies
+  #       run: |
+  #         cd ./app
+  #         flutter pub get
+
+  #     - name: Generate files
+  #       run: |
+  #         cd ./app
+  #         dart run build_runner build --delete-conflicting-outputs
+
+  #     - name: Test App
+  #       run: |
+  #         cd ./app
+  #         flutter build linux
