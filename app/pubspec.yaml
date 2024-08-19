@@ -54,7 +54,7 @@ dependencies:
 
   # JSON and Annotations
   freezed_annotation: ^2.4.1
-  json_annotation: ^4.0.1
+  json_annotation: ^4.9.0
 
   # File Picker
   file_picker: ^8.0.2
