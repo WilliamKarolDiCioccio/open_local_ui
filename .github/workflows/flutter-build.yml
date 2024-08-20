@@ -30,8 +30,8 @@ jobs:
 
       - name: Install Vulkan
         run: |
-          winget install -e --id Gyan.FFmpeg
-          winget install -e --id KhronosGroup.VulkanSDK
+          winget install -e --id Gyan.FFmpeg --accept-source-agreements --accept-package-agreements
+          winget install -e --id KhronosGroup.VulkanSDK --accept-source-agreements --accept-package-agreements
 
       - name: Copy .env.dev to .env
         run: |
