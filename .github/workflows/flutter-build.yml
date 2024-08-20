@@ -18,20 +18,26 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v2
 
-      - name: Set up Flutter
+      - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.0"
           channel: stable
           cache: true
 
+      - name: Setup Vulkan SDK
+        uses: humbletim/setup-vulkan-sdk@v1.2.0
+        with:
+          vulkan-query-version: 1.3.204.0
+          vulkan-components: Vulkan-Headers, Vulkan-Loader
+          vulkan-use-cache: true
+
       - name: Install winget
         uses: Cyberboss/install-winget@v1
 
-      - name: Install Vulkan
+      - name: Install FFmpeg
         run: |
           winget install -e --id Gyan.FFmpeg --accept-source-agreements --accept-package-agreements
-          winget install -e --id KhronosGroup.VulkanSDK --accept-source-agreements --accept-package-agreements
 
       - name: Copy .env.dev to .env
         run: |
@@ -48,7 +54,7 @@ jobs:
           cd .\app
           dart run build_runner build --delete-conflicting-outputs
 
-      - name: Test App
+      - name: Build App
         run: |
           cd .\app
           flutter build windows
@@ -59,11 +65,18 @@ jobs:
   #     - name: Clone repository
   #       uses: actions/checkout@v2
 
-  #     - name: Setup Flutter
+  #     - name: Setup Flutter SDK
   #       uses: subosito/flutter-action@v2
   #       with:
   #         flutter-version: "2.8.1"
   #         channel: stable
+  #      
+  #     - name: Setup Vulkan SDK
+  #       uses: humbletim/setup-vulkan-sdk@v1.2.0
+  #       with:
+  #         vulkan-query-version: 1.3.204.0
+  #         vulkan-components: Vulkan-Headers, Vulkan-Loader
+  #         vulkan-use-cache: true
   #
   #     - name: Install Dependencies
   #       run: |
@@ -89,7 +102,7 @@ jobs:
   #         cd ./app
   #         dart run build_runner build --delete-conflicting-outputs
 
-  #     - name: Test App
+  #     - name: Build App
   #       run: |
   #         cd ./app
   #         flutter build linux
