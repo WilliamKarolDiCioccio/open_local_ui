@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import 'package:logger/logger.dart';
-import 'package:open_local_ui/core/formatters.dart';
+import 'package:open_local_ui/core/format.dart';
 import 'package:path_provider/path_provider.dart';
 
 late Logger logger;
@@ -47,7 +47,7 @@ Future<void> initLogger() async {
 }
 
 Future<File> createLogFile() async {
-  final timeStamp = Fortmatters.standardDate(DateTime.now())
+  final timeStamp = FortmatHelpers.standardDate(DateTime.now())
       .replaceAll(' ', '_')
       .replaceAll('/', '-')
       .replaceAll(':', '-');
