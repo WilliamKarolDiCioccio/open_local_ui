@@ -1,5 +1,7 @@
 # OpenLocalUI
 
+![build](https://github.com/WilliamKarolDiCioccio/open_local_ui/actions/workflows/flutter-build.yml/badge.svg)
+
 ![](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
 ![](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
