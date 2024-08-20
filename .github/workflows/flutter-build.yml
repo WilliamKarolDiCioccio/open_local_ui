@@ -22,6 +22,7 @@ jobs:
         with:
           flutter-version: "3.24.0"
           channel: stable
+          cache: true
 
       - name: Install winget
         uses: Cyberboss/install-winget@v1
