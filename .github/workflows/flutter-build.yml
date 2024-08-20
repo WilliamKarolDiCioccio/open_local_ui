@@ -4,8 +4,6 @@ on:
   push:
     paths:
       - "app/**"
-      - "scripts/setup_flutter_for_actions.ps1"
-      - "scripts/setup_flutter_for_actions.sh"
     branches:
       - main
   pull_request:
