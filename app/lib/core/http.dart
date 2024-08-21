@@ -42,7 +42,7 @@ class HTTPStreamResponse extends HTTPResponse {
   Map<String, dynamic> toJson() => _$HTTPStreamResponseToJson(this);
 }
 
-class HTTPMethods {
+class HTTPHelpers {
   static Future<http.Response> get(String url) async {
     return http.get(Uri.parse(url));
   }

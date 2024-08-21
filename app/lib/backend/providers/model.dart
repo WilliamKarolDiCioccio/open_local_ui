@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-
 import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/backend/models/model.dart';
@@ -62,7 +61,7 @@ class ModelProvider extends ChangeNotifier {
 
   static Future<bool> _isOlamaRunning() async {
     try {
-      final response = await HTTPMethods.get('$_api/ps');
+      final response = await HTTPHelpers.get('$_api/ps');
       return response.statusCode == HttpStatus.ok;
     } catch (e) {
       return false;
@@ -74,7 +73,7 @@ class ModelProvider extends ChangeNotifier {
   }
 
   static Future _updateListStatic() async {
-    await HTTPMethods.get('$_api/tags').then((response) {
+    await HTTPHelpers.get('$_api/tags').then((response) {
       if (response.statusCode != 200) {
         logger.e('Failed to fetch models list');
         return;
@@ -182,7 +181,7 @@ class ModelProvider extends ChangeNotifier {
       WindowsTaskbar.resetThumbnailToolbar();
       WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
-    
+
     SnackBarHelpers.showSnackBar(
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
@@ -393,7 +392,7 @@ class ModelProvider extends ChangeNotifier {
       WindowsTaskbar.resetThumbnailToolbar();
       WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
-    
+
     SnackBarHelpers.showSnackBar(
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
@@ -421,7 +420,7 @@ class ModelProvider extends ChangeNotifier {
   Future remove(String name) async {
     try {
       final response =
-          await HTTPMethods.delete('$_api/delete', body: {'name': name});
+          await HTTPHelpers.delete('$_api/delete', body: {'name': name});
       if (response.statusCode != 200) {
         logger.e(
             'Failed to remove model $name, status code: ${response.statusCode}');
