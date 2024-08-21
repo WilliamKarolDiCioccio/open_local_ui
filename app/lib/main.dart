@@ -22,6 +22,7 @@ import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/screens/onboarding.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
@@ -167,6 +168,8 @@ void main() async {
   // Preload assets
 
   _preloadAssets();
+
+  RiveFile.initialize();
 
   // Theme
 

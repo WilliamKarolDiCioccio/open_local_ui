@@ -44,7 +44,6 @@ class _RiveAnimationComponentState extends State<RiveAnimationComponent> {
     if (AssetManager.isAssetLoaded(filename)) {
       final buffer = AssetManager.getAsset(filename, type: AssetType.binary);
       final bytes = ByteData.view(buffer.buffer);
-      await RiveFile.initialize();
       return RiveFile.import(bytes);
     } else {
       final bytes = await rootBundle.load(filename);
