@@ -5,6 +5,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'chat_message.g.dart';
 
+/// Converts [Uint8List] to [Object] and vice versa for JSON serialization.
+///
+/// This class is used as a JSON converter for the [ChatUserMessageWrapper.imageBytes] property.
 class ImageBytesJSONConverter implements JsonConverter<Uint8List?, Object?> {
   const ImageBytesJSONConverter();
 
@@ -31,6 +34,9 @@ class ImageBytesJSONConverter implements JsonConverter<Uint8List?, Object?> {
 
 enum ChatMessageSender { user, model, system }
 
+/// Converts the [ChatMessageSender] object to JSON and vice versa.
+///
+/// This class is used as a JSON converter for the [ChatMessageWrapper.sender] property.
 class ChatMessageSenderJSONConverter
     implements JsonConverter<ChatMessageSender, String> {
   const ChatMessageSenderJSONConverter();
@@ -62,7 +68,29 @@ class ChatMessageSenderJSONConverter
   }
 }
 
-// NOTE: named with 'Wrapper' suffix to avoid conflict with LangChain
+/// NOTE: named with 'Wrapper' suffix to avoid conflict with langchain.dart
+///
+/// This class is used to encapsulate the properties of a chat message.
+///
+/// The [ChatMessageWrapper] class is annotated with `@JsonSerializable` to enable JSON serialization and deserialization.
+///
+/// Properties:
+/// - `text`: The text content of the chat message.
+/// - `createdAt`: The date and time when the chat message was created.
+/// - `uuid`: The unique identifier of the chat message.
+/// - `senderName`: The name of the sender of the chat message (optional).
+/// - `sender`: The sender of the chat message.
+///
+/// For metadata and usage statistics see [ChatResult.metadata] in langchain.dart.
+/// - `totalDuration`: The total duration of the chat message.
+/// - `loadDuration`: The duration it took to load the chat message.
+/// - `promptEvalCount`: The number of prompt evaluations performed on the chat message.
+/// - `promptEvalDuration`: The duration of prompt evaluations performed on the chat message.
+/// - `evalCount`: The number of evaluations performed on the chat message.
+/// - `evalDuration`: The duration of evaluations performed on the chat message.
+/// - `promptTokens`: The number of prompt tokens in the chat message.
+/// - `responseTokens`: The number of response tokens in the chat message.
+/// - `totalTokens`: The total number of tokens in the chat message.
 @JsonSerializable()
 class ChatMessageWrapper {
   String text;
@@ -120,6 +148,9 @@ class ChatMessageWrapper {
       const ChatMessageSenderJSONConverter().toJson(object);
 }
 
+/// Represents a system message in the chat.
+///
+/// This class extends the [ChatMessageWrapper] class and sets the sender name and type to 'System'.
 @JsonSerializable()
 class ChatSystemMessageWrapper extends ChatMessageWrapper {
   ChatSystemMessageWrapper(
@@ -141,6 +172,9 @@ class ChatSystemMessageWrapper extends ChatMessageWrapper {
   Map<String, dynamic> toJson() => _$ChatSystemMessageWrapperToJson(this);
 }
 
+/// Represents a model message in the chat.
+///
+/// This class extends the [ChatMessageWrapper] class and sets the sender name and type to 'Model'.
 @JsonSerializable()
 class ChatModelMessageWrapper extends ChatMessageWrapper {
   ChatModelMessageWrapper(
@@ -163,6 +197,11 @@ class ChatModelMessageWrapper extends ChatMessageWrapper {
   Map<String, dynamic> toJson() => _$ChatModelMessageWrapperToJson(this);
 }
 
+/// Represents a user message in the chat.
+///
+/// This class extends the [ChatMessageWrapper] class and sets the sender name and type to 'User'.
+///
+/// The [ChatUserMessageWrapper] class also includes an optional [imageBytes] property to store image data for use with multimodal models.
 @JsonSerializable()
 class ChatUserMessageWrapper extends ChatMessageWrapper {
   @JsonKey(

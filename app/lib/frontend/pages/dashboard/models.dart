@@ -352,7 +352,7 @@ class _ModelListTileState extends State<ModelListTile> {
 
     final cleanModelName = modelName.toLowerCase().split(':')[0];
 
-    final metadata = AssetManager.getAssetAsJson(metadataPath);
+    final metadata = AssetManager.getAsset(metadataPath, type: AssetType.json);
 
     if (!metadata['models'].containsKey(cleanModelName)) {
       return const SizedBox.shrink();

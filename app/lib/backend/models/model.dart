@@ -2,6 +2,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'model.g.dart';
 
+/// This class is used to encapsulate the properties of an Ollama model.
+///
+/// The [Model] class is annotated with `@JsonSerializable` to enable JSON serialization and deserialization.
+///
+/// NOTE: The casing of the fields in the JSON data is forced to snake_case for interoperability with the Ollama REST API. This allows Ollama API responses to be converted to [Model] objects.
+///
+/// Model options are encapsulated in the [ModelSettings] class.
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Model {
   final String name;
@@ -45,6 +52,9 @@ class ModelDetails {
   Map<String, dynamic> toJson() => _$ModelDetailsToJson(this);
 }
 
+/// This class is used to encapsulate the properties of the Ollama model settings.
+///
+/// For more information on the model settings, refer to the Ollama API documentation at https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values.
 @JsonSerializable()
 class ModelSettings {
   String? systemPrompt;

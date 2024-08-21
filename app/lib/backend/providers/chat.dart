@@ -22,10 +22,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
+/// A provider class for managing chats in all their aspects.
+///
+/// This class extends the [ChangeNotifier] class, allowing it to notify listeners when the chat state changes.
+///
+/// The chat provider is responsible for:
+/// - Managing chat sessions
+/// - Managing chat messages
+/// - Handling chat logic
+///
+/// This class wraps around the langchain.dart library, which provides us with models, agents, databases and other tools.
 class ChatProvider extends ChangeNotifier {
   // Langchain objects
   ChatOllama _chat;
-  // Model settings
+
+  // Global override settings
   String _modelName;
   bool _enableGPU;
   double _temperature;
@@ -33,6 +44,8 @@ class ChatProvider extends ChangeNotifier {
   bool _enableWebSearch;
   bool _enableDocsSearch;
   bool _showStatistics;
+
+  // Model specific settings
   late ModelSettings _modelSettings;
 
   // Chat session
@@ -53,6 +66,13 @@ class ChatProvider extends ChangeNotifier {
     loadSettings();
   }
 
+  /// Called when the provider is initialized to load model specific, global override settings and chat sessions.
+  ///
+  /// Global override settings are stored using the [SharedPreferences] plugin.
+  /// Model specific settings are stored in the app's data directory as JSON files (see [ModelSettingsProvider]).
+  /// Chat sessions are stored in the app's data directory using the Hive database (see [ChatSessionsDatabase]).
+  ///
+  /// Returns a [Future] that evaluates to `void`.
   void loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -117,8 +137,13 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Sessions management
+  ///////////////////////////////////////////
+  //          Sessions management          //
+  ///////////////////////////////////////////
 
+  /// Adds a new chat session with the given title and saves it to the database.
+  ///
+  /// Returns the newly created [ChatSessionWrapper].
   ChatSessionWrapper addSession(String title) {
     _sessions.add(ChatSessionWrapper(
       DateTime.now(),
@@ -133,12 +158,20 @@ class ChatProvider extends ChangeNotifier {
     return _sessions.last;
   }
 
+  /// Creates a new chat session and sets it as the current session.
+  ///
+  /// Returns `void`.
   void newSession() {
     final session = addSession('');
     setSession(session.uuid);
     notifyListeners();
   }
 
+  /// Sets the current session to the one with the given UUID, loads its chat history and sets the window title.
+  ///
+  /// If the acrive session is currently generating, the function prevents the session from being changed.
+  ///
+  /// Returns `void`.
   void setSession(String uuid) {
     if (isGenerating) return;
 
@@ -175,6 +208,11 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes the session with the given UUID from the list of sessions and deletes it from the database.
+  ///
+  /// If the session is active and currently generating, the function prevents the session from being removed.
+  ///
+  /// Returns `void`.
   void removeSession(String uuid) {
     final index = _sessions.indexWhere((element) => element.uuid == uuid);
 
@@ -197,6 +235,12 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes all sessions from the list of sessions and deletes them from the database.
+  ///
+  /// Under the hood, the function iterates over the list of sessions and removes each session one by one.
+  /// This means it follows the same logic as [removeSession] inherits its constraints.
+  ///
+  /// Returns `void`.
   void clearSessions() {
     List<String> uuids = [];
 
@@ -209,6 +253,9 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
+  /// Sets the title of the session with the given UUID to the given title, updates the session in the database and updates the window title if the session is currently active.
+  ///
+  /// Returns `void`.
   void setSessionTitle(String uuid, String title) {
     final index = _sessions.indexWhere((element) => element.uuid == uuid);
 
@@ -227,8 +274,15 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Messages management
+  ///////////////////////////////////////////
+  //          Messages management          //
+  ///////////////////////////////////////////
 
+  /// Adds a chat message of type system to the current session and to the model's memory and updates the session in the database.
+  ///
+  /// If the session is not selected, the function returns the newly created [ChatSystemMessageWrapper] without adding it to the memory or the database.
+  ///
+  /// Returns the newly created [ChatSystemMessageWrapper].
   ChatSystemMessageWrapper addSystemMessage(String message) {
     final chatMessage = ChatSystemMessageWrapper(
       message,
@@ -240,6 +294,8 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.messages.add(chatMessage);
 
+    // System messages shouldn't be added to the memory
+
     ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
@@ -247,6 +303,11 @@ class ChatProvider extends ChangeNotifier {
     return _session!.messages.last as ChatSystemMessageWrapper;
   }
 
+  /// Adds a chat message of type model to the current session and to the model's memory and updates the session in the database.
+  ///
+  /// If the session is not selected, the function returns the newly created [ChatModelMessageWrapper] without adding it to the memory or the database.
+  ///
+  /// Returns the newly created [ChatModelMessageWrapper].
   ChatModelMessageWrapper addModelMessage(String message, String senderName) {
     final chatMessage = ChatModelMessageWrapper(
       message,
@@ -258,6 +319,7 @@ class ChatProvider extends ChangeNotifier {
     if (!isSessionSelected) return chatMessage;
 
     _session!.messages.add(chatMessage);
+    _session!.memory.chatHistory.addAIChatMessage(message);
 
     ChatSessionsDatabase.updateSession(_session!);
 
@@ -266,6 +328,13 @@ class ChatProvider extends ChangeNotifier {
     return _session!.messages.last as ChatModelMessageWrapper;
   }
 
+  /// Adds a chat message of type user to the current session and to the model's memory and updates the session in the database.
+  ///
+  /// If the session is not selected, the function returns the newly created [ChatUserMessageWrapper] without adding it to the memory or the database.
+  ///
+  /// User messages have optional [imageBytes] attached to them for use in multimodal models.
+  ///
+  /// Returns the newly created [ChatUserMessageWrapper].
   ChatMessageWrapper addUserMessage(String message, Uint8List? imageBytes) {
     final chatMessage = ChatUserMessageWrapper(
       message,
@@ -277,6 +346,7 @@ class ChatProvider extends ChangeNotifier {
     if (_session == null) return chatMessage;
 
     _session!.messages.add(chatMessage);
+    _session!.memory.chatHistory.addHumanChatMessage(message);
 
     ChatSessionsDatabase.updateSession(_session!);
 
@@ -285,23 +355,12 @@ class ChatProvider extends ChangeNotifier {
     return _session!.messages.last;
   }
 
+  /// Removes the the message with the given UUID and its childs from the current session and from the model's memory and updates the session in the database.
+  ///
+  /// If the session is active and currently generating, the function prevents the messages from being removed.
+  ///
+  /// Returns `void`.
   void removeMessage(String uuid) async {
-    if (!isSessionSelected || isGenerating) return;
-
-    final index = _session!.messages.indexWhere(
-      (element) => element.uuid == uuid,
-    );
-
-    _session!.messages.removeAt(index);
-
-    _session!.memory.chatHistory.removeLast();
-
-    ChatSessionsDatabase.updateSession(_session!);
-
-    notifyListeners();
-  }
-
-  void removeFromMessage(String uuid) async {
     if (!isSessionSelected || isGenerating) return;
 
     final index = _session!.messages.indexWhere(
@@ -319,6 +378,11 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes the last message from the current session and from the model's memory and updates the session in the database.
+  ///
+  /// If the session is active and currently generating, the function prevents the message from being removed.
+  ///
+  /// Returns `void`.
   void removeLastMessage() async {
     if (!isSessionSelected || isGenerating || messageCount == 0) {
       return;
@@ -343,8 +407,11 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Chat logic
+  ///////////////////////////////////////////
+  //          Chat logic management        //
+  ///////////////////////////////////////////
 
+  /// Builds a chat chain that processes the user's input and generates a response.
   Future<RunnableSequence> _buildChain() async {
     final systemPrompt = await _loadSystemPrompt();
 
@@ -369,8 +436,7 @@ class ChatProvider extends ChangeNotifier {
     return chain;
   }
 
-  /// Use model specific prompt if available, otherwise use default
-  /// from assets
+  /// Use model specific prompt if available, otherwise use default from assets.
   Future<String> _loadSystemPrompt() async {
     if (_modelSettings.systemPrompt != null &&
         _modelSettings.systemPrompt!.isNotEmpty) {
@@ -380,6 +446,7 @@ class ChatProvider extends ChangeNotifier {
     return rootBundle.loadString('assets/prompts/default.txt');
   }
 
+  /// Builds a prompt message with the given text and optional image bytes.
   ChatMessage _buildPrompt(String text, {Uint8List? imageBytes}) {
     final prompt = ChatMessage.human(
       ChatMessageContent.multiModal(
@@ -398,6 +465,18 @@ class ChatProvider extends ChangeNotifier {
     return prompt;
   }
 
+  /// Sends a message to the chat model and processes the response.
+  ///
+  /// The function first checks if a session is selected and creates a new one if not.
+  /// If the text is empty, the function sends a system message and aborts generation.
+  /// If no model is selected, the function sends a system message and aborts generation.
+  /// The function then sets the session status to generating.
+  /// It first add the user and the mepty model messages to the session.
+  /// It then builds a chat chain and a prompt message to start generating the response.
+  /// The response is streamed to offer real-time updates to the user.
+  /// If the sessions is untitled, the function generates a title for it.
+  ///
+  /// Returns a [Future] that evaluates to `null`.
   Future sendMessage(String text, {Uint8List? imageBytes}) async {
     if (!isSessionSelected) {
       newSession();
@@ -405,12 +484,11 @@ class ChatProvider extends ChangeNotifier {
 
     if (text.isEmpty) {
       addSystemMessage('Try to be more specific.');
-
       return;
     }
+
     if (!isModelSelected) {
       addSystemMessage('Please select a model.');
-
       return;
     }
 
@@ -426,10 +504,6 @@ class ChatProvider extends ChangeNotifier {
 
       addUserMessage(text, imageBytes);
 
-      _session!.memory.chatHistory.addHumanChatMessage(
-        _session!.messages.last.text,
-      );
-
       final chain = await _buildChain();
 
       final prompt = _buildPrompt(text, imageBytes: imageBytes);
@@ -438,6 +512,8 @@ class ChatProvider extends ChangeNotifier {
 
       await for (final response in chain.stream([prompt])) {
         ChatResult result = response as ChatResult;
+
+        // If the session is aborted, remove the last message from memory and break the loop
 
         if (_session!.status == ChatSessionStatus.aborting) {
           _session!.status = ChatSessionStatus.idle;
@@ -458,9 +534,13 @@ class ChatProvider extends ChangeNotifier {
         notifyListeners();
       }
 
-      _session!.memory.chatHistory.addAIChatMessage(
-        _session!.messages.last.text,
-      );
+      // Save the generated message, remove and add it back to force a memory update
+
+      final generatedText = _session!.messages.last.text;
+
+      removeLastMessage();
+
+      addModelMessage(generatedText, _modelName);
 
       _session!.status = ChatSessionStatus.idle;
 
@@ -470,6 +550,8 @@ class ChatProvider extends ChangeNotifier {
       }
 
       notifyListeners();
+
+      // If the session is untitled, generate a title
 
       if (_session!.title == 'Untitled') {
         final titleGeneratorPrompt = await rootBundle.loadString(
@@ -498,6 +580,8 @@ class ChatProvider extends ChangeNotifier {
 
       removeLastMessage();
 
+      // Add a system message to inform the user about the error
+
       addSystemMessage('An error occurred while generating the response.');
 
       notifyListeners();
@@ -508,8 +592,17 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  void regenerateMessage(String uuid) async {
-    if (!isSessionSelected || isGenerating) return;
+  /// Regenerates the message with the given UUID for the last user message.
+  ///
+  /// If the sessions is currently generating, the function returns without doing anything.
+  /// NOTE: We don't need to check if the session is selected because the function is only called from the UI.
+  /// The function first removes the last generated message from the session.
+  /// Then it finds the last user message before the model message and uses its text to regenerate the response.
+  /// This method does not regenerate the title of the session as it depends on the user's input.
+  ///
+  /// Returns a [Future] that evaluates to `null`.
+  Future regenerateMessage(String uuid) async {
+    if (isGenerating) return;
 
     final modelMessageIndex = _session!.messages.indexWhere(
       (element) => element.uuid == uuid,
@@ -519,7 +612,7 @@ class ChatProvider extends ChangeNotifier {
       return;
     }
 
-    removeFromMessage(uuid);
+    removeMessage(uuid);
 
     final userMessageIndex = _session!.messages.lastIndexWhere(
       (element) => element is ChatUserMessageWrapper,
@@ -576,9 +669,11 @@ class ChatProvider extends ChangeNotifier {
         notifyListeners();
       }
 
-      _session!.memory.chatHistory.addAIChatMessage(
-        _session!.messages.last.text,
-      );
+      final generatedText = _session!.messages.last.text;
+
+      removeLastMessage();
+
+      addModelMessage(generatedText, _modelName);
 
       _session!.status = ChatSessionStatus.idle;
 
@@ -606,12 +701,20 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  void sendEditedMessage(
+  /// Regenerates the last message with the edited text and image bytes from the user.
+  ///
+  /// If the sessions is currently generating, the function returns without doing anything.
+  /// NOTE: We don't need to check if the session is selected because the function is only called from the UI.
+  /// The function first removes the last interaction from the session.
+  /// Then it sends the edited message to the model for regeneration.
+  ///
+  /// Returns a [Future] that evaluates to `null`.
+  Future sendEditedMessage(
     String uuid,
     String text,
     Uint8List? imageBytes,
   ) async {
-    if (!isSessionSelected || isGenerating) return;
+    if (isGenerating) return;
 
     final messageIndex = _session!.messages.indexWhere(
       (element) => element.uuid == uuid,
@@ -621,11 +724,16 @@ class ChatProvider extends ChangeNotifier {
       return;
     }
 
-    removeFromMessage(uuid);
+    removeMessage(uuid);
 
     sendMessage(text, imageBytes: imageBytes);
   }
 
+  /// Aborts the current session's generation process.
+  ///
+  /// If the session is not selected or currently generating, the function returns without doing anything.
+  ///
+  /// Returns `void`.
   void abortGeneration() {
     if (!isSessionSelected || !isGenerating) return;
 
@@ -634,8 +742,16 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Session history management
+  ///////////////////////////////////////////
+  //      Session history management       //
+  ///////////////////////////////////////////
 
+  /// Loads the chat history of the current session.
+  /// The function iterates over the messages of the session and adds them to the model's memory based on their sender.
+  ///
+  /// If the session is not selected or currently generating, the function returns without doing anything.
+  ///
+  /// Returns `void`.
   void loadSessionHistory() async {
     if (!isSessionSelected || isGenerating) return;
 
@@ -659,6 +775,11 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Wipes the chat history of the current session.
+  ///
+  /// If the session is not selected or currently generating, the function returns without doing anything.
+  ///
+  /// Returns `void`.
   void clearSessionHistory() async {
     if (!isSessionSelected || isGenerating) return;
 
@@ -667,8 +788,30 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Model configuration
+  ///////////////////////////////////////////
+  //          Settings management          //
+  ///////////////////////////////////////////
 
+  /// Sets the current model to the one with the given name and loads its settings
+  ///
+  /// The function first checks if the model is currently generating and returns without doing anything if it is.
+  ///
+  /// Returns a [Future] that evaluates to `void`.
+  Future setModel(String name) async {
+    if (isGenerating) return;
+
+    _modelName = name;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('modelName', name);
+    _modelSettings = await ModelSettingsProvider.loadStatic(modelName);
+    _updateModelOptions();
+
+    notifyListeners();
+  }
+
+  /// Updates the global override settings for the current model.
+  ///
+  /// Returns `void`.
   void _updateModelOptions() {
     int? numGPU;
 
@@ -719,18 +862,9 @@ class ChatProvider extends ChangeNotifier {
     _chat = ChatOllama(defaultOptions: modelOptions);
   }
 
-  Future setModel(String name) async {
-    if (isGenerating) return;
-
-    _modelName = name;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('modelName', name);
-    _modelSettings = await ModelSettingsProvider.loadStatic(modelName);
-    _updateModelOptions();
-
-    notifyListeners();
-  }
-
+  /// Global override for setting the temperature.
+  ///
+  /// Returns `void`.
   void setTemperature(double value) async {
     if (isGenerating) return;
 
@@ -745,6 +879,9 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Global override for setting the keep alive time.
+  ///
+  /// Returns `void`.
   void setKeepAliveTime(int value) async {
     if (isGenerating) return;
 
@@ -759,6 +896,9 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Global override for enabling GPU usage.
+  ///
+  /// Returns `void`.
   void enableGPU(bool value) async {
     if (isGenerating) return;
 
@@ -773,6 +913,9 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Enables or disables the display of performance statistics for the current chat.
+  ///
+  /// Returns `void`.
   void enableStatistics(bool value) async {
     _showStatistics = value;
     final prefs = await SharedPreferences.getInstance();
@@ -780,6 +923,9 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Global override for enabling web search.
+  ///
+  /// Returns `void`.
   void enableWebSearch(bool value) async {
     if (isGenerating) return;
 
@@ -794,6 +940,9 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Global override for enabling docs search.
+  ///
+  /// Returns `void`.
   void enableDocsSearch(bool value) async {
     if (isGenerating) return;
 
@@ -808,8 +957,14 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Helpers
+  ///////////////////////////////////////////
+  //         Performance statistics        //
+  ///////////////////////////////////////////
 
+  /// Computes the performance statistics of the last message.
+  ///
+  /// The function extracts the metadata and usage statistics from the result and adds them to the last message.
+  /// For metadata and usage statistics see [ChatResult.metadata] in langchain.dart.
   void _computePerformanceStatistics(ChatResult result) {
     lastMessage!.totalDuration +=
         result.metadata['total_duration'] as int? ?? 0;
@@ -825,7 +980,9 @@ class ChatProvider extends ChangeNotifier {
     lastMessage!.totalTokens += result.usage.totalTokens ?? 0;
   }
 
-  // Getters
+  ///////////////////////////////////////////
+  //          Getters and setters          //
+  /// ///////////////////////////////////////
 
   String get modelName => _modelName;
 

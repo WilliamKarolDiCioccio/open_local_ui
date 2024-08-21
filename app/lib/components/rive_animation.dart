@@ -14,7 +14,8 @@ class RiveAnimationComponent extends StatefulWidget {
   final String darkArtboardName;
   final BoxFit fit;
 
-  const RiveAnimationComponent({super.key, 
+  const RiveAnimationComponent({
+    super.key,
     required this.assetPath,
     required this.animationName,
     required this.lightArtboardName,
@@ -41,7 +42,7 @@ class _RiveAnimationComponentState extends State<RiveAnimationComponent> {
 
   Future<RiveFile> _loadRiveAnimation(String filename) async {
     if (AssetManager.isAssetLoaded(filename)) {
-      final buffer = AssetManager.getAssetAsBytes(filename);
+      final buffer = AssetManager.getAsset(filename, type: AssetType.binary);
       final bytes = ByteData.view(buffer.buffer);
       await RiveFile.initialize();
       return RiveFile.import(bytes);

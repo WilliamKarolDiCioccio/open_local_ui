@@ -9,10 +9,10 @@ import 'package:path_provider/path_provider.dart';
 late Logger logger;
 late File _logFile;
 
-class CombinedOutput extends LogOutput {
+class _CombinedOutput extends LogOutput {
   final List<LogOutput> _outputs;
 
-  CombinedOutput(this._outputs);
+  _CombinedOutput(this._outputs);
 
   @override
   void output(OutputEvent event) {
@@ -22,14 +22,20 @@ class CombinedOutput extends LogOutput {
   }
 }
 
+/// This function initializes the logger and its executed when the application starts.
+///
+/// The logger is configured to output logs to the console and a log file, in debug mode, and only to the log file in release mode.
+/// The log level is set to [Level.all] in debug mode and [Level.warning] in release mode.
+///
+/// The log file is stored in the application's support directory (see the output of [getApplicationSupportDirectory]).
 Future<void> initLogger() async {
   late LogOutput logOutput;
-  _logFile = await createLogFile();
+  _logFile = await _createLogFile();
 
   Level logLevel = kDebugMode ? Level.all : Level.warning;
 
   if (kDebugMode) {
-    logOutput = CombinedOutput([ConsoleOutput(), FileOutput(file: _logFile)]);
+    logOutput = _CombinedOutput([ConsoleOutput(), FileOutput(file: _logFile)]);
   } else {
     logOutput = FileOutput(file: _logFile);
   }
@@ -46,7 +52,7 @@ Future<void> initLogger() async {
   );
 }
 
-Future<File> createLogFile() async {
+Future<File> _createLogFile() async {
   final timeStamp = FortmatHelpers.standardDate(DateTime.now())
       .replaceAll(' ', '_')
       .replaceAll('/', '-')
