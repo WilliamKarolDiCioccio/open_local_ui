@@ -45,7 +45,7 @@ Future<void> initLogger() async {
     printer: PrettyPrinter(
       lineLength: 80,
       printEmojis: true,
-      printTime: true,
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
     ),
     output: logOutput,
     level: logLevel,

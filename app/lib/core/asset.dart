@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
-
+import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AssetSource {
@@ -15,6 +16,7 @@ enum AssetType {
   raw,
   json,
   binary,
+  rivefile,
 }
 
 /// Manages the assets used in the application.
@@ -25,7 +27,7 @@ enum AssetType {
 ///
 /// NOTE: The pool is most effective with small sized and frequently accessed assets.
 class AssetManager {
-  static final Map<String, String> _assetRegistry = {};
+  static final Map<String, dynamic> _assetRegistry = {};
 
   /// Wapper around [SharedPreferences] to save a key-value pair to the device's preferences.
   ///
@@ -47,17 +49,16 @@ class AssetManager {
   static Future<T?> getFromPreferences<T>(String key) async {
     final prefs = await SharedPreferences.getInstance();
     logger.d('Retrieved from preferences: $key');
-    switch (T) {
-      case String:
-        return prefs.getString(key) as T?;
-      case int:
-        return prefs.getInt(key) as T?;
-      case double:
-        return prefs.getDouble(key) as T?;
-      case bool:
-        return prefs.getBool(key) as T?;
-      default:
-        throw Exception('Invalid preference type');
+    if (T is String) {
+      return prefs.getString(key) as T?;
+    } else if (T is int) {
+      return prefs.getInt(key) as T?;
+    } else if (T is double) {
+      return prefs.getDouble(key) as T?;
+    } else if (T is bool) {
+      return prefs.getBool(key) as T?;
+    } else {
+      throw Exception('Invalid value type');
     }
   }
 
@@ -67,8 +68,7 @@ class AssetManager {
   ///
   /// The method returns a [Map] that represents the asset in JSON format.
   static Map<String, dynamic> _getAssetAsJson(String key) {
-    final assetContent = _getRawAsset(key);
-    return jsonDecode(assetContent!);
+    return _getRawAsset(key) as Map<String, dynamic>;
   }
 
   /// Retrieves an asset from the asset pool in the binary format.
@@ -76,9 +76,8 @@ class AssetManager {
   /// The [key] parameter should be a string representing the path of the asset to be retrieved.
   ///
   /// The method returns a [Uint8List] that represents the asset in binary format.
-  static Uint8List _getAssetAsBytes(String key) {
-    final assetContent = _getRawAsset(key);
-    return Uint8List.fromList(assetContent!.codeUnits);
+  static ByteData _getAssetAsBytes(String key) {
+    return _getRawAsset(key) as ByteData;
   }
 
   /// Retrieves an asset from the asset pool in plain text format.
@@ -86,9 +85,18 @@ class AssetManager {
   /// The [key] parameter should be a string representing the path of the asset to be retrieved.
   ///
   /// The method returns a [String] that represents the asset in plain text format.
-  static String? _getRawAsset(String key) {
+  static dynamic _getRawAsset(String key) {
     logger.d('Retrieved asset: $key');
     return _assetRegistry[key];
+  }
+
+  /// Retrieves an asset from the asset pool in the RiveFile format.
+  ///
+  /// The [key] parameter should be a string representing the path of the asset to be retrieved.
+  ///
+  /// The method returns a [RiveFile] that represents the asset in RiveFile format.
+  static RiveFile _getAssetAsRiveFile(String key) {
+    return _getRawAsset(key) as RiveFile;
   }
 
   static dynamic getAsset(
@@ -102,6 +110,8 @@ class AssetManager {
         return _getAssetAsJson(key);
       case AssetType.binary:
         return _getAssetAsBytes(key);
+      case AssetType.rivefile:
+        return _getAssetAsRiveFile(key);
       default:
         throw Exception('Invalid asset type');
     }
@@ -124,18 +134,33 @@ class AssetManager {
   /// The [forceReload] parameter should be a boolean value indicating if the asset should be reloaded if it already exists in the pool.
   ///
   /// The method returns a [Future] that resolves to the asset content in plain text format.
-  static Future<String> loadAsset(
+  static Future<dynamic> loadAsset(
     String key, {
     required AssetSource source,
     AssetType type = AssetType.raw,
     bool forceReload = false,
   }) async {
     if (!isAssetLoaded(key) || (isAssetLoaded(key) && forceReload)) {
-      late String assetContent;
+      late dynamic assetContent;
 
       switch (source) {
         case AssetSource.local:
-          assetContent = await rootBundle.loadString(key);
+          switch (type) {
+            case AssetType.raw:
+              assetContent = await rootBundle.loadString(key);
+              break;
+            case AssetType.json:
+              assetContent = jsonDecode(await rootBundle.loadString(key));
+              break;
+            case AssetType.binary:
+              assetContent = await rootBundle.load(key);
+              break;
+            case AssetType.rivefile:
+              assetContent = RiveFile.import(await rootBundle.load(key));
+              break;
+            default:
+              throw Exception('Invalid asset type');
+          }
           break;
         case AssetSource.remote:
           assetContent = await HTTPHelpers.get(key).then(

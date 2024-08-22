@@ -83,6 +83,7 @@ class MarkdownCodeWrapperWidget extends StatefulWidget {
 }
 
 class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
+  final _key = GlobalKey<_CodeWrapperState>();
   bool _isCopied = false;
   bool _isSaved = false;
 
@@ -116,13 +117,13 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
       await file.writeAsString(widget.text);
 
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).snackBarSuccessTitle,
+        AppLocalizations.of(_key.currentContext!).snackBarSuccessTitle,
         'File saved at: ${file.path}',
         SnackbarContentType.success,
       );
     } else {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).snackBarErrorTitle,
+        AppLocalizations.of(_key.currentContext!).snackBarErrorTitle,
         'No directory selected',
         SnackbarContentType.failure,
       );

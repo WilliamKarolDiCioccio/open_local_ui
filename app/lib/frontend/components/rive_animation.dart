@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -41,15 +40,13 @@ class _RiveAnimationComponentState extends State<RiveAnimationComponent> {
   }
 
   Future<RiveFile> _loadRiveAnimation(String filename) async {
-    if (AssetManager.isAssetLoaded(filename)) {
-      final buffer = AssetManager.getAsset(filename, type: AssetType.binary);
-      final bytes = ByteData.view(buffer.buffer);
-      return RiveFile.import(bytes);
-    } else {
-      final bytes = await rootBundle.load(filename);
-      await RiveFile.initialize();
-      return RiveFile.import(bytes);
-    }
+    final animation = await AssetManager.loadAsset(
+      filename,
+      source: AssetSource.local,
+      type: AssetType.rivefile,
+    );
+
+    return animation as RiveFile;
   }
 
   @override

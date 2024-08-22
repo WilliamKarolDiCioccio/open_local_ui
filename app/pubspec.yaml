@@ -31,7 +31,7 @@ dependencies:
 
   # Theming and UI
   adaptive_theme: ^3.6.0
-  system_theme: ^2.3.1
+  system_theme: ^3.0.0
   flex_color_picker: ^3.5.0
 
   # Icons and Graphics
@@ -96,16 +96,18 @@ dependencies:
   flutter_spinkit: ^5.2.1
 
   # GRPC and Protocol Buffers
-  grpc: ^3.2.4
+  grpc: ^4.0.0
   protoc_plugin: ^21.1.2
   protobuf: ^3.1.0
 
   # LangChain Integration
   langchain: ^0.7.3
-  langchain_ollama: ^0.2.2+1
+  langchain_ollama: 0.3.0
   introduction_screen: ^3.1.14
   rive: ^0.13.12
 
+  visibility_detector: any
+  page_transition: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -31,7 +31,7 @@ class PreferenceSelector extends StatefulWidget {
   });
 
   @override
-  _PreferenceSelectorState createState() => _PreferenceSelectorState();
+  State<PreferenceSelector> createState() => _PreferenceSelectorState();
 }
 
 class _PreferenceSelectorState extends State<PreferenceSelector> {

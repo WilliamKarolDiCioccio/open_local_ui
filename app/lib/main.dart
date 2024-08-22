@@ -29,11 +29,11 @@ void _preloadAssets() async {
   Future.wait(
     [
       AssetManager.loadAsset('assets/graphics/animations/gpu.riv',
-          source: AssetSource.local),
+          source: AssetSource.local, type: AssetType.rivefile),
       AssetManager.loadAsset('assets/graphics/animations/human.riv',
-          source: AssetSource.local),
+          source: AssetSource.local, type: AssetType.rivefile),
       AssetManager.loadAsset('assets/metadata/ollama_models.json',
-          source: AssetSource.local),
+          source: AssetSource.local, type: AssetType.json),
       AssetManager.loadAsset('assets/graphics/logos/apache.svg',
           source: AssetSource.local),
       AssetManager.loadAsset('assets/graphics/logos/arduino.svg',

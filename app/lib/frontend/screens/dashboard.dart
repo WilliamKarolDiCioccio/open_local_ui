@@ -37,10 +37,10 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final PageController _pageController = PageController();
-  final OverlayPortalController _overlayPortalController =
-      OverlayPortalController();
-  final GlobalKey _buttonKey = GlobalKey();
+  final _key = GlobalKey<_DashboardScreenState>();
+  final _buttonKey = GlobalKey();
+  final _pageController = PageController();
+  final _overlayPortalController = OverlayPortalController();
 
   @override
   void initState() {
@@ -66,16 +66,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
       switch (state) {
         case BatteryState.discharging:
           SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(context).snackBarWarningTitle,
-            AppLocalizations.of(context).deviceUnpluggedSnackBar,
+            AppLocalizations.of(_key.currentContext!).snackBarWarningTitle,
+            AppLocalizations.of(_key.currentContext!).deviceUnpluggedSnackBar,
             SnackbarContentType.warning,
           );
           logger.i('Battery charging');
           break;
         case BatteryState.charging:
           SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(context).snackBarSuccessTitle,
-            AppLocalizations.of(context).devicePluggedInSnackBar,
+            AppLocalizations.of(_key.currentContext!).snackBarSuccessTitle,
+            AppLocalizations.of(_key.currentContext!).devicePluggedInSnackBar,
             SnackbarContentType.success,
           );
           logger.i('Battery discharging');
@@ -92,8 +92,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       (updateAvailable) {
         if (updateAvailable) {
           SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(context).snackBarUpdateTitle,
-            AppLocalizations.of(context)
+            AppLocalizations.of(_key.currentContext!).snackBarUpdateTitle,
+            AppLocalizations.of(_key.currentContext!)
                 .clickToDownloadLatestAppVersionSnackBar,
             SnackbarContentType.info,
             onTap: () => showUpdateDialog(

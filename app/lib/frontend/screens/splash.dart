@@ -10,7 +10,7 @@ import 'package:page_transition/page_transition.dart';
 class SplashScreen extends StatelessWidget {
   final bool userOnboarded;
 
-  const SplashScreen({Key? key, required this.userOnboarded}) : super(key: key);
+  const SplashScreen({super.key, required this.userOnboarded});
 
   @override
   Widget build(BuildContext context) {
