@@ -11,15 +11,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:open_local_ui/components/rive_animation.dart';
-import 'package:open_local_ui/components/typewriter_text.dart';
+import 'package:open_local_ui/frontend/components/rive_animation.dart';
+import 'package:open_local_ui/frontend/components/typewriter_text.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/process.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/widgets/preference_selector.dart';
-import 'package:open_local_ui/frontend/widgets/window_management_bar.dart';
+import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_info2/system_info2.dart';
 import 'package:system_theme/system_theme.dart';
@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               title: AppLocalizations.of(context).setupPageWelcomeSlideTitle,
               bodyWidget: TypewriterTextComponent(
                 text: AppLocalizations.of(context).setupPageWelcomeSlideText,
-                duration: 1500.ms,
+                duration: 3000.ms,
               ),
               decoration: const PageDecoration(
                 titleTextStyle: TextStyle(
@@ -265,7 +265,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           right: 0.0,
           width: MediaQuery.of(context).size.width,
           height: 32.0,
-          child: const WindowManagementBar(),
+          child: const WindowManagementBarComponent(),
         ),
       ],
     );

@@ -9,7 +9,7 @@ import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/locale.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_theme/system_theme.dart';

@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/update.dart';
-import 'package:open_local_ui/frontend/widgets/window_management_bar.dart';
+import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 
 class UpdateInProgressScreen extends StatefulWidget {
   const UpdateInProgressScreen({super.key});
@@ -57,7 +57,7 @@ class _UpdateInProgressScreenState extends State<UpdateInProgressScreen> {
           right: 0.0,
           width: MediaQuery.of(context).size.width,
           height: 32.0,
-          child: const WindowManagementBar(),
+          child: const WindowManagementBarComponent(),
         ),
       ],
     );

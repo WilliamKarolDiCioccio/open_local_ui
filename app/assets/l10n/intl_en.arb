@@ -1,5 +1,7 @@
 {
   "@@locale": "en",
+  "deviceUnpluggedSnackBar": "Device unplugged. Power delivery reduced.",
+  "devicePluggedInSnackBar": "Device plugged in. Power delivery increased.",
   "abortModelRemovalSnackBar": "Abort model removal",
   "abortSessionRemovalSnackBar": "Abort session removal",
   "aboutPageContributorsTitle": "Contributors",

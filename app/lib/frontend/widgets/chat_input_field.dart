@@ -8,7 +8,7 @@ import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
 import 'package:open_local_ui/core/image.dart';
 import 'package:open_local_ui/frontend/dialogs/attachments_dropzone.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
