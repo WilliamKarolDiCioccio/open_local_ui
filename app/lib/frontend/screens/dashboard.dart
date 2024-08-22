@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -47,6 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _checkForUpdates();
+      _registerBatteryCallback();
     });
   }
 
@@ -55,6 +57,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _pageController.dispose();
 
     super.dispose();
+  }
+
+  void _registerBatteryCallback() {
+    final battery = Battery();
+
+    battery.onBatteryStateChanged.listen((BatteryState state) {
+      switch (state) {
+        case BatteryState.discharging:
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(context).snackBarWarningTitle,
+            AppLocalizations.of(context).deviceUnpluggedSnackBar,
+            SnackbarContentType.warning,
+          );
+          logger.i('Battery charging');
+          break;
+        case BatteryState.charging:
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(context).snackBarSuccessTitle,
+            AppLocalizations.of(context).devicePluggedInSnackBar,
+            SnackbarContentType.success,
+          );
+          logger.i('Battery discharging');
+          break;
+        default:
+          logger.i('Battery state: $state');
+          break;
+      }
+    });
   }
 
   void _checkForUpdates() {

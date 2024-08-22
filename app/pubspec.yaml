@@ -86,6 +86,7 @@ dependencies:
   language_code: ^0.5.3+2
   system_info2: ^4.0.0
   gpu_info: ^0.0.3
+  battery_plus: ^6.0.2
 
   # Environment Variables
   envied: ^0.5.4+1
