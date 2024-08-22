@@ -7,7 +7,6 @@ import 'package:feedback/feedback.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:open_local_ui/backend/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/locale.dart';
@@ -19,8 +18,7 @@ import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/env.dart';
-import 'package:open_local_ui/frontend/screens/dashboard.dart';
-import 'package:open_local_ui/frontend/screens/onboarding.dart';
+import 'package:open_local_ui/frontend/screens/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -90,8 +88,7 @@ void _preloadAssets() async {
 }
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
 
   // Internal services
 
@@ -140,8 +137,6 @@ void main() async {
   if (!userOnboarded) {
     prefs.setBool('userOnboarded', true);
   }
-
-  FlutterNativeSplash.remove();
 
   // Run app
 
@@ -240,9 +235,7 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        home: widget.userOnboarded
-            ? const DashboardScreen()
-            : const OnboardingScreen(),
+        home: SplashScreen(userOnboarded: widget.userOnboarded),
         debugShowCheckedModeBanner: kDebugMode,
       ),
     );

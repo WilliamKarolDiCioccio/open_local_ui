@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               title: AppLocalizations.of(context).setupPageWelcomeSlideTitle,
               bodyWidget: TypewriterTextComponent(
                 text: AppLocalizations.of(context).setupPageWelcomeSlideText,
-                duration: 1500.ms,
+                duration: 3000.ms,
               ),
               decoration: const PageDecoration(
                 titleTextStyle: TextStyle(
