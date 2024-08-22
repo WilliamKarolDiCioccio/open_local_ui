@@ -10,7 +10,12 @@ class _IsolateData {
   _IsolateData(this.sendPort, this.command, this.arguments);
 }
 
+/// A helper class for working with processes and shell commands.
 class ProcessHelpers {
+  /// Runs a shell command and returns the output as a string.
+  ///
+  /// Returns a [Future] that completes with the output of the shell command.
+  /// The command is executed in a separate isolate to avoid blocking the main thread.
   static Future<String> runShellCommand(
     String command, {
     List<String>? arguments,
@@ -23,6 +28,10 @@ class ProcessHelpers {
     return await receivePort.first;
   }
 
+  /// Runs a process in a detached mode.
+  ///
+  /// Returns a [Future] that completes with a [ProcessResult] when the process finishes.
+  /// The command is executed in a separate isolate to avoid blocking the main thread.
   static Future<ProcessResult> runDetached(
     String executable, {
     List<String>? arguments,

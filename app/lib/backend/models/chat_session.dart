@@ -4,6 +4,9 @@ import 'package:open_local_ui/backend/models/chat_message.dart';
 
 part 'chat_session.g.dart';
 
+/// Converts JSON data to [ChatMessageWrapper] object and vice versa.
+///
+/// This class determines the type of [ChatMessageWrapper] object to be created based on the 'sender' property.
 class ChatMessagesJSONConverter
     implements
         JsonConverter<List<ChatMessageWrapper>, List<Map<String, dynamic>>> {
@@ -37,7 +40,22 @@ enum ChatSessionStatus {
   aborting,
 }
 
-// NOTE: named with 'Wrapper' suffix to avoid conflict with LangChain
+/// NOTE: named with 'Wrapper' suffix to avoid conflict with lancghain.dart
+///
+/// This class is used to encapsulate the properties of a chat session.
+///
+/// The [ChatSessionWrapper] class is annotated with `@JsonSerializable` to enable JSON serialization and deserialization.
+///
+/// Properties:
+/// - `title`: The title of the chat session.
+/// - `createdAt`: The date and time when the chat session was created.
+/// - `uuid`: The unique identifier of the chat session.
+/// - `messages`: The list of chat messages associated with the chat session.
+/// - `status`: The status of the chat session.
+///
+/// The [ChatSessionWrapper] class also contains a [memory] property of type [ConversationBufferMemory] for use by langchain.dart.
+///
+/// NOTE: In the future messages will be stored in an N-Ary tree structure to allow for branching conversations.
 @JsonSerializable()
 class ChatSessionWrapper {
   String title;

@@ -8,6 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 part 'github.g.dart';
 
+/// Represents a release asset on GitHub.
 @JsonSerializable()
 class GitHubReleaseAsset {
   final String name;
@@ -26,6 +27,7 @@ class GitHubReleaseAsset {
   Map<String, dynamic> toJson() => _$GitHubReleaseAssetToJson(this);
 }
 
+/// Represents a release on GitHub.s
 @JsonSerializable()
 class GitHubRelease {
   final String name;
@@ -45,6 +47,7 @@ class GitHubRelease {
   Map<String, dynamic> toJson() => _$GitHubReleaseToJson(this);
 }
 
+/// Represents a GitHub contributor account.
 @JsonSerializable()
 class GitHubContributor {
   final String login;
@@ -67,12 +70,18 @@ class GitHubContributor {
   Map<String, dynamic> toJson() => _$GitHubContributorToJson(this);
 }
 
+/// A class to interact with the GitHub API.
+///
+/// Authenticated requests are made using Personal Access Tokens (PATs) found in the `.env` file and baked into the app during build time.
 class GitHubAPI {
   static const owner = 'WilliamKarolDiCioccio';
   static const repo = 'open_local_ui';
 
+  /// Gets the latest release of the repository.
+  ///
+  /// This is used to check for app updates.
   static Future<GitHubRelease> getLatestRelease() async {
-    // NOTE: We'll switch to the releases/latest endpoint once we have a release as pre-release and draft releases are not considered as latest by the API
+    // We'll switch to the releases/latest endpoint once we have a release as pre-release and draft releases are not considered as latest by the API
     final url = Uri.parse(
       'https://api.github.com/repos/$owner/$repo/releases',
     );
@@ -96,8 +105,9 @@ class GitHubAPI {
 
     final List<dynamic> decodedJson = jsonDecode(response.body);
 
-    final GitHubRelease latestRelease =
-        GitHubRelease.fromJson(decodedJson.first);
+    final GitHubRelease latestRelease = GitHubRelease.fromJson(
+      decodedJson.first,
+    );
 
     logger.d(
       'Latest release fetched successfully. Latest release: $latestRelease',
@@ -106,6 +116,44 @@ class GitHubAPI {
     return latestRelease;
   }
 
+  /// Get a list of all releases of the repository.
+  ///
+  /// This is used to check for app updates if in the latest release the platform specific update is not available.
+  static Future<List<GitHubRelease>> listReleases() async {
+    final url = Uri.parse(
+      'https://api.github.com/repos/$owner/$repo/releases',
+    );
+
+    final headers = {
+      'Authorization': 'token ${Env.gitHubReleasesPat}',
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode != 200) {
+      logger.d('Failed to list releases. Status code: ${response.statusCode}');
+
+      return [];
+    }
+
+    final List<dynamic> decodedJson = jsonDecode(response.body);
+
+    final List<GitHubRelease> releases = [];
+
+    for (final release in decodedJson) {
+      releases.add(GitHubRelease.fromJson(release));
+    }
+
+    logger.d('Releases listed successfully. Releases: $releases');
+
+    return releases;
+  }
+
+  /// Lists the contributors of the repository.
+  /// This is used in our about page to ensure we give credits to everyone who works or worked on the app.
   static Future<List<GitHubContributor>> listRepositoryContributors() async {
     final url = Uri.parse(
       'https://api.github.com/repos/$owner/$repo/contributors',
@@ -143,6 +191,17 @@ class GitHubAPI {
     return contributors;
   }
 
+  /// Creates a new issue on the repository.
+  /// This is used to report issues from the app feedback form.
+  ///
+  /// The [text] parameter is the issue body text.
+  /// The [screenshotUrl] parameter is the URL of the screenshot to attach to the issue.
+  /// The [logsUrl] parameter is the URL of the logs file to attach to the issue.
+  /// The [deviceInfo] parameter is the device information to attach to the issue.
+  ///
+  /// NOTE: There is currently no way to attach files to issues via the GitHub API.
+  /// As a workaround, we're attaching the screenshot and logs as links in the issue body.
+  /// In the case of our feedback form, we're uploading the screenshot and logs to a SupaBase storage bucket and using the URLs in the issue body.
   static Future createGitHubIssue(
     String text,
     String screenshotUrl,

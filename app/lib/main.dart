@@ -20,6 +20,7 @@ import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/screens/splash.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
@@ -27,60 +28,114 @@ import 'package:system_theme/system_theme.dart';
 void _preloadAssets() async {
   Future.wait(
     [
-      AssetManager.loadLocalAsset('assets/graphics/animations/gpu.riv'),
-      AssetManager.loadLocalAsset('assets/graphics/animations/human.riv'),
-      AssetManager.loadLocalAsset('assets/metadata/ollama_models.json'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/apache.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/arduino.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/bash.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/c.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/clojure.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/cmake.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/cpp.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/crystal.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/cs.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/css.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/dart.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/delphi.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/dockerfile.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/elixir.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/erlang.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/flutter.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/fortran.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/glsl.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/go.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/gradle.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/haskell.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/java.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/javascript.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/json.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/julia.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/kotlin.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/langchain.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/less.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/llvm.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/lua.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/makefile.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/nginx.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/nsis.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/ocaml.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/ollama.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/perl.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/php.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/powershell.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/python.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/ruby.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/rust.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/scala.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/scss.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/supabase.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/swift.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/toml.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/typescript.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/vala.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/xml.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/html.svg'),
-      AssetManager.loadLocalAsset('assets/graphics/logos/yaml.svg'),
+      AssetManager.loadAsset('assets/graphics/animations/gpu.riv',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/animations/human.riv',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/metadata/ollama_models.json',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/apache.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/arduino.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/bash.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/c.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/clojure.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/cmake.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/cpp.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/crystal.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/cs.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/css.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/dart.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/delphi.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/dockerfile.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/elixir.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/erlang.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/flutter.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/fortran.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/glsl.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/go.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/gradle.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/haskell.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/java.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/javascript.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/json.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/julia.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/kotlin.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/langchain.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/less.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/llvm.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/lua.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/makefile.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/nginx.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/nsis.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/ocaml.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/ollama.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/perl.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/php.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/powershell.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/python.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/ruby.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/rust.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/scala.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/scss.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/supabase.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/swift.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/toml.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/typescript.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/vala.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/xml.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/html.svg',
+          source: AssetSource.local),
+      AssetManager.loadAsset('assets/graphics/logos/yaml.svg',
+          source: AssetSource.local),
     ],
   ).then((_) {
     logger.i('Assets preloaded');
@@ -94,7 +149,7 @@ void main() async {
 
   await initLogger();
 
-  await ModelProvider.startOllama();
+  await ModelProvider.startOllamaStatic();
   await TTSService.startServer();
   await ChatSessionsDatabase.init();
 
@@ -110,6 +165,8 @@ void main() async {
   // Preload assets
 
   _preloadAssets();
+
+  RiveFile.initialize();
 
   // Theme
 
@@ -199,7 +256,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     TTSService.stopServer();
-    ModelProvider.stopOllama();
+    ModelProvider.stopOllamaStatic();
     ChatSessionsDatabase.deinit();
 
     super.dispose();

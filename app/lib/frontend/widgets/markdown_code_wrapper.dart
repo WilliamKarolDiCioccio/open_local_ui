@@ -155,8 +155,9 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
                     Tooltip(
                       message: widget.language.toUpperCase(),
                       child: SvgPicture.memory(
-                        AssetManager.getAssetAsBytes(
+                        AssetManager.getAsset(
                           languageToAsset[widget.language]!,
+                          type: AssetType.binary,
                         ),
                         width: 20,
                         height: 20,

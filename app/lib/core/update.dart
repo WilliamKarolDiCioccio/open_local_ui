@@ -11,10 +11,25 @@ import 'package:open_local_ui/core/snackbar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// A helper class for handling updates.
+///
+/// The [UpdateHelper] class provides methods for checking and installing updates for the application and the Ollama tool.
 class UpdateHelper {
   static late GitHubRelease _latestRelease;
 
+  /// Checks if a new version of the Ollama tool is available.
+  ///
+  /// Returns a [Future] that resolves to a [bool] indicating whether a new version is available.
+  ///
+  /// The method dispatches the check to the platform-specific method.
   static Future<bool> isOllamaUpdateAvailable() async {
+    if (_windowsIsOllamaUpdateAvailable()) return true;
+
+    return false;
+  }
+
+  /// The method uses the `winget` command to check for updates.
+  static _windowsIsOllamaUpdateAvailable() async {
     final wingetUpgradesList = await ProcessHelpers.runShellCommand(
       'winget',
       arguments: ['upgrade'],
@@ -25,6 +40,11 @@ class UpdateHelper {
     return false;
   }
 
+  /// Downloads and installs the latest version of the Ollama tool.
+  ///
+  /// Returns a [Future] that resolves to `null`.
+  ///
+  /// The method dispatches the installation to the platform-specific method.
   static Future downloadAndInstallOllamaLatestVersion() async {
     if (Platform.isWindows) {
       await _windowsDownloadAndInstallOllama();
@@ -34,6 +54,7 @@ class UpdateHelper {
     }
   }
 
+  /// The method uses the `winget` command to download and install the latest version of the Ollama tool.
   static Future _windowsDownloadAndInstallOllama() async {
     final wingetInstallResult = await ProcessHelpers.runShellCommand(
       'winget',
@@ -53,6 +74,7 @@ class UpdateHelper {
     }
   }
 
+  /// Helper method to check if a superior is available according to our versioning scheme.
   static bool _isVersionSuperior(String version) {
     final currentVersion = Env.version.split('.').map(int.parse).toList();
     final newVersion = version.split('.').map(int.parse).toList();
@@ -66,6 +88,12 @@ class UpdateHelper {
     return false;
   }
 
+  /// Checks if a new version of the application is available.
+  ///
+  /// Returns a [Future] that resolves to a [bool] indicating whether a new version is available.
+  ///
+  /// The method uses the [GitHubAPI] class to fetch the latest release and compares it to the current version.
+  /// It then dispatches the check to the platform-specific method.
   static Future<bool> isAppUpdateAvailable() async {
     if (!Platform.isWindows) {
       logger.i(
@@ -75,41 +103,50 @@ class UpdateHelper {
       return false;
     }
 
-    _latestRelease = await GitHubAPI.getLatestRelease();
+    final releases = await GitHubAPI.listReleases();
 
-    final prefs = await SharedPreferences.getInstance();
-
-    final latestAvailableVersion = _latestRelease.tag_name;
-
-    if (latestAvailableVersion.isEmpty) {
-      logger.i('Latest release not found on GitHub');
-      return false;
-    }
-    if (prefs.getString('skipUpdate') == latestAvailableVersion) {
-      logger.i('Skipping update: $latestAvailableVersion');
-      return false;
-    } else if (!_isVersionSuperior(latestAvailableVersion)) {
-      logger.i('No new version available');
+    if (releases.isEmpty) {
+      logger.e('Failed to list releases');
       return false;
     }
 
-    logger.i('New version available: $latestAvailableVersion');
+    for (final release in releases) {
+      final prefs = await SharedPreferences.getInstance();
 
-    for (final asset in _latestRelease.assets) {
-      if (Platform.isWindows && asset.name.contains('windows_x64')) {
-        return true;
+      if (prefs.getString('skipUpdate') == release.tag_name) {
+        logger.i('Skipping update: $release.tag_name');
+        continue;
+      } else if (!_isVersionSuperior(release.tag_name)) {
+        logger.i('No new version available');
+        break;
+      }
+
+      logger.i('New version available: $release.tag_name');
+
+      for (final asset in release.assets) {
+        if (Platform.isWindows && _windowsIsAppUpdateAvailable(asset)) {
+          return true;
+        }
       }
     }
 
     return false;
   }
 
+  /// Helper method to check if the asset is an update for the Windows platform.
+  static bool _windowsIsAppUpdateAvailable(GitHubReleaseAsset asset) =>
+      asset.name.contains('windows_x64');
+
+  /// Skips the update for the current version. The method stores the version in the shared preferences.
   static Future skipUpdate() async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setString('skipUpdate', _latestRelease.tag_name);
   }
 
+  /// Downloads and installs the latest version of the application.
+  ///
+  /// The method dispatches the installation to the platform-specific method.
   static Future downloadAndInstallAppLatestVersion() async {
     if (Platform.isWindows) {
       await _windowsDownloadAndInstallApp();
@@ -119,6 +156,7 @@ class UpdateHelper {
     }
   }
 
+  /// Downloads and installs the latest Windows version of the application.
   static Future _windowsDownloadAndInstallApp() async {
     GitHubReleaseAsset? installer;
 

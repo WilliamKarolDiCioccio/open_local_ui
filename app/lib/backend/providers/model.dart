@@ -22,16 +22,27 @@ enum ModelProviderStatus {
   creating,
 }
 
+/// A provider class for managing Ollama models.
+///
+/// This class extends the [ChangeNotifier] class, allowing it to notify listeners when the models list changes.
+///
+/// This class enables direct interaction with the Ollama API to pull, push, create and remove models.
+///
+/// NOTE: You'll see some methods having a `Static` suffix (see [_updateListStatic]). This is because they are used outside the widget tree where providers are not accessible.
 class ModelProvider extends ChangeNotifier {
   static const _api = 'http://localhost:11434/api';
   static final List<Model> _models = [];
   static late Process _process;
   ModelProviderStatus _status = ModelProviderStatus.idle;
 
-  static Future startOllama() async {
+  /// Start the Ollama server.
+  ///
+  /// This methods also redirects the stdout and stderr of the Ollama server to the logger.
+  ///
+  /// Returns a [Future] that resolves when the Ollama server is started.
+  static Future startOllamaStatic() async {
     try {
-      // Check if ollama is up and running
-      if (!await _isOlamaRunning()) {
+      if (!await _isOllamaRunningStatic()) {
         Process.start('ollama', ['serve']).then((Process process) {
           _process = process;
 
@@ -59,21 +70,32 @@ class ModelProvider extends ChangeNotifier {
     }
   }
 
-  static Future<bool> _isOlamaRunning() async {
+  /// Check if the Ollama server is running.
+  ///
+  /// Returns a [Future] that resolves to a [bool] indicating whether the Ollama server is running.
+  static Future<bool> _isOllamaRunningStatic() async {
     try {
-      final response = await HTTPMethods.get('$_api/ps');
+      final response = await HTTPHelpers.get('$_api/ps');
       return response.statusCode == HttpStatus.ok;
     } catch (e) {
       return false;
     }
   }
 
-  static Future stopOllama() async {
-    _process.kill();
+  /// Stop the Ollama server.
+  ///
+  /// This method sends a SIGKILL signal to the Ollama server process.
+  ///
+  /// Returns a void once the Ollama server is stopped.
+  static void stopOllamaStatic() async {
+    _process.kill(ProcessSignal.sigkill);
   }
 
+  /// Update the list of models.
+  ///
+  /// Returns a [Future] that resolves to null when the models list is updated.
   static Future _updateListStatic() async {
-    await HTTPMethods.get('$_api/tags').then((response) {
+    await HTTPHelpers.get('$_api/tags').then((response) {
       if (response.statusCode != 200) {
         logger.e('Failed to fetch models list');
         return;
@@ -94,12 +116,20 @@ class ModelProvider extends ChangeNotifier {
     });
   }
 
+  /// Update the list of models. Wraps the static method [_updateListStatic] and notifies listeners.
+  ///
+  /// Returns a [Future] that resolves to null when the models list is updated.
   Future updateList() async {
     await _updateListStatic();
 
     notifyListeners();
   }
 
+  /// Pull a model from the Ollama registry.
+  ///
+  /// The [name] parameter is the name of the model to pull.
+  ///
+  /// Returns a [Stream] of [OllamaPullResponse] objects.
   Stream<OllamaPullResponse> pull(String name) async* {
     final completer = Completer<void>();
 
@@ -206,6 +236,11 @@ class ModelProvider extends ChangeNotifier {
     completer.complete();
   }
 
+  /// Push a model to the Ollama registry.
+  ///
+  /// The [name] parameter is the name of the model to push.
+  ///
+  /// Returns a [Stream] of [OllamaPushResponse] objects.
   Stream<OllamaPushResponse> push(String name) async* {
     final completer = Completer<void>();
 
@@ -312,6 +347,12 @@ class ModelProvider extends ChangeNotifier {
     completer.complete();
   }
 
+  /// Create an Ollama model on local machine using a modelfile.
+  ///
+  /// The [name] parameter is the name of the model to create.
+  /// The [modelfile] parameter is the string containing the model configuration (see https://github.com/ollama/ollama/blob/main/docs/modelfile.md).
+  ///
+  /// Returns a [Stream] of [OllamaCreateResponse] objects.
   Stream<OllamaCreateResponse> create(String name, String modelfile) async* {
     final completer = Completer<void>();
 
@@ -417,15 +458,24 @@ class ModelProvider extends ChangeNotifier {
     completer.complete();
   }
 
+  /// Remove an Ollama model from local machine.
+  ///
+  /// The [name] parameter is the name of the model to remove.
+  ///
+  /// Returns a [Future] that resolves when the model is removed.
   Future remove(String name) async {
     try {
-      final response =
-          await HTTPMethods.delete('$_api/delete', body: {'name': name});
+      final response = await HTTPHelpers.delete(
+        '$_api/delete',
+        body: {'name': name},
+      );
+
       if (response.statusCode != 200) {
         logger.e(
             'Failed to remove model $name, status code: ${response.statusCode}');
         return;
       }
+
       await ModelSettingsProvider.removeStatic(name);
 
       logger.i('Model $name removed');
@@ -436,9 +486,12 @@ class ModelProvider extends ChangeNotifier {
     await updateList();
   }
 
-  List<Model> get models => _models;
-
+  /// Get models list.
+  ///
+  /// Returns a [List] of [Model] objects.
   static List<Model> getModelsStatic() => _models;
+
+  List<Model> get models => _models;
 
   int get modelsCount => _models.length;
 

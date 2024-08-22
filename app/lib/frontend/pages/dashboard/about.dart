@@ -67,7 +67,10 @@ class AboutPage extends StatelessWidget {
               tooltip: AppLocalizations.of(context)
                   .aboutPageSocialButtonWatchTrailerTooltip,
               onPressed: () {
-                // TODO: Implement YouTube trailer link
+                launchUrl(
+                  // WARNING: do not open if you don't want to be rickrolled!
+                  Uri.parse('https://www.youtube.com/watch?v=dQw4w9WgXcQ'),
+                );
               },
               icon: const Icon(UniconsLine.youtube),
               iconSize: 44,

@@ -11,7 +11,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/models/chat_message.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
-import 'package:open_local_ui/core/formatters.dart';
+import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/widgets/markdown_body.dart';
 import 'package:open_local_ui/frontend/widgets/tts_player.dart';
@@ -198,7 +198,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               ),
               const Gap(8),
               Text(
-                Fortmatters.standardDate(widget.message.createdAt),
+                FortmatHelpers.standardDate(widget.message.createdAt),
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w100,
