@@ -16,7 +16,7 @@ import 'package:open_local_ui/frontend/components/typewriter_text.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/process.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/widgets/preference_selector.dart';
 import 'package:open_local_ui/frontend/components/window_management_bar.dart';

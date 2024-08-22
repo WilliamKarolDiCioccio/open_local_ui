@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-
 import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/backend/models/model.dart';
@@ -13,7 +12,7 @@ import 'package:open_local_ui/backend/providers/model_settings.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
 enum ModelProviderStatus {
@@ -182,7 +181,7 @@ class ModelProvider extends ChangeNotifier {
       WindowsTaskbar.resetThumbnailToolbar();
       WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
-    
+
     SnackBarHelpers.showSnackBar(
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
@@ -393,7 +392,7 @@ class ModelProvider extends ChangeNotifier {
       WindowsTaskbar.resetThumbnailToolbar();
       WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
-    
+
     SnackBarHelpers.showSnackBar(
       // ignore: use_build_context_synchronously
       AppLocalizations.of(scaffoldMessengerKey.currentState!.context)

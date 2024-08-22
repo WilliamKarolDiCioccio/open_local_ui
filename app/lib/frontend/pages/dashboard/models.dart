@@ -15,7 +15,7 @@ import 'package:open_local_ui/frontend/dialogs/model_details.dart';
 import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
 import 'package:open_local_ui/frontend/dialogs/pull_model.dart';
 import 'package:open_local_ui/frontend/dialogs/push_model.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -14,7 +14,7 @@ import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/about.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/chat.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/models.dart';

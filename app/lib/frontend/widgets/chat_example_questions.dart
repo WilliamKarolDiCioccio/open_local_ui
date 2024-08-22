@@ -2,14 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
