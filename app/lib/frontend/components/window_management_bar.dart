@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:system_theme/system_theme.dart';
 
-class WindowManagementBar extends StatelessWidget {
-  const WindowManagementBar({super.key});
+class WindowManagementBarComponent extends StatelessWidget {
+  const WindowManagementBarComponent({super.key});
 
   @override
   Widget build(BuildContext context) {

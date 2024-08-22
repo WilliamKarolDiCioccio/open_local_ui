@@ -19,7 +19,7 @@ import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:open_local_ui/frontend/helpers/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/widgets/preference_selector.dart';
-import 'package:open_local_ui/frontend/widgets/window_management_bar.dart';
+import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_info2/system_info2.dart';
 import 'package:system_theme/system_theme.dart';
@@ -265,7 +265,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           right: 0.0,
           width: MediaQuery.of(context).size.width,
           height: 32.0,
-          child: const WindowManagementBar(),
+          child: const WindowManagementBarComponent(),
         ),
       ],
     );
