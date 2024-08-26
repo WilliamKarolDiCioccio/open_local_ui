@@ -24,6 +24,7 @@
   "attachFilesDialogBrowseFilesButton": "Browse files",
   "attachFilesDialogDropFilesText": "Drop files here",
   "cancelButtonShared": "Cancel",
+  "changelogButton": "Changelog",
   "chatAttachFilesTooltip": "Attach files",
   "chatCancelEditButton": "Cancel editing",
   "chatCancelGenerationTooltip": "Cancel generation",

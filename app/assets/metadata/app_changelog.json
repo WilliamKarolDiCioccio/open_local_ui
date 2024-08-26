@@ -1,0 +1,24 @@
+{
+  "releases": [
+    {
+      "version": "1.0.0",
+      "date": "26/08/2024",
+      "type": "patch",
+      "image": "https://github.com/WilliamKarolDiCioccio/open_local_ui/raw/main/.github/images/github_readme_banner.webp",
+      "changes": [
+        {
+          "category": "bugfix",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        },
+        {
+          "category": "feature",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        },
+        {
+          "category": "improvement",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
@@ -12,16 +12,17 @@ import 'package:gpu_info/gpu_info.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/frontend/components/floating_menu.dart';
+import 'package:open_local_ui/frontend/components/window_management_bar.dart';
+import 'package:open_local_ui/frontend/dialogs/changelog.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
-import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/about.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/chat.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/models.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/sessions.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/settings.dart';
-import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_info2/system_info2.dart';
@@ -285,9 +286,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         const Gap(8),
         TextButton.icon(
-          onPressed: () {
-            showLicensePage(context: context);
-          },
+          onPressed: () => showChangelogDialog(context),
+          icon: const Icon(UniconsLine.code_branch),
+          label: Text(AppLocalizations.of(context).changelogButton),
+        ),
+        const Gap(8),
+        TextButton.icon(
+          onPressed: () => showLicensePage(context: context),
           icon: const Icon(UniconsLine.keyhole_circle),
           label: Text(AppLocalizations.of(context).licenseButton),
         ),
