@@ -341,10 +341,10 @@ packages:
     dependency: transitive
     description:
       name: collection
-      sha256: a1ace0a119f20aabc852d165077c036cd864315bd99b7eaa10a60100341941bf
+      sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
       url: "https://pub.dev"
     source: hosted
-    version: "1.19.0"
+    version: "1.18.0"
   convert:
     dependency: transitive
     description:
@@ -857,10 +857,10 @@ packages:
     dependency: transitive
     description:
       name: http_parser
-      sha256: "40f592dd352890c3b60fec1b68e786cefb9603e05ff303dbc4dda49b304ecdf4"
+      sha256: "2aa08ce0341cc9b354a498388e30986515406668dbcc4f7c950c3e715496693b"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.0"
+    version: "4.0.2"
   image:
     dependency: "direct main"
     description:
@@ -977,26 +977,26 @@ packages:
     dependency: "direct main"
     description:
       name: langchain
-      sha256: "39688a1d66f89e83e209163bdd3595a46d37351adf0335de40756e2c40e6ebf4"
+      sha256: "331f4ba4ce6acd26a52fd88df590dd303ec0fcf62c4b406653aaed69a6481a0a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.4"
+    version: "0.7.5"
   langchain_core:
     dependency: transitive
     description:
       name: langchain_core
-      sha256: "62d53d0703a69499cffa0a393d834fb108ec75f16ee24f6c9fb1b2f31ed19ec0"
+      sha256: "59c9914f9f542d728709d631923cfad7d6d09b7a9dce0f9cec7b508034ff27fb"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.4"
+    version: "0.3.5"
   langchain_ollama:
     dependency: "direct main"
     description:
       name: langchain_ollama
-      sha256: b0850674f16d2d731197a3c2b13445f8ac3fce8230c204100c19a11bb9d989a3
+      sha256: "60df0ab438076cccd8c4ca4993691d65bb6ca42186a999d009744534cfa8af67"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.3.1"
   langchain_tiktoken:
     dependency: transitive
     description:
@@ -1129,10 +1129,10 @@ packages:
     dependency: transitive
     description:
       name: ollama_dart
-      sha256: c0a86adb2343543f5597d182dc64b32beb46e6f2692dda27f82f9294db07dae4
+      sha256: f65e60c61c91f625df76b4435474bfacc315b4b4eaa8b53e2385679da121dee4
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.1"
   package_config:
     dependency: transitive
     description:
@@ -1433,10 +1433,10 @@ packages:
     dependency: transitive
     description:
       name: shelf
-      sha256: e7dd780a7ffb623c57850b33f43309312fc863fb6aa3d276a754bb299839ef12
+      sha256: ad29c505aee705f41a4d8963641f91ac4cee3c8fad5947e033390a7bd8180fa4
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.2"
+    version: "1.4.1"
   shelf_web_socket:
     dependency: transitive
     description:
@@ -1534,10 +1534,10 @@ packages:
     dependency: transitive
     description:
       name: string_scanner
-      sha256: "688af5ed3402a4bde5b3a6c15fd768dbf2621a614950b17f04626c431ab3c4c3"
+      sha256: "556692adab6cfa87322a115640c11f13cb77b3f076ddcc5d6ae3c20242bedcde"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.0"
+    version: "1.2.0"
   supabase:
     dependency: transitive
     description:
@@ -1622,10 +1622,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "664d3a9a64782fcdeb83ce9c6b39e78fd2971d4e37827b9b06c3aa1edc5e760c"
+      sha256: "5b8a98dafc4d5c4c9c72d8b31ab2b23fc13422348d2997120294d3bac86b4ddb"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.3"
+    version: "0.7.2"
   time:
     dependency: transitive
     description:
@@ -1634,6 +1634,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  timelines_plus:
+    dependency: "direct main"
+    description:
+      name: timelines_plus
+      sha256: ad0d97a0ee21942ee749c603b117794eb97cc6788f0cadc7d76cf1bbb2c26fca
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   timing:
     dependency: transitive
     description:
@@ -1790,10 +1798,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: "5c5f338a667b4c644744b661f309fb8080bb94b18a7e91ef1dbd343bed00ed6d"
+      sha256: f652077d0bdf60abe4c1f6377448e8655008eef28f128bc023f7b5e8dfeb48fc
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.5"
+    version: "14.2.4"
   watcher:
     dependency: transitive
     description:

@@ -824,7 +824,6 @@ class ChatProvider extends ChangeNotifier {
     final modelOptions = ChatOllamaOptions(
       model: _modelName,
       numGpu: numGPU,
-      format: OllamaResponseFormat.json,
       keepAlive: _modelSettings.keepAlive ?? _keepAliveTime,
       temperature: _modelSettings.temperature ?? _temperature,
       concurrencyLimit: _modelSettings.concurrencyLimit ?? 1000,
