@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:feedback/feedback.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:gpu_info/gpu_info.dart';
@@ -14,6 +13,7 @@ import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/update.dart';
+import 'package:open_local_ui/frontend/components/floating_menu.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/about.dart';
@@ -107,13 +107,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _changePage(int pageIndex) {
     _pageController.jumpToPage(pageIndex);
-  }
-
-  Offset _getButtonOffset() {
-    final RenderBox renderBox =
-        _buttonKey.currentContext?.findRenderObject() as RenderBox;
-
-    return renderBox.localToGlobal(Offset.zero);
   }
 
   @override
@@ -232,96 +225,73 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildOptionsOverlay() {
-    return Positioned(
-      top: _getButtonOffset().dy - (!Platform.isLinux ? 156 : 128),
-      left: _getButtonOffset().dx,
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: AdaptiveTheme.of(context).mode.isDark
-                  ? Colors.black
-                  : Colors.grey,
-              blurRadius: 10.0,
-              offset: const Offset(2, 4),
-            ),
-          ],
-          color: AdaptiveTheme.of(context).theme.canvasColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(16),
-          ),
+    return FloatingMenuComponent(
+      upPosition: 192,
+      downPosition: 32,
+      buttonKey: _buttonKey,
+      actions: [
+        TextButton.icon(
+          onPressed: () {
+            BetterFeedback.of(context).show(
+              (UserFeedback feedback) => _uploadFeedback(
+                feedback,
+              ),
+            );
+          },
+          icon: const Icon(UniconsLine.feedback),
+          label: Text(AppLocalizations.of(context).feedbackButton),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              TextButton.icon(
-                onPressed: () {
-                  BetterFeedback.of(context).show(
-                    (UserFeedback feedback) => _uploadFeedback(
-                      feedback,
+        const Gap(8),
+        Stack(
+          children: [
+            TextButton.icon(
+              onPressed: () => showUpdateDialog(context: context),
+              icon: const Icon(UniconsLine.sync),
+              label: Text(AppLocalizations.of(context).updateButton),
+            ),
+            FutureBuilder(
+              future: UpdateHelper.isAppUpdateAvailable(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox.shrink();
+                }
+
+                if (snapshot.hasError) {
+                  return const Positioned(
+                    top: 2.0,
+                    right: 2.0,
+                    child: Icon(
+                      Icons.error,
+                      color: Colors.red,
                     ),
                   );
-                },
-                icon: const Icon(UniconsLine.feedback),
-                label: Text(AppLocalizations.of(context).feedbackButton),
-              ),
-              const Gap(8),
-              TextButton.icon(
-                onPressed: () {
-                  showLicensePage(context: context);
-                },
-                icon: const Icon(UniconsLine.keyhole_circle),
-                label: Text(AppLocalizations.of(context).licenseButton),
-              ),
-              const Gap(8),
-              Stack(
-                children: [
-                  TextButton.icon(
-                    onPressed: () => showUpdateDialog(context: context),
-                    icon: const Icon(UniconsLine.sync),
-                    label: Text(AppLocalizations.of(context).updateButton),
-                  ),
-                  FutureBuilder(
-                    future: UpdateHelper.isAppUpdateAvailable(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SizedBox.shrink();
-                      }
+                }
 
-                      if (snapshot.hasError) {
-                        return const Positioned(
-                          top: 2.0,
-                          right: 2.0,
-                          child: Icon(
-                            Icons.error,
-                            color: Colors.red,
-                          ),
-                        );
-                      }
+                if (snapshot.data == true) {
+                  return const Positioned(
+                    top: 2.0,
+                    right: 2.0,
+                    child: CircleAvatar(
+                      radius: 4.0,
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
 
-                      if (snapshot.data == true) {
-                        return const Positioned(
-                          top: 2.0,
-                          right: 2.0,
-                          child: CircleAvatar(
-                            radius: 4.0,
-                            backgroundColor: Colors.green,
-                          ),
-                        );
-                      }
-
-                      return const SizedBox();
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
+                return const SizedBox();
+              },
+            ),
+          ],
         ),
-      ).animate().fadeIn(
-            duration: 200.ms,
-          ),
+        const Gap(8),
+        TextButton.icon(
+          onPressed: () {
+            showLicensePage(context: context);
+          },
+          icon: const Icon(UniconsLine.keyhole_circle),
+          label: Text(AppLocalizations.of(context).licenseButton),
+        ),
+      ],
     );
   }
 
