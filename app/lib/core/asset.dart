@@ -76,8 +76,8 @@ class AssetManager {
   /// The [key] parameter should be a string representing the path of the asset to be retrieved.
   ///
   /// The method returns a [Uint8List] that represents the asset in binary format.
-  static ByteData _getAssetAsBytes(String key) {
-    return _getRawAsset(key) as ByteData;
+  static Uint8List _getAssetAsBytes(String key) {
+    return (_getRawAsset(key) as ByteData).buffer.asUint8List();
   }
 
   /// Retrieves an asset from the asset pool in plain text format.
