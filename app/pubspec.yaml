@@ -128,6 +128,8 @@ flutter:
     - assets/prompts/sessions_title_generator.txt
     # Model Metadata
     - assets/metadata/ollama_models.json
+    # App metadata
+    - assets/metadata/app_changelog.json
     # Logos
     - assets/graphics/logos/open_local_ui.svg
     - assets/graphics/logos/flutter.svg
