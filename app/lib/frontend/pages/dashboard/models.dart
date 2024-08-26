@@ -362,17 +362,23 @@ class _ModelListTileState extends State<ModelListTile> {
 
     if (metadata['models'][cleanModelName]['vision']) {
       tags.add(
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
+        Chip(
+          avatar: Icon(
+            UniconsLine.eye,
             color: Colors.purple,
           ),
-          padding: const EdgeInsets.all(4.0),
-          child: const Text(
-            'Vision',
+          label: Text(
+            'vision'.toUpperCase(),
             style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          backgroundColor: Colors.purple.withOpacity(0.25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            side: BorderSide(
+              color: Colors.purple,
+              width: 1,
             ),
           ),
         ),
@@ -381,17 +387,23 @@ class _ModelListTileState extends State<ModelListTile> {
 
     if (metadata['models'][cleanModelName]['tools']) {
       tags.add(
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
+        Chip(
+          avatar: Icon(
+            UniconsLine.drill,
             color: Colors.blue,
           ),
-          padding: const EdgeInsets.all(4.0),
-          child: const Text(
-            'Tools',
+          label: Text(
+            'tools'.toUpperCase(),
             style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          backgroundColor: Colors.blue.withOpacity(0.25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            side: BorderSide(
+              color: Colors.blue,
+              width: 1,
             ),
           ),
         ),
@@ -400,17 +412,23 @@ class _ModelListTileState extends State<ModelListTile> {
 
     if (metadata['models'][cleanModelName]['embedding']) {
       tags.add(
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
+        Chip(
+          avatar: Icon(
+            UniconsLine.arrow,
             color: Colors.green,
           ),
-          padding: const EdgeInsets.all(4.0),
-          child: const Text(
-            'Embedding',
+          label: Text(
+            'embedding'.toUpperCase(),
             style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          backgroundColor: Colors.green.withOpacity(0.25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            side: BorderSide(
+              color: Colors.green,
+              width: 1,
             ),
           ),
         ),
@@ -419,17 +437,23 @@ class _ModelListTileState extends State<ModelListTile> {
 
     if (metadata['models'][cleanModelName]['code']) {
       tags.add(
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
+        Chip(
+          avatar: Icon(
+            UniconsLine.brackets_curly,
             color: Colors.deepOrange,
           ),
-          padding: const EdgeInsets.all(4.0),
-          child: const Text(
-            'Code',
+          label: Text(
+            'code'.toUpperCase(),
             style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          backgroundColor: Colors.deepOrange.withOpacity(0.25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            side: BorderSide(
+              color: Colors.deepOrange,
+              width: 1,
             ),
           ),
         ),
