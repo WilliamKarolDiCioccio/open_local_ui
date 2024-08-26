@@ -411,7 +411,6 @@ class SystemAnalysisPage extends StatefulWidget {
 }
 
 class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
-  final _key = GlobalKey<_SystemAnalysisPageState>();
   List<GpuInfoStruct>? _gpusInfo;
 
   Future<List<GpuInfoStruct>> _getGpusInfo() async {
@@ -447,7 +446,7 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
     final gpuName = bestGpu?.deviceName ?? "Unknown GPU";
     final gpuMemory = bestGpu?.memoryAmount ?? 0;
 
-    return AppLocalizations.of(_key.currentContext!).systemInfo(
+    return AppLocalizations.of(context).systemInfo(
       osName,
       osVersion,
       cpuName,
@@ -470,12 +469,15 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
                 : Colors.black,
           );
         } else if (snapshot.hasError) {
-          SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(context).snackBarErrorTitle,
-            AppLocalizations.of(context).errorRetrievingSystemInfoSnackBar,
-            SnackbarContentType.failure,
-          );
-          return const SizedBox.shrink();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            SnackBarHelpers.showSnackBar(
+              AppLocalizations.of(context).snackBarErrorTitle,
+              AppLocalizations.of(context).errorRetrievingSystemInfoSnackBar,
+              SnackbarContentType.failure,
+            );
+          });
+
+          return Text(snapshot.error.toString());
         } else {
           return TypewriterTextComponent(
             text: snapshot.data ?? '',
