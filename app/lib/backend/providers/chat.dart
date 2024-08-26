@@ -283,14 +283,14 @@ class ChatProvider extends ChangeNotifier {
   /// If the session is not selected, the function returns the newly created [ChatSystemMessageWrapper] without adding it to the memory or the database.
   ///
   /// Returns the newly created [ChatSystemMessageWrapper].
-  ChatSystemMessageWrapper addSystemMessage(String message) {
+  void addSystemMessage(String message) {
     final chatMessage = ChatSystemMessageWrapper(
       message,
       DateTime.now(),
       const Uuid().v4(),
     );
 
-    if (!isSessionSelected) return chatMessage;
+    if (!isSessionSelected) return;
 
     _session!.messages.add(chatMessage);
 
@@ -299,8 +299,6 @@ class ChatProvider extends ChangeNotifier {
     ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
-
-    return _session!.messages.last as ChatSystemMessageWrapper;
   }
 
   /// Adds a chat message of type model to the current session and to the model's memory and updates the session in the database.
@@ -308,10 +306,10 @@ class ChatProvider extends ChangeNotifier {
   /// If the session is not selected, the function returns the newly created [ChatModelMessageWrapper] without adding it to the memory or the database.
   ///
   /// Returns the newly created [ChatModelMessageWrapper].
-  StreamSubscription<String> addModelMessage(
+  Future<void> addModelMessage(
     Stream<String> messageStream,
     String senderName,
-  ) {
+  ) async {
     final StringBuffer messageBuffer = StringBuffer();
     final DateTime timestamp = DateTime.now();
     final String messageId = const Uuid().v4();
@@ -325,6 +323,8 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.messages.add(chatMessage);
 
+    final completer = Completer<ChatModelMessageWrapper>();
+
     final StreamSubscription<String> subscription = messageStream.listen(
       (message) {
         messageBuffer.write(message);
@@ -332,17 +332,24 @@ class ChatProvider extends ChangeNotifier {
         _session!.messages.last.text = messageBuffer.toString();
       },
       onDone: () {
-        if (isSessionSelected) {
-          _session!.memory.chatHistory.addAIChatMessage(
-            messageBuffer.toString(),
-          );
-          ChatSessionsDatabase.updateSession(_session!);
-          notifyListeners();
-        }
+        _session!.memory.chatHistory.addAIChatMessage(
+          messageBuffer.toString(),
+        );
+
+        ChatSessionsDatabase.updateSession(_session!);
+
+        completer.complete(_session!.messages.last as ChatModelMessageWrapper);
+
+        notifyListeners();
+      },
+      onError: (error) {
+        completer.completeError(error);
       },
     );
 
-    return subscription;
+    await completer.future;
+
+    await subscription.cancel();
   }
 
   /// Adds a chat message of type user to the current session and to the model's memory and updates the session in the database.
@@ -352,7 +359,7 @@ class ChatProvider extends ChangeNotifier {
   /// User messages have optional [imageBytes] attached to them for use in multimodal models.
   ///
   /// Returns the newly created [ChatUserMessageWrapper].
-  ChatMessageWrapper addUserMessage(String message, Uint8List? imageBytes) {
+  void addUserMessage(String message, Uint8List? imageBytes) {
     final chatMessage = ChatUserMessageWrapper(
       message,
       DateTime.now(),
@@ -360,7 +367,7 @@ class ChatProvider extends ChangeNotifier {
       imageBytes: imageBytes,
     );
 
-    if (_session == null) return chatMessage;
+    if (_session == null) return;
 
     _session!.messages.add(chatMessage);
     _session!.memory.chatHistory.addHumanChatMessage(message);
@@ -368,8 +375,6 @@ class ChatProvider extends ChangeNotifier {
     ChatSessionsDatabase.updateSession(_session!);
 
     notifyListeners();
-
-    return _session!.messages.last;
   }
 
   /// Removes the the message with the given UUID and its childs from the current session and from the model's memory and updates the session in the database.
@@ -551,7 +556,7 @@ class ChatProvider extends ChangeNotifier {
 
       final prompt = _buildPrompt(text, imageBytes: imageBytes);
 
-      addModelMessage(_processChain(prompt), _modelName);
+      await addModelMessage(_processChain(prompt), _modelName);
 
       _session!.status = ChatSessionStatus.idle;
 
@@ -654,7 +659,7 @@ class ChatProvider extends ChangeNotifier {
         imageBytes: userMessage.imageBytes,
       );
 
-      addModelMessage(_processChain(prompt), _modelName);
+      await addModelMessage(_processChain(prompt), _modelName);
 
       _session!.status = ChatSessionStatus.idle;
 
