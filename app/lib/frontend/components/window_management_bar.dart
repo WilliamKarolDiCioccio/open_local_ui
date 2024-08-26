@@ -1,10 +1,10 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:system_theme/system_theme.dart';
 
-class WindowManagementBar extends StatelessWidget {
-  const WindowManagementBar({super.key});
+class WindowManagementBarComponent extends StatelessWidget {
+  const WindowManagementBarComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +18,22 @@ class WindowManagementBar extends StatelessWidget {
             children: [
               MinimizeWindowButton(
                 colors: WindowButtonColors(
-                  iconNormal: SystemTheme.accentColor.accent,
+                  iconNormal:
+                      AdaptiveTheme.of(context).theme.colorScheme.secondary,
                   iconMouseOver: Colors.green,
                 ),
               ),
               MaximizeWindowButton(
                 colors: WindowButtonColors(
-                  iconNormal: SystemTheme.accentColor.accent,
+                  iconNormal:
+                      AdaptiveTheme.of(context).theme.colorScheme.secondary,
                   iconMouseOver: Colors.orange,
                 ),
               ),
               CloseWindowButton(
                 colors: WindowButtonColors(
-                  iconNormal: SystemTheme.accentColor.accent,
+                  iconNormal:
+                      AdaptiveTheme.of(context).theme.colorScheme.secondary,
                   iconMouseOver: Colors.red,
                 ),
               ),

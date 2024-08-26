@@ -5,6 +5,11 @@ import 'package:language_code/language_code.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// A provider class for managing the application's locale.
+///
+/// This class provides access to the user's selected locale, language code, currency name and symbol.
+///
+/// This class extends the [ChangeNotifier] class, allowing it to notify listeners when the model settings change.
 class LocaleProvider extends ChangeNotifier {
   static const systemLangCode = 'system';
 
@@ -52,6 +57,7 @@ class LocaleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Sets the user's selected language and saves it to shared preferences.
   Future<void> setLanguage(String languageCode) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('locale', languageCode);

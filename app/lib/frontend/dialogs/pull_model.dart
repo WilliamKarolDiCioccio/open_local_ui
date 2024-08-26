@@ -74,7 +74,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
                   final total = response.total;
                   final completed = response.completed;
                   final progressValue = completed / total;
-                  final duration = HTTPMethods.calculateRemainingTime(response);
+                  final duration = HTTPHelpers.calculateRemainingTime(response);
                   final fmt = NumberFormat('#00');
                   final progressBarText = AppLocalizations.of(context)
                       .progressBarStatusWithTimeText(

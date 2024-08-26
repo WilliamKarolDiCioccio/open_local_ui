@@ -108,7 +108,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
             url = _extractUrlFromQuery(text) ?? text;
           }
 
-          final response = await HTTPMethods.get(url);
+          final response = await HTTPHelpers.get(url);
 
           if (response.statusCode != 200) {
             setState(() {

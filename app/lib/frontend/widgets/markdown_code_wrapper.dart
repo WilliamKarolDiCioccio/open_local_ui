@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/asset.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:unicons/unicons.dart';
 
 Map<String, String> languageToAsset = {
@@ -83,6 +83,7 @@ class MarkdownCodeWrapperWidget extends StatefulWidget {
 }
 
 class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
+  final _key = GlobalKey<_CodeWrapperState>();
   bool _isCopied = false;
   bool _isSaved = false;
 
@@ -116,13 +117,13 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
       await file.writeAsString(widget.text);
 
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).snackBarSuccessTitle,
+        AppLocalizations.of(_key.currentContext!).snackBarSuccessTitle,
         'File saved at: ${file.path}',
         SnackbarContentType.success,
       );
     } else {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).snackBarErrorTitle,
+        AppLocalizations.of(_key.currentContext!).snackBarErrorTitle,
         'No directory selected',
         SnackbarContentType.failure,
       );
@@ -155,8 +156,9 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
                     Tooltip(
                       message: widget.language.toUpperCase(),
                       child: SvgPicture.memory(
-                        AssetManager.getAssetAsBytes(
+                        AssetManager.getAsset(
                           languageToAsset[widget.language]!,
+                          type: AssetType.binary,
                         ),
                         width: 20,
                         height: 20,

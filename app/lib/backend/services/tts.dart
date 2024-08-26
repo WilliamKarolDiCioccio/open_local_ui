@@ -6,6 +6,11 @@ import 'package:open_local_ui/backend/services/protobufs/server.pbgrpc.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path/path.dart' as p;
 
+/// This class provides Text-to-Speech (TTS) functionality.
+///
+/// This singleton class provides a communication channel to the TTS server written in Python through gRPC the protocol.
+///
+/// NOTE: This class is instantiated in the main Isolate when execution begins.
 class TTSService {
   static late ClientChannel _channel;
   static late TTSClient _stub;

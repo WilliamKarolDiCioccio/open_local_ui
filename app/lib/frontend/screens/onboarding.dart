@@ -11,15 +11,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:open_local_ui/components/rive_animation.dart';
-import 'package:open_local_ui/components/typewriter_text.dart';
+import 'package:open_local_ui/frontend/components/rive_animation.dart';
+import 'package:open_local_ui/frontend/components/typewriter_text.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/process.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/widgets/preference_selector.dart';
-import 'package:open_local_ui/frontend/widgets/window_management_bar.dart';
+import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_info2/system_info2.dart';
 import 'package:system_theme/system_theme.dart';
@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               title: AppLocalizations.of(context).setupPageWelcomeSlideTitle,
               bodyWidget: TypewriterTextComponent(
                 text: AppLocalizations.of(context).setupPageWelcomeSlideText,
-                duration: 1500.ms,
+                duration: 3000.ms,
               ),
               decoration: const PageDecoration(
                 titleTextStyle: TextStyle(
@@ -265,7 +265,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           right: 0.0,
           width: MediaQuery.of(context).size.width,
           height: 32.0,
-          child: const WindowManagementBar(),
+          child: const WindowManagementBarComponent(),
         ),
       ],
     );
@@ -407,10 +407,11 @@ class SystemAnalysisPage extends StatefulWidget {
   const SystemAnalysisPage({super.key});
 
   @override
-  _SystemAnalysisPageState createState() => _SystemAnalysisPageState();
+  State<SystemAnalysisPage> createState() => _SystemAnalysisPageState();
 }
 
 class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
+  final _key = GlobalKey<_SystemAnalysisPageState>();
   List<GpuInfoStruct>? _gpusInfo;
 
   Future<List<GpuInfoStruct>> _getGpusInfo() async {
@@ -446,7 +447,7 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
     final gpuName = bestGpu?.deviceName ?? "Unknown GPU";
     final gpuMemory = bestGpu?.memoryAmount ?? 0;
 
-    return AppLocalizations.of(context).systemInfo(
+    return AppLocalizations.of(_key.currentContext!).systemInfo(
       osName,
       osVersion,
       cpuName,
@@ -490,10 +491,12 @@ class ThemeSelectionPage extends StatefulWidget {
   const ThemeSelectionPage({super.key});
 
   @override
-  _ThemeSelectionPageState createState() => _ThemeSelectionPageState();
+  State<ThemeSelectionPage> createState() => _ThemeSelectionPageState();
 }
 
 class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
+  final GlobalKey<_ThemeSelectionPageState> _key = GlobalKey();
+
   Future<bool> _isAccentSynced() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('sync_accent_color') ?? false;
@@ -602,13 +605,13 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
             const Gap(8.0),
             Text(
               AppLocalizations.of(context).settingsPageAccentColorLabel,
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),
             GestureDetector(
               onTap: () async {
                 showColorPickerDialog(
-                  context,
+                  _key.currentContext!,
                   await _getAccent(),
                 ).then(
                   (color) async {
@@ -618,7 +621,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
                     if ((prefs.getBool('sync_accent_color') ?? false) ==
                         false) {
-                      _setAccent(context, color);
+                      _setAccent(_key.currentContext!, color);
                     } else {
                       setState(() {});
                     }
@@ -653,7 +656,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
             const Gap(8.0),
             Text(
               AppLocalizations.of(context).settingsPageSyncAccentColorLabel,
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),
             FutureBuilder(
@@ -673,13 +676,14 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
                       if (value) {
                         await prefs.setBool('sync_accent_color', true);
-                        _setAccent(context, SystemTheme.accentColor.accent);
+                        _setAccent(_key.currentContext!,
+                            SystemTheme.accentColor.accent);
                       } else {
                         final savedColorCode = prefs.getString('accent_color');
                         prefs.setBool('sync_accent_color', false);
 
                         _setAccent(
-                          context,
+                          _key.currentContext!,
                           ColorHelpers.colorFromHex(
                             savedColorCode ?? Colors.cyan.hex,
                           ),

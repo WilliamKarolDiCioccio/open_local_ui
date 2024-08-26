@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,13 +15,13 @@ import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/about.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/chat.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/models.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/sessions.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/settings.dart';
-import 'package:open_local_ui/frontend/widgets/window_management_bar.dart';
+import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_info2/system_info2.dart';
@@ -36,10 +37,10 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final PageController _pageController = PageController();
-  final OverlayPortalController _overlayPortalController =
-      OverlayPortalController();
-  final GlobalKey _buttonKey = GlobalKey();
+  final _key = GlobalKey<_DashboardScreenState>();
+  final _buttonKey = GlobalKey();
+  final _pageController = PageController();
+  final _overlayPortalController = OverlayPortalController();
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _checkForUpdates();
+      _registerBatteryCallback();
     });
   }
 
@@ -57,13 +59,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.dispose();
   }
 
+  void _registerBatteryCallback() {
+    final battery = Battery();
+
+    battery.onBatteryStateChanged.listen((BatteryState state) {
+      switch (state) {
+        case BatteryState.discharging:
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(_key.currentContext!).snackBarWarningTitle,
+            AppLocalizations.of(_key.currentContext!).deviceUnpluggedSnackBar,
+            SnackbarContentType.warning,
+          );
+          logger.i('Battery charging');
+          break;
+        case BatteryState.charging:
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(_key.currentContext!).snackBarSuccessTitle,
+            AppLocalizations.of(_key.currentContext!).devicePluggedInSnackBar,
+            SnackbarContentType.success,
+          );
+          logger.i('Battery discharging');
+          break;
+        default:
+          logger.i('Battery state: $state');
+          break;
+      }
+    });
+  }
+
   void _checkForUpdates() {
     UpdateHelper.isAppUpdateAvailable().then(
       (updateAvailable) {
         if (updateAvailable) {
           SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(context).snackBarUpdateTitle,
-            AppLocalizations.of(context)
+            AppLocalizations.of(_key.currentContext!).snackBarUpdateTitle,
+            AppLocalizations.of(_key.currentContext!)
                 .clickToDownloadLatestAppVersionSnackBar,
             SnackbarContentType.info,
             onTap: () => showUpdateDialog(
@@ -107,7 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           right: 0.0,
           width: MediaQuery.of(context).size.width,
           height: 32.0,
-          child: const WindowManagementBar(),
+          child: const WindowManagementBarComponent(),
         ),
       ],
     );

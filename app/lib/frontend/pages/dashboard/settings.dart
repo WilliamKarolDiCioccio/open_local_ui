@@ -9,7 +9,7 @@ import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/locale.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_theme/system_theme.dart';
@@ -63,6 +63,8 @@ class ThemeSettings extends StatefulWidget {
 }
 
 class _ThemeSettingsState extends State<ThemeSettings> {
+  final _key = GlobalKey<_ThemeSettingsState>();
+
   Future<bool> _isAccentSynced() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('sync_accent_color') ?? false;
@@ -171,13 +173,13 @@ class _ThemeSettingsState extends State<ThemeSettings> {
             const Gap(8.0),
             Text(
               AppLocalizations.of(context).settingsPageAccentColorLabel,
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),
             GestureDetector(
               onTap: () async {
                 showColorPickerDialog(
-                  context,
+                  _key.currentContext!,
                   await _getAccent(),
                 ).then(
                   (color) async {
@@ -187,7 +189,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
                     if ((prefs.getBool('sync_accent_color') ?? false) ==
                         false) {
-                      _setAccent(context, color);
+                      _setAccent(_key.currentContext!, color);
                     } else {
                       setState(() {});
                     }
@@ -222,7 +224,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
             const Gap(8.0),
             Text(
               AppLocalizations.of(context).settingsPageSyncAccentColorLabel,
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             const Gap(8.0),
             FutureBuilder(
@@ -242,13 +244,14 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
                       if (value) {
                         await prefs.setBool('sync_accent_color', true);
-                        _setAccent(context, SystemTheme.accentColor.accent);
+                        _setAccent(_key.currentContext!,
+                            SystemTheme.accentColor.accent);
                       } else {
                         final savedColorCode = prefs.getString('accent_color');
                         prefs.setBool('sync_accent_color', false);
 
                         _setAccent(
-                          context,
+                          _key.currentContext!,
                           ColorHelpers.colorFromHex(
                             savedColorCode ?? Colors.cyan.hex,
                           ),

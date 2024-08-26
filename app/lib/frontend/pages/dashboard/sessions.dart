@@ -2,15 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/models/chat_session.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
-import 'package:open_local_ui/core/formatters.dart';
+import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -409,7 +408,7 @@ class _SessionListTileState extends State<SessionListTile> {
           ? null
           : Text(
               AppLocalizations.of(context).createdAtTextShared(
-                Fortmatters.standardDate(widget.session.createdAt),
+                FortmatHelpers.standardDate(widget.session.createdAt),
               ),
             ),
       trailing: Row(

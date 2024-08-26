@@ -11,7 +11,7 @@ class TypewriterTextComponent extends StatefulWidget {
   });
 
   @override
-  _TypewriterTextComponentState createState() =>
+  State<TypewriterTextComponent> createState() =>
       _TypewriterTextComponentState();
 }
 

@@ -7,7 +7,7 @@ import 'package:open_local_ui/backend/models/model.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/model.dart';
 import 'package:open_local_ui/core/asset.dart';
-import 'package:open_local_ui/core/formatters.dart';
+import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/dialogs/create_model.dart';
 import 'package:open_local_ui/frontend/dialogs/import_model.dart';
@@ -15,7 +15,7 @@ import 'package:open_local_ui/frontend/dialogs/model_details.dart';
 import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
 import 'package:open_local_ui/frontend/dialogs/pull_model.dart';
 import 'package:open_local_ui/frontend/dialogs/push_model.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -352,7 +352,7 @@ class _ModelListTileState extends State<ModelListTile> {
 
     final cleanModelName = modelName.toLowerCase().split(':')[0];
 
-    final metadata = AssetManager.getAssetAsJson(metadataPath);
+    final metadata = AssetManager.getAsset(metadataPath, type: AssetType.json);
 
     if (!metadata['models'].containsKey(cleanModelName)) {
       return const SizedBox.shrink();
@@ -451,7 +451,7 @@ class _ModelListTileState extends State<ModelListTile> {
       title: Text(widget.model.name),
       subtitle: Text(
         AppLocalizations.of(context).modifiedAtTextShared(
-          Fortmatters.standardDate(widget.model.modifiedAt),
+          FortmatHelpers.standardDate(widget.model.modifiedAt),
         ),
       ),
       trailing: Row(

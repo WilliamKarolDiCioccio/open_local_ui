@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // ignore: depend_on_referenced_packages
@@ -9,7 +8,7 @@ import 'package:flutter_highlight/themes/atom-one-dark.dart';
 import 'package:flutter_highlight/themes/atom-one-light.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:open_local_ui/constants/style.dart';
-import 'package:open_local_ui/frontend/helpers/snackbar.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/widgets/markdown_code_wrapper.dart';
 import 'package:url_launcher/url_launcher.dart';
 

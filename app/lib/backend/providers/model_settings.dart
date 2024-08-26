@@ -7,6 +7,11 @@ import 'package:flutter/foundation.dart';
 import 'package:open_local_ui/backend/models/model.dart';
 import 'package:path_provider/path_provider.dart';
 
+/// A provider class for managing model settings.
+///
+/// This class extends the [ChangeNotifier] class, allowing it to notify listeners when the model settings change.
+///
+/// /// NOTE: You'll see some methods having a `Static` suffix (see [loadStatic]). This is because they are used outside the widget tree where providers are not accessible.
 class ModelSettingsProvider extends ChangeNotifier {
   final String modelName;
   late ModelSettings _settings;
@@ -14,12 +19,9 @@ class ModelSettingsProvider extends ChangeNotifier {
 
   ModelSettingsProvider(this.modelName);
 
-  Future<ModelSettings> load() async {
-    _settings = await loadStatic(modelName);
-    notifyListeners();
-    return _settings;
-  }
-
+  /// Loads the settings for the given model.
+  ///
+  /// Returns a [Future] that evaluates to the [ModelSettings] object when the settings are loaded.
   static Future<ModelSettings> loadStatic(String modelName) async {
     final settingsFile = await _getSettingsFile(modelName);
 
@@ -32,6 +34,20 @@ class ModelSettingsProvider extends ChangeNotifier {
     return ModelSettings.fromJson({});
   }
 
+  /// Loads the settings for the given model. Wraps [loadStatic] and notifies listeners.
+  ///
+  /// Returns a [Future] that evaluates to the [ModelSettings] object when the settings are loaded.
+  Future<ModelSettings> load() async {
+    _settings = await loadStatic(modelName);
+    notifyListeners();
+    return _settings;
+  }
+
+  /// Returns the value of a setting.
+  ///
+  /// The [settingName] parameter is the name of the setting to get.
+  ///
+  /// Returns the value of the setting.
   dynamic get(String settingName) {
     switch (settingName) {
       case 'systemPrompt':
@@ -107,7 +123,14 @@ class ModelSettingsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> set(String settingName, dynamic newValue) async {
+  /// Sets the value of a setting.
+  ///
+  /// The [settingName] parameter is the name of the setting to set, and the [newValue] parameter is the new value of the setting.
+  ///
+  /// This sets the dirty flag to `true`. The settings are not saved until the [save] method is called.
+  ///
+  /// Return a [Future] that evaluates to `null` when the setting is set.
+  Future set(String settingName, dynamic newValue) async {
     switch (settingName) {
       case 'systemPrompt':
         _settings.systemPrompt = newValue;
@@ -187,7 +210,29 @@ class ModelSettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> save() async {
+  /// Returns the settings file for the given model.
+  ///
+  /// The [modelName] parameter is the name of the model.
+  ///
+  /// You can find the model in the application support directory under the `models` directory with name `modelName.json`.
+  ///
+  /// Returns a [Future] that evaluates to the settings file.
+  static Future<File> _getSettingsFile(String modelName) async {
+    final dir = await getApplicationSupportDirectory();
+    final cleanName = modelName.toLowerCase().replaceAll(RegExp(r'\W'), '_');
+    final settingsFile = File('${dir.path}/models/$cleanName.json');
+
+    return settingsFile;
+  }
+
+  /// Saves the settings to the settings file.
+  ///
+  /// This resets the dirty flag to `false`.
+  ///
+  /// You can find the settings file (see [_getSettingsFile]).
+  ///
+  /// Return a [Future] that evaluates to `null` when the settings have been saved.
+  Future save() async {
     _isDirty = false;
 
     final settingsFile = await _getSettingsFile(modelName);
@@ -203,7 +248,10 @@ class ModelSettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> reset() async {
+  /// Returns to the default settings.
+  ///
+  /// Retturn a [Future] that evaluates to `null` when the settings have been reset.
+  Future reset() async {
     _isDirty = false;
 
     final settingsFile = await _getSettingsFile(modelName);
@@ -214,20 +262,18 @@ class ModelSettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  static Future<File> _getSettingsFile(String modelName) async {
-    final dir = await getApplicationSupportDirectory();
-    final cleanName = modelName.toLowerCase().replaceAll(RegExp(r'\W'), '_');
-    final settingsFile = File('${dir.path}/models/$cleanName.json');
-
-    return settingsFile;
-  }
-
-  bool get isDirty => _isDirty;
-
-  static Future<void> removeStatic(String name) async {
+  /// Removes the settings file for the given model.
+  ///
+  /// You can find the settings file (see [_getSettingsFile]).
+  ///
+  /// Return a [Future] that evaluates to `null` when the settings file is removed.
+  static Future removeStatic(String name) async {
     final settingsFile = await _getSettingsFile(name);
     if (await settingsFile.exists()) {
       await settingsFile.delete();
     }
   }
+
+  /// Returns whether the settings have been modified since the last save and have not been saved yet.
+  bool get isDirty => _isDirty;
 }

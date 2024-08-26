@@ -98,7 +98,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
                   final total = response.total;
                   final completed = response.completed;
                   final progressValue = completed / total;
-                  final duration = HTTPMethods.calculateRemainingTime(response);
+                  final duration = HTTPHelpers.calculateRemainingTime(response);
                   final progressBarText = AppLocalizations.of(context)
                       .progressBarStatusWithTimeText(
                     response.status,
