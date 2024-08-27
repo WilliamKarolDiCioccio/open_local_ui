@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
-import 'package:open_local_ui/backend/providers/chat.dart';
+import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/frontend/widgets/chat_example_questions.dart';
 import 'package:open_local_ui/frontend/widgets/chat_input_field.dart';
 import 'package:open_local_ui/frontend/widgets/chat_message_list.dart';

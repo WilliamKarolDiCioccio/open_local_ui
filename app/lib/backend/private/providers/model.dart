@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/backend/models/model.dart';
-import 'package:open_local_ui/backend/models/ollama_responses.dart';
-import 'package:open_local_ui/backend/providers/model_settings.dart';
+import 'package:open_local_ui/backend/private/models/model.dart';
+import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
+import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';

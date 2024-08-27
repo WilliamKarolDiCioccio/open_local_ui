@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:open_local_ui/backend/models/model.dart';
+import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// A provider class for managing model settings.

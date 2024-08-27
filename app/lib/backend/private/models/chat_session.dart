@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:langchain/langchain.dart';
-import 'package:open_local_ui/backend/models/chat_message.dart';
+import 'package:open_local_ui/backend/private/models/chat_message.dart';
 
 part 'chat_session.g.dart';
 
@@ -92,6 +92,7 @@ class ChatSessionWrapper {
       const ChatMessagesJSONConverter().fromJson(json);
 
   static List<Map<String, dynamic>> _messagesToJson(
-          List<ChatMessageWrapper> messages,) =>
+    List<ChatMessageWrapper> messages,
+  ) =>
       const ChatMessagesJSONConverter().toJson(messages);
 }

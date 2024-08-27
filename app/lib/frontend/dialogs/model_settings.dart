@@ -5,8 +5,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/backend/models/model.dart';
-import 'package:open_local_ui/backend/providers/model_settings.dart';
+import 'package:open_local_ui/backend/private/models/model.dart';
+import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -114,8 +114,9 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     const Divider(),
                     const Gap(8.0),
                     ExpansionTile(
-                      title: Text(AppLocalizations.of(context)
-                          .modelGeneralSettingsLabel,),
+                      title: Text(
+                        AppLocalizations.of(context).modelGeneralSettingsLabel,
+                      ),
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -139,8 +140,10 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                       ],
                     ),
                     ExpansionTile(
-                      title: Text(AppLocalizations.of(context)
-                          .modelPerformanceSettingsLabel,),
+                      title: Text(
+                        AppLocalizations.of(context)
+                            .modelPerformanceSettingsLabel,
+                      ),
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -175,8 +178,9 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                       ],
                     ),
                     ExpansionTile(
-                      title: Text(AppLocalizations.of(context)
-                          .modelPenaltySettingsLabel,),
+                      title: Text(
+                        AppLocalizations.of(context).modelPenaltySettingsLabel,
+                      ),
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -215,7 +219,8 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     ),
                     ExpansionTile(
                       title: Text(
-                          AppLocalizations.of(context).modelMiscSettingsLabel,),
+                        AppLocalizations.of(context).modelMiscSettingsLabel,
+                      ),
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -392,14 +397,17 @@ class BoolSettingWidget extends StatelessWidget {
           ),
           dropdownMenuEntries: [
             DropdownMenuEntry<bool?>(
-                value: null,
-                label: AppLocalizations.of(context).settingsModelDefault,),
+              value: null,
+              label: AppLocalizations.of(context).settingsModelDefault,
+            ),
             DropdownMenuEntry<bool?>(
-                value: true,
-                label: AppLocalizations.of(context).settingsModelOn,),
+              value: true,
+              label: AppLocalizations.of(context).settingsModelOn,
+            ),
             DropdownMenuEntry<bool?>(
-                value: false,
-                label: AppLocalizations.of(context).settingsModelOff,),
+              value: false,
+              label: AppLocalizations.of(context).settingsModelOff,
+            ),
           ],
           textStyle: TextStyle(
             color: switch (value) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/backend/models/model.dart';
+import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:units_converter/units_converter.dart';
 
 class ModelDetailsDialog extends StatelessWidget {

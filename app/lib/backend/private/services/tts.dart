@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:grpc/grpc.dart';
-import 'package:open_local_ui/backend/services/protobufs/server.pbgrpc.dart';
+import 'package:open_local_ui/backend/private/services/protobufs/server.pbgrpc.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path/path.dart' as p;
 

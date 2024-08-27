@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:open_local_ui/backend/models/chat_session.dart';
+import 'package:open_local_ui/backend/private/models/chat_session.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ChatSessionsDatabase {
