@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
@@ -63,7 +64,7 @@ class ChatProvider extends ChangeNotifier {
         _showStatistics = false,
         _temperature = 0.8,
         _keepAliveTime = 5 {
-    loadSettings();
+    load();
   }
 
   /// Called when the provider is initialized to load model specific, global override settings and chat sessions.
@@ -73,10 +74,10 @@ class ChatProvider extends ChangeNotifier {
   /// Chat sessions are stored in the app's data directory using the Hive database (see [ChatSessionsDatabase]).
   ///
   /// Returns a [Future] that evaluates to `void`.
-  void loadSettings() async {
+  void load() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final models = ModelProvider.getModelsStatic();
+    final models = GetIt.instance<ModelProvider>().models;
     final modelName = prefs.getString('modelName') ?? '';
 
     if (models.any((model) => model.name == modelName)) {
@@ -102,6 +103,12 @@ class ChatProvider extends ChangeNotifier {
     _sessions.addAll(
       await Isolate.run(
         () async {
+          final getIt = GetIt.instance;
+          getIt.registerSingleton<ChatSessionsDatabase>(ChatSessionsDatabase());
+
+          // Using Hive.init in the isolate instead of the DB init method due to path_provider initialization issues
+          Hive.init('${dataDir.path}/sessions');
+
           final legacySessionsDir = Directory(
             '${docsDir.path}/OpenLocalUI/saved_data',
           );
@@ -128,8 +135,7 @@ class ChatProvider extends ChangeNotifier {
             legacySessionsDir.deleteSync(recursive: true);
           }
 
-          Hive.init('${dataDir.path}/sessions');
-          return await ChatSessionsDatabase.loadSessions();
+          return await GetIt.instance<ChatSessionsDatabase>().loadSessions();
         },
       ),
     );
@@ -151,7 +157,7 @@ class ChatProvider extends ChangeNotifier {
       [],
     ));
 
-    ChatSessionsDatabase.saveSession(_sessions.last);
+    GetIt.instance<ChatSessionsDatabase>().saveSession(_sessions.last);
 
     notifyListeners();
 
@@ -191,7 +197,7 @@ class ChatProvider extends ChangeNotifier {
 
     for (final message in _session!.messages.reversed) {
       if (message is ChatModelMessageWrapper) {
-        final models = ModelProvider.getModelsStatic();
+        final models = GetIt.instance<ModelProvider>().models;
 
         if (models.any(
           (model) => model.name == message.senderName,
@@ -230,7 +236,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session = null;
 
-    ChatSessionsDatabase.deleteSession(uuid);
+    GetIt.instance<ChatSessionsDatabase>().deleteSession(uuid);
 
     notifyListeners();
   }
@@ -269,7 +275,7 @@ class ChatProvider extends ChangeNotifier {
       }();
     }
 
-    ChatSessionsDatabase.updateSession(_sessions[index]);
+    GetIt.instance<ChatSessionsDatabase>().updateSession(_sessions[index]);
 
     notifyListeners();
   }
@@ -283,22 +289,24 @@ class ChatProvider extends ChangeNotifier {
   /// If the session is not selected, the function returns the newly created [ChatSystemMessageWrapper] without adding it to the memory or the database.
   ///
   /// Returns the newly created [ChatSystemMessageWrapper].
-  void addSystemMessage(String message) {
+  ChatSystemMessageWrapper addSystemMessage(String message) {
     final chatMessage = ChatSystemMessageWrapper(
       message,
       DateTime.now(),
       const Uuid().v4(),
     );
 
-    if (!isSessionSelected) return;
+    if (!isSessionSelected) return chatMessage;
 
     _session!.messages.add(chatMessage);
 
     // System messages shouldn't be added to the memory
 
-    ChatSessionsDatabase.updateSession(_session!);
+    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
     notifyListeners();
+
+    return chatMessage;
   }
 
   /// Adds a chat message of type model to the current session and to the model's memory and updates the session in the database.
@@ -306,7 +314,7 @@ class ChatProvider extends ChangeNotifier {
   /// If the session is not selected, the function returns the newly created [ChatModelMessageWrapper] without adding it to the memory or the database.
   ///
   /// Returns the newly created [ChatModelMessageWrapper].
-  Future<void> addModelMessage(
+  Future<ChatModelMessageWrapper> addModelMessage(
     Stream<String> messageStream,
     String senderName,
   ) async {
@@ -336,7 +344,7 @@ class ChatProvider extends ChangeNotifier {
           messageBuffer.toString(),
         );
 
-        ChatSessionsDatabase.updateSession(_session!);
+        GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
         completer.complete(_session!.messages.last as ChatModelMessageWrapper);
 
@@ -350,6 +358,8 @@ class ChatProvider extends ChangeNotifier {
     await completer.future;
 
     await subscription.cancel();
+
+    return _session!.messages.last as ChatModelMessageWrapper;
   }
 
   /// Adds a chat message of type user to the current session and to the model's memory and updates the session in the database.
@@ -359,7 +369,7 @@ class ChatProvider extends ChangeNotifier {
   /// User messages have optional [imageBytes] attached to them for use in multimodal models.
   ///
   /// Returns the newly created [ChatUserMessageWrapper].
-  void addUserMessage(String message, Uint8List? imageBytes) {
+  ChatUserMessageWrapper addUserMessage(String message, Uint8List? imageBytes) {
     final chatMessage = ChatUserMessageWrapper(
       message,
       DateTime.now(),
@@ -367,14 +377,16 @@ class ChatProvider extends ChangeNotifier {
       imageBytes: imageBytes,
     );
 
-    if (_session == null) return;
+    if (_session == null) return chatMessage;
 
     _session!.messages.add(chatMessage);
     _session!.memory.chatHistory.addHumanChatMessage(message);
 
-    ChatSessionsDatabase.updateSession(_session!);
+    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
     notifyListeners();
+
+    return chatMessage;
   }
 
   /// Removes the the message with the given UUID and its childs from the current session and from the model's memory and updates the session in the database.
@@ -395,7 +407,7 @@ class ChatProvider extends ChangeNotifier {
       _session!.memory.chatHistory.removeLast();
     }
 
-    ChatSessionsDatabase.updateSession(_session!);
+    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -413,7 +425,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.removeLast();
     _session!.memory.chatHistory.removeLast();
 
-    ChatSessionsDatabase.updateSession(_session!);
+    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -424,7 +436,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.clear();
     _session!.memory.chatHistory.clear();
 
-    ChatSessionsDatabase.updateSession(_session!);
+    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -583,7 +595,7 @@ class ChatProvider extends ChangeNotifier {
         setSessionTitle(_session!.uuid, response.toString());
       }
 
-      ChatSessionsDatabase.updateSession(_session!);
+      GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
       notifyListeners();
     } catch (e) {
@@ -602,7 +614,7 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      ChatSessionsDatabase.updateSession(_session!);
+      GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
       logger.e(e);
     }
@@ -990,7 +1002,7 @@ class ChatProvider extends ChangeNotifier {
       _modelSettings.enableDocsSearch ?? _enableDocsSearch;
 
   bool get isMultimodalModel {
-    final models = ModelProvider.getModelsStatic();
+    final models = GetIt.instance<ModelProvider>().models;
 
     if (!models.any((model) => model.name == _modelName)) return false;
 

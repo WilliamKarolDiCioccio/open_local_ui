@@ -109,6 +109,9 @@ dependencies:
   introduction_screen: ^3.1.14
   rive: ^0.13.12
 
+  # Dependency Injection
+  get_it: ^7.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

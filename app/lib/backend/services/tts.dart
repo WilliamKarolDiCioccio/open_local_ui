@@ -6,15 +6,10 @@ import 'package:open_local_ui/backend/services/protobufs/server.pbgrpc.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path/path.dart' as p;
 
-/// This class provides Text-to-Speech (TTS) functionality.
-///
-/// This singleton class provides a communication channel to the TTS server written in Python through gRPC the protocol.
-///
-/// NOTE: This class is instantiated in the main Isolate when execution begins.
 class TTSService {
-  static late ClientChannel _channel;
-  static late TTSClient _stub;
-  static late Process _process;
+  late ClientChannel _channel;
+  late TTSClient _stub;
+  late Process _process;
 
   TTSService._internal() {
     _channel = ClientChannel(
@@ -49,7 +44,6 @@ class TTSService {
 
     try {
       final response = await _stub.synthesize(request);
-
       return response.track;
     } catch (e) {
       logger.e(e);
@@ -58,7 +52,7 @@ class TTSService {
     return [];
   }
 
-  static Future startServer() async {
+  Future<void> startServer() async {
     String executablePath = '';
 
     if (Platform.isWindows) {
@@ -75,31 +69,28 @@ class TTSService {
     }
 
     try {
-      Process.start(executablePath, ['']).then((Process process) {
-        _process = process;
+      _process = await Process.start(executablePath, ['']);
 
-        logger.d('Program started with PID: ${process.pid}');
+      logger.d('Program started with PID: ${_process.pid}');
 
-        process.stdout.transform(utf8.decoder).listen((data) {
-          logger.t('stdout: $data');
-        });
+      _process.stdout.transform(utf8.decoder).listen((data) {
+        logger.t('stdout: $data');
+      });
 
-        process.stderr.transform(utf8.decoder).listen((data) {
-          logger.e('stderr: $data');
-        });
+      _process.stderr.transform(utf8.decoder).listen((data) {
+        logger.e('stderr: $data');
+      });
 
-        process.exitCode.then((int code) {
-          logger.d('Process exited with code $code');
-        });
+      _process.exitCode.then((int code) {
+        logger.d('Process exited with code $code');
       });
     } catch (e) {
       logger.e(e);
     }
   }
 
-  static Future stopServer() async {
+  Future<void> stopServer() async {
     _process.kill();
-
     await _channel.shutdown();
   }
 }

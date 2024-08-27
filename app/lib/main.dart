@@ -7,6 +7,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/providers/chat.dart';
 import 'package:open_local_ui/backend/providers/locale.dart';
@@ -145,13 +146,20 @@ void _preloadAssets() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Dependency injection
+
+  final getIt = GetIt.instance;
+  getIt.registerSingleton<ModelProvider>(ModelProvider());
+  getIt.registerSingleton<ChatSessionsDatabase>(ChatSessionsDatabase());
+  getIt.registerSingleton<TTSService>(TTSService());
+
   // Internal services
 
   await initLogger();
 
-  await ModelProvider.startOllamaStatic();
-  await TTSService.startServer();
-  await ChatSessionsDatabase.init();
+  await GetIt.instance<ModelProvider>().startOllama();
+  await GetIt.instance<TTSService>().startServer();
+  await GetIt.instance<ChatSessionsDatabase>().init();
 
   // Backend services
 
@@ -255,9 +263,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    TTSService.stopServer();
-    ModelProvider.stopOllamaStatic();
-    ChatSessionsDatabase.deinit();
+    GetIt.instance<ModelProvider>().stopOllama();
+    GetIt.instance<ChatSessionsDatabase>().deinit();
+    GetIt.instance<TTSService>().stopServer();
 
     super.dispose();
   }

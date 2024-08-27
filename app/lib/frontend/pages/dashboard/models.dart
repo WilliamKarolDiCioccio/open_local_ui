@@ -90,7 +90,7 @@ class _ModelsPageState extends State<ModelsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var sortedModels = context.watch<ModelProvider>().models;
+    var sortedModels = List.from(context.watch<ModelProvider>().models);
 
     sortedModels.sort(
       (a, b) {
