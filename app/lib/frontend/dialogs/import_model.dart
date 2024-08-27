@@ -27,7 +27,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
   String _progressBarText = '';
 
   void _selectFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowCompression: false,
       type: FileType.custom,

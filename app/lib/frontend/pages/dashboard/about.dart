@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AboutPage extends StatelessWidget {
   static const gitHubPage =
       'https://github.com/WilliamKarolDiCioccio/open_local_ui';
-  static const discordInviteLink = 'https://discord.gg/WuDckBpwHd';
+  static const discordInviteLink = 'https://discord.gg/S82WPJbPpz';
 
   const AboutPage({super.key});
 

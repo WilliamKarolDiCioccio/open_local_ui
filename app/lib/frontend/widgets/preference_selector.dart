@@ -103,13 +103,13 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                             .withOpacity(0.5),
                         blurRadius: 10.0,
                         offset: const Offset(0, 5),
-                      )
+                      ),
                     ]
                   : [
                       const BoxShadow(
                         blurRadius: 5.0,
                         offset: Offset(0, 2),
-                      )
+                      ),
                     ],
             ),
             child: Center(

@@ -206,7 +206,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
     }
 
     // ignore: use_build_context_synchronously
-    context.read<ChatProvider>().sendMessage(message);
+    await context.read<ChatProvider>().sendMessage(message);
   }
 
   void _addEditableMessage(String message) {
@@ -297,7 +297,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
                     '${widget.question} ${widget.questionDetails}',
                   ),
                   icon: const Icon(UniconsLine.edit),
-                )
+                ),
               ],
             ),
           )

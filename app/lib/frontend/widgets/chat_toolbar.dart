@@ -61,7 +61,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
           onPressed: !context.watch<ChatProvider>().isGenerating
               ? () => _newSession()
               : null,
-        )
+        ),
       ],
     );
   }

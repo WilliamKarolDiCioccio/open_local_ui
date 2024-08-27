@@ -81,7 +81,7 @@ class TTSService {
         logger.e('stderr: $data');
       });
 
-      _process.exitCode.then((int code) {
+      await _process.exitCode.then((int code) {
         logger.d('Process exited with code $code');
       });
     } catch (e) {

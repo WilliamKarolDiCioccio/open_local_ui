@@ -92,6 +92,6 @@ class ChatSessionWrapper {
       const ChatMessagesJSONConverter().fromJson(json);
 
   static List<Map<String, dynamic>> _messagesToJson(
-          List<ChatMessageWrapper> messages) =>
+          List<ChatMessageWrapper> messages,) =>
       const ChatMessagesJSONConverter().toJson(messages);
 }

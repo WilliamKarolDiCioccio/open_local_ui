@@ -284,9 +284,12 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
 
   Future<bool> _isOllamaInstalled() async {
     if (Platform.isWindows) {
-      final result = await ProcessHelpers.runShellCommand('winget', arguments: [
-        'list',
-      ]);
+      final result = await ProcessHelpers.runShellCommand(
+        'winget',
+        arguments: [
+          'list',
+        ],
+      );
 
       return result.contains('Ollama.Ollama');
     } else {
@@ -300,12 +303,15 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
         _isInstalling = true;
       });
 
-      await ProcessHelpers.runShellCommand('winget', arguments: [
-        'install',
-        '-e',
-        '--id',
-        'Ollama.Ollama',
-      ]);
+      await ProcessHelpers.runShellCommand(
+        'winget',
+        arguments: [
+          'install',
+          '-e',
+          '--id',
+          'Ollama.Ollama',
+        ],
+      );
 
       setState(() {
         _isInstalling = false;
@@ -497,8 +503,6 @@ class ThemeSelectionPage extends StatefulWidget {
 }
 
 class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
-  final GlobalKey<_ThemeSelectionPageState> _key = GlobalKey();
-
   Future<bool> _isAccentSynced() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('sync_accent_color') ?? false;
@@ -612,8 +616,8 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
             const Gap(8.0),
             GestureDetector(
               onTap: () async {
-                showColorPickerDialog(
-                  _key.currentContext!,
+                await showColorPickerDialog(
+                  context,
                   await _getAccent(),
                 ).then(
                   (color) async {
@@ -623,7 +627,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
                     if ((prefs.getBool('sync_accent_color') ?? false) ==
                         false) {
-                      _setAccent(_key.currentContext!, color);
+                      _setAccent(context, color);
                     } else {
                       setState(() {});
                     }
@@ -678,14 +682,16 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
                       if (value) {
                         await prefs.setBool('sync_accent_color', true);
-                        _setAccent(_key.currentContext!,
-                            SystemTheme.accentColor.accent);
+                        _setAccent(
+                          context,
+                          SystemTheme.accentColor.accent,
+                        );
                       } else {
                         final savedColorCode = prefs.getString('accent_color');
-                        prefs.setBool('sync_accent_color', false);
+                        await prefs.setBool('sync_accent_color', false);
 
                         _setAccent(
-                          _key.currentContext!,
+                          context,
                           ColorHelpers.colorFromHex(
                             savedColorCode ?? Colors.cyan.hex,
                           ),

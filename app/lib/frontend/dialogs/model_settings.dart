@@ -115,7 +115,7 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     const Gap(8.0),
                     ExpansionTile(
                       title: Text(AppLocalizations.of(context)
-                          .modelGeneralSettingsLabel),
+                          .modelGeneralSettingsLabel,),
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -140,7 +140,7 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     ),
                     ExpansionTile(
                       title: Text(AppLocalizations.of(context)
-                          .modelPerformanceSettingsLabel),
+                          .modelPerformanceSettingsLabel,),
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -176,7 +176,7 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     ),
                     ExpansionTile(
                       title: Text(AppLocalizations.of(context)
-                          .modelPenaltySettingsLabel),
+                          .modelPenaltySettingsLabel,),
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -215,7 +215,7 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     ),
                     ExpansionTile(
                       title: Text(
-                          AppLocalizations.of(context).modelMiscSettingsLabel),
+                          AppLocalizations.of(context).modelMiscSettingsLabel,),
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -393,13 +393,13 @@ class BoolSettingWidget extends StatelessWidget {
           dropdownMenuEntries: [
             DropdownMenuEntry<bool?>(
                 value: null,
-                label: AppLocalizations.of(context).settingsModelDefault),
+                label: AppLocalizations.of(context).settingsModelDefault,),
             DropdownMenuEntry<bool?>(
                 value: true,
-                label: AppLocalizations.of(context).settingsModelOn),
+                label: AppLocalizations.of(context).settingsModelOn,),
             DropdownMenuEntry<bool?>(
                 value: false,
-                label: AppLocalizations.of(context).settingsModelOff),
+                label: AppLocalizations.of(context).settingsModelOff,),
           ],
           textStyle: TextStyle(
             color: switch (value) {

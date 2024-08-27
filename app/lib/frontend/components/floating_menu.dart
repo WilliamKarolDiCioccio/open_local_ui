@@ -9,7 +9,7 @@ class FloatingMenuComponent extends StatelessWidget {
   final int upPosition;
   final int downPosition;
 
-  FloatingMenuComponent({
+  const FloatingMenuComponent({super.key, 
     required this.buttonKey,
     required this.actions,
     this.upPosition = 300,

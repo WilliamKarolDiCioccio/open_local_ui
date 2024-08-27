@@ -108,11 +108,11 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
   Future<void> _saveFile() async {
     setState(() => _isSaved = true);
 
-    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    final String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
     if (selectedDirectory != null) {
-      String fileName = 'code_snippet.txt';
-      File file = File('$selectedDirectory/$fileName');
+      const String fileName = 'code_snippet.txt';
+      final File file = File('$selectedDirectory/$fileName');
 
       await file.writeAsString(widget.text);
 

@@ -90,7 +90,7 @@ class GitHubAPI {
       'Authorization': 'token ${Env.gitHubReleasesPat}',
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json',
-      'X-GitHub-Api-Version': '2022-11-28'
+      'X-GitHub-Api-Version': '2022-11-28',
     };
 
     final response = await http.get(url, headers: headers);
@@ -128,7 +128,7 @@ class GitHubAPI {
       'Authorization': 'token ${Env.gitHubReleasesPat}',
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json',
-      'X-GitHub-Api-Version': '2022-11-28'
+      'X-GitHub-Api-Version': '2022-11-28',
     };
 
     final response = await http.get(url, headers: headers);
@@ -163,7 +163,7 @@ class GitHubAPI {
       'Authorization': 'token ${Env.gitHubCollaboratorsPat}',
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
-      'X-GitHub-Api-Version': '2022-11-28'
+      'X-GitHub-Api-Version': '2022-11-28',
     };
 
     final response = await http.get(url, headers: headers);
@@ -202,7 +202,7 @@ class GitHubAPI {
   /// NOTE: There is currently no way to attach files to issues via the GitHub API.
   /// As a workaround, we're attaching the screenshot and logs as links in the issue body.
   /// In the case of our feedback form, we're uploading the screenshot and logs to a SupaBase storage bucket and using the URLs in the issue body.
-  static Future createGitHubIssue(
+  static Future<void> createGitHubIssue(
     String text,
     String screenshotUrl,
     String logsUrl,
@@ -216,7 +216,7 @@ class GitHubAPI {
       'Authorization': 'token ${Env.gitHubFeedbackPat}',
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json',
-      'X-GitHub-Api-Version': '2022-11-28'
+      'X-GitHub-Api-Version': '2022-11-28',
     };
 
     final packageInfo = await PackageInfo.fromPlatform();
@@ -251,7 +251,7 @@ $deviceInfo
       'labels': ['Type: Bug'],
     });
 
-    http.post(url, headers: headers, body: issueBody).then((response) {
+    await http.post(url, headers: headers, body: issueBody).then((response) {
       if (response.statusCode != 200) {
         logger.e('Failed to create issue. Status code: ${response.body}');
       } else {

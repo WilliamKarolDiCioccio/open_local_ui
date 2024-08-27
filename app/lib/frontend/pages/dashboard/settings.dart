@@ -178,7 +178,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
             const Gap(8.0),
             GestureDetector(
               onTap: () async {
-                showColorPickerDialog(
+                await showColorPickerDialog(
                   _key.currentContext!,
                   await _getAccent(),
                 ).then(
@@ -244,14 +244,16 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
                       if (value) {
                         await prefs.setBool('sync_accent_color', true);
-                        _setAccent(_key.currentContext!,
-                            SystemTheme.accentColor.accent);
+                        _setAccent(
+                          context,
+                          SystemTheme.accentColor.accent,
+                        );
                       } else {
                         final savedColorCode = prefs.getString('accent_color');
-                        prefs.setBool('sync_accent_color', false);
+                        await prefs.setBool('sync_accent_color', false);
 
                         _setAccent(
-                          _key.currentContext!,
+                          context,
                           ColorHelpers.colorFromHex(
                             savedColorCode ?? Colors.cyan.hex,
                           ),

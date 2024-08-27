@@ -222,7 +222,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       deviceInfo,
     );
 
-    screenshotFile.delete();
+    await screenshotFile.delete();
   }
 
   Widget _buildOptionsOverlay() {

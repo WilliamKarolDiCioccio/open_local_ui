@@ -151,11 +151,13 @@ class ChatProvider extends ChangeNotifier {
   ///
   /// Returns the newly created [ChatSessionWrapper].
   ChatSessionWrapper addSession(String title) {
-    _sessions.add(ChatSessionWrapper(
-      DateTime.now(),
-      const Uuid().v4(),
-      [],
-    ));
+    _sessions.add(
+      ChatSessionWrapper(
+        DateTime.now(),
+        const Uuid().v4(),
+        [],
+      ),
+    );
 
     GetIt.instance<ChatSessionsDatabase>().saveSession(_sessions.last);
 
@@ -248,7 +250,7 @@ class ChatProvider extends ChangeNotifier {
   ///
   /// Returns `void`.
   void clearSessions() {
-    List<String> uuids = [];
+    final List<String> uuids = [];
 
     for (final session in _sessions) {
       uuids.add(session.uuid);
@@ -350,7 +352,7 @@ class ChatProvider extends ChangeNotifier {
 
         notifyListeners();
       },
-      onError: (error) {
+      onError: (dynamic error) {
         completer.completeError(error);
       },
     );
@@ -404,10 +406,10 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.removeRange(index, messageCount);
 
     for (var i = 0; i < messageCount - index; ++i) {
-      _session!.memory.chatHistory.removeLast();
+      await _session!.memory.chatHistory.removeLast();
     }
 
-    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -423,9 +425,9 @@ class ChatProvider extends ChangeNotifier {
     }
 
     _session!.messages.removeLast();
-    _session!.memory.chatHistory.removeLast();
+    await _session!.memory.chatHistory.removeLast();
 
-    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -434,9 +436,9 @@ class ChatProvider extends ChangeNotifier {
     if (!isSessionSelected || isGenerating) return;
 
     _session!.messages.clear();
-    _session!.memory.chatHistory.clear();
+    await _session!.memory.chatHistory.clear();
 
-    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -516,7 +518,7 @@ class ChatProvider extends ChangeNotifier {
 
       if (_session!.status == ChatSessionStatus.aborting) {
         _session!.status = ChatSessionStatus.idle;
-        _session!.memory.chatHistory.removeLast();
+        await _session!.memory.chatHistory.removeLast();
 
         _computePerformanceStatistics(result);
 
@@ -539,7 +541,7 @@ class ChatProvider extends ChangeNotifier {
   /// If the sessions is untitled, the function generates a title for it.
   ///
   /// Returns a [Future] that evaluates to `null`.
-  Future sendMessage(String text, {Uint8List? imageBytes}) async {
+  Future<void> sendMessage(String text, {Uint8List? imageBytes}) async {
     if (!isSessionSelected) {
       newSession();
     }
@@ -558,8 +560,8 @@ class ChatProvider extends ChangeNotifier {
       _session!.status = ChatSessionStatus.generating;
 
       if (Platform.isWindows) {
-        WindowsTaskbar.resetThumbnailToolbar();
-        WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+        await WindowsTaskbar.resetThumbnailToolbar();
+        await WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
       }
 
       notifyListeners();
@@ -573,8 +575,8 @@ class ChatProvider extends ChangeNotifier {
       _session!.status = ChatSessionStatus.idle;
 
       if (Platform.isWindows) {
-        WindowsTaskbar.resetThumbnailToolbar();
-        WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+        await WindowsTaskbar.resetThumbnailToolbar();
+        await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
       }
 
       notifyListeners();
@@ -595,15 +597,15 @@ class ChatProvider extends ChangeNotifier {
         setSessionTitle(_session!.uuid, response.toString());
       }
 
-      GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+      await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
       notifyListeners();
     } catch (e) {
       _session!.status = ChatSessionStatus.idle;
 
       if (Platform.isWindows) {
-        WindowsTaskbar.resetThumbnailToolbar();
-        WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+        await WindowsTaskbar.resetThumbnailToolbar();
+        await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
       }
 
       removeLastMessage();
@@ -614,7 +616,7 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+      await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
       logger.e(e);
     }
@@ -629,7 +631,7 @@ class ChatProvider extends ChangeNotifier {
   /// This method does not regenerate the title of the session as it depends on the user's input.
   ///
   /// Returns a [Future] that evaluates to `null`.
-  Future regenerateMessage(String uuid) async {
+  Future<void> regenerateMessage(String uuid) async {
     if (isGenerating) return;
 
     final modelMessageIndex = _session!.messages.indexWhere(
@@ -660,8 +662,8 @@ class ChatProvider extends ChangeNotifier {
       _session!.status = ChatSessionStatus.generating;
 
       if (Platform.isWindows) {
-        WindowsTaskbar.resetThumbnailToolbar();
-        WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+        await WindowsTaskbar.resetThumbnailToolbar();
+        await WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
       }
 
       notifyListeners();
@@ -676,8 +678,8 @@ class ChatProvider extends ChangeNotifier {
       _session!.status = ChatSessionStatus.idle;
 
       if (Platform.isWindows) {
-        WindowsTaskbar.resetThumbnailToolbar();
-        WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+        await WindowsTaskbar.resetThumbnailToolbar();
+        await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
       }
 
       notifyListeners();
@@ -685,8 +687,8 @@ class ChatProvider extends ChangeNotifier {
       _session!.status = ChatSessionStatus.idle;
 
       if (Platform.isWindows) {
-        WindowsTaskbar.resetThumbnailToolbar();
-        WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+        await WindowsTaskbar.resetThumbnailToolbar();
+        await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
       }
 
       removeLastMessage();
@@ -707,7 +709,7 @@ class ChatProvider extends ChangeNotifier {
   /// Then it sends the edited message to the model for regeneration.
   ///
   /// Returns a [Future] that evaluates to `null`.
-  Future sendEditedMessage(
+  Future<void> sendEditedMessage(
     String uuid,
     String text,
     Uint8List? imageBytes,
@@ -724,7 +726,7 @@ class ChatProvider extends ChangeNotifier {
 
     removeMessage(uuid);
 
-    sendMessage(text, imageBytes: imageBytes);
+    await sendMessage(text, imageBytes: imageBytes);
   }
 
   /// Aborts the current session's generation process.
@@ -758,12 +760,12 @@ class ChatProvider extends ChangeNotifier {
         case ChatMessageSender.system:
           continue;
         case ChatMessageSender.model:
-          _session!.memory.chatHistory.addAIChatMessage(
+          await _session!.memory.chatHistory.addAIChatMessage(
             message.text,
           );
           break;
         case ChatMessageSender.user:
-          _session!.memory.chatHistory.addHumanChatMessage(
+          await _session!.memory.chatHistory.addHumanChatMessage(
             message.text,
           );
           break;
@@ -781,7 +783,7 @@ class ChatProvider extends ChangeNotifier {
   void clearSessionHistory() async {
     if (!isSessionSelected || isGenerating) return;
 
-    _session!.memory.chatHistory.clear();
+    await _session!.memory.chatHistory.clear();
 
     notifyListeners();
   }
@@ -795,7 +797,7 @@ class ChatProvider extends ChangeNotifier {
   /// The function first checks if the model is currently generating and returns without doing anything if it is.
   ///
   /// Returns a [Future] that evaluates to `void`.
-  Future setModel(String name) async {
+  Future<void> setModel(String name) async {
     if (isGenerating) return;
 
     _modelName = name;
@@ -1015,7 +1017,12 @@ class ChatProvider extends ChangeNotifier {
 
     if (modelFamilies == null) return false;
 
-    List<String> multiModalFamilies = ['clip', 'blip', 'flaming', 'dall-e'];
+    final List<String> multiModalFamilies = [
+      'clip',
+      'blip',
+      'flaming',
+      'dall-e',
+    ];
 
     return multiModalFamilies.any((family) => modelFamilies.contains(family));
   }

@@ -38,5 +38,5 @@ const TTSResponse$json = {
 
 /// Descriptor for `TTSResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List tTSResponseDescriptor = $convert.base64Decode(
-    'CgtUVFNSZXNwb25zZRIUCgV0cmFjaxgBIAEoDFIFdHJhY2s=');
-
+  'CgtUVFNSZXNwb25zZRIUCgV0cmFjaxgBIAEoDFIFdHJhY2s=',
+);

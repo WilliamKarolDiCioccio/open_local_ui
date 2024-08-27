@@ -65,7 +65,7 @@ class ModelProvider extends ChangeNotifier {
           }
         });
 
-        _process.exitCode.then((int code) {
+        await _process.exitCode.then((int code) {
           logger.d('Process exited with code $code');
         });
       }
@@ -163,8 +163,8 @@ class ModelProvider extends ChangeNotifier {
     final startTime = DateTime.now().toString();
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
     }
 
     await for (var data in stream) {
@@ -184,7 +184,7 @@ class ModelProvider extends ChangeNotifier {
           );
 
           if (Platform.isWindows) {
-            WindowsTaskbar.setProgress(
+            await WindowsTaskbar.setProgress(
               (modelPullResponse.completed / modelPullResponse.total * 100)
                   .toInt(),
               100,
@@ -195,8 +195,8 @@ class ModelProvider extends ChangeNotifier {
         }
       } catch (e) {
         if (Platform.isWindows) {
-          WindowsTaskbar.resetThumbnailToolbar();
-          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+          await WindowsTaskbar.resetThumbnailToolbar();
+          await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
         }
 
         logger.d('Incomplete or invalid JSON received: $data');
@@ -214,8 +214,8 @@ class ModelProvider extends ChangeNotifier {
     }
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
     SnackBarHelpers.showSnackBar(
@@ -274,8 +274,8 @@ class ModelProvider extends ChangeNotifier {
     final startTime = DateTime.now().toString();
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
     }
 
     await for (var data in stream) {
@@ -295,7 +295,7 @@ class ModelProvider extends ChangeNotifier {
           );
 
           if (Platform.isWindows) {
-            WindowsTaskbar.setProgress(
+            await WindowsTaskbar.setProgress(
               (modelPushResponse.completed / modelPushResponse.total * 100)
                   .toInt(),
               100,
@@ -306,8 +306,8 @@ class ModelProvider extends ChangeNotifier {
         }
       } catch (e) {
         if (Platform.isWindows) {
-          WindowsTaskbar.resetThumbnailToolbar();
-          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+          await WindowsTaskbar.resetThumbnailToolbar();
+          await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
         }
 
         logger.d('Incomplete or invalid JSON received: $data');
@@ -325,8 +325,8 @@ class ModelProvider extends ChangeNotifier {
     }
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
     SnackBarHelpers.showSnackBar(
@@ -375,7 +375,8 @@ class ModelProvider extends ChangeNotifier {
 
     if (response.statusCode != 200) {
       logger.e(
-          'Failed to create model $name, status code: ${response.statusCode}');
+        'Failed to create model $name, status code: ${response.statusCode}',
+      );
       return;
     }
 
@@ -387,8 +388,8 @@ class ModelProvider extends ChangeNotifier {
     final startTime = DateTime.now().toString();
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
     }
 
     await for (var data in stream) {
@@ -406,7 +407,7 @@ class ModelProvider extends ChangeNotifier {
           );
 
           if (Platform.isWindows) {
-            WindowsTaskbar.setProgress(
+            await WindowsTaskbar.setProgress(
               (modelCreateResponse.completed / modelCreateResponse.total * 100)
                   .toInt(),
               100,
@@ -417,8 +418,8 @@ class ModelProvider extends ChangeNotifier {
         }
       } catch (e) {
         if (Platform.isWindows) {
-          WindowsTaskbar.resetThumbnailToolbar();
-          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+          await WindowsTaskbar.resetThumbnailToolbar();
+          await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
         }
 
         logger.d('Incomplete or invalid JSON received: $data');
@@ -436,8 +437,8 @@ class ModelProvider extends ChangeNotifier {
     }
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
     SnackBarHelpers.showSnackBar(
@@ -478,7 +479,8 @@ class ModelProvider extends ChangeNotifier {
 
       if (response.statusCode != 200) {
         logger.e(
-            'Failed to remove model $name, status code: ${response.statusCode}');
+          'Failed to remove model $name, status code: ${response.statusCode}',
+        );
         return;
       }
 

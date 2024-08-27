@@ -76,7 +76,7 @@ class ProcessHelpers {
     List<String>? arguments,
   ) async {
     final process = await Process.start(executable, arguments ?? [],
-        mode: ProcessStartMode.detached);
+        mode: ProcessStartMode.detached,);
     return process.exitCode.then((exitCode) {
       return ProcessResult(process.pid, exitCode, '', '');
     });
