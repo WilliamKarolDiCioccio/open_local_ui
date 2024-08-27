@@ -1021,6 +1021,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.3+2"
+  lcov_dart:
+    dependency: transitive
+    description:
+      name: lcov_dart
+      sha256: "69cc9dfcceb01245e1e35371e6d364242c20da896c7b8c44163cb2e7a6804014"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -1642,6 +1650,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  test_coverage_badge:
+    dependency: "direct dev"
+    description:
+      name: test_coverage_badge
+      sha256: e12261ac174e18ceebf991a2c020329797dcf692e004d5b17f3a900b89063300
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   time:
     dependency: transitive
     description:
