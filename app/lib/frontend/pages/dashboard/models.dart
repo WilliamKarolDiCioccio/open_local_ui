@@ -491,7 +491,7 @@ class _ModelListTileState extends State<ModelListTile> {
               AppLocalizations.of(context).snackBarWarningTitle,
               AppLocalizations.of(context).enteringCriticalSectionSnackBar,
               SnackbarContentType.warning,
-              onTap: () => showModelSettingsDialog(widget.model, context),
+              onTap: () => showModelSettingsDialog(widget.model.name, context),
             ),
           ),
           const Gap(8),

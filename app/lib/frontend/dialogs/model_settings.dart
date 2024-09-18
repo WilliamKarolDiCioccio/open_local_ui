@@ -6,22 +6,33 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
+import 'package:open_local_ui/backend/private/providers/model.dart';
 import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 class ModelSettingsDialog extends StatefulWidget {
-  final Model model;
+  final String modelName;
 
-  const ModelSettingsDialog({super.key, required this.model});
+  const ModelSettingsDialog({super.key, required this.modelName});
 
   @override
   ModelSettingsDialogState createState() => ModelSettingsDialogState();
 }
 
 class ModelSettingsDialogState extends State<ModelSettingsDialog> {
+  late Model _model;
   late ModelSettings _settings;
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    _model = context.read<ModelProvider>().models.firstWhere(
+          (model) => model.name == widget.modelName,
+        );
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -33,14 +44,14 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
   Widget build(BuildContext context) {
     late String modelName;
 
-    if (widget.model.name.length > 20) {
-      modelName = '${widget.model.name.substring(0, 20)}...';
+    if (_model.name.length > 20) {
+      modelName = '${_model.name.substring(0, 20)}...';
     } else {
-      modelName = widget.model.name;
+      modelName = _model.name;
     }
 
     return ChangeNotifierProvider(
-      create: (context) => ModelSettingsProvider(widget.model.name),
+      create: (context) => ModelSettingsProvider(_model.name),
       builder: (context, _) => AlertDialog(
         title: Text(
           AppLocalizations.of(context)
@@ -346,11 +357,14 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
   }
 }
 
-Future<void> showModelSettingsDialog(Model model, BuildContext context) async {
+Future<void> showModelSettingsDialog(
+  String modelName,
+  BuildContext context,
+) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return ModelSettingsDialog(model: model);
+      return ModelSettingsDialog(modelName: modelName);
     },
   );
 }
