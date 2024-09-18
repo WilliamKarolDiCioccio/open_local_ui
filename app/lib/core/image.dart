@@ -35,9 +35,9 @@ class ImageHelpers {
   ///
   /// Returns a [Future] that resolves to a [bool] indicating whether the images are pixel-perfect identical.
   static Future<bool> compare(
-      Uint8List? imageBytes1, Uint8List? imageBytes2) async {
-    img.Image? image1 = img.decodeImage(imageBytes1 ?? Uint8List(0));
-    img.Image? image2 = img.decodeImage(imageBytes2 ?? Uint8List(0));
+      Uint8List? imageBytes1, Uint8List? imageBytes2,) async {
+    final img.Image? image1 = img.decodeImage(imageBytes1 ?? Uint8List(0));
+    final img.Image? image2 = img.decodeImage(imageBytes2 ?? Uint8List(0));
 
     if (image1 == null || image2 == null) {
       return false;

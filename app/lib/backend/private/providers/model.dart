@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_local_ui/backend/models/model.dart';
-import 'package:open_local_ui/backend/models/ollama_responses.dart';
-import 'package:open_local_ui/backend/providers/model_settings.dart';
+import 'package:open_local_ui/backend/private/models/model.dart';
+import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
+import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
@@ -31,40 +31,46 @@ enum ModelProviderStatus {
 /// NOTE: You'll see some methods having a `Static` suffix (see [_updateListStatic]). This is because they are used outside the widget tree where providers are not accessible.
 class ModelProvider extends ChangeNotifier {
   static const _api = 'http://localhost:11434/api';
-  static final List<Model> _models = [];
-  static late Process _process;
+  final List<Model> _models = [];
+  late Process _process;
   ModelProviderStatus _status = ModelProviderStatus.idle;
+
+  ModelProvider._internal();
+
+  static final ModelProvider _instance = ModelProvider._internal();
+
+  factory ModelProvider() {
+    return _instance;
+  }
 
   /// Start the Ollama server.
   ///
-  /// This methods also redirects the stdout and stderr of the Ollama server to the logger.
+  /// This method also redirects the stdout and stderr of the Ollama server to the logger.
   ///
   /// Returns a [Future] that resolves when the Ollama server is started.
-  static Future startOllamaStatic() async {
+  Future<void> startOllama() async {
     try {
-      if (!await _isOllamaRunningStatic()) {
-        Process.start('ollama', ['serve']).then((Process process) {
-          _process = process;
+      if (!await _isOllamaRunning()) {
+        _process = await Process.start('ollama', ['serve']);
 
-          logger.d('Program started with PID: ${process.pid}');
+        logger.d('Program started with PID: ${_process.pid}');
 
-          process.stdout.transform(utf8.decoder).listen((data) {
-            logger.t('stdout: $data');
-          });
+        _process.stdout.transform(utf8.decoder).listen((data) {
+          logger.t('stdout: $data');
+        });
 
-          process.stderr.transform(utf8.decoder).listen((data) {
-            if (!kDebugMode) {
-              logger.e('stderr: $data');
-            }
-          });
+        _process.stderr.transform(utf8.decoder).listen((data) {
+          if (!kDebugMode) {
+            logger.e('stderr: $data');
+          }
+        });
 
-          process.exitCode.then((int code) {
-            logger.d('Process exited with code $code');
-          });
+        await _process.exitCode.then((int code) {
+          logger.d('Process exited with code $code');
         });
       }
 
-      await _updateListStatic();
+      await _updateList();
     } catch (e) {
       logger.e(e);
     }
@@ -73,7 +79,7 @@ class ModelProvider extends ChangeNotifier {
   /// Check if the Ollama server is running.
   ///
   /// Returns a [Future] that resolves to a [bool] indicating whether the Ollama server is running.
-  static Future<bool> _isOllamaRunningStatic() async {
+  Future<bool> _isOllamaRunning() async {
     try {
       final response = await HTTPHelpers.get('$_api/ps');
       return response.statusCode == HttpStatus.ok;
@@ -87,16 +93,17 @@ class ModelProvider extends ChangeNotifier {
   /// This method sends a SIGKILL signal to the Ollama server process.
   ///
   /// Returns a void once the Ollama server is stopped.
-  static void stopOllamaStatic() async {
+  Future<void> stopOllama() async {
     _process.kill(ProcessSignal.sigkill);
   }
 
   /// Update the list of models.
   ///
   /// Returns a [Future] that resolves to null when the models list is updated.
-  static Future _updateListStatic() async {
-    await HTTPHelpers.get('$_api/tags').then((response) {
-      if (response.statusCode != 200) {
+  Future<void> _updateList() async {
+    try {
+      final response = await HTTPHelpers.get('$_api/tags');
+      if (response.statusCode != HttpStatus.ok) {
         logger.e('Failed to fetch models list');
         return;
       }
@@ -111,17 +118,16 @@ class ModelProvider extends ChangeNotifier {
       }
 
       logger.i('Models list updated');
-    }).catchError((error) {
-      logger.e(error);
-    });
+    } catch (e) {
+      logger.e('Error updating models list: $e');
+    }
   }
 
-  /// Update the list of models. Wraps the static method [_updateListStatic] and notifies listeners.
+  /// Update the list of models. Wraps the instance method [_updateList] and notifies listeners.
   ///
   /// Returns a [Future] that resolves to null when the models list is updated.
-  Future updateList() async {
-    await _updateListStatic();
-
+  Future<void> updateList() async {
+    await _updateList();
     notifyListeners();
   }
 
@@ -157,8 +163,8 @@ class ModelProvider extends ChangeNotifier {
     final startTime = DateTime.now().toString();
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
     }
 
     await for (var data in stream) {
@@ -178,7 +184,7 @@ class ModelProvider extends ChangeNotifier {
           );
 
           if (Platform.isWindows) {
-            WindowsTaskbar.setProgress(
+            await WindowsTaskbar.setProgress(
               (modelPullResponse.completed / modelPullResponse.total * 100)
                   .toInt(),
               100,
@@ -189,8 +195,8 @@ class ModelProvider extends ChangeNotifier {
         }
       } catch (e) {
         if (Platform.isWindows) {
-          WindowsTaskbar.resetThumbnailToolbar();
-          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+          await WindowsTaskbar.resetThumbnailToolbar();
+          await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
         }
 
         logger.d('Incomplete or invalid JSON received: $data');
@@ -208,8 +214,8 @@ class ModelProvider extends ChangeNotifier {
     }
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
     SnackBarHelpers.showSnackBar(
@@ -268,8 +274,8 @@ class ModelProvider extends ChangeNotifier {
     final startTime = DateTime.now().toString();
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
     }
 
     await for (var data in stream) {
@@ -289,7 +295,7 @@ class ModelProvider extends ChangeNotifier {
           );
 
           if (Platform.isWindows) {
-            WindowsTaskbar.setProgress(
+            await WindowsTaskbar.setProgress(
               (modelPushResponse.completed / modelPushResponse.total * 100)
                   .toInt(),
               100,
@@ -300,8 +306,8 @@ class ModelProvider extends ChangeNotifier {
         }
       } catch (e) {
         if (Platform.isWindows) {
-          WindowsTaskbar.resetThumbnailToolbar();
-          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+          await WindowsTaskbar.resetThumbnailToolbar();
+          await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
         }
 
         logger.d('Incomplete or invalid JSON received: $data');
@@ -319,8 +325,8 @@ class ModelProvider extends ChangeNotifier {
     }
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
     SnackBarHelpers.showSnackBar(
@@ -369,7 +375,8 @@ class ModelProvider extends ChangeNotifier {
 
     if (response.statusCode != 200) {
       logger.e(
-          'Failed to create model $name, status code: ${response.statusCode}');
+        'Failed to create model $name, status code: ${response.statusCode}',
+      );
       return;
     }
 
@@ -381,8 +388,8 @@ class ModelProvider extends ChangeNotifier {
     final startTime = DateTime.now().toString();
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
     }
 
     await for (var data in stream) {
@@ -400,7 +407,7 @@ class ModelProvider extends ChangeNotifier {
           );
 
           if (Platform.isWindows) {
-            WindowsTaskbar.setProgress(
+            await WindowsTaskbar.setProgress(
               (modelCreateResponse.completed / modelCreateResponse.total * 100)
                   .toInt(),
               100,
@@ -411,8 +418,8 @@ class ModelProvider extends ChangeNotifier {
         }
       } catch (e) {
         if (Platform.isWindows) {
-          WindowsTaskbar.resetThumbnailToolbar();
-          WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+          await WindowsTaskbar.resetThumbnailToolbar();
+          await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
         }
 
         logger.d('Incomplete or invalid JSON received: $data');
@@ -430,8 +437,8 @@ class ModelProvider extends ChangeNotifier {
     }
 
     if (Platform.isWindows) {
-      WindowsTaskbar.resetThumbnailToolbar();
-      WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
+      await WindowsTaskbar.resetThumbnailToolbar();
+      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
     SnackBarHelpers.showSnackBar(
@@ -472,7 +479,8 @@ class ModelProvider extends ChangeNotifier {
 
       if (response.statusCode != 200) {
         logger.e(
-            'Failed to remove model $name, status code: ${response.statusCode}');
+          'Failed to remove model $name, status code: ${response.statusCode}',
+        );
         return;
       }
 
@@ -486,12 +494,7 @@ class ModelProvider extends ChangeNotifier {
     await updateList();
   }
 
-  /// Get models list.
-  ///
-  /// Returns a [List] of [Model] objects.
-  static List<Model> getModelsStatic() => _models;
-
-  List<Model> get models => _models;
+  List<Model> get models => List.unmodifiable(_models);
 
   int get modelsCount => _models.length;
 

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/backend/models/model.dart';
-import 'package:open_local_ui/backend/providers/chat.dart';
-import 'package:open_local_ui/backend/providers/model.dart';
+import 'package:open_local_ui/backend/private/models/model.dart';
+import 'package:open_local_ui/backend/private/providers/chat.dart';
+import 'package:open_local_ui/backend/private/providers/model.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
@@ -90,7 +90,7 @@ class _ModelsPageState extends State<ModelsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var sortedModels = context.watch<ModelProvider>().models;
+    var sortedModels = List.from(context.watch<ModelProvider>().models);
 
     sortedModels.sort(
       (a, b) {
@@ -327,7 +327,7 @@ class _ModelListTileState extends State<ModelListTile> {
         context.read<ChatProvider>().setSession(session.uuid);
       }
 
-      context.read<ChatProvider>().setModel(model.name);
+      await context.read<ChatProvider>().setModel(model.name);
       widget.pageController.jumpToPage(PageIndex.chat.index);
     }
   }
@@ -341,7 +341,7 @@ class _ModelListTileState extends State<ModelListTile> {
         SnackbarContentType.failure,
       );
     } else {
-      context.read<ModelProvider>().remove(widget.model.name);
+      await context.read<ModelProvider>().remove(widget.model.name);
     }
   }
 
@@ -363,20 +363,20 @@ class _ModelListTileState extends State<ModelListTile> {
     if (metadata['models'][cleanModelName]['vision']) {
       tags.add(
         Chip(
-          avatar: Icon(
+          avatar: const Icon(
             UniconsLine.eye,
             color: Colors.purple,
           ),
           label: Text(
             'vision'.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           backgroundColor: Colors.purple.withOpacity(0.25),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: BorderSide(
+            side: const BorderSide(
               color: Colors.purple,
               width: 1,
             ),
@@ -388,20 +388,20 @@ class _ModelListTileState extends State<ModelListTile> {
     if (metadata['models'][cleanModelName]['tools']) {
       tags.add(
         Chip(
-          avatar: Icon(
+          avatar: const Icon(
             UniconsLine.drill,
             color: Colors.blue,
           ),
           label: Text(
             'tools'.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           backgroundColor: Colors.blue.withOpacity(0.25),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: BorderSide(
+            side: const BorderSide(
               color: Colors.blue,
               width: 1,
             ),
@@ -413,20 +413,20 @@ class _ModelListTileState extends State<ModelListTile> {
     if (metadata['models'][cleanModelName]['embedding']) {
       tags.add(
         Chip(
-          avatar: Icon(
+          avatar: const Icon(
             UniconsLine.arrow,
             color: Colors.green,
           ),
           label: Text(
             'embedding'.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           backgroundColor: Colors.green.withOpacity(0.25),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: BorderSide(
+            side: const BorderSide(
               color: Colors.green,
               width: 1,
             ),
@@ -438,20 +438,20 @@ class _ModelListTileState extends State<ModelListTile> {
     if (metadata['models'][cleanModelName]['code']) {
       tags.add(
         Chip(
-          avatar: Icon(
+          avatar: const Icon(
             UniconsLine.brackets_curly,
             color: Colors.deepOrange,
           ),
           label: Text(
             'code'.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           backgroundColor: Colors.deepOrange.withOpacity(0.25),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: BorderSide(
+            side: const BorderSide(
               color: Colors.deepOrange,
               width: 1,
             ),

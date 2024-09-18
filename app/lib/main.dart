@@ -7,11 +7,13 @@ import 'package:feedback/feedback.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:open_local_ui/backend/databases/chat_sessions.dart';
-import 'package:open_local_ui/backend/providers/chat.dart';
-import 'package:open_local_ui/backend/providers/locale.dart';
-import 'package:open_local_ui/backend/providers/model.dart';
-import 'package:open_local_ui/backend/services/tts.dart';
+import 'package:get_it/get_it.dart';
+import 'package:open_local_ui/backend/private/databases/chat_sessions.dart';
+import 'package:open_local_ui/backend/private/providers/chat.dart';
+import 'package:open_local_ui/backend/private/providers/locale.dart';
+import 'package:open_local_ui/backend/private/providers/model.dart';
+import 'package:open_local_ui/backend/private/services/tts.dart';
+import 'package:open_local_ui/constants/assets.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/constants/languages.dart';
 import 'package:open_local_ui/core/asset.dart';
@@ -26,132 +28,32 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
 
 void _preloadAssets() async {
-  Future.wait(
-    [
-      AssetManager.loadAsset('assets/graphics/animations/gpu.riv',
-          source: AssetSource.local, type: AssetType.rivefile),
-      AssetManager.loadAsset('assets/graphics/animations/human.riv',
-          source: AssetSource.local, type: AssetType.rivefile),
-      AssetManager.loadAsset('assets/metadata/ollama_models.json',
-          source: AssetSource.local, type: AssetType.json),
-      AssetManager.loadAsset('assets/graphics/logos/apache.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/arduino.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/bash.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/c.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/clojure.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/cmake.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/cpp.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/crystal.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/cs.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/css.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/dart.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/delphi.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/dockerfile.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/elixir.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/erlang.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/flutter.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/fortran.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/glsl.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/go.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/gradle.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/haskell.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/java.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/javascript.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/json.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/julia.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/kotlin.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/langchain.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/less.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/llvm.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/lua.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/makefile.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/nginx.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/nsis.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/ocaml.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/ollama.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/perl.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/php.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/powershell.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/python.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/ruby.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/rust.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/scala.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/scss.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/supabase.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/swift.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/toml.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/typescript.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/vala.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/xml.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/html.svg',
-          source: AssetSource.local, type: AssetType.binary),
-      AssetManager.loadAsset('assets/graphics/logos/yaml.svg',
-          source: AssetSource.local, type: AssetType.binary),
-    ],
-  ).then((_) {
-    logger.i('Assets preloaded');
-  });
+  for (final asset in Assets.all) {
+    await AssetManager.loadAsset(
+      asset.path,
+      source: asset.source,
+      type: asset.type,
+    );
+  }
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Dependency injection
+
+  final getIt = GetIt.instance;
+  getIt.registerSingleton<ModelProvider>(ModelProvider());
+  getIt.registerSingleton<ChatSessionsDatabase>(ChatSessionsDatabase());
+  getIt.registerSingleton<TTSService>(TTSService());
+
   // Internal services
 
   await initLogger();
 
-  await ModelProvider.startOllamaStatic();
-  await TTSService.startServer();
-  await ChatSessionsDatabase.init();
+  await GetIt.instance<ModelProvider>().startOllama();
+  await GetIt.instance<TTSService>().startServer();
+  await GetIt.instance<ChatSessionsDatabase>().init();
 
   // Backend services
 
@@ -166,7 +68,7 @@ void main() async {
 
   _preloadAssets();
 
-  RiveFile.initialize();
+  await RiveFile.initialize();
 
   // Theme
 
@@ -192,7 +94,7 @@ void main() async {
   final userOnboarded = prefs.getBool('userOnboarded') ?? false;
 
   if (!userOnboarded) {
-    prefs.setBool('userOnboarded', true);
+    await prefs.setBool('userOnboarded', true);
   }
 
   // Run app
@@ -255,9 +157,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    TTSService.stopServer();
-    ModelProvider.stopOllamaStatic();
-    ChatSessionsDatabase.deinit();
+    GetIt.instance<ModelProvider>().stopOllama();
+    GetIt.instance<ChatSessionsDatabase>().deinit();
+    GetIt.instance<TTSService>().stopServer();
 
     super.dispose();
   }

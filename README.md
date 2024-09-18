@@ -1,5 +1,6 @@
 # OpenLocalUI
 
+![coverage](./app/coverage_badge.svg?sanitize=true)
 ![build](https://github.com/WilliamKarolDiCioccio/open_local_ui/actions/workflows/flutter-build.yml/badge.svg)
 
 ![](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)

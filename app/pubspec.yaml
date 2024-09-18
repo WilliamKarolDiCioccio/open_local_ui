@@ -109,10 +109,15 @@ dependencies:
   introduction_screen: ^3.1.14
   rive: ^0.13.12
 
+  # Dependency Injection
+  get_it: ^7.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  mockito: ^5.4.4
+  test_coverage_badge: ^0.2.0
   build_runner: ^2.4.9
   freezed: ^2.5.2
   json_serializable: ^6.7.1
@@ -131,62 +136,7 @@ flutter:
     # App metadata
     - assets/metadata/app_changelog.json
     # Logos
-    - assets/graphics/logos/open_local_ui.svg
-    - assets/graphics/logos/flutter.svg
-    - assets/graphics/logos/langchain.svg
-    - assets/graphics/logos/supabase.svg
-    - assets/graphics/logos/ollama.svg
-    - assets/graphics/logos/apache.svg
-    - assets/graphics/logos/arduino.svg
-    - assets/graphics/logos/bash.svg
-    - assets/graphics/logos/c.svg
-    - assets/graphics/logos/clojure.svg
-    - assets/graphics/logos/cmake.svg
-    - assets/graphics/logos/cpp.svg
-    - assets/graphics/logos/crystal.svg
-    - assets/graphics/logos/cs.svg
-    - assets/graphics/logos/css.svg
-    - assets/graphics/logos/dart.svg
-    - assets/graphics/logos/delphi.svg
-    - assets/graphics/logos/dockerfile.svg
-    - assets/graphics/logos/elixir.svg
-    - assets/graphics/logos/erlang.svg
-    - assets/graphics/logos/flutter.svg
-    - assets/graphics/logos/fortran.svg
-    - assets/graphics/logos/glsl.svg
-    - assets/graphics/logos/go.svg
-    - assets/graphics/logos/gradle.svg
-    - assets/graphics/logos/haskell.svg
-    - assets/graphics/logos/java.svg
-    - assets/graphics/logos/javascript.svg
-    - assets/graphics/logos/json.svg
-    - assets/graphics/logos/julia.svg
-    - assets/graphics/logos/kotlin.svg
-    - assets/graphics/logos/langchain.svg
-    - assets/graphics/logos/less.svg
-    - assets/graphics/logos/llvm.svg
-    - assets/graphics/logos/lua.svg
-    - assets/graphics/logos/makefile.svg
-    - assets/graphics/logos/nginx.svg
-    - assets/graphics/logos/nsis.svg
-    - assets/graphics/logos/ocaml.svg
-    - assets/graphics/logos/ollama.svg
-    - assets/graphics/logos/perl.svg
-    - assets/graphics/logos/php.svg
-    - assets/graphics/logos/powershell.svg
-    - assets/graphics/logos/python.svg
-    - assets/graphics/logos/ruby.svg
-    - assets/graphics/logos/rust.svg
-    - assets/graphics/logos/scala.svg
-    - assets/graphics/logos/scss.svg
-    - assets/graphics/logos/supabase.svg
-    - assets/graphics/logos/swift.svg
-    - assets/graphics/logos/toml.svg
-    - assets/graphics/logos/typescript.svg
-    - assets/graphics/logos/vala.svg
-    - assets/graphics/logos/xml.svg
-    - assets/graphics/logos/html.svg
-    - assets/graphics/logos/yaml.svg
+    - assets/graphics/logos/
     # Animations
     - assets/graphics/animations/gpu.riv
     - assets/graphics/animations/human.riv

@@ -725,6 +725,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      sha256: d85128a5dae4ea777324730dc65edd9c9f43155c109d5cc0a69cab74139fbac1
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.7.0"
   glob:
     dependency: transitive
     description:
@@ -1013,6 +1021,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.3+2"
+  lcov_dart:
+    dependency: transitive
+    description:
+      name: lcov_dart
+      sha256: "69cc9dfcceb01245e1e35371e6d364242c20da896c7b8c44163cb2e7a6804014"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -1109,6 +1125,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  mockito:
+    dependency: "direct dev"
+    description:
+      name: mockito
+      sha256: "6841eed20a7befac0ce07df8116c8b8233ed1f4486a7647c7fc5a02ae6163917"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.4"
   nested:
     dependency: transitive
     description:
@@ -1626,6 +1650,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  test_coverage_badge:
+    dependency: "direct dev"
+    description:
+      name: test_coverage_badge
+      sha256: e12261ac174e18ceebf991a2c020329797dcf692e004d5b17f3a900b89063300
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   time:
     dependency: transitive
     description:

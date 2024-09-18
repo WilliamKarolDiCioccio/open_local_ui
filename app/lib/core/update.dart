@@ -23,13 +23,13 @@ class UpdateHelper {
   ///
   /// The method dispatches the check to the platform-specific method.
   static Future<bool> isOllamaUpdateAvailable() async {
-    if (_windowsIsOllamaUpdateAvailable()) return true;
+    if (await _windowsIsOllamaUpdateAvailable()) return true;
 
     return false;
   }
 
   /// The method uses the `winget` command to check for updates.
-  static _windowsIsOllamaUpdateAvailable() async {
+  static Future<bool> _windowsIsOllamaUpdateAvailable() async {
     final wingetUpgradesList = await ProcessHelpers.runShellCommand(
       'winget',
       arguments: ['upgrade'],
@@ -45,7 +45,7 @@ class UpdateHelper {
   /// Returns a [Future] that resolves to `null`.
   ///
   /// The method dispatches the installation to the platform-specific method.
-  static Future downloadAndInstallOllamaLatestVersion() async {
+  static Future<void> downloadAndInstallOllamaLatestVersion() async {
     if (Platform.isWindows) {
       await _windowsDownloadAndInstallOllama();
     } else {
@@ -55,7 +55,7 @@ class UpdateHelper {
   }
 
   /// The method uses the `winget` command to download and install the latest version of the Ollama tool.
-  static Future _windowsDownloadAndInstallOllama() async {
+  static Future<void> _windowsDownloadAndInstallOllama() async {
     final wingetInstallResult = await ProcessHelpers.runShellCommand(
       'winget',
       arguments: [
@@ -138,7 +138,7 @@ class UpdateHelper {
       asset.name.contains('windows_x64');
 
   /// Skips the update for the current version. The method stores the version in the shared preferences.
-  static Future skipUpdate() async {
+  static Future<void> skipUpdate() async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setString('skipUpdate', _latestRelease.tag_name);
@@ -147,7 +147,7 @@ class UpdateHelper {
   /// Downloads and installs the latest version of the application.
   ///
   /// The method dispatches the installation to the platform-specific method.
-  static Future downloadAndInstallAppLatestVersion() async {
+  static Future<void> downloadAndInstallAppLatestVersion() async {
     if (Platform.isWindows) {
       await _windowsDownloadAndInstallApp();
     } else {
@@ -157,7 +157,7 @@ class UpdateHelper {
   }
 
   /// Downloads and installs the latest Windows version of the application.
-  static Future _windowsDownloadAndInstallApp() async {
+  static Future<void> _windowsDownloadAndInstallApp() async {
     GitHubReleaseAsset? installer;
 
     for (final asset in _latestRelease.assets) {
@@ -189,7 +189,7 @@ class UpdateHelper {
 
     await file.writeAsBytes(response.bodyBytes);
 
-    String powershellCommand =
+    final String powershellCommand =
         'Invoke-WmiMethod -Class Win32_Process -Name Create -ArgumentList "$filePath"';
 
     final result = await Process.run(

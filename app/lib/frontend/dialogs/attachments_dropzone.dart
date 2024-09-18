@@ -164,7 +164,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
   }
 
   void _loadFromFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowCompression: false,
       type: FileType.custom,
@@ -326,7 +326,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 }
 
 Future<Uint8List?> showAttachmentsDropzoneDialog(
-    BuildContext context, Uint8List? imageBytes) async {
+    BuildContext context, Uint8List? imageBytes,) async {
   return showDialog<Uint8List?>(
     context: context,
     barrierDismissible: false,

@@ -6,8 +6,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/backend/providers/chat.dart';
-import 'package:open_local_ui/backend/providers/model.dart';
+import 'package:open_local_ui/backend/private/providers/chat.dart';
+import 'package:open_local_ui/backend/private/providers/model.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -206,7 +206,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
     }
 
     // ignore: use_build_context_synchronously
-    context.read<ChatProvider>().sendMessage(message);
+    await context.read<ChatProvider>().sendMessage(message);
   }
 
   void _addEditableMessage(String message) {
@@ -297,7 +297,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
                     '${widget.question} ${widget.questionDetails}',
                   ),
                   icon: const Icon(UniconsLine.edit),
-                )
+                ),
               ],
             ),
           )

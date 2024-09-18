@@ -24,13 +24,13 @@ class TTSClient extends $grpc.Client {
   static final _$synthesize = $grpc.ClientMethod<$0.TTSRequest, $0.TTSResponse>(
       '/TTS/Synthesize',
       ($0.TTSRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.TTSResponse.fromBuffer(value));
+      ($core.List<$core.int> value) => $0.TTSResponse.fromBuffer(value),);
 
   TTSClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
-      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
+      $core.Iterable<$grpc.ClientInterceptor>? interceptors,})
       : super(channel, options: options,
-        interceptors: interceptors);
+        interceptors: interceptors,);
 
   $grpc.ResponseFuture<$0.TTSResponse> synthesize($0.TTSRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$synthesize, request, options: options);
@@ -48,7 +48,7 @@ abstract class TTSServiceBase extends $grpc.Service {
         false,
         false,
         ($core.List<$core.int> value) => $0.TTSRequest.fromBuffer(value),
-        ($0.TTSResponse value) => value.writeToBuffer()));
+        ($0.TTSResponse value) => value.writeToBuffer(),),);
   }
 
   $async.Future<$0.TTSResponse> synthesize_Pre($grpc.ServiceCall call, $async.Future<$0.TTSRequest> request) async {

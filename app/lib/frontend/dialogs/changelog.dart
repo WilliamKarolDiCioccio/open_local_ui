@@ -10,25 +10,27 @@ import 'package:timelines_plus/timelines_plus.dart';
 import 'package:unicons/unicons.dart';
 
 class ChangelogDialog extends StatelessWidget {
+  const ChangelogDialog({super.key});
+
   Widget _buildChangeCategoryChip(String type) {
     switch (type) {
       case 'bugfix':
         return Chip(
-          avatar: Icon(
+          avatar: const Icon(
             UniconsLine.bug,
             size: 18,
             color: Colors.red,
           ),
           label: Text(
             type.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           backgroundColor: Colors.red.withOpacity(0.25),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: BorderSide(
+            side: const BorderSide(
               color: Colors.red,
               width: 1,
             ),
@@ -36,21 +38,21 @@ class ChangelogDialog extends StatelessWidget {
         );
       case 'feature':
         return Chip(
-          avatar: Icon(
+          avatar: const Icon(
             UniconsLine.rocket,
             size: 18,
             color: Colors.green,
           ),
           label: Text(
             type.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           backgroundColor: Colors.green.withOpacity(0.25),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: BorderSide(
+            side: const BorderSide(
               color: Colors.green,
               width: 1,
             ),
@@ -58,35 +60,35 @@ class ChangelogDialog extends StatelessWidget {
         );
       case 'improvement':
         return Chip(
-          avatar: Icon(
+          avatar: const Icon(
             UniconsLine.chart_bar,
             size: 18,
             color: Colors.tealAccent,
           ),
           label: Text(
             type.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           backgroundColor: Colors.tealAccent.withOpacity(0.25),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: BorderSide(
+            side: const BorderSide(
               color: Colors.tealAccent,
               width: 1,
             ),
           ),
         );
       default:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Changelog'),
+      title: const Text('Changelog'),
       content: SizedBox(
         width: 900,
         child: FutureBuilder(
@@ -95,22 +97,22 @@ class ChangelogDialog extends StatelessWidget {
           ),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasData) {
               final changelogData = jsonDecode(snapshot.data.toString());
               final releases = changelogData['releases'] as List<dynamic>;
 
-              if (releases.isEmpty) return Text('No changelog data available');
+              if (releases.isEmpty) return const Text('No changelog data available');
 
               return SingleChildScrollView(
                 child: FixedTimeline(
                   theme: TimelineThemeData(
                     nodePosition: 0.5,
-                    connectorTheme: ConnectorThemeData(
+                    connectorTheme: const ConnectorThemeData(
                       color: Colors.grey,
                       thickness: 2.0,
                     ),
-                    indicatorTheme: IndicatorThemeData(
+                    indicatorTheme: const IndicatorThemeData(
                       size: 20.0,
                       color: Colors.blue,
                     ),
@@ -123,7 +125,7 @@ class ChangelogDialog extends StatelessWidget {
                     return TimelineTile(
                       nodePosition: 0.3,
                       oppositeContents: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 8.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,7 +133,7 @@ class ChangelogDialog extends StatelessWidget {
                           children: [
                             Text(
                               ' $version ',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 48.0,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -139,7 +141,7 @@ class ChangelogDialog extends StatelessWidget {
                             ),
                             Text(
                               date,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.grey,
                               ),
                               textAlign: TextAlign.center,
@@ -159,7 +161,7 @@ class ChangelogDialog extends StatelessWidget {
                           ),
                           borderRadius: BorderRadius.circular(16.0),
                         ),
-                        margin: EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                           horizontal: 22.0,
                           vertical: 16.0,
                         ),
@@ -200,17 +202,17 @@ class ChangelogDialog extends StatelessWidget {
                         indicator: OutlinedDotIndicator(
                           color: AdaptiveTheme.of(context).theme.dividerColor,
                         ),
-                        startConnector: SolidLineConnector(),
-                        endConnector: SolidLineConnector(),
+                        startConnector: const SolidLineConnector(),
+                        endConnector: const SolidLineConnector(),
                       ),
                     );
                   }).toList(),
                 ),
               );
             } else if (snapshot.hasError) {
-              return Text('Failed to load changelog data');
+              return const Text('Failed to load changelog data');
             } else {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
           },
         ),
@@ -231,7 +233,7 @@ Future<void> showChangelogDialog(BuildContext context) async {
   return showDialog<void>(
     context: context,
     builder: (context) {
-      return ChangelogDialog();
+      return const ChangelogDialog();
     },
   );
 }

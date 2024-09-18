@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/backend/providers/chat.dart';
+import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/frontend/widgets/chat_message.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';

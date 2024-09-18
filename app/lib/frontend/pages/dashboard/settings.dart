@@ -5,8 +5,8 @@ import 'package:flex_color_picker/flex_color_picker.dart' as fcp;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/backend/providers/chat.dart';
-import 'package:open_local_ui/backend/providers/locale.dart';
+import 'package:open_local_ui/backend/private/providers/chat.dart';
+import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:open_local_ui/core/snackbar.dart';
@@ -178,7 +178,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
             const Gap(8.0),
             GestureDetector(
               onTap: () async {
-                showColorPickerDialog(
+                await showColorPickerDialog(
                   _key.currentContext!,
                   await _getAccent(),
                 ).then(
@@ -244,14 +244,16 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
                       if (value) {
                         await prefs.setBool('sync_accent_color', true);
-                        _setAccent(_key.currentContext!,
-                            SystemTheme.accentColor.accent);
+                        _setAccent(
+                          context,
+                          SystemTheme.accentColor.accent,
+                        );
                       } else {
                         final savedColorCode = prefs.getString('accent_color');
-                        prefs.setBool('sync_accent_color', false);
+                        await prefs.setBool('sync_accent_color', false);
 
                         _setAccent(
-                          _key.currentContext!,
+                          context,
                           ColorHelpers.colorFromHex(
                             savedColorCode ?? Colors.cyan.hex,
                           ),

@@ -6,8 +6,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/backend/models/ollama_responses.dart';
-import 'package:open_local_ui/backend/providers/model.dart';
+import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
+import 'package:open_local_ui/backend/private/providers/model.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -27,7 +27,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
   String _progressBarText = '';
 
   void _selectFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowCompression: false,
       type: FileType.custom,

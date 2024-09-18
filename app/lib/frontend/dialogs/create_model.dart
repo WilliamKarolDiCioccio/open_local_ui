@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:open_local_ui/backend/models/ollama_responses.dart';
-import 'package:open_local_ui/backend/providers/model.dart';
+import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
+import 'package:open_local_ui/backend/private/providers/model.dart';
 import 'package:provider/provider.dart';
 
 class CreateModelDialog extends StatefulWidget {
