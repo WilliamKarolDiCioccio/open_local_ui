@@ -112,6 +112,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
                 return ChatMessageWidget(
                   key: Key(message.uuid),
                   message,
+                  _scrollController,
                 ).animate().fadeIn(duration: 300.ms).move(
                       begin: const Offset(-16, 0),
                       curve: Curves.easeOutQuad,

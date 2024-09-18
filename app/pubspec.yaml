@@ -111,6 +111,7 @@ dependencies:
 
   # Dependency Injection
   get_it: ^7.7.0
+  flutter_sticky_widgets: ^0.0.3
 
 dev_dependencies:
   flutter_test:

@@ -14,9 +14,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MarkdownBodyWidget extends StatelessWidget {
   final String message;
+  final ScrollController scrollController;
 
   const MarkdownBodyWidget(
-    this.message, {
+    this.message,
+    this.scrollController, {
     super.key,
   });
 
@@ -37,6 +39,7 @@ class MarkdownBodyWidget extends StatelessWidget {
                     child,
                     code,
                     language,
+                    scrollController,
                   ),
                 )
               : const PreConfig().copy(
@@ -46,6 +49,7 @@ class MarkdownBodyWidget extends StatelessWidget {
                     child,
                     code,
                     language,
+                    scrollController,
                   ),
                 ),
           LinkConfig(

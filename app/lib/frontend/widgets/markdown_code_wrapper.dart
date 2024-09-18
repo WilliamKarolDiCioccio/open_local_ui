@@ -11,6 +11,7 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:unicons/unicons.dart';
+import 'package:flutter_sticky_widgets/flutter_sticky_widgets.dart';
 
 Map<String, String> languageToAsset = {
   'apache': 'assets/graphics/logos/apache.svg',
@@ -70,11 +71,13 @@ class MarkdownCodeWrapperWidget extends StatefulWidget {
   final Widget child;
   final String text;
   final String language;
+  final ScrollController scrollController;
 
   const MarkdownCodeWrapperWidget(
     this.child,
     this.text,
-    this.language, {
+    this.language,
+    this.scrollController, {
     super.key,
   });
 
@@ -108,7 +111,8 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
   Future<void> _saveFile() async {
     setState(() => _isSaved = true);
 
-    final String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    final String? selectedDirectory =
+        await FilePicker.platform.getDirectoryPath();
 
     if (selectedDirectory != null) {
       const String fileName = 'code_snippet.txt';
@@ -136,86 +140,66 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
     });
   }
 
+  Size _getMarkdownBodySize(BuildContext context) {
+    final RenderBox renderBox =
+        context.findAncestorRenderObjectOfType() as RenderBox;
+
+    return renderBox.size;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         widget.child,
-        Align(
-          alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 16,
-              right: 8,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.language.isNotEmpty)
-                  if (languageToAsset.containsKey(widget.language))
-                    Tooltip(
-                      message: widget.language.toUpperCase(),
-                      child: SvgPicture.memory(
-                        AssetManager.getAsset(
-                          languageToAsset[widget.language]!,
-                          type: AssetType.binary,
-                        ),
-                        width: 20,
-                        height: 20,
-                        // ignore: deprecated_member_use
-                        color: AdaptiveTheme.of(context).mode.isDark
-                            ? Colors.white
-                            : Colors.black,
+        StickyWidget(
+          initialPosition: StickyPosition(top: 16, right: 16),
+          finalPosition: StickyPosition(
+            top: _getMarkdownBodySize(context).height - 56,
+            right: 16,
+          ),
+          controller: widget.scrollController,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.language.isNotEmpty)
+                if (languageToAsset.containsKey(widget.language))
+                  Tooltip(
+                    message: widget.language.toUpperCase(),
+                    child: SvgPicture.memory(
+                      AssetManager.getAsset(
+                        languageToAsset[widget.language]!,
+                        type: AssetType.binary,
                       ),
-                    ),
-                if (widget.language.isNotEmpty)
-                  if (!languageToAsset.containsKey(widget.language))
-                    SelectionContainer.disabled(
-                      child: Text(
-                        widget.language.toUpperCase(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                const Gap(16.0),
-                InkWell(
-                  onTap: () => _copyMessage(),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (
-                      Widget child,
-                      Animation<double> animation,
-                    ) {
-                      return ScaleTransition(scale: animation, child: child);
-                    },
-                    child: Icon(
-                      _isCopied ? UniconsLine.check : UniconsLine.copy,
-                      key: ValueKey<bool>(_isCopied),
-                      size: 24,
+                      width: 20,
+                      height: 20,
+                      // ignore: deprecated_member_use
+                      color: AdaptiveTheme.of(context).mode.isDark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                   ),
-                ),
-                const Gap(16.0),
-                InkWell(
-                  onTap: () => _saveFile(),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (
-                      Widget child,
-                      Animation<double> animation,
-                    ) {
-                      return ScaleTransition(scale: animation, child: child);
-                    },
-                    child: Icon(
-                      _isSaved ? UniconsLine.check : UniconsLine.save,
-                      key: ValueKey<bool>(_isSaved),
-                      size: 24,
+              if (widget.language.isNotEmpty)
+                if (!languageToAsset.containsKey(widget.language))
+                  SelectionContainer.disabled(
+                    child: Text(
+                      widget.language.toUpperCase(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+              const Gap(24.0),
+              IconButton(
+                onPressed: () => _copyMessage(),
+                icon: Icon(_isCopied ? UniconsLine.check : UniconsLine.copy),
+              ),
+              const Gap(16.0),
+              IconButton(
+                onPressed: () => _saveFile(),
+                icon: Icon(_isSaved ? UniconsLine.check : UniconsLine.save),
+              ),
+            ],
           ),
         ),
       ],

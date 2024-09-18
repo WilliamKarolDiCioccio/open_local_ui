@@ -20,9 +20,11 @@ import 'package:unicons/unicons.dart';
 
 class ChatMessageWidget extends StatefulWidget {
   final ChatMessageWrapper message;
+  final ScrollController scrollController;
 
   const ChatMessageWidget(
-    this.message, {
+    this.message,
+    this.scrollController, {
     super.key,
   });
 
@@ -238,6 +240,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           if (!_showEditWidget && widget.message.text.isNotEmpty)
             MarkdownBodyWidget(
               widget.message.text,
+              widget.scrollController,
             ),
           if (context.watch<ChatProvider>().isChatShowStatistics &&
               widget.message.text.isNotEmpty &&
