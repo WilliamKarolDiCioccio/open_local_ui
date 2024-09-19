@@ -64,7 +64,7 @@ class _RiveAnimationComponentState extends State<RiveAnimationComponent> {
           return const Text('Error loading animation');
         } else {
           return VisibilityDetector(
-            key: const Key('RiveAnimation'),
+            key: Key('RiveAnimation${context.hashCode}'),
             child: RiveAnimation.direct(
               snapshot.data!,
               artboard: AdaptiveTheme.of(context).mode.isDark
