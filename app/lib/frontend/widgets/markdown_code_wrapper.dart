@@ -6,12 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_sticky_widgets/flutter_sticky_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:unicons/unicons.dart';
-import 'package:flutter_sticky_widgets/flutter_sticky_widgets.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 Map<String, String> languageToAsset = {
   'apache': 'assets/graphics/logos/apache.svg',
@@ -89,6 +90,26 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
   final _key = GlobalKey<_CodeWrapperState>();
   bool _isCopied = false;
   bool _isSaved = false;
+  double _markdownBodyHeight = 0;
+  double _markdownBodyHiddenHeight = 0;
+  bool _isUpperPartVisible = false;
+  bool _isLowerPartVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final size = _getMarkdownBodySize(context);
+      setState(() {
+        _markdownBodyHeight = size.height;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void _copyMessage() {
     setState(() => _isCopied = true);
@@ -140,69 +161,99 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
     });
   }
 
-  Size _getMarkdownBodySize(BuildContext context) {
-    final RenderBox renderBox =
-        context.findAncestorRenderObjectOfType() as RenderBox;
+  void _onVisibilityChanged(VisibilityInfo info) {
+    setState(() {
+      _isUpperPartVisible = info.visibleBounds.top == 0;
+      _isLowerPartVisible = info.visibleBounds.bottom == 0;
 
-    return renderBox.size;
+      _markdownBodyHiddenHeight = info.visibleBounds.top;
+    });
+
+    // Force rebuild to update the position of the sticky widget
+    setState(() {});
+  }
+
+  Size _getMarkdownBodySize(BuildContext context) {
+    final renderBox = context.findRenderObject() as RenderBox?;
+    return renderBox?.size ?? Size.zero;
+  }
+
+  double _getActionsFinalTopPosition() {
+    if (_isUpperPartVisible || (_isUpperPartVisible && _isLowerPartVisible)) {
+      return 16;
+    }
+    if (_isLowerPartVisible && !_isUpperPartVisible) {
+      return _markdownBodyHeight - 56;
+    }
+
+    return _markdownBodyHiddenHeight + 96;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        widget.child,
-        StickyWidget(
-          initialPosition: StickyPosition(top: 16, right: 16),
-          finalPosition: StickyPosition(
-            top: _getMarkdownBodySize(context).height - 56,
-            right: 16,
-          ),
-          controller: widget.scrollController,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (widget.language.isNotEmpty)
-                if (languageToAsset.containsKey(widget.language))
-                  Tooltip(
-                    message: widget.language.toUpperCase(),
-                    child: SvgPicture.memory(
-                      AssetManager.getAsset(
-                        languageToAsset[widget.language]!,
-                        type: AssetType.binary,
-                      ),
-                      width: 20,
-                      height: 20,
-                      // ignore: deprecated_member_use
-                      color: AdaptiveTheme.of(context).mode.isDark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                  ),
-              if (widget.language.isNotEmpty)
-                if (!languageToAsset.containsKey(widget.language))
-                  SelectionContainer.disabled(
-                    child: Text(
-                      widget.language.toUpperCase(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-              const Gap(24.0),
-              IconButton(
-                onPressed: () => _copyMessage(),
-                icon: Icon(_isCopied ? UniconsLine.check : UniconsLine.copy),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Stack(
+          children: [
+            VisibilityDetector(
+              key: Key("MarkdownBody${context.hashCode}"),
+              child: widget.child,
+              onVisibilityChanged: (info) => _onVisibilityChanged(info),
+            ),
+            StickyWidget(
+              initialPosition: StickyPosition(top: 16, right: 16),
+              finalPosition: StickyPosition(
+                top: _getActionsFinalTopPosition(),
+                right: 16,
               ),
-              const Gap(16.0),
-              IconButton(
-                onPressed: () => _saveFile(),
-                icon: Icon(_isSaved ? UniconsLine.check : UniconsLine.save),
+              controller: widget.scrollController,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (widget.language.isNotEmpty)
+                    if (languageToAsset.containsKey(widget.language))
+                      Tooltip(
+                        message: widget.language.toUpperCase(),
+                        child: SvgPicture.memory(
+                          AssetManager.getAsset(
+                            languageToAsset[widget.language]!,
+                            type: AssetType.binary,
+                          ),
+                          width: 20,
+                          height: 20,
+                          // ignore: deprecated_member_use
+                          color: AdaptiveTheme.of(context).mode.isDark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ),
+                  if (widget.language.isNotEmpty)
+                    if (!languageToAsset.containsKey(widget.language))
+                      SelectionContainer.disabled(
+                        child: Text(
+                          widget.language.toUpperCase(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                  const Gap(24.0),
+                  IconButton(
+                    onPressed: () => _copyMessage(),
+                    icon:
+                        Icon(_isCopied ? UniconsLine.check : UniconsLine.copy),
+                  ),
+                  const Gap(16.0),
+                  IconButton(
+                    onPressed: () => _saveFile(),
+                    icon: Icon(_isSaved ? UniconsLine.check : UniconsLine.save),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

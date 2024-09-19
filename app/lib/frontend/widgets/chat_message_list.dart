@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/frontend/widgets/chat_message.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
 import 'package:unicons/unicons.dart';
 
 class ChatMessageList extends StatefulWidget {
@@ -15,43 +16,34 @@ class ChatMessageList extends StatefulWidget {
 }
 
 class _ChatMessageListState extends State<ChatMessageList> {
-  final ScrollController _scrollController = ScrollController();
+  ScrollController? _scrollController;
   final OverlayPortalController _overlayPortalController =
       OverlayPortalController();
   final GlobalKey _expandedKey = GlobalKey();
   final GlobalKey _overlayKey = GlobalKey();
   bool _isUserScrolling = false;
 
-  @override
-  void initState() {
-    super.initState();
-
-    _scrollController.addListener(_scrollListener);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
-
-    super.dispose();
-  }
-
   void _scrollToBottomWithAnimation() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    if (_scrollController != null) {
+      _scrollController!.animateTo(
+        _scrollController!.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   void _scrollToBottom() {
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    if (_scrollController == null) return;
+
+    _scrollController!.jumpTo(_scrollController!.position.maxScrollExtent);
   }
 
   void _scrollListener() {
-    final atBottom = _scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent;
+    if (_scrollController == null) return;
+
+    final atBottom = _scrollController!.position.pixels >=
+        _scrollController!.position.maxScrollExtent;
 
     if (atBottom) {
       setState(() {
@@ -88,8 +80,10 @@ class _ChatMessageListState extends State<ChatMessageList> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isUserScrolling && _scrollController.hasClients) {
-      _scrollToBottom();
+    if (_scrollController != null) {
+      if (!_isUserScrolling && _scrollController!.hasClients) {
+        _scrollToBottom();
+      }
     }
 
     // Listen for screen resizing to update the scroll button position
@@ -103,21 +97,29 @@ class _ChatMessageListState extends State<ChatMessageList> {
             behavior: ScrollConfiguration.of(context).copyWith(
               scrollbars: false,
             ),
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: context.watch<ChatProvider>().messageCount,
-              itemBuilder: (context, index) {
-                final message = context.watch<ChatProvider>().messages[index];
+            child: DynMouseScroll(
+              builder: (context, controller, physics) => ListView.builder(
+                physics: physics,
+                controller: controller,
+                itemCount: context.watch<ChatProvider>().messageCount,
+                itemBuilder: (context, index) {
+                  if (_scrollController == null) {
+                    _scrollController = controller;
+                    _scrollController!.addListener(_scrollListener);
+                  }
 
-                return ChatMessageWidget(
-                  key: Key(message.uuid),
-                  message,
-                  _scrollController,
-                ).animate().fadeIn(duration: 300.ms).move(
-                      begin: const Offset(-16, 0),
-                      curve: Curves.easeOutQuad,
-                    );
-              },
+                  final message = context.watch<ChatProvider>().messages[index];
+
+                  return ChatMessageWidget(
+                    key: Key(message.uuid),
+                    message,
+                    controller,
+                  ).animate().fadeIn(duration: 300.ms).move(
+                        begin: const Offset(-16, 0),
+                        curve: Curves.easeOutQuad,
+                      );
+                },
+              ),
             ),
           ),
         ),
