@@ -86,7 +86,6 @@ class AssetManager {
   ///
   /// The method returns a [String] that represents the asset in plain text format.
   static dynamic _getRawAsset(String key) {
-    logger.d('Retrieved asset: $key');
     return _assetRegistry[key];
   }
 
