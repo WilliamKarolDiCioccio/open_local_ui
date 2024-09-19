@@ -135,12 +135,14 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                             spacing: 16.0,
                             runSpacing: 16.0,
                             children: [
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context)
                                     .enableWebSearch,
                                 setting: 'enableWebSearch',
                               ),
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context)
                                     .enableDocsSearch,
                                 setting: 'enableDocsSearch',
@@ -162,24 +164,29 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                             spacing: 16.0,
                             runSpacing: 16.0,
                             children: [
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).keepAlive,
                                 setting: 'keepAlive',
                               ),
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label: AppLocalizations.of(context).temperature,
                                 setting: 'temperature',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context)
                                     .concurrencyLimit,
                                 setting: 'concurrencyLimit',
                               ),
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context).lowVram,
                                 setting: 'lowVram',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).mainGpu,
                                 setting: 'mainGpu',
                               ),
@@ -199,27 +206,32 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                             spacing: 16.0,
                             runSpacing: 16.0,
                             children: [
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label: AppLocalizations.of(context)
                                     .frequencyPenalty,
                                 setting: 'frequencyPenalty',
                               ),
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context)
                                     .penalizeNewline,
                                 setting: 'penalizeNewline',
                               ),
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label: AppLocalizations.of(context)
                                     .presencePenalty,
                                 setting: 'presencePenalty',
                               ),
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label:
                                     AppLocalizations.of(context).repeatPenalty,
                                 setting: 'repeatPenalty',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).repeatLastN,
                                 setting: 'repeatLastN',
                               ),
@@ -239,79 +251,98 @@ class ModelSettingsDialogState extends State<ModelSettingsDialog> {
                             spacing: 16.0,
                             runSpacing: 16.0,
                             children: [
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context).f16KV,
                                 setting: 'f16KV',
                               ),
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context).logitsAll,
                                 setting: 'logitsAll',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).mirostat,
                                 setting: 'mirostat',
                               ),
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label: AppLocalizations.of(context).mirostatEta,
                                 setting: 'mirostatEta',
                               ),
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label: AppLocalizations.of(context).mirostatTau,
                                 setting: 'mirostatTau',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).numBatch,
                                 setting: 'numBatch',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).numCtx,
                                 setting: 'numCtx',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).numKeep,
                                 setting: 'numKeep',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).numPredict,
                                 setting: 'numPredict',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).numThread,
                                 setting: 'numThread',
                               ),
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context).numa,
                                 setting: 'numa',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).seed,
                                 setting: 'seed',
                               ),
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label: AppLocalizations.of(context).tfsZ,
                                 setting: 'tfsZ',
                               ),
-                              IntSettingWidget(
+                              SettingWidget(
+                                type: SettingType.intSetting,
                                 label: AppLocalizations.of(context).topK,
                                 setting: 'topK',
                               ),
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label: AppLocalizations.of(context).topP,
                                 setting: 'topP',
                               ),
-                              DoubleSettingWidget(
+                              SettingWidget(
+                                type: SettingType.doubleSetting,
                                 label: AppLocalizations.of(context).typicalP,
                                 setting: 'typicalP',
                               ),
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context).useMlock,
                                 setting: 'useMlock',
                               ),
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context).useMmap,
                                 setting: 'useMmap',
                               ),
-                              BoolSettingWidget(
+                              SettingWidget(
+                                type: SettingType.boolSetting,
                                 label: AppLocalizations.of(context).vocabOnly,
                                 setting: 'vocabOnly',
                               ),
@@ -369,198 +400,217 @@ Future<void> showModelSettingsDialog(
   );
 }
 
-class BoolSettingWidget extends StatelessWidget {
+enum SettingType {
+  boolSetting,
+  intSetting,
+  doubleSetting,
+}
+
+class SettingWidget extends StatefulWidget {
   final String label;
   final String setting;
+  final SettingType type;
 
-  const BoolSettingWidget({
+  const SettingWidget({
     super.key,
     required this.label,
     required this.setting,
+    required this.type,
   });
+
+  @override
+  State<SettingWidget> createState() => _SettingWidgetState();
+}
+
+class _SettingWidgetState extends State<SettingWidget> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final modelSettings = context.read<ModelSettingsProvider>();
+    final value = modelSettings.get(widget.setting);
+
+    if (widget.type == SettingType.intSetting ||
+        widget.type == SettingType.doubleSetting) {
+      _controller = TextEditingController(text: value?.toString());
+    } else {
+      _controller = TextEditingController();
+    }
+
+    if (widget.type == SettingType.boolSetting && value != null) {
+      _controller.text = value.toString();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final modelSettings = context.watch<ModelSettingsProvider>();
-    final value = modelSettings.get(setting) as bool?;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(width: 250, child: Text(label)),
-        DropdownMenu<bool?>(
-          initialSelection: value,
-          enableFilter: false,
-          enableSearch: false,
-          width: 150,
-          menuHeight: 128,
-          menuStyle: MenuStyle(
-            elevation: WidgetStateProperty.all(
-              8.0,
-            ),
-            shape: WidgetStateProperty.all(
-              const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+    final tooltipText = getTooltipText(widget.setting, context);
+
+    switch (widget.type) {
+      case SettingType.boolSetting:
+        final bool? value = modelSettings.get(widget.setting) as bool?;
+        return Tooltip(
+          message: tooltipText,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 250, child: Text(widget.label)),
+              DropdownButton<bool?>(
+                value: value,
+                onChanged: (bool? newValue) {
+                  modelSettings.set(widget.setting, newValue);
+                },
+                items: [
+                  DropdownMenuItem<bool?>(
+                    value: null,
+                    child:
+                        Text(AppLocalizations.of(context).settingsModelDefault),
+                  ),
+                  DropdownMenuItem<bool?>(
+                    value: true,
+                    child: Text(AppLocalizations.of(context).settingsModelOn),
+                  ),
+                  DropdownMenuItem<bool?>(
+                    value: false,
+                    child: Text(AppLocalizations.of(context).settingsModelOff),
+                  ),
+                ],
               ),
-            ),
+            ],
           ),
-          inputDecorationTheme: const InputDecorationTheme(
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.never,
+        );
+
+      case SettingType.intSetting:
+        return Tooltip(
+          message: tooltipText,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 250, child: Text(widget.label)),
+              SizedBox(
+                width: 150,
+                child: TextField(
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                  controller: _controller,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    final newValue = int.tryParse(value);
+                    modelSettings.set(widget.setting, newValue);
+                  },
+                ),
+              ),
+            ],
           ),
-          dropdownMenuEntries: [
-            DropdownMenuEntry<bool?>(
-              value: null,
-              label: AppLocalizations.of(context).settingsModelDefault,
-            ),
-            DropdownMenuEntry<bool?>(
-              value: true,
-              label: AppLocalizations.of(context).settingsModelOn,
-            ),
-            DropdownMenuEntry<bool?>(
-              value: false,
-              label: AppLocalizations.of(context).settingsModelOff,
-            ),
-          ],
-          textStyle: TextStyle(
-            color: switch (value) {
-              null => null,
-              true => Colors.green,
-              false => Colors.red,
-            },
-            fontWeight: value == null ? FontWeight.normal : FontWeight.bold,
+        );
+
+      case SettingType.doubleSetting:
+        return Tooltip(
+          message: tooltipText,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 250, child: Text(widget.label)),
+              SizedBox(
+                width: 150,
+                child: TextField(
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                  controller: _controller,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  onChanged: (value) {
+                    final newValue = double.tryParse(value);
+                    modelSettings.set(widget.setting, newValue);
+                  },
+                ),
+              ),
+            ],
           ),
-          onSelected: (bool? newValue) {
-            context.read<ModelSettingsProvider>().set(setting, newValue);
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class IntSettingWidget extends StatefulWidget {
-  final String label;
-  final String setting;
-
-  const IntSettingWidget({
-    super.key,
-    required this.label,
-    required this.setting,
-  });
-
-  @override
-  State<IntSettingWidget> createState() => _IntSettingWidgetState();
-}
-
-class _IntSettingWidgetState extends State<IntSettingWidget> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    final modelSettings = context.read<ModelSettingsProvider>();
-    final value = modelSettings.get(widget.setting);
-    if (value != null) {
-      _controller.text = modelSettings.get(widget.setting).toString();
+        );
+      default:
+        return const SizedBox.shrink();
     }
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(width: 250, child: Text(widget.label)),
-        SizedBox(
-          width: 150,
-          child: TextField(
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-            controller: _controller,
-            onChanged: (value) {
-              final newValue = int.tryParse(value);
-              context.read<ModelSettingsProvider>().set(
-                    widget.setting,
-                    newValue,
-                  );
-            },
-          ),
-        ),
-      ],
-    );
   }
 }
 
-class DoubleSettingWidget extends StatefulWidget {
-  final String label;
-  final String setting;
-
-  const DoubleSettingWidget({
-    super.key,
-    required this.label,
-    required this.setting,
-  });
-
-  @override
-  State<DoubleSettingWidget> createState() => _DoubleSettingWidgetState();
-}
-
-class _DoubleSettingWidgetState extends State<DoubleSettingWidget> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    final modelSettings = context.read<ModelSettingsProvider>();
-    final value = modelSettings.get(widget.setting);
-
-    if (value != null) {
-      _controller.text = modelSettings.get(widget.setting).toString();
+String getTooltipText(String setting, BuildContext context) {
+    switch (setting) {
+      case 'enableWebSearch':
+        return AppLocalizations.of(context).tooltipEnableWebSearch;
+      case 'enableDocsSearch':
+        return AppLocalizations.of(context).tooltipEnableDocsSearch;
+      case 'keepAlive':
+        return AppLocalizations.of(context).tooltipKeepAlive;
+      case 'temperature':
+        return AppLocalizations.of(context).tooltipTemperature;
+      case 'concurrencyLimit':
+        return AppLocalizations.of(context).tooltipConcurrencyLimit;
+      case 'lowVram':
+        return AppLocalizations.of(context).tooltipLowVram;
+      case 'mainGpu':
+        return AppLocalizations.of(context).tooltipMainGpu;
+      case 'frequencyPenalty':
+        return AppLocalizations.of(context).tooltipFrequencyPenalty;
+      case 'penalizeNewline':
+        return AppLocalizations.of(context).tooltipPenalizeNewline;
+      case 'presencePenalty':
+        return AppLocalizations.of(context).tooltipPresencePenalty;
+      case 'repeatPenalty':
+        return AppLocalizations.of(context).tooltipRepeatPenalty;
+      case 'repeatLastN':
+        return AppLocalizations.of(context).tooltipRepeatLastN;
+      case 'f16KV':
+        return AppLocalizations.of(context).tooltipF16KV;
+      case 'logitsAll':
+        return AppLocalizations.of(context).tooltipLogitsAll;
+      case 'mirostat':
+        return AppLocalizations.of(context).tooltipMirostat;
+      case 'mirostatEta':
+        return AppLocalizations.of(context).tooltipMirostatEta;
+      case 'mirostatTau':
+        return AppLocalizations.of(context).tooltipMirostatTau;
+      case 'numBatch':
+        return AppLocalizations.of(context).tooltipNumBatch;
+      case 'numCtx':
+        return AppLocalizations.of(context).tooltipNumCtx;
+      case 'numKeep':
+        return AppLocalizations.of(context).tooltipNumKeep;
+      case 'numPredict':
+        return AppLocalizations.of(context).tooltipNumPredict;
+      case 'numThread':
+        return AppLocalizations.of(context).tooltipNumThread;
+      case 'numa':
+        return AppLocalizations.of(context).tooltipNuma;
+      case 'seed':
+        return AppLocalizations.of(context).tooltipSeed;
+      case 'tfsZ':
+        return AppLocalizations.of(context).tooltipTfsZ;
+      case 'topK':
+        return AppLocalizations.of(context).tooltipTopK;
+      case 'topP':
+        return AppLocalizations.of(context).tooltipTopP;
+      case 'typicalP':
+        return AppLocalizations.of(context).tooltipTypicalP;
+      case 'useMlock':
+        return AppLocalizations.of(context).tooltipUseMlock;
+      case 'useMmap':
+        return AppLocalizations.of(context).tooltipUseMmap;
+      case 'vocabOnly':
+        return AppLocalizations.of(context).tooltipVocabOnly;
+      default:
+        return '';
     }
-
-    super.initState();
   }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(width: 250, child: Text(widget.label)),
-        SizedBox(
-          width: 150,
-          child: TextField(
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-            controller: _controller,
-            onChanged: (value) {
-              final newValue = double.tryParse(value);
-              context.read<ModelSettingsProvider>().set(
-                    widget.setting,
-                    newValue,
-                  );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
