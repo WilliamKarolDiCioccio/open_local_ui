@@ -61,8 +61,10 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.9.0
 
-  # File Picker
-  file_picker: ^8.0.2
+  # Filesystem
+  # Currently using both due to cross-platform requirements
+  file_selector: ^1.0.3
+  file_picker: ^8.1.2
 
   # Audio and Video
   audioplayers: ^6.0.0

@@ -14,8 +14,7 @@ import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/backend/private/providers/model.dart';
 import 'package:open_local_ui/backend/private/services/tts.dart';
 import 'package:open_local_ui/constants/assets.dart';
-import 'package:open_local_ui/constants/flutter.dart';
-import 'package:open_local_ui/constants/languages.dart';
+import 'package:open_local_ui/constants/constants.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/logger.dart';
@@ -186,7 +185,7 @@ class _MyAppState extends State<MyApp> {
         title: 'OpenLocalUI',
         theme: lightTheme,
         darkTheme: darkTheme,
-        supportedLocales: L10n.all,
+        supportedLocales: languages,
         locale: context.watch<LocaleProvider>().locale,
         localizationsDelegates: const [
           AppLocalizations.delegate,
