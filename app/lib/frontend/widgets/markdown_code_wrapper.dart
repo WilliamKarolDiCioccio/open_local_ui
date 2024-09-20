@@ -13,7 +13,6 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:unicons/unicons.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class MarkdownCodeWrapperWidget extends StatefulWidget {
   final Widget child;
@@ -37,9 +36,6 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
   bool _isCopied = false;
   bool _isSaved = false;
   double _markdownBodyHeight = 0;
-  double _markdownBodyHiddenHeight = 0;
-  bool _isUpperPartVisible = false;
-  bool _isLowerPartVisible = false;
 
   @override
   void initState() {
@@ -127,34 +123,9 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
     });
   }
 
-  void _onVisibilityChanged(VisibilityInfo info) {
-    if (!mounted) return;
-
-    setState(() {
-      _isUpperPartVisible = info.visibleBounds.top == 0;
-      _isLowerPartVisible = info.visibleBounds.bottom == 0;
-
-      _markdownBodyHiddenHeight = info.visibleBounds.top;
-    });
-
-    // Force rebuild to update the position of the sticky widget
-    setState(() {});
-  }
-
   Size _getMarkdownBodySize(BuildContext context) {
     final renderBox = context.findRenderObject() as RenderBox?;
     return renderBox?.size ?? Size.zero;
-  }
-
-  double _getActionsFinalTopPosition() {
-    if (_isUpperPartVisible || (_isUpperPartVisible && _isLowerPartVisible)) {
-      return 16;
-    }
-    if (_isLowerPartVisible && !_isUpperPartVisible) {
-      return _markdownBodyHeight - 56;
-    }
-
-    return _markdownBodyHiddenHeight + 96;
   }
 
   @override
@@ -163,15 +134,11 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
       builder: (BuildContext context, BoxConstraints constraints) {
         return Stack(
           children: [
-            VisibilityDetector(
-              key: Key("MarkdownBody${context.hashCode}"),
-              child: widget.child,
-              onVisibilityChanged: (info) => _onVisibilityChanged(info),
-            ),
+            widget.child,
             StickyWidget(
               initialPosition: StickyPosition(top: 16, right: 16),
               finalPosition: StickyPosition(
-                top: _getActionsFinalTopPosition(),
+                top: _markdownBodyHeight - 56,
                 right: 16,
               ),
               controller: widget.scrollController,
