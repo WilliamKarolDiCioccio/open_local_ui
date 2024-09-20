@@ -31,6 +31,8 @@ Map<String, String> programmingLanguagesLogos = {
   'llvm': 'assets/graphics/logos/llvm.svg',
   'lua': 'assets/graphics/logos/lua.svg',
   'makefile': 'assets/graphics/logos/makefile.svg',
+  'markdown': 'assets/graphics/logos/md.svg',
+  'mdx': 'assets/graphics/logos/mdx.svg',
   'nginx': 'assets/graphics/logos/nginx.svg',
   'nsis': 'assets/graphics/logos/nsis.svg',
   'ocaml': 'assets/graphics/logos/ocaml.svg',
@@ -50,6 +52,7 @@ Map<String, String> programmingLanguagesLogos = {
   'vala': 'assets/graphics/logos/vala.svg',
   'xml': 'assets/graphics/logos/xml.svg',
   'html': 'assets/graphics/logos/html.svg',
+  'htmx': 'assets/graphics/logos/htmx.svg',
   'yaml': 'assets/graphics/logos/yaml.svg',
 };
 
@@ -86,6 +89,8 @@ Map<String, List<String>> programmingLanguagesFileExt = {
   'llvm': ['ll', 'bc'],
   'lua': ['lua'],
   'makefile': ['Makefile'],
+  'markdown': ['md'],
+  'mdx': ['mdx'],
   'nginx': ['nginxconf'],
   'nsis': ['nsi', 'nsh'],
   'ocaml': ['ml', 'mli'],
@@ -105,5 +110,6 @@ Map<String, List<String>> programmingLanguagesFileExt = {
   'vala': ['vala'],
   'xml': ['xml'],
   'html': ['html', 'htm'],
+  'htmx': ['htmx'],
   'yaml': ['yaml', 'yml'],
 };
