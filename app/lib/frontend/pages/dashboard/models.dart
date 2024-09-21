@@ -8,6 +8,7 @@ import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/model.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/format.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/dialogs/create_model.dart';
 import 'package:open_local_ui/frontend/dialogs/import_model.dart';
@@ -15,10 +16,10 @@ import 'package:open_local_ui/frontend/dialogs/model_details.dart';
 import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
 import 'package:open_local_ui/frontend/dialogs/pull_model.dart';
 import 'package:open_local_ui/frontend/dialogs/push_model.dart';
-import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 
@@ -274,24 +275,29 @@ class _ModelsPageState extends State<ModelsPage> {
         ),
         const Gap(16),
         Expanded(
-          child: ListView.builder(
-            prototypeItem: ModelListTile(
-              model: prototypeModel,
-              pageController: widget.pageController,
-            ),
-            itemCount: context.watch<ModelProvider>().modelsCount,
-            itemBuilder: (context, index) {
-              return ModelListTile(
-                model: sortedModels[index],
+          child: DynMouseScroll(
+            builder: (context, controller, physics) => ListView.builder(
+              shrinkWrap: true,
+              physics: physics,
+              controller: controller,
+              prototypeItem: ModelListTile(
+                model: prototypeModel,
                 pageController: widget.pageController,
-              )
-                  .animate(delay: (index * 100).ms)
-                  .fadeIn(duration: 900.ms, delay: 300.ms)
-                  .move(
-                    begin: const Offset(-16, 0),
-                    curve: Curves.easeOutQuad,
-                  );
-            },
+              ),
+              itemCount: context.watch<ModelProvider>().modelsCount,
+              itemBuilder: (context, index) {
+                return ModelListTile(
+                  model: sortedModels[index],
+                  pageController: widget.pageController,
+                )
+                    .animate(delay: (index * 100).ms)
+                    .fadeIn(duration: 900.ms, delay: 300.ms)
+                    .move(
+                      begin: const Offset(-16, 0),
+                      curve: Curves.easeOutQuad,
+                    );
+              },
+            ),
           ),
         ),
       ],

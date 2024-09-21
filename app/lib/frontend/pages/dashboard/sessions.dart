@@ -8,12 +8,13 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/chat_session.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/core/format.dart';
-import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -244,24 +245,29 @@ class _SessionsPageState extends State<SessionsPage> {
         ),
         const Gap(16),
         Expanded(
-          child: ListView.builder(
-            prototypeItem: SessionListTile(
-              session: prototypeChatSession,
-              pageController: widget.pageController,
-            ),
-            itemCount: context.watch<ChatProvider>().sessionCount,
-            itemBuilder: (context, index) {
-              return SessionListTile(
-                session: sortedSessions[index],
+          child: DynMouseScroll(
+            builder: (context, controller, physics) => ListView.builder(
+              shrinkWrap: true,
+              physics: physics,
+              controller: controller,
+              prototypeItem: SessionListTile(
+                session: prototypeChatSession,
                 pageController: widget.pageController,
-              )
-                  .animate(delay: (index * 100).ms)
-                  .fadeIn(duration: 900.ms, delay: 300.ms)
-                  .move(
-                    begin: const Offset(-16, 0),
-                    curve: Curves.easeOutQuad,
-                  );
-            },
+              ),
+              itemCount: context.watch<ChatProvider>().sessionCount,
+              itemBuilder: (context, index) {
+                return SessionListTile(
+                  session: sortedSessions[index],
+                  pageController: widget.pageController,
+                )
+                    .animate(delay: (index * 100).ms)
+                    .fadeIn(duration: 900.ms, delay: 300.ms)
+                    .move(
+                      begin: const Offset(-16, 0),
+                      curve: Curves.easeOutQuad,
+                    );
+              },
+            ),
           ),
         ),
       ],

@@ -99,6 +99,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             ),
             child: DynMouseScroll(
               builder: (context, controller, physics) => ListView.builder(
+                shrinkWrap: true,
                 physics: physics,
                 controller: controller,
                 itemCount: context.watch<ChatProvider>().messageCount,
