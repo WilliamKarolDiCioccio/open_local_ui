@@ -1,38 +1,27 @@
 import 'package:flutter/material.dart';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+import 'package:open_local_ui/core/logger.dart';
 
 class FloatingMenuComponent extends StatefulWidget {
   final GlobalKey buttonKey;
   final List<Widget> actions;
-  final int upPosition;
-  final int downPosition;
 
   const FloatingMenuComponent({
     super.key,
     required this.buttonKey,
     required this.actions,
-    this.upPosition = 300,
-    this.downPosition = 30,
   });
 
   @override
-  _FloatingMenuComponentState createState() => _FloatingMenuComponentState();
+  State<FloatingMenuComponent> createState() => _FloatingMenuComponentState();
 }
 
 class _FloatingMenuComponentState extends State<FloatingMenuComponent> {
-  Offset? buttonOffset;
-  double? topPosition;
-  double? leftPosition;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _updateButtonOffset();
-    });
-  }
+  final GlobalKey _menuKey = GlobalKey();
+  Offset _buttonOffset = Offset.zero;
+  Size _menuSize = Size.zero;
 
   Offset _getButtonOffset() {
     final RenderBox renderBox =
@@ -40,82 +29,104 @@ class _FloatingMenuComponentState extends State<FloatingMenuComponent> {
     return renderBox.localToGlobal(Offset.zero);
   }
 
-  void _updateButtonOffset() {
-    final Offset offset = _getButtonOffset();
-    setState(() {
-      buttonOffset = offset;
-      _calculatePosition();
-    });
+  Size _getMenuSize() {
+    final RenderBox? renderBox =
+        _menuKey.currentContext?.findRenderObject() as RenderBox?;
+    return renderBox?.size ?? Size.zero;
   }
 
-  void _calculatePosition() {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    // Adjust positioning based on buttonOffset
-    double newTopPosition =
-        (screenHeight - buttonOffset!.dy >= widget.upPosition)
-            ? buttonOffset!.dy + widget.downPosition
-            : buttonOffset!.dy - widget.upPosition;
-
-    double newLeftPosition = buttonOffset!.dx;
-
-    // Adjust the position if the menu goes off-screen horizontally
-    if (buttonOffset!.dx + 200 > screenWidth) {
-      newLeftPosition = screenWidth - 200 - 16; // Adjust with padding
-    } else if (buttonOffset!.dx < 16) {
-      newLeftPosition = 16; // Adjust with padding
-    }
-
-    setState(() {
-      topPosition = newTopPosition;
-      leftPosition = newLeftPosition;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _buttonOffset = _getButtonOffset();
+        _menuSize = _getMenuSize();
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (buttonOffset == null) {
-      return Container();
+    final screenSize = MediaQuery.of(context).size;
+    const double margin = 16.0; // Constant margin between button and menu
+
+    // Determine available space on all sides of the button
+    final double availableSpaceAbove = _buttonOffset.dy;
+    final double availableSpaceBelow = screenSize.height - _buttonOffset.dy;
+    final double availableSpaceLeft = _buttonOffset.dx;
+    final double availableSpaceRight = screenSize.width - _buttonOffset.dx;
+
+    // Variables to hold the final positions
+    double? topPosition;
+    double? leftPosition;
+
+    // Determine the best position based on available space
+    if (availableSpaceBelow >= _menuSize.height + margin) {
+      // Place below if there is enough space
+      topPosition = _buttonOffset.dy + margin;
+      leftPosition = _buttonOffset.dx;
+    } else if (availableSpaceAbove >= _menuSize.height + margin) {
+      // Place above if there is enough space
+      topPosition = _buttonOffset.dy - _menuSize.height - margin;
+      leftPosition = _buttonOffset.dx;
+    } else if (availableSpaceLeft >= _menuSize.width + margin) {
+      // Place on the left if there is enough space
+      topPosition = _buttonOffset.dy;
+      leftPosition = _buttonOffset.dx - _menuSize.width - margin;
+    } else if (availableSpaceRight >= _menuSize.width + margin) {
+      // Place on the right if there is enough space
+      topPosition = _buttonOffset.dy;
+      leftPosition = _buttonOffset.dx + margin;
+    } else {
+      // No space available, log an error and avoid rendering the menu
+      logger.e("No sufficient space to display the floating menu.");
+      return Container(); // Optionally, you can return nothing or an empty widget
     }
 
-    return VisibilityDetector(
-      key: Key('floating-menu-visibility-detector'),
-      onVisibilityChanged: (info) {
-        if (info.visibleFraction == 0) {
-          // If the menu is not visible, reposition it
-          _updateButtonOffset();
-        }
-      },
-      child: Positioned(
-        top: topPosition,
-        left: leftPosition,
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: AdaptiveTheme.of(context).mode.isDark
-                    ? Colors.black
-                    : Colors.grey,
-                blurRadius: 10.0,
-                offset: const Offset(2, 4),
-              ),
-            ],
-            color: AdaptiveTheme.of(context).theme.canvasColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(16),
+    // Prevent horizontal overflow
+    if (leftPosition + _menuSize.width > screenSize.width) {
+      leftPosition = screenSize.width - _menuSize.width - margin;
+    } else if (leftPosition < 0) {
+      leftPosition = margin;
+    }
+
+    // Prevent vertical overflow
+    if (topPosition + _menuSize.height > screenSize.height) {
+      topPosition = screenSize.height - _menuSize.height - margin;
+    } else if (topPosition < 0) {
+      topPosition = margin;
+    }
+
+    return Positioned(
+      top: topPosition,
+      left: leftPosition,
+      child: Container(
+        key: _menuKey,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AdaptiveTheme.of(context).mode.isDark
+                  ? Colors.black
+                  : Colors.grey,
+              blurRadius: 10.0,
+              offset: const Offset(2, 4),
             ),
+          ],
+          color: AdaptiveTheme.of(context).theme.canvasColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(16),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: widget.actions,
-            ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: widget.actions,
           ),
-        ).animate().fadeIn(
-              duration: 200.ms,
-            ),
-      ),
+        ),
+      ).animate().fadeIn(
+            duration: 200.ms,
+          ),
     );
   }
 }

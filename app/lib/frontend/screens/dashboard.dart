@@ -227,8 +227,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildOptionsOverlay() {
     return FloatingMenuComponent(
-      upPosition: 192,
-      downPosition: 32,
       buttonKey: _buttonKey,
       actions: [
         TextButton.icon(
