@@ -233,6 +233,8 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           child: Image.memory(
             _imageBytes!,
             fit: BoxFit.fitHeight,
+            cacheWidth: 512,
+            // cacheHeight is automatically calculated based on the image aspect ratio
           ),
         );
       case ImageStatus.error:
@@ -326,7 +328,9 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
 }
 
 Future<Uint8List?> showAttachmentsDropzoneDialog(
-    BuildContext context, Uint8List? imageBytes,) async {
+  BuildContext context,
+  Uint8List? imageBytes,
+) async {
   return showDialog<Uint8List?>(
     context: context,
     barrierDismissible: false,

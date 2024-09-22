@@ -222,14 +222,17 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
               Center(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height <= 900.0
-                      ? 256.0
-                      : 512.0,
+                  height:
+                      MediaQuery.of(context).size.height <= 900.0 ? 256 : 512,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.memory(
                       (widget.message as ChatUserMessageWrapper).imageBytes!,
                       fit: BoxFit.fitHeight,
+                      cacheHeight: MediaQuery.of(context).size.height <= 900.0
+                          ? 256
+                          : 512,
+                      // cacheWidth is automatically calculated based on the image aspect ratio
                     ),
                   ),
                 ),

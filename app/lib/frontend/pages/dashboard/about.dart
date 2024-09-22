@@ -187,6 +187,8 @@ class AboutPage extends StatelessWidget {
                             ),
                             width: 44,
                             height: 44,
+                            memCacheWidth: 44,
+                            memCacheHeight: 44,
                             imageBuilder: (context, imageProvider) {
                               return CircleAvatar(
                                 backgroundImage: imageProvider,
