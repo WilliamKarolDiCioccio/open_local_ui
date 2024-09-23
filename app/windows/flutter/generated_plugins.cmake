@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   battery_plus
   bitsdojo_window_windows
+  file_selector_windows
   gpu_info
   irondash_engine_context
   isar_flutter_libs

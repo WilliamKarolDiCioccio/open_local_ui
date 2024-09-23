@@ -246,6 +246,7 @@ class _SessionsPageState extends State<SessionsPage> {
         const Gap(16),
         Expanded(
           child: DynMouseScroll(
+            controller: ScrollController(),
             builder: (context, controller, physics) => ListView.builder(
               shrinkWrap: true,
               physics: physics,

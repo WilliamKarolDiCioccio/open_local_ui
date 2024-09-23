@@ -1549,10 +1549,11 @@ packages:
   smooth_scroll_multiplatform:
     dependency: "direct main"
     description:
-      name: smooth_scroll_multiplatform
-      sha256: c3b8998c3c70eaf480e8ce16608ffc80c0aac1722697a08992fde10e1c97a742
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: main
+      resolved-ref: "1305b4579922179a1424449b628ecd2fd7e2c937"
+      url: "https://github.com/WilliamKarolDiCioccio/dyn_mouse_scroll.git"
+    source: git
     version: "1.0.8"
   source_gen:
     dependency: transitive
@@ -1910,10 +1911,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: f652077d0bdf60abe4c1f6377448e8655008eef28f128bc023f7b5e8dfeb48fc
+      sha256: "5c5f338a667b4c644744b661f309fb8080bb94b18a7e91ef1dbd343bed00ed6d"
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.4"
+    version: "14.2.5"
   watcher:
     dependency: transitive
     description:

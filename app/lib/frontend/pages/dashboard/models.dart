@@ -276,6 +276,7 @@ class _ModelsPageState extends State<ModelsPage> {
         const Gap(16),
         Expanded(
           child: DynMouseScroll(
+            controller: ScrollController(),
             builder: (context, controller, physics) => ListView.builder(
               shrinkWrap: true,
               physics: physics,
