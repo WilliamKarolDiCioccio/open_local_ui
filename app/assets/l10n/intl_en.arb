@@ -78,11 +78,7 @@
   "codeCopiedSnackBar": "Code copied to clipboard",
   "colorPickerDialogTitle": "Pick a color",
   "concurrencyLimit": "Concurrency Limit",
-  "createFolderDialogFolderNameHint": "Enter the folder name...",
-  "createFolderDialogFolderNameLabel": "Folder name",
-  "createFolderDialogGuideText1": "Enter the name of the folder to create:",
-  "createFolderDialogGuideText2": "Optionally, set a folder color:",
-  "createFolderDialogTitle": "Create folder",
+  "createButtonShared": "Create",
   "createModelDialogGuideText1": "Select the model to use:",
   "createModelDialogGuideText2": "Enter the name of the model to create:",
   "createModelDialogGuideText3": "Optionally, write a model file:",
@@ -207,7 +203,22 @@
   "modelPerformanceSettingsLabel": "Performance Settings",
   "modelPulledSuccessfullySnackBar": "Model pulled successfully",
   "modelPushedSuccessfullySnackBar": "Model pushed successfully",
-  "modelSpecificSettingsDialogTitle": "{modelName} specific settings",
+  "modelSettingsDialogClearProfilesButton": "Clear profiles",
+  "modelSettingsDialogClearProfilesText": "This will clear all profiles. Do you confirm?",
+  "modelSettingsDialogCreateDialogLabel": "Profile name",
+  "modelSettingsDialogCreateDialogTitle": "Create profile",
+  "modelSettingsDialogDeleteDialogText": "This will delete {profileName}. Do you confirm?",
+  "@modelSettingsDialogDeleteDialogText": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelSettingsDialogDeleteDialogTitle": "Delete profile",
+  "modelSettingsDialogEditDialogLabel": "Profile name",
+  "modelSettingsDialogEditDialogTitle": "Edit profile",
+  "modelSpecificSettingsDialogTitle": "{modelName} settings profiles",
   "@modelSpecificSettingsDialogTitle": {
     "placeholders": {
       "modelName": {
