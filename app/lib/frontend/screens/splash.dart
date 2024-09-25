@@ -19,8 +19,7 @@ class SplashScreen extends StatelessWidget {
         'assets/graphics/logos/open_local_ui.svg',
         width: 512,
         // ignore: deprecated_member_use
-        color:
-            AdaptiveTheme.of(context).mode.isDark ? Colors.white : Colors.black,
+        color: Colors.white,
       ),
       nextScreen:
           userOnboarded ? const DashboardScreen() : const OnboardingScreen(),
