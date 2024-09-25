@@ -1,5 +1,4 @@
-// Map for programming language logos
-Map<String, String> programmingLanguagesLogos = {
+const Map<String, String> programmingLanguagesLogos = {
   'apache': 'assets/graphics/logos/apache.svg',
   'arduino': 'assets/graphics/logos/arduino.svg',
   'bash': 'assets/graphics/logos/bash.svg',
