@@ -102,7 +102,9 @@ class ChangelogDialog extends StatelessWidget {
               final changelogData = jsonDecode(snapshot.data.toString());
               final releases = changelogData['releases'] as List<dynamic>;
 
-              if (releases.isEmpty) return const Text('No changelog data available');
+              if (releases.isEmpty) {
+                return const Text('No changelog data available');
+              }
 
               return SingleChildScrollView(
                 child: FixedTimeline(

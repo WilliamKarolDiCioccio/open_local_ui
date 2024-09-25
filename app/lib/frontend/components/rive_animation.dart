@@ -4,6 +4,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:rive/rive.dart';
+import 'package:uuid/uuid.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class RiveAnimationComponent extends StatefulWidget {
@@ -64,7 +65,7 @@ class _RiveAnimationComponentState extends State<RiveAnimationComponent> {
           return const Text('Error loading animation');
         } else {
           return VisibilityDetector(
-            key: Key('RiveAnimation${context.hashCode}'),
+            key: Key('RiveAnimation${const Uuid().v4()}'),
             child: RiveAnimation.direct(
               snapshot.data!,
               artboard: AdaptiveTheme.of(context).mode.isDark

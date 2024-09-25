@@ -5,14 +5,15 @@ import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:open_local_ui/constants/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sticky_widgets/flutter_sticky_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:open_local_ui/constants/constants.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:unicons/unicons.dart';
+import 'package:uuid/uuid.dart';
 
 class MarkdownCodeWrapperWidget extends StatefulWidget {
   final Widget child;
@@ -136,6 +137,7 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
           children: [
             widget.child,
             StickyWidget(
+              key: Key('codeWrapperStickyWidget${const Uuid().v4()}'),
               initialPosition: StickyPosition(top: 16, right: 16),
               finalPosition: StickyPosition(
                 top: _markdownBodyHeight - 56,

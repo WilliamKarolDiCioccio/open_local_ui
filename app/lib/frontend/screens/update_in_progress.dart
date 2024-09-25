@@ -40,8 +40,9 @@ class _UpdateInProgressScreenState extends State<UpdateInProgressScreen> {
                   ),
                 ),
                 const Gap(16.0),
-                Text(AppLocalizations.of(context)
-                    .updateInProgressPageDescription,),
+                Text(
+                  AppLocalizations.of(context).updateInProgressPageDescription,
+                ),
                 const Gap(32.0),
                 SpinKitCircle(
                   color: AdaptiveTheme.of(context).mode.isDark

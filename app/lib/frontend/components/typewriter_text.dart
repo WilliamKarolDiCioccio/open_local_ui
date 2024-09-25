@@ -48,7 +48,10 @@ class _TypewriterTextComponentState extends State<TypewriterTextComponent>
     return AnimatedBuilder(
       animation: _characterCount,
       builder: (context, child) {
-        final String visibleText = widget.text.substring(0, _characterCount.value);
+        final String visibleText = widget.text.substring(
+          0,
+          _characterCount.value,
+        );
         return Text(
           visibleText,
           textAlign: TextAlign.center,
