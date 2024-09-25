@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
@@ -48,18 +47,18 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
     final List<DropdownMenuEntry> modelsMenuEntries = [];
 
     for (final model in context.read<ModelProvider>().models) {
-      late String modelName;
+      late String shortenedModelName;
 
       if (model.name.length > 20) {
-        modelName = '${model.name.substring(0, 20)}...';
+        shortenedModelName = '${model.name.substring(0, 20)}...';
       } else {
-        modelName = model.name;
+        shortenedModelName = model.name;
       }
 
       modelsMenuEntries.add(
         DropdownMenuEntry(
           value: model.name,
-          label: modelName,
+          label: shortenedModelName,
         ),
       );
     }
@@ -89,52 +88,6 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       initialSelection: context.watch<ChatProvider>().modelName,
       dropdownMenuEntries: modelsMenuEntries,
       onSelected: (value) => context.read<ChatProvider>().setModel(value ?? ''),
-    );
-  }
-
-  // ignore: unused_element
-  Widget _buildChatOptionBarWidget(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: AdaptiveTheme.of(context).theme.dividerColor,
-        ),
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Row(
-            children: [
-              Text(AppLocalizations.of(context).chatToolbarWebSearchOption),
-              Checkbox(
-                value: context.watch<ChatProvider>().isWebSearchEnabledForModel,
-                onChanged: !context.watch<ChatProvider>().isGenerating
-                    ? (value) {
-                        context
-                            .read<ChatProvider>()
-                            .enableWebSearch(value ?? false);
-                      }
-                    : null,
-              ),
-              const Gap(8),
-              Text(AppLocalizations.of(context).chatToolbarDocsSearchOption),
-              Checkbox(
-                value:
-                    context.watch<ChatProvider>().isDocsSearchEnabledForModel,
-                onChanged: !context.watch<ChatProvider>().isGenerating
-                    ? (value) {
-                        context
-                            .read<ChatProvider>()
-                            .enableDocsSearch(value ?? false);
-                      }
-                    : null,
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
+import 'package:open_local_ui/frontend/dialogs/text_field.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -56,15 +59,23 @@ class _SessionsPageState extends State<SessionsPage> {
     _sortBy = {SortBy.name};
     _sortOrder = {SortOrder.ascending};
 
-    SharedPreferences.getInstance().then((prefs) {
-      final sortBy = prefs.getInt('sessionsSortBy') ?? 0;
-      final sortOrder = prefs.getBool('sessionsSortOrder') ?? false;
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        final sortBy = prefs.getInt('sessionsSortBy') ?? 0;
+        final sortOrder = prefs.getBool('sessionsSortOrder') ?? false;
 
-      setState(() {
-        _sortBy = {SortBy.values[sortBy]};
-        _sortOrder = {sortOrder ? SortOrder.descending : SortOrder.ascending};
-      });
-    });
+        if (mounted) {
+          setState(
+            () {
+              _sortBy = {SortBy.values[sortBy]};
+              _sortOrder = {
+                sortOrder ? SortOrder.descending : SortOrder.ascending,
+              };
+            },
+          );
+        }
+      },
+    );
   }
 
   Future<int> _totalOnDiskSize() async {
@@ -114,20 +125,18 @@ class _SessionsPageState extends State<SessionsPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // TextButton.icon(
-            //   label: Text(
-            //     AppLocalizations.of(context).sessionsPageCreateFolderButton,
-            //     style: const TextStyle(fontSize: 18.0),
-            //   ),
-            //   icon: const Icon(UniconsLine.folder_plus),
-            //   onPressed: () => {},
-            // ),
             TextButton.icon(
               label: Text(
                 AppLocalizations.of(context).sessionsPageClearSessionsButton,
-                style: const TextStyle(fontSize: 18.0),
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.red,
+                ),
               ),
-              icon: const Icon(UniconsLine.trash),
+              icon: const Icon(
+                UniconsLine.trash,
+                color: Colors.red,
+              ),
               onPressed: () {
                 showConfirmationDialog(
                   context: context,
@@ -291,17 +300,7 @@ class SessionListTile extends StatefulWidget {
 }
 
 class _SessionListTileState extends State<SessionListTile> {
-  final TextEditingController _textEditingController = TextEditingController();
-  bool _showEditWidget = false;
-
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-
-    super.dispose();
-  }
-
-  void _setSession() async {
+  Future<void> _setSession() async {
     if (context.read<ChatProvider>().isGenerating) {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
@@ -314,42 +313,7 @@ class _SessionListTileState extends State<SessionListTile> {
     }
   }
 
-  void _beginEditingTitle() {
-    setState(() {
-      _showEditWidget = true;
-    });
-
-    _textEditingController.text = widget.session.title;
-  }
-
-  void _sendEditedTitle() {
-    if (widget.session.status == ChatSessionStatus.generating) {
-      SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(context).snackBarErrorTitle,
-        AppLocalizations.of(context).modelIsGeneratingSnackBar,
-        SnackbarContentType.failure,
-      );
-    } else {
-      if (_textEditingController.text.isEmpty) return;
-
-      context.read<ChatProvider>().setSessionTitle(
-            widget.session.uuid,
-            _textEditingController.text,
-          );
-
-      _cancelEditingTitle();
-    }
-  }
-
-  void _cancelEditingTitle() {
-    setState(() {
-      _showEditWidget = false;
-    });
-
-    _textEditingController.clear();
-  }
-
-  void _shareSession() async {
+  Future<void> _shareSession() async {
     if (widget.session.status == ChatSessionStatus.generating) {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
@@ -359,22 +323,21 @@ class _SessionListTileState extends State<SessionListTile> {
     } else {
       final targetDir = (await getDownloadsDirectory())?.path ?? '.';
 
-      final file =
-          File('$targetDir/OpenLocalUI_Chat_${widget.session.uuid}.json');
+      final file = File(
+        '$targetDir/OpenLocalUI_Chat_${widget.session.uuid}.json',
+      );
+
       await file.writeAsString(widget.session.toJson().toString());
+
       if (await launchUrl(file.uri)) {
         SnackBarHelpers.showSnackBar(
-          // ignore: use_build_context_synchronously
           AppLocalizations.of(context).snackBarSuccessTitle,
-          // ignore: use_build_context_synchronously
           AppLocalizations.of(context).sessionSharedSnackBar,
           SnackbarContentType.success,
         );
       } else {
         SnackBarHelpers.showSnackBar(
-          // ignore: use_build_context_synchronously
           AppLocalizations.of(context).snackBarErrorTitle,
-          // ignore: use_build_context_synchronously
           AppLocalizations.of(context).failedToShareSessionSnackBar,
           SnackbarContentType.failure,
         );
@@ -382,7 +345,7 @@ class _SessionListTileState extends State<SessionListTile> {
     }
   }
 
-  void _deleteSession() async {
+  Future<void> _deleteSession() async {
     if (widget.session.status == ChatSessionStatus.generating) {
       SnackBarHelpers.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
@@ -394,94 +357,81 @@ class _SessionListTileState extends State<SessionListTile> {
     }
   }
 
+  Future<void> _editSessionTitle() async {
+    await showTextFieldDialog(
+      context: context,
+      title: AppLocalizations.of(context).sessionsPageEditDialogTitle,
+      labelText: AppLocalizations.of(context).sessionsPageEditDialogLabel,
+      initialValue: widget.session.title,
+      onConfirm: (newName) {
+        if (widget.session.status == ChatSessionStatus.generating) {
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(context).snackBarErrorTitle,
+            AppLocalizations.of(context).modelIsGeneratingSnackBar,
+            SnackbarContentType.failure,
+          );
+        } else {
+          if (newName.isNotEmpty) {
+            context.read<ChatProvider>().setSessionTitle(
+                  widget.session.uuid,
+                  newName,
+                );
+          }
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext content) {
     return ListTile(
-      leading: _showEditWidget
-          ? Container(
-              constraints: const BoxConstraints.tightForFinite(width: 256),
-              child: TextField(
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context).chatEditFieldHint,
-                  counterText: '',
-                ),
-                controller: _textEditingController,
-              ),
-            )
-          : null,
-      title: _showEditWidget ? null : Text(widget.session.title),
-      subtitle: _showEditWidget
-          ? null
-          : Text(
-              AppLocalizations.of(context).createdAtTextShared(
-                FortmatHelpers.standardDate(widget.session.createdAt),
-              ),
-            ),
+      title: Text(widget.session.title),
+      subtitle: Text(
+        AppLocalizations.of(context).createdAtTextShared(
+          FortmatHelpers.standardDate(widget.session.createdAt),
+        ),
+      ),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!_showEditWidget)
-            Row(
-              children: [
-                IconButton(
-                  tooltip: AppLocalizations.of(context).sessionsPageEnterButton,
-                  icon: const Icon(UniconsLine.enter),
-                  onPressed: () => _setSession(),
+          Row(
+            children: [
+              IconButton(
+                tooltip:
+                    AppLocalizations.of(context).sessionsPageEditTitleButton,
+                icon: const Icon(UniconsLine.edit),
+                onPressed: () => _editSessionTitle(),
+              ),
+              const Gap(8),
+              IconButton(
+                tooltip: AppLocalizations.of(context).sessionsPageShareButton,
+                icon: const Icon(UniconsLine.share),
+                onPressed: () => _shareSession(),
+              ),
+              const Gap(8),
+              IconButton(
+                tooltip: AppLocalizations.of(context).sessionsPageDeleteButton,
+                icon: const Icon(
+                  UniconsLine.trash,
+                  color: Colors.red,
                 ),
-                const Gap(8),
-                IconButton(
-                  tooltip:
-                      AppLocalizations.of(context).sessionsPageEditTitleButton,
-                  icon: const Icon(UniconsLine.edit),
-                  onPressed: () => _beginEditingTitle(),
-                ),
-                const Gap(8),
-                IconButton(
-                  tooltip: AppLocalizations.of(context).sessionsPageShareButton,
-                  icon: const Icon(UniconsLine.share),
-                  onPressed: () => _shareSession(),
-                ),
-                const Gap(8),
-                IconButton(
-                  tooltip:
-                      AppLocalizations.of(context).sessionsPageDeleteButton,
-                  icon: const Icon(
-                    UniconsLine.trash,
-                    color: Colors.red,
-                  ),
-                  onPressed: () {
-                    showConfirmationDialog(
-                      context: context,
-                      title: AppLocalizations.of(context)
-                          .sessionsPageDeleteDialogTitle,
-                      content: AppLocalizations.of(context)
-                          .sessionsPageDeleteDialogText(widget.session.title),
-                      onConfirm: () => _deleteSession(),
-                    );
-                  },
-                ),
-              ],
-            ),
-          if (_showEditWidget)
-            Row(
-              children: [
-                IconButton(
-                  tooltip: AppLocalizations.of(context).cancelButtonShared,
-                  icon: const Icon(UniconsLine.times),
-                  onPressed: () => _cancelEditingTitle(),
-                ),
-                const Gap(8),
-                IconButton(
-                  tooltip: AppLocalizations.of(context).saveButtonShared,
-                  icon: const Icon(UniconsLine.check),
-                  onPressed: () => _sendEditedTitle(),
-                ),
-              ],
-            ),
+                onPressed: () {
+                  showConfirmationDialog(
+                    context: context,
+                    title: AppLocalizations.of(context)
+                        .sessionsPageDeleteDialogTitle,
+                    content: AppLocalizations.of(context)
+                        .sessionsPageDeleteDialogText(widget.session.title),
+                    onConfirm: () => _deleteSession(),
+                  );
+                },
+              ),
+            ],
+          ),
         ],
       ),
+      onTap: () => _setSession(),
     );
   }
 }

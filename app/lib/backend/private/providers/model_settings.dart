@@ -1,29 +1,173 @@
+// ignore_for_file: unnecessary_getters_setters
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
+import 'package:open_local_ui/constants/constants.dart';
+import 'package:open_local_ui/core/snackbar.dart';
 import 'package:path_provider/path_provider.dart';
 
-/// A provider class for managing model settings.
+/// A class for managing model settings within a Flutter app.
 ///
-/// This class extends the [ChangeNotifier] class, allowing it to notify listeners when the model settings change.
-///
-/// /// NOTE: You'll see some methods having a `Static` suffix (see [loadStatic]). This is because they are used outside the widget tree where providers are not accessible.
-class ModelSettingsProvider extends ChangeNotifier {
+/// This class is used to load, save, and manage settings for a model.
+class ModelSettingsHandler {
   final String modelName;
-  late ModelSettings _settings;
-  bool _isDirty = false;
+  late String _activeProfileName;
+  late ModelSettings _activeModelSettings;
 
-  ModelSettingsProvider(this.modelName);
+  /// Default initializations for late variables are provided in the constructor because the [_init] method runs asynchronously and there is no way to await it in the constructor.
+  ModelSettingsHandler(this.modelName)
+      : _activeProfileName = 'default',
+        _activeModelSettings = ModelSettings.fromJson({});
 
-  /// Loads the settings for the given model.
+  /// Called when the provider is initialized from [ModelSettingsDialog]. It preloads the settings from the profile associations file.
   ///
-  /// Returns a [Future] that evaluates to the [ModelSettings] object when the settings are loaded.
-  static Future<ModelSettings> loadStatic(String modelName) async {
-    final settingsFile = await _getSettingsFile(modelName);
+  /// Calling this in the constructor prevents late initialization errors.
+  ///
+  /// Returns a [Future] that evaluates to `void` when the settings are preloaded.
+  Future<void> preloadSettings() async {
+    final profileAssociationsFile = await _getProfileAssociationsFile();
+    final profileAssociations = jsonDecode(
+      await profileAssociationsFile.readAsString(),
+    );
+
+    if (!profileAssociations.containsKey(modelName)) {
+      profileAssociations[modelName] = 'default';
+      profileAssociationsFile.writeAsStringSync(
+        jsonEncode(profileAssociations),
+      );
+    } else {
+      _activeProfileName = profileAssociations[modelName];
+      _activeModelSettings = await loadProfile(_activeProfileName);
+    }
+  }
+
+  /// Returns the specified settings profile file for the given model.
+  Future<File> getModelSettingsProfileFile(
+    String modelName,
+    String profileName,
+  ) async {
+    final dir = await getApplicationSupportDirectory();
+
+    final cleanModelName = modelName
+        .toLowerCase()
+        .replaceAll(RegExp(r'\W'), '_')
+        .replaceAll(RegExp(r'_latest$'), '')
+        .toLowerCase();
+
+    final file = File(
+      '${dir.path}/models_profiles/$cleanModelName/$profileName.json',
+    );
+
+    if (!await file.exists()) {
+      await file.create(recursive: true);
+    }
+
+    if (await file.length() == 0) {
+      await file.writeAsString(
+        jsonEncode(ModelSettings.fromJson({}).toJson()),
+      );
+    }
+
+    return file;
+  }
+
+  /// Returns a list of all model settings files.
+  Future<List<File>> getAllModelSettingsProfilesFiles() async {
+    final dir = await getApplicationSupportDirectory();
+
+    final cleanModelName = modelName
+        .toLowerCase()
+        .replaceAll(RegExp(r'\W'), '_')
+        .replaceAll(RegExp(r'_latest$'), '')
+        .toLowerCase();
+
+    final modelProfilesDir = Directory(
+      '${dir.path}/models_profiles/$cleanModelName',
+    );
+
+    if (!await modelProfilesDir.exists()) {
+      return [];
+    }
+
+    return modelProfilesDir
+        .listSync()
+        .whereType<File>()
+        .where((file) => file.path.endsWith('.json'))
+        .toList();
+  }
+
+  /// Returns the profile associations file.
+  Future<File> _getProfileAssociationsFile() async {
+    final dir = await getApplicationSupportDirectory();
+
+    final file = File(
+      '${dir.path}/models_profiles/profiles_associations.json',
+    );
+
+    if (!await file.exists()) {
+      await file.create(recursive: true);
+    }
+
+    if (await file.length() == 0) {
+      await file.writeAsString('{}');
+    }
+
+    return file;
+  }
+
+  /// Returns the active profile name for the given model.
+  Future<String> getAssociatedProfileName(String modelName) async {
+    final profileAssociationsFile = await _getProfileAssociationsFile();
+    final profileAssociations = jsonDecode(
+      await profileAssociationsFile.readAsString(),
+    );
+
+    return profileAssociations[modelName];
+  }
+
+  /// Activates and loads the given profile. Updates the profile associations file.
+  ///
+  /// If the [profileName] parameter is `null`, it loads the active profile.
+  ///
+  /// Returns a [Future] that evaluates to the [ModelSettings] object.
+  Future<ModelSettings> activateProfile(String? profileName) async {
+    if (profileName == null) return _activeModelSettings;
+
+    final profileAssociationsFile = await _getProfileAssociationsFile();
+    final profileAssociations = jsonDecode(
+      await profileAssociationsFile.readAsString(),
+    );
+
+    profileAssociations[modelName] = profileName;
+
+    profileAssociationsFile.writeAsStringSync(
+      jsonEncode(profileAssociations),
+    );
+
+    _activeProfileName = profileName;
+    _activeModelSettings = await loadProfile(_activeProfileName);
+
+    return _activeModelSettings;
+  }
+
+  /// Loads the given settings profile file. It does not update the active profile.
+  ///
+  /// If the profile does not exist, it returns an empty settings object.
+  ///
+  /// The [profileName] parameter is the name of the profile to load.
+  ///
+  /// Returns the a [ModelSettings] object.
+  Future<ModelSettings> loadProfile(String? profileName) async {
+    profileName ??= _activeProfileName;
+
+    final settingsFile =
+        await getModelSettingsProfileFile(modelName, profileName);
 
     if (await settingsFile.exists()) {
       return ModelSettings.fromJson(
@@ -34,13 +178,146 @@ class ModelSettingsProvider extends ChangeNotifier {
     return ModelSettings.fromJson({});
   }
 
-  /// Loads the settings for the given model. Wraps [loadStatic] and notifies listeners.
+  /// Saves the settings to the given profile.
   ///
-  /// Returns a [Future] that evaluates to the [ModelSettings] object when the settings are loaded.
-  Future<ModelSettings> load() async {
-    _settings = await loadStatic(modelName);
+  /// If the [profileName] parameter is `null`, it saves to the active profile.
+  ///
+  /// Returns a [Future] that evaluates to `void` when the settings are saved.
+  Future<void> saveProfile(String? profileName) async {
+    profileName ??= _activeProfileName;
+
+    final cleanProfileName = profileName
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-z0-9]+'), '_')
+        .replaceAll(RegExp(r'_+'), '_')
+        .replaceAll(RegExp(r'^_|_$'), '');
+
+    final settingsFile = await getModelSettingsProfileFile(
+      modelName,
+      cleanProfileName,
+    );
+
+    if (!await settingsFile.exists()) {
+      await settingsFile.parent.create(recursive: true);
+    }
+
+    await settingsFile.writeAsString(jsonEncode(_activeModelSettings.toJson()));
+
+    await loadProfile(profileName);
+  }
+
+  /// Resets the profile settings to default.
+  Future<void> resetProfile(String? profileName) async {
+    profileName ??= _activeProfileName;
+
+    final settingsFile =
+        await getModelSettingsProfileFile(modelName, profileName);
+
+    await settingsFile.writeAsString(jsonEncode(<String, dynamic>{}));
+
+    await loadProfile(profileName);
+  }
+
+  /// Removes the settings file for the given model.
+  ///
+  /// If the [profileName] parameter is `null`, it removes the active profile.
+  ///
+  /// Returns a [Future] that evaluates to `void` when the settings are removed.
+  Future<void> removeProfile(String? profileName) async {
+    profileName ??= _activeProfileName;
+
+    final settingsFile =
+        await getModelSettingsProfileFile(modelName, profileName);
+    if (await settingsFile.exists()) {
+      await settingsFile.delete();
+    }
+  }
+
+  /// Removes all profiles for the model.
+  ///
+  /// The [modelName] parameter is the name of the model.
+  ///
+  /// Returns a [Future] that evaluates to `void` when the profiles are removed.
+  Future<void> removeAllProfiles() async {
+    final dir = await getApplicationSupportDirectory();
+
+    final cleanModelName = modelName
+        .toLowerCase()
+        .replaceAll(RegExp(r'\W'), '_')
+        .replaceAll(RegExp(r'_latest$'), '')
+        .toLowerCase();
+
+    final profilesDir =
+        Directory('${dir.path}/models_profiles/$cleanModelName');
+
+    if (await profilesDir.exists()) {
+      await profilesDir.delete(recursive: true);
+    }
+  }
+
+  /// Returns the active model settings.
+  ModelSettings get activeModelSettings => _activeModelSettings;
+
+  /// Returns the active profile name.
+  String get activeProfileName => _activeProfileName;
+
+  /// Sets the active model settings.
+  set activeModelSettings(ModelSettings settings) {
+    _activeModelSettings = settings;
+  }
+
+  /// Sets the active profile name.
+  set activeProfileName(String profileName) {
+    _activeProfileName = profileName;
+  }
+}
+
+/// A provider class for managing model settings within a Flutter app.
+///
+/// Extends [ModelSettingsHandler] and adds [ChangeNotifier] to notify listeners when settings are changed.
+class ModelSettingsProvider extends ModelSettingsHandler with ChangeNotifier {
+  bool _isDirty = false;
+
+  ModelSettingsProvider(super.modelName);
+
+  @override
+  Future<ModelSettings> activateProfile(String? profileName) async {
+    final settings = await super.activateProfile(profileName);
     notifyListeners();
-    return _settings;
+    return settings;
+  }
+
+  @override
+  Future<ModelSettings> loadProfile(String? profileName) async {
+    final settings = await super.loadProfile(profileName);
+    notifyListeners();
+    return settings;
+  }
+
+  @override
+  Future<void> saveProfile(String? profileName) async {
+    _isDirty = false;
+    await super.saveProfile(profileName);
+    notifyListeners();
+  }
+
+  @override
+  Future<void> resetProfile(String? profileName) async {
+    _isDirty = false;
+    await super.resetProfile(profileName);
+    notifyListeners();
+  }
+
+  @override
+  Future<void> removeProfile(String? profileName) async {
+    await super.removeProfile(profileName);
+    notifyListeners();
+  }
+
+  @override
+  Future<void> removeAllProfiles() async {
+    await super.removeAllProfiles();
+    notifyListeners();
   }
 
   /// Returns the value of a setting.
@@ -51,73 +328,73 @@ class ModelSettingsProvider extends ChangeNotifier {
   dynamic get(String settingName) {
     switch (settingName) {
       case 'systemPrompt':
-        return _settings.systemPrompt;
+        return super.activeModelSettings.systemPrompt;
       case 'enableWebSearch':
-        return _settings.enableWebSearch;
+        return super.activeModelSettings.enableWebSearch;
       case 'enableDocsSearch':
-        return _settings.enableDocsSearch;
-      case 'numGpu':
-        return _settings.numGpu;
+        return super.activeModelSettings.enableDocsSearch;
       case 'keepAlive':
-        return _settings.keepAlive;
+        return super.activeModelSettings.keepAlive;
       case 'temperature':
-        return _settings.temperature;
+        return super.activeModelSettings.temperature;
       case 'concurrencyLimit':
-        return _settings.concurrencyLimit;
+        return super.activeModelSettings.concurrencyLimit;
       case 'f16KV':
-        return _settings.f16KV;
+        return super.activeModelSettings.f16KV;
       case 'frequencyPenalty':
-        return _settings.frequencyPenalty;
+        return super.activeModelSettings.frequencyPenalty;
       case 'logitsAll':
-        return _settings.logitsAll;
+        return super.activeModelSettings.logitsAll;
       case 'lowVram':
-        return _settings.lowVram;
+        return super.activeModelSettings.lowVram;
+      case 'numGpu':
+        return super.activeModelSettings.numGpu;
       case 'mainGpu':
-        return _settings.mainGpu;
+        return super.activeModelSettings.mainGpu;
       case 'mirostat':
-        return _settings.mirostat;
+        return super.activeModelSettings.mirostat;
       case 'mirostatEta':
-        return _settings.mirostatEta;
+        return super.activeModelSettings.mirostatEta;
       case 'mirostatTau':
-        return _settings.mirostatTau;
+        return super.activeModelSettings.mirostatTau;
       case 'numBatch':
-        return _settings.numBatch;
+        return super.activeModelSettings.numBatch;
       case 'numCtx':
-        return _settings.numCtx;
+        return super.activeModelSettings.numCtx;
       case 'numKeep':
-        return _settings.numKeep;
+        return super.activeModelSettings.numKeep;
       case 'numPredict':
-        return _settings.numPredict;
+        return super.activeModelSettings.numPredict;
       case 'numThread':
-        return _settings.numThread;
+        return super.activeModelSettings.numThread;
       case 'numa':
-        return _settings.numa;
+        return super.activeModelSettings.numa;
       case 'penalizeNewline':
-        return _settings.penalizeNewline;
+        return super.activeModelSettings.penalizeNewline;
       case 'presencePenalty':
-        return _settings.presencePenalty;
+        return super.activeModelSettings.presencePenalty;
       case 'repeatLastN':
-        return _settings.repeatLastN;
+        return super.activeModelSettings.repeatLastN;
       case 'repeatPenalty':
-        return _settings.repeatPenalty;
+        return super.activeModelSettings.repeatPenalty;
       case 'seed':
-        return _settings.seed;
+        return super.activeModelSettings.seed;
       case 'stop':
-        return _settings.stop;
+        return super.activeModelSettings.stop;
       case 'tfsZ':
-        return _settings.tfsZ;
+        return super.activeModelSettings.tfsZ;
       case 'topK':
-        return _settings.topK;
+        return super.activeModelSettings.topK;
       case 'topP':
-        return _settings.topP;
+        return super.activeModelSettings.topP;
       case 'typicalP':
-        return _settings.typicalP;
+        return super.activeModelSettings.typicalP;
       case 'useMlock':
-        return _settings.useMlock;
+        return super.activeModelSettings.useMlock;
       case 'useMmap':
-        return _settings.useMmap;
+        return super.activeModelSettings.useMmap;
       case 'vocabOnly':
-        return _settings.vocabOnly;
+        return super.activeModelSettings.vocabOnly;
       default:
         throw ArgumentError('Invalid setting name: $settingName');
     }
@@ -129,77 +406,119 @@ class ModelSettingsProvider extends ChangeNotifier {
   ///
   /// This sets the dirty flag to `true`. The settings are not saved until the [save] method is called.
   ///
-  /// Return a [Future] that evaluates to `null` when the setting is set.
-  Future set(String settingName, dynamic newValue) async {
+  /// Return a [Future] that evaluates to `void` when the setting is set.
+  Future<void> set(String settingName, dynamic newValue) async {
     switch (settingName) {
       case 'systemPrompt':
-        _settings.systemPrompt = newValue;
+        super.activeModelSettings.systemPrompt = newValue;
+        break;
       case 'enableWebSearch':
-        _settings.enableWebSearch = newValue;
+        super.activeModelSettings.enableWebSearch = newValue;
+        break;
       case 'enableDocsSearch':
-        _settings.enableDocsSearch = newValue;
-      case 'numGpu':
-        _settings.numGpu = newValue;
+        super.activeModelSettings.enableDocsSearch = newValue;
+        break;
       case 'keepAlive':
-        _settings.keepAlive = newValue;
+        super.activeModelSettings.keepAlive = newValue;
+        break;
       case 'temperature':
-        _settings.temperature = newValue;
+        super.activeModelSettings.temperature = newValue;
+        break;
       case 'concurrencyLimit':
-        _settings.concurrencyLimit = newValue;
+        super.activeModelSettings.concurrencyLimit = newValue;
+        break;
       case 'f16KV':
-        _settings.f16KV = newValue;
+        super.activeModelSettings.f16KV = newValue;
+        break;
       case 'frequencyPenalty':
-        _settings.frequencyPenalty = newValue;
+        super.activeModelSettings.frequencyPenalty = newValue;
+        break;
       case 'logitsAll':
-        _settings.logitsAll = newValue;
+        super.activeModelSettings.logitsAll = newValue;
+        break;
       case 'lowVram':
-        _settings.lowVram = newValue;
+        super.activeModelSettings.lowVram = newValue;
+        break;
+      case 'numGpu':
+        super.activeModelSettings.numGpu = newValue;
+        if (newValue == 0) {
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .snackBarWarningTitle,
+            AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .ollamaDisabledGPUWarningSnackBar,
+            SnackbarContentType.warning,
+          );
+        }
+        break;
       case 'mainGpu':
-        _settings.mainGpu = newValue;
+        super.activeModelSettings.mainGpu = newValue;
+        break;
       case 'mirostat':
-        _settings.mirostat = newValue;
+        super.activeModelSettings.mirostat = newValue;
+        break;
       case 'mirostatEta':
-        _settings.mirostatEta = newValue;
+        super.activeModelSettings.mirostatEta = newValue;
+        break;
       case 'mirostatTau':
-        _settings.mirostatTau = newValue;
+        super.activeModelSettings.mirostatTau = newValue;
+        break;
       case 'numBatch':
-        _settings.numBatch = newValue;
+        super.activeModelSettings.numBatch = newValue;
+        break;
       case 'numCtx':
-        _settings.numCtx = newValue;
+        super.activeModelSettings.numCtx = newValue;
+        break;
       case 'numKeep':
-        _settings.numKeep = newValue;
+        super.activeModelSettings.numKeep = newValue;
+        break;
       case 'numPredict':
-        _settings.numPredict = newValue;
+        super.activeModelSettings.numPredict = newValue;
+        break;
       case 'numThread':
-        _settings.numThread = newValue;
+        super.activeModelSettings.numThread = newValue;
+        break;
       case 'numa':
-        _settings.numa = newValue;
+        super.activeModelSettings.numa = newValue;
+        break;
       case 'penalizeNewline':
-        _settings.penalizeNewline = newValue;
+        super.activeModelSettings.penalizeNewline = newValue;
+        break;
       case 'presencePenalty':
-        _settings.presencePenalty = newValue;
+        super.activeModelSettings.presencePenalty = newValue;
+        break;
       case 'repeatLastN':
-        _settings.repeatLastN = newValue;
+        super.activeModelSettings.repeatLastN = newValue;
+        break;
       case 'repeatPenalty':
-        _settings.repeatPenalty = newValue;
+        super.activeModelSettings.repeatPenalty = newValue;
+        break;
       case 'seed':
-        _settings.seed = newValue;
+        super.activeModelSettings.seed = newValue;
+        break;
       case 'stop':
-        _settings.stop = newValue;
+        super.activeModelSettings.stop = newValue;
+        break;
       case 'tfsZ':
-        _settings.tfsZ = newValue;
+        super.activeModelSettings.tfsZ = newValue;
+        break;
       case 'topK':
-        _settings.topK = newValue;
+        super.activeModelSettings.topK = newValue;
+        break;
       case 'topP':
-        _settings.topP = newValue;
+        super.activeModelSettings.topP = newValue;
+        break;
       case 'typicalP':
-        _settings.typicalP = newValue;
+        super.activeModelSettings.typicalP = newValue;
+        break;
       case 'useMlock':
-        _settings.useMlock = newValue;
+        super.activeModelSettings.useMlock = newValue;
+        break;
       case 'useMmap':
-        _settings.useMmap = newValue;
+        super.activeModelSettings.useMmap = newValue;
+        break;
       case 'vocabOnly':
-        _settings.vocabOnly = newValue;
+        super.activeModelSettings.vocabOnly = newValue;
         break;
       default:
         throw ArgumentError('Invalid setting name: $settingName');
@@ -208,70 +527,6 @@ class ModelSettingsProvider extends ChangeNotifier {
     _isDirty = true;
 
     notifyListeners();
-  }
-
-  /// Returns the settings file for the given model.
-  ///
-  /// The [modelName] parameter is the name of the model.
-  ///
-  /// You can find the model in the application support directory under the `models` directory with name `modelName.json`.
-  ///
-  /// Returns a [Future] that evaluates to the settings file.
-  static Future<File> _getSettingsFile(String modelName) async {
-    final dir = await getApplicationSupportDirectory();
-    final cleanName = modelName.toLowerCase().replaceAll(RegExp(r'\W'), '_');
-    final settingsFile = File('${dir.path}/models/$cleanName.json');
-
-    return settingsFile;
-  }
-
-  /// Saves the settings to the settings file.
-  ///
-  /// This resets the dirty flag to `false`.
-  ///
-  /// You can find the settings file (see [_getSettingsFile]).
-  ///
-  /// Return a [Future] that evaluates to `null` when the settings have been saved.
-  Future save() async {
-    _isDirty = false;
-
-    final settingsFile = await _getSettingsFile(modelName);
-
-    if (!await settingsFile.exists()) {
-      await settingsFile.parent.create(recursive: true);
-    }
-
-    await settingsFile.writeAsString(jsonEncode(_settings.toJson()));
-
-    await load();
-
-    notifyListeners();
-  }
-
-  /// Returns to the default settings.
-  ///
-  /// Retturn a [Future] that evaluates to `null` when the settings have been reset.
-  Future reset() async {
-    _isDirty = false;
-
-    final settingsFile = await _getSettingsFile(modelName);
-    await settingsFile.writeAsString(jsonEncode(<String, dynamic>{}));
-
-    await load();
-
-    notifyListeners();
-  }
-
-  /// Removes the settings file for the given model.
-  ///
-  /// You can find the settings file (see [_getSettingsFile]).
-  ///
-  /// Return a [Future] that evaluates to `null` when the settings file is removed.
-  static Future removeStatic(String name) async {
-    final settingsFile = await _getSettingsFile(name);
-    if (await settingsFile.exists()) {
-      await settingsFile.delete();
-    }
   }
 
   /// Returns whether the settings have been modified since the last save and have not been saved yet.

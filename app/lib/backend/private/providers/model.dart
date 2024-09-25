@@ -484,7 +484,7 @@ class ModelProvider extends ChangeNotifier {
         return;
       }
 
-      await ModelSettingsProvider.removeStatic(name);
+      await ModelSettingsHandler(name).removeAllProfiles();
 
       logger.i('Model $name removed');
     } catch (error) {

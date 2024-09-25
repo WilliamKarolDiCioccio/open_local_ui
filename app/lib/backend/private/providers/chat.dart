@@ -14,7 +14,6 @@ import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:open_local_ui/backend/private/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/models/chat_message.dart';
 import 'package:open_local_ui/backend/private/models/chat_session.dart';
-import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/backend/private/providers/model.dart';
 import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:open_local_ui/core/logger.dart';
@@ -35,46 +34,33 @@ import 'package:windows_taskbar/windows_taskbar.dart';
 /// This class wraps around the langchain.dart library, which provides us with models, agents, databases and other tools.
 class ChatProvider extends ChangeNotifier {
   // Langchain objects
-  ChatOllama _chat;
+  late ChatOllama _chat;
 
-  // Global override settings
-  String _modelName;
-  bool _enableGPU;
-  double _temperature;
-  int _keepAliveTime;
-  bool _enableWebSearch;
-  bool _enableDocsSearch;
-  bool _showStatistics;
-
-  // Model specific settings
-  late ModelSettings _modelSettings;
+  // Chat settings
+  late String _modelName;
+  late bool _showStatistics;
+  late ModelSettingsHandler _modelSettingsHandler;
 
   // Chat session
   ChatSessionWrapper? _session;
   final List<ChatSessionWrapper> _sessions = [];
 
-  // Constructor and initialization
-
+  /// Default initializations for late variables are provided in the constructor because the [_init] method runs asynchronously and there is no way to await it in the constructor.
   ChatProvider()
       : _chat = ChatOllama(),
         _modelName = '',
-        _enableWebSearch = false,
-        _enableDocsSearch = false,
-        _enableGPU = true,
-        _showStatistics = false,
-        _temperature = 0.8,
-        _keepAliveTime = 5 {
-    load();
+        _showStatistics = false {
+    _init();
   }
 
-  /// Called when the provider is initialized to load model specific, global override settings and chat sessions.
+  /// Called when the provider is initialized to load settings and chat sessions.
   ///
   /// Global override settings are stored using the [SharedPreferences] plugin.
   /// Model specific settings are stored in the app's data directory as JSON files (see [ModelSettingsProvider]).
   /// Chat sessions are stored in the app's data directory using the Hive database (see [ChatSessionsDatabase]).
   ///
-  /// Returns a [Future] that evaluates to `void`.
-  void load() async {
+  /// Returns a `void`.
+  void _init() async {
     final prefs = await SharedPreferences.getInstance();
 
     final models = GetIt.instance<ModelProvider>().models;
@@ -86,16 +72,9 @@ class ChatProvider extends ChangeNotifier {
       if (models.isNotEmpty) _modelName = models.first.name;
     }
 
-    _enableWebSearch = prefs.getBool('enableWebSearch') ?? false;
-    _enableDocsSearch = prefs.getBool('enableDocsSearch') ?? false;
-    _enableGPU = prefs.getBool('enableGPU') ?? true;
-    _temperature = prefs.getDouble('temperature') ?? 0.8;
-    _keepAliveTime = prefs.getInt('keepAliveTime') ?? 5;
     _showStatistics = prefs.getBool('showStatistics') ?? false;
 
-    _modelSettings = await ModelSettingsProvider.loadStatic(modelName);
-
-    _updateModelOptions();
+    await updateChatOllamaOptions();
 
     final docsDir = await getApplicationDocumentsDirectory();
     final dataDir = await getApplicationSupportDirectory();
@@ -169,10 +148,11 @@ class ChatProvider extends ChangeNotifier {
   /// Creates a new chat session and sets it as the current session.
   ///
   /// Returns `void`.
-  void newSession() {
+  ChatSessionWrapper newSession() {
     final session = addSession('');
     setSession(session.uuid);
     notifyListeners();
+    return session;
   }
 
   /// Sets the current session to the one with the given UUID, loads its chat history and sets the window title.
@@ -448,7 +428,8 @@ class ChatProvider extends ChangeNotifier {
   ///////////////////////////////////////////
 
   /// Builds a chat chain that processes the user's input and generates a response.
-  Future<RunnableSequence> _buildChain() async {
+  @visibleForTesting
+  Future<RunnableSequence> buildChain() async {
     final systemPrompt = await _loadSystemPrompt();
 
     final promptTemplate = ChatPromptTemplate.fromPromptMessages([
@@ -474,9 +455,9 @@ class ChatProvider extends ChangeNotifier {
 
   /// Use model specific prompt if available, otherwise use default from assets.
   Future<String> _loadSystemPrompt() async {
-    if (_modelSettings.systemPrompt != null &&
-        _modelSettings.systemPrompt!.isNotEmpty) {
-      return _modelSettings.systemPrompt!;
+    if (_modelSettingsHandler.activeModelSettings.systemPrompt != null &&
+        _modelSettingsHandler.activeModelSettings.systemPrompt!.isNotEmpty) {
+      return _modelSettingsHandler.activeModelSettings.systemPrompt!;
     }
 
     return rootBundle.loadString('assets/prompts/default.txt');
@@ -503,7 +484,7 @@ class ChatProvider extends ChangeNotifier {
 
   /// Processes the chat chain with the given prompt and streams the response as a string.
   Stream<String> _processChain(ChatMessage prompt) async* {
-    final chain = await _buildChain();
+    final chain = await buildChain();
 
     await for (final response in chain.stream([prompt])) {
       final result = response as ChatResult;
@@ -801,115 +782,73 @@ class ChatProvider extends ChangeNotifier {
     if (isGenerating) return;
 
     _modelName = name;
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('modelName', name);
-    _modelSettings = await ModelSettingsProvider.loadStatic(modelName);
-    _updateModelOptions();
+
+    await updateChatOllamaOptions();
 
     notifyListeners();
   }
 
   /// Updates the global override settings for the current model.
   ///
-  /// Returns `void`.
-  void _updateModelOptions() {
-    int? numGPU;
+  /// Returns a [Future] that evaluates to `void`.
+  Future<void> updateChatOllamaOptions() async {
+    _modelSettingsHandler = ModelSettingsHandler(modelName);
 
-    if (_enableGPU) {
-      numGPU = Platform.isMacOS ? 1 : null;
+    await _modelSettingsHandler.preloadSettings();
+
+    final settings = _modelSettingsHandler.activeModelSettings;
+
+    int? numGpu;
+
+    if (settings.numGpu == null) {
+      numGpu = Platform.isMacOS ? 1 : null;
+    } else if (settings.numGpu != 0) {
+      numGpu = Platform.isMacOS ? settings.numGpu : null;
     } else {
-      numGPU = 0;
+      numGpu = settings.numGpu;
     }
 
-    final modelOptions = ChatOllamaOptions(
-      model: _modelName,
-      numGpu: numGPU,
-      keepAlive: _modelSettings.keepAlive ?? _keepAliveTime,
-      temperature: _modelSettings.temperature ?? _temperature,
-      concurrencyLimit: _modelSettings.concurrencyLimit ?? 1000,
-      // NOTE: referer to the link https://github.com/davidmigloz/langchain_dart/issues/478
-      f16KV: true,
-      frequencyPenalty: _modelSettings.frequencyPenalty,
-      logitsAll: _modelSettings.logitsAll,
-      lowVram: _modelSettings.lowVram,
-      mainGpu: _modelSettings.mainGpu,
-      mirostat: _modelSettings.mirostat,
-      mirostatEta: _modelSettings.mirostatEta,
-      mirostatTau: _modelSettings.mirostatTau,
-      numBatch: _modelSettings.numBatch,
-      numCtx: _modelSettings.numCtx,
-      numKeep: _modelSettings.numKeep,
-      numPredict: _modelSettings.numPredict,
-      numThread: _modelSettings.numThread,
-      // NOTE: referer to the link https://github.com/davidmigloz/langchain_dart/issues/478
-      numa: false,
-      penalizeNewline: _modelSettings.penalizeNewline,
-      presencePenalty: _modelSettings.presencePenalty,
-      repeatLastN: _modelSettings.repeatLastN,
-      repeatPenalty: _modelSettings.repeatPenalty,
-      seed: _modelSettings.seed,
-      stop: _modelSettings.stop,
-      tfsZ: _modelSettings.tfsZ,
-      topK: _modelSettings.topK,
-      topP: _modelSettings.topP,
-      typicalP: _modelSettings.typicalP,
-      useMlock: _modelSettings.useMlock,
-      useMmap: _modelSettings.useMmap,
-      vocabOnly: _modelSettings.vocabOnly,
+    _chat = ChatOllama(
+      defaultOptions: ChatOllamaOptions(
+        model: _modelName,
+        numGpu: numGpu,
+        keepAlive: settings.keepAlive,
+        temperature: settings.temperature,
+        concurrencyLimit: settings.concurrencyLimit ?? 1000,
+        // NOTE: referer to the link https://github.com/davidmigloz/langchain_dart/issues/478
+        f16KV: true,
+        frequencyPenalty: settings.frequencyPenalty,
+        logitsAll: settings.logitsAll,
+        lowVram: settings.lowVram,
+        mainGpu: settings.mainGpu,
+        mirostat: settings.mirostat,
+        mirostatEta: settings.mirostatEta,
+        mirostatTau: settings.mirostatTau,
+        numBatch: settings.numBatch,
+        numCtx: settings.numCtx,
+        numKeep: settings.numKeep,
+        numPredict: settings.numPredict,
+        numThread: settings.numThread,
+        // NOTE: referer to the link https://github.com/davidmigloz/langchain_dart/issues/478
+        numa: false,
+        penalizeNewline: settings.penalizeNewline,
+        presencePenalty: settings.presencePenalty,
+        repeatLastN: settings.repeatLastN,
+        repeatPenalty: settings.repeatPenalty,
+        seed: settings.seed,
+        stop: settings.stop,
+        tfsZ: settings.tfsZ,
+        topK: settings.topK,
+        topP: settings.topP,
+        typicalP: settings.typicalP,
+        useMlock: settings.useMlock,
+        useMmap: settings.useMmap,
+        vocabOnly: settings.vocabOnly,
+      ),
     );
-
-    _chat = ChatOllama(defaultOptions: modelOptions);
-  }
-
-  /// Global override for setting the temperature.
-  ///
-  /// Returns `void`.
-  void setTemperature(double value) async {
-    if (isGenerating) return;
-
-    _temperature = value;
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setDouble('temperature', value);
-
-    _updateModelOptions();
-
-    notifyListeners();
-  }
-
-  /// Global override for setting the keep alive time.
-  ///
-  /// Returns `void`.
-  void setKeepAliveTime(int value) async {
-    if (isGenerating) return;
-
-    _keepAliveTime = value;
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setInt('keepAliveTime', value.toInt());
-
-    _updateModelOptions();
-
-    notifyListeners();
-  }
-
-  /// Global override for enabling GPU usage.
-  ///
-  /// Returns `void`.
-  void enableGPU(bool value) async {
-    if (isGenerating) return;
-
-    _enableGPU = value;
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setBool('enableGPU', value);
-
-    _updateModelOptions();
-
-    notifyListeners();
   }
 
   /// Enables or disables the display of performance statistics for the current chat.
@@ -919,40 +858,6 @@ class ChatProvider extends ChangeNotifier {
     _showStatistics = value;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('showStatistics', value);
-    notifyListeners();
-  }
-
-  /// Global override for enabling web search.
-  ///
-  /// Returns `void`.
-  void enableWebSearch(bool value) async {
-    if (isGenerating) return;
-
-    _enableWebSearch = value;
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setBool('enableWebSearch', value);
-
-    _updateModelOptions();
-
-    notifyListeners();
-  }
-
-  /// Global override for enabling docs search.
-  ///
-  /// Returns `void`.
-  void enableDocsSearch(bool value) async {
-    if (isGenerating) return;
-
-    _enableDocsSearch = value;
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setBool('enableDocsSearch', value);
-
-    _updateModelOptions();
-
     notifyListeners();
   }
 
@@ -987,21 +892,7 @@ class ChatProvider extends ChangeNotifier {
 
   bool get isModelSelected => _modelName.isNotEmpty;
 
-  double get temperature => _temperature;
-
-  double get keepAliveTime => _keepAliveTime.toDouble();
-
-  bool get isOllamaUsingGpu => _enableGPU;
-
   bool get isChatShowStatistics => _showStatistics;
-
-  bool get isWebSearchEnabled => _enableWebSearch;
-  bool get isWebSearchEnabledForModel =>
-      _modelSettings.enableWebSearch ?? _enableWebSearch;
-
-  bool get isDocsSearchEnabled => _enableDocsSearch;
-  bool get isDocsSearchEnabledForModel =>
-      _modelSettings.enableDocsSearch ?? _enableDocsSearch;
 
   bool get isMultimodalModel {
     final models = GetIt.instance<ModelProvider>().models;

@@ -503,9 +503,9 @@ class _ModelListTileState extends State<ModelListTile> {
           ),
           const Gap(8),
           IconButton(
-            tooltip: AppLocalizations.of(context).modelsPageUseButton,
-            icon: const Icon(UniconsLine.enter),
-            onPressed: () => _setModel(widget.model),
+            tooltip: AppLocalizations.of(context).modelsPageDetailsButton,
+            icon: const Icon(UniconsLine.info_circle),
+            onPressed: () => showModelDetailsDialog(widget.model, context),
           ),
           const Gap(8),
           IconButton(
@@ -528,7 +528,7 @@ class _ModelListTileState extends State<ModelListTile> {
           ),
         ],
       ),
-      onTap: () => showModelDetailsDialog(widget.model, context),
+      onTap: () => _setModel(widget.model),
     );
   }
 }
