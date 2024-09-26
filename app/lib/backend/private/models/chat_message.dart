@@ -68,6 +68,10 @@ class ChatMessageSenderJSONConverter
   }
 }
 
+/// The classes with the V1 suffix are used to represent the version of the chat message wrapper format
+/// that was active starting from the initial release to the version 0.3.1 of the application.
+/// Following versions use the V2 format that introduced conversation branching.
+
 /// NOTE: named with 'Wrapper' suffix to avoid conflict with langchain.dart
 ///
 /// This class is used to encapsulate the properties of a chat message.
@@ -92,7 +96,7 @@ class ChatMessageSenderJSONConverter
 /// - `responseTokens`: The number of response tokens in the chat message.
 /// - `totalTokens`: The total number of tokens in the chat message.
 @JsonSerializable()
-class ChatMessageWrapper {
+class ChatMessageWrapperV1 {
   String text;
   final DateTime createdAt;
   final String uuid;
@@ -119,7 +123,7 @@ class ChatMessageWrapper {
   )
   final ChatMessageSender sender;
 
-  ChatMessageWrapper(
+  ChatMessageWrapperV1(
     this.text,
     this.createdAt,
     this.uuid,
@@ -136,10 +140,10 @@ class ChatMessageWrapper {
     this.totalTokens = 0,
   });
 
-  factory ChatMessageWrapper.fromJson(Map<String, dynamic> json) =>
-      _$ChatMessageWrapperFromJson(json);
+  factory ChatMessageWrapperV1.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageWrapperV1FromJson(json);
 
-  Map<String, dynamic> toJson() => _$ChatMessageWrapperToJson(this);
+  Map<String, dynamic> toJson() => _$ChatMessageWrapperV1ToJson(this);
 
   static ChatMessageSender _senderFromJson(String json) =>
       const ChatMessageSenderJSONConverter().fromJson(json);
@@ -150,10 +154,10 @@ class ChatMessageWrapper {
 
 /// Represents a system message in the chat.
 ///
-/// This class extends the [ChatMessageWrapper] class and sets the sender name and type to 'System'.
+/// This class extends the [ChatMessageWrapperV1] class and sets the sender name and type to 'System'.
 @JsonSerializable()
-class ChatSystemMessageWrapper extends ChatMessageWrapper {
-  ChatSystemMessageWrapper(
+class ChatSystemMessageWrapperV1 extends ChatMessageWrapperV1 {
+  ChatSystemMessageWrapperV1(
     String text,
     DateTime createdAt,
     String uuid,
@@ -165,19 +169,19 @@ class ChatSystemMessageWrapper extends ChatMessageWrapper {
           senderName: 'System',
         );
 
-  factory ChatSystemMessageWrapper.fromJson(Map<String, dynamic> json) =>
-      _$ChatSystemMessageWrapperFromJson(json);
+  factory ChatSystemMessageWrapperV1.fromJson(Map<String, dynamic> json) =>
+      _$ChatSystemMessageWrapperV1FromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$ChatSystemMessageWrapperToJson(this);
+  Map<String, dynamic> toJson() => _$ChatSystemMessageWrapperV1ToJson(this);
 }
 
 /// Represents a model message in the chat.
 ///
-/// This class extends the [ChatMessageWrapper] class and sets the sender name and type to 'Model'.
+/// This class extends the [ChatMessageWrapperV1] class and sets the sender name and type to 'Model'.
 @JsonSerializable()
-class ChatModelMessageWrapper extends ChatMessageWrapper {
-  ChatModelMessageWrapper(
+class ChatModelMessageWrapperV1 extends ChatMessageWrapperV1 {
+  ChatModelMessageWrapperV1(
     String text,
     DateTime createdAt,
     String uuid,
@@ -190,20 +194,20 @@ class ChatModelMessageWrapper extends ChatMessageWrapper {
           senderName: senderName,
         );
 
-  factory ChatModelMessageWrapper.fromJson(Map<String, dynamic> json) =>
-      _$ChatModelMessageWrapperFromJson(json);
+  factory ChatModelMessageWrapperV1.fromJson(Map<String, dynamic> json) =>
+      _$ChatModelMessageWrapperV1FromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$ChatModelMessageWrapperToJson(this);
+  Map<String, dynamic> toJson() => _$ChatModelMessageWrapperV1ToJson(this);
 }
 
 /// Represents a user message in the chat.
 ///
-/// This class extends the [ChatMessageWrapper] class and sets the sender name and type to 'User'.
+/// This class extends the [ChatMessageWrapperV1] class and sets the sender name and type to 'User'.
 ///
-/// The [ChatUserMessageWrapper] class also includes an optional [imageBytes] property to store image data for use with multimodal models.
+/// The [ChatUserMessageWrapperV1] class also includes an optional [imageBytes] property to store image data for use with multimodal models.
 @JsonSerializable()
-class ChatUserMessageWrapper extends ChatMessageWrapper {
+class ChatUserMessageWrapperV1 extends ChatMessageWrapperV1 {
   @JsonKey(
     includeToJson: true,
     includeFromJson: true,
@@ -215,7 +219,7 @@ class ChatUserMessageWrapper extends ChatMessageWrapper {
 
   final List<String>? filePaths;
 
-  ChatUserMessageWrapper(
+  ChatUserMessageWrapperV1(
     String text,
     DateTime createdAt,
     String uuid, {
@@ -229,11 +233,11 @@ class ChatUserMessageWrapper extends ChatMessageWrapper {
           senderName: 'User',
         );
 
-  factory ChatUserMessageWrapper.fromJson(Map<String, dynamic> json) =>
-      _$ChatUserMessageWrapperFromJson(json);
+  factory ChatUserMessageWrapperV1.fromJson(Map<String, dynamic> json) =>
+      _$ChatUserMessageWrapperV1FromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$ChatUserMessageWrapperToJson(this);
+  Map<String, dynamic> toJson() => _$ChatUserMessageWrapperV1ToJson(this);
 
   static Uint8List? _imageBytesFromJson(Object? json) =>
       const ImageBytesJSONConverter().fromJson(json);

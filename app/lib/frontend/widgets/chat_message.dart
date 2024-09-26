@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 class ChatMessageWidget extends StatefulWidget {
-  final ChatMessageWrapper message;
+  final ChatMessageWrapperV1 message;
   final ScrollController scrollController;
 
   const ChatMessageWidget(
@@ -93,7 +93,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     } else {
       if (_textEditingController.text.isEmpty) return;
 
-      final userMessage = widget.message as ChatUserMessageWrapper;
+      final userMessage = widget.message as ChatUserMessageWrapperV1;
 
       context.read<ChatProvider>().sendEditedMessage(
             userMessage.uuid,
@@ -209,7 +209,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             ],
           ),
           const Divider(),
-          if ((widget.message is ChatModelMessageWrapper))
+          if ((widget.message is ChatModelMessageWrapperV1))
             if (context.watch<ChatProvider>().isGenerating &&
                 widget.message.text.isEmpty)
               SpinKitThreeBounce(
@@ -218,8 +218,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                     ? Colors.white
                     : Colors.black,
               ),
-          if ((widget.message is ChatUserMessageWrapper))
-            if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
+          if ((widget.message is ChatUserMessageWrapperV1))
+            if ((widget.message as ChatUserMessageWrapperV1).imageBytes != null)
               Center(
                 child: SizedBox(
                   height:
@@ -227,7 +227,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.memory(
-                      (widget.message as ChatUserMessageWrapper).imageBytes!,
+                      (widget.message as ChatUserMessageWrapperV1).imageBytes!,
                       fit: BoxFit.fitHeight,
                       cacheHeight: MediaQuery.of(context).size.height <= 900.0
                           ? 256
@@ -237,8 +237,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   ),
                 ),
               ),
-          if ((widget.message is ChatUserMessageWrapper))
-            if ((widget.message as ChatUserMessageWrapper).imageBytes != null)
+          if ((widget.message is ChatUserMessageWrapperV1))
+            if ((widget.message as ChatUserMessageWrapperV1).imageBytes != null)
               const SizedBox(height: 8.0),
           if (!_showEditWidget && widget.message.text.isNotEmpty)
             MarkdownBodyWidget(
@@ -345,7 +345,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     );
   }
 
-  Widget _buildStatisticsSummary(ChatMessageWrapper message) {
+  Widget _buildStatisticsSummary(ChatMessageWrapperV1 message) {
     final tokenCount = message.totalTokens;
     final durationInMs = message.totalDuration / 1000 ~/ 1000;
     final tps = (tokenCount / (durationInMs / 1000)).toStringAsFixed(2);

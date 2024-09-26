@@ -24,14 +24,14 @@ class ChatSessionsDatabase {
     await Hive.close();
   }
 
-  Future<void> saveSession(ChatSessionWrapper session) async {
+  Future<void> saveSession(ChatSessionWrapperV1 session) async {
     final box = await Hive.openBox<String>('sessions');
     final sessionJson = jsonEncode(session.toJson());
     await box.put(session.uuid, sessionJson);
     await box.close();
   }
 
-  Future<void> updateSession(ChatSessionWrapper session) async {
+  Future<void> updateSession(ChatSessionWrapperV1 session) async {
     final box = await Hive.openBox<String>('sessions');
     final sessionJson = jsonEncode(session.toJson());
     await box.put(session.uuid, sessionJson);
@@ -44,15 +44,15 @@ class ChatSessionsDatabase {
     await box.close();
   }
 
-  Future<List<ChatSessionWrapper>> loadSessions() async {
+  Future<List<ChatSessionWrapperV1>> loadSessions() async {
     final box = await Hive.openBox<String>('sessions');
-    final sessions = <ChatSessionWrapper>[];
+    final sessions = <ChatSessionWrapperV1>[];
 
     for (final key in box.keys) {
       final sessionJson = box.get(key);
       if (sessionJson != null) {
         final sessionMap = jsonDecode(sessionJson);
-        final session = ChatSessionWrapper.fromJson(sessionMap);
+        final session = ChatSessionWrapperV1.fromJson(sessionMap);
         sessions.add(session);
       }
     }

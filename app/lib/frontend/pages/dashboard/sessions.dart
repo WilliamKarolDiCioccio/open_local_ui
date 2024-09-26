@@ -46,7 +46,7 @@ class _SessionsPageState extends State<SessionsPage> {
   late Set<SortBy> _sortBy;
   late Set<SortOrder> _sortOrder;
 
-  final prototypeChatSession = ChatSessionWrapper(
+  final prototypeChatSession = ChatSessionWrapperV1(
     DateTime(0),
     '',
     [],
@@ -286,7 +286,7 @@ class _SessionsPageState extends State<SessionsPage> {
 }
 
 class SessionListTile extends StatefulWidget {
-  final ChatSessionWrapper session;
+  final ChatSessionWrapperV1 session;
   final PageController pageController;
 
   const SessionListTile({

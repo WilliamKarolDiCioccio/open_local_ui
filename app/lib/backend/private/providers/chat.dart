@@ -42,8 +42,8 @@ class ChatProvider extends ChangeNotifier {
   late ModelSettingsHandler _modelSettingsHandler;
 
   // Chat session
-  ChatSessionWrapper? _session;
-  final List<ChatSessionWrapper> _sessions = [];
+  ChatSessionWrapperV1? _session;
+  final List<ChatSessionWrapperV1> _sessions = [];
 
   /// Default initializations for late variables are provided in the constructor because the [_init] method runs asynchronously and there is no way to await it in the constructor.
   ChatProvider()
@@ -128,10 +128,10 @@ class ChatProvider extends ChangeNotifier {
 
   /// Adds a new chat session with the given title and saves it to the database.
   ///
-  /// Returns the newly created [ChatSessionWrapper].
-  ChatSessionWrapper addSession(String title) {
+  /// Returns the newly created [ChatSessionWrapperV1].
+  ChatSessionWrapperV1 addSession(String title) {
     _sessions.add(
-      ChatSessionWrapper(
+      ChatSessionWrapperV1(
         DateTime.now(),
         const Uuid().v4(),
         [],
@@ -148,7 +148,7 @@ class ChatProvider extends ChangeNotifier {
   /// Creates a new chat session and sets it as the current session.
   ///
   /// Returns `void`.
-  ChatSessionWrapper newSession() {
+  ChatSessionWrapperV1 newSession() {
     final session = addSession('');
     setSession(session.uuid);
     notifyListeners();
@@ -178,7 +178,7 @@ class ChatProvider extends ChangeNotifier {
     loadSessionHistory();
 
     for (final message in _session!.messages.reversed) {
-      if (message is ChatModelMessageWrapper) {
+      if (message is ChatModelMessageWrapperV1) {
         final models = GetIt.instance<OllamaModelProvider>().models;
 
         if (models.any(
@@ -271,8 +271,8 @@ class ChatProvider extends ChangeNotifier {
   /// If the session is not selected, the function returns the newly created [ChatSystemMessageWrapper] without adding it to the memory or the database.
   ///
   /// Returns the newly created [ChatSystemMessageWrapper].
-  ChatSystemMessageWrapper addSystemMessage(String message) {
-    final chatMessage = ChatSystemMessageWrapper(
+  ChatSystemMessageWrapperV1 addSystemMessage(String message) {
+    final chatMessage = ChatSystemMessageWrapperV1(
       message,
       DateTime.now(),
       const Uuid().v4(),
@@ -293,10 +293,10 @@ class ChatProvider extends ChangeNotifier {
 
   /// Adds a chat message of type model to the current session and to the model's memory and updates the session in the database.
   ///
-  /// If the session is not selected, the function returns the newly created [ChatModelMessageWrapper] without adding it to the memory or the database.
+  /// If the session is not selected, the function returns the newly created [ChatModelMessageWrapperV1] without adding it to the memory or the database.
   ///
-  /// Returns the newly created [ChatModelMessageWrapper].
-  Future<ChatModelMessageWrapper> addModelMessage(
+  /// Returns the newly created [ChatModelMessageWrapperV1].
+  Future<ChatModelMessageWrapperV1> addModelMessage(
     Stream<String> messageStream,
     String senderName,
   ) async {
@@ -304,7 +304,7 @@ class ChatProvider extends ChangeNotifier {
     final DateTime timestamp = DateTime.now();
     final String messageId = const Uuid().v4();
 
-    final chatMessage = ChatModelMessageWrapper(
+    final chatMessage = ChatModelMessageWrapperV1(
       '',
       timestamp,
       messageId,
@@ -313,7 +313,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session!.messages.add(chatMessage);
 
-    final completer = Completer<ChatModelMessageWrapper>();
+    final completer = Completer<ChatModelMessageWrapperV1>();
 
     final StreamSubscription<String> subscription = messageStream.listen(
       (message) {
@@ -328,7 +328,8 @@ class ChatProvider extends ChangeNotifier {
 
         GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
 
-        completer.complete(_session!.messages.last as ChatModelMessageWrapper);
+        completer
+            .complete(_session!.messages.last as ChatModelMessageWrapperV1);
 
         notifyListeners();
       },
@@ -341,7 +342,7 @@ class ChatProvider extends ChangeNotifier {
 
     await subscription.cancel();
 
-    return _session!.messages.last as ChatModelMessageWrapper;
+    return _session!.messages.last as ChatModelMessageWrapperV1;
   }
 
   /// Adds a chat message of type user to the current session and to the model's memory and updates the session in the database.
@@ -351,8 +352,11 @@ class ChatProvider extends ChangeNotifier {
   /// User messages have optional [imageBytes] attached to them for use in multimodal models.
   ///
   /// Returns the newly created [ChatUserMessageWrapper].
-  ChatUserMessageWrapper addUserMessage(String message, Uint8List? imageBytes) {
-    final chatMessage = ChatUserMessageWrapper(
+  ChatUserMessageWrapperV1 addUserMessage(
+    String message,
+    Uint8List? imageBytes,
+  ) {
+    final chatMessage = ChatUserMessageWrapperV1(
       message,
       DateTime.now(),
       const Uuid().v4(),
@@ -619,19 +623,19 @@ class ChatProvider extends ChangeNotifier {
       (element) => element.uuid == uuid,
     );
 
-    if (_session!.messages[modelMessageIndex] is! ChatModelMessageWrapper) {
+    if (_session!.messages[modelMessageIndex] is! ChatModelMessageWrapperV1) {
       return;
     }
 
     removeMessage(uuid);
 
     final userMessageIndex = _session!.messages.lastIndexWhere(
-      (element) => element is ChatUserMessageWrapper,
+      (element) => element is ChatUserMessageWrapperV1,
       modelMessageIndex - 1,
     );
 
     final userMessage =
-        _session!.messages[userMessageIndex] as ChatUserMessageWrapper;
+        _session!.messages[userMessageIndex] as ChatUserMessageWrapperV1;
 
     if (!isModelSelected) {
       addSystemMessage('Please select a model.');
@@ -701,7 +705,7 @@ class ChatProvider extends ChangeNotifier {
       (element) => element.uuid == uuid,
     );
 
-    if (_session!.messages[messageIndex] is! ChatUserMessageWrapper) {
+    if (_session!.messages[messageIndex] is! ChatUserMessageWrapperV1) {
       return;
     }
 
@@ -918,9 +922,9 @@ class ChatProvider extends ChangeNotifier {
     return multiModalFamilies.any((family) => modelFamilies.contains(family));
   }
 
-  ChatSessionWrapper? get session => _session;
+  ChatSessionWrapperV1? get session => _session;
 
-  ChatSessionWrapper? get sessionByUuid {
+  ChatSessionWrapperV1? get sessionByUuid {
     return _sessions.firstWhere(
       (element) => element.uuid == _session?.uuid,
     );
@@ -928,23 +932,23 @@ class ChatProvider extends ChangeNotifier {
 
   bool get isSessionSelected => _session != null;
 
-  List<ChatMessageWrapper> get messages {
+  List<ChatMessageWrapperV1> get messages {
     return _session != null ? _session!.messages : [];
   }
 
-  ChatMessageWrapper? get lastMessage => _session?.messages.last;
+  ChatMessageWrapperV1? get lastMessage => _session?.messages.last;
 
-  ChatMessageWrapper? get lastUserMessage {
+  ChatMessageWrapperV1? get lastUserMessage {
     return _session?.messages.lastWhere(
-      (element) => element is ChatUserMessageWrapper,
+      (element) => element is ChatUserMessageWrapperV1,
     );
   }
 
   int get messageCount => _session != null ? _session!.messages.length : 0;
 
-  List<ChatSessionWrapper> get sessions => _sessions;
+  List<ChatSessionWrapperV1> get sessions => _sessions;
 
-  ChatSessionWrapper? get lastSession => _session;
+  ChatSessionWrapperV1? get lastSession => _session;
 
   int get sessionCount => _sessions.length;
 
