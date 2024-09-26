@@ -281,6 +281,20 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                     onPressed: () => _beginEditingMessage(),
                     icon: const Icon(UniconsLine.edit),
                   ),
+                if (widget.message.sender == ChatMessageSender.user)
+                  const Spacer(),
+                if (widget.message.sender == ChatMessageSender.user)
+                  IconButton(
+                    tooltip:
+                        AppLocalizations.of(context).chatEditMessageTooltip,
+                    onPressed: () => context.read<ChatProvider>().removeMessage(
+                          widget.message.uuid,
+                        ),
+                    icon: const Icon(
+                      UniconsLine.trash,
+                      color: Colors.red,
+                    ),
+                  ),
               ],
             )
                 .animate()
