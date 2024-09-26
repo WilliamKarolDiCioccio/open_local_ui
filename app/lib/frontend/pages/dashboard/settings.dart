@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:discord_rpc/discord_rpc.dart';
 import 'package:flex_color_picker/flex_color_picker.dart' as fcp;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -38,18 +39,22 @@ class _SettingsPageState extends State<SettingsPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8.0),
+          const Gap(8),
           const Divider(),
-          const SizedBox(height: 16.0),
+          const Gap(16),
           const ThemeSettings(),
-          const SizedBox(height: 8.0),
+          const Gap(8),
           const Divider(),
-          const SizedBox(height: 16.0),
+          const Gap(16),
           const AccessibilitySettings(),
-          const SizedBox(height: 8.0),
+          const Gap(8),
           const Divider(),
-          const SizedBox(height: 16.0),
-          const DebigSettings(),
+          const Gap(16),
+          const DebugSettings(),
+          const Gap(8),
+          const Divider(),
+          const Gap(16),
+          const SocialSettings(),
         ],
       ),
     );
@@ -369,14 +374,14 @@ class AccessibilitySettings extends StatelessWidget {
   }
 }
 
-class DebigSettings extends StatefulWidget {
-  const DebigSettings({super.key});
+class DebugSettings extends StatefulWidget {
+  const DebugSettings({super.key});
 
   @override
-  State<DebigSettings> createState() => _DebigSettingsState();
+  State<DebugSettings> createState() => _DebugSettingsState();
 }
 
-class _DebigSettingsState extends State<DebigSettings> {
+class _DebugSettingsState extends State<DebugSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -409,6 +414,89 @@ class _DebigSettingsState extends State<DebigSettings> {
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class SocialSettings extends StatefulWidget {
+  const SocialSettings({super.key});
+
+  @override
+  State<SocialSettings> createState() => _SocialSettingsState();
+}
+
+class _SocialSettingsState extends State<SocialSettings> {
+  bool _discordRPCEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDiscordRPCEnabled();
+  }
+
+  Future<void> _loadDiscordRPCEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _discordRPCEnabled = prefs.getBool('discordRPCEnabled') ?? false;
+    });
+  }
+
+  Future<void> _toggleDiscordRPC(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('discordRPCEnabled', value);
+
+    setState(() {
+      _discordRPCEnabled = value;
+    });
+
+    DiscordRPC.initialize();
+
+    final rpc = DiscordRPC(
+      applicationId: '1288789740338020392',
+    );
+
+    if (_discordRPCEnabled) {
+      rpc.start(autoRegister: true);
+      rpc.updatePresence(
+        DiscordPresence(
+          state: 'Chatting in OpenLocalUI 🚀',
+          details: 'github.com/WilliamKarolDiCioccio/open_local_ui',
+          startTimeStamp: DateTime.now().millisecondsSinceEpoch,
+        ),
+      );
+    } else {
+      rpc.shutDown();
+      rpc.clearPresence();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          AppLocalizations.of(context).settingsPageSocialLabel,
+          style: const TextStyle(fontSize: 24.0),
+        ),
+        const Gap(16.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(UniconsLine.discord),
+            const Gap(8.0),
+            Text(
+              AppLocalizations.of(context).settingsPageDiscordRPCLabel,
+              style: const TextStyle(fontSize: 16.0),
+            ),
+            const Gap(8.0),
+            Switch(
+              value: _discordRPCEnabled,
+              onChanged: (value) => _toggleDiscordRPC(value),
+            ),
+          ],
         ),
       ],
     );

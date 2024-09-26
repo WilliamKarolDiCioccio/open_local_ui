@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_linux
   bitsdojo_window_linux
+  discord_rpc
   file_selector_linux
   gtk
   irondash_engine_context

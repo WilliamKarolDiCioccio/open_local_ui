@@ -119,6 +119,9 @@ dependencies:
   # Dependency Injection
   get_it: ^7.7.0
 
+  # Others
+  discord_rpc: ^0.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

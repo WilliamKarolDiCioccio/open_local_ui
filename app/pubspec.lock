@@ -425,6 +425,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  discord_rpc:
+    dependency: "direct main"
+    description:
+      name: discord_rpc
+      sha256: da0d891af04a97bd2e0ffc6f5fc1ec49511b7b9d2dcce9a5e2814e5039e98384
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   dots_indicator:
     dependency: transitive
     description:

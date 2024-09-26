@@ -308,6 +308,8 @@
   "pushModelDialogTitle": "Push model",
   "redoButtonShared": "Redo",
   "repeatLastN": "Repeat Last N",
+  "settingsPageSocialLabel": "Social",
+  "settingsPageDiscordRPCLabel": "Discord RPC",
   "repeatPenalty": "Repeat Penalty",
   "resetToDefaultsButton": "Reset to defaults",
   "saveButtonShared": "Save",

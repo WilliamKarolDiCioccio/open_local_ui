@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:discord_rpc/discord_rpc.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -94,6 +95,27 @@ void main() async {
 
   if (!userOnboarded) {
     await prefs.setBool('userOnboarded', true);
+  }
+
+  // Discord RPC
+
+  final discordRPCEnabled = prefs.getBool('discordRPCEnabled') ?? false;
+
+  if (discordRPCEnabled) {
+    DiscordRPC.initialize();
+
+    final rpc = DiscordRPC(
+      applicationId: '1288789740338020392',
+    );
+
+    rpc.start(autoRegister: true);
+    rpc.updatePresence(
+      DiscordPresence(
+        state: 'Chatting in OpenLocalUI 🚀',
+        details: 'github.com/WilliamKarolDiCioccio/open_local_ui',
+        startTimeStamp: DateTime.now().millisecondsSinceEpoch,
+      ),
+    );
   }
 
   // Run app

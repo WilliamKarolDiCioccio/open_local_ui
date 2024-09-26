@@ -10,6 +10,7 @@
 #include <audioplayers_windows/audioplayers_windows_plugin.h>
 #include <battery_plus/battery_plus_windows_plugin.h>
 #include <bitsdojo_window_windows/bitsdojo_window_plugin.h>
+#include <discord_rpc/discord_rpc_plugin.h>
 #include <file_selector_windows/file_selector_windows.h>
 #include <gpu_info/gpu_info_plugin_c_api.h>
 #include <irondash_engine_context/irondash_engine_context_plugin_c_api.h>
@@ -29,6 +30,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("BatteryPlusWindowsPlugin"));
   BitsdojoWindowPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("BitsdojoWindowPlugin"));
+  DiscordRpcPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("DiscordRpcPlugin"));
   FileSelectorWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FileSelectorWindows"));
   GpuInfoPluginCApiRegisterWithRegistrar(
