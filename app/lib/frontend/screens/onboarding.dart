@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,15 +13,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:open_local_ui/frontend/components/rive_animation.dart';
-import 'package:open_local_ui/frontend/components/typewriter_text.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/process.dart';
-import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/components/rive_animation.dart';
+import 'package:open_local_ui/frontend/components/typewriter_text.dart';
+import 'package:open_local_ui/frontend/components/window_management_bar.dart';
+import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/widgets/preference_selector.dart';
-import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_info2/system_info2.dart';
 import 'package:system_theme/system_theme.dart';
@@ -33,14 +35,14 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final introKey = GlobalKey<IntroductionScreenState>();
+  final _introKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         IntroductionScreen(
-          key: introKey,
+          key: _introKey,
           globalHeader: null,
           globalFooter: null,
           pages: [
