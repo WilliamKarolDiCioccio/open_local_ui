@@ -15,7 +15,7 @@ import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
-enum ModelProviderStatus {
+enum OllamaModelProviderStatus {
   idle,
   pulling,
   pushing,
@@ -29,17 +29,17 @@ enum ModelProviderStatus {
 /// This class enables direct interaction with the Ollama API to pull, push, create and remove models.
 ///
 /// NOTE: You'll see some methods having a `Static` suffix (see [_updateListStatic]). This is because they are used outside the widget tree where providers are not accessible.
-class ModelProvider extends ChangeNotifier {
+class OllamaModelProvider extends ChangeNotifier {
   static const _api = 'http://localhost:11434/api';
   final List<Model> _models = [];
   late Process _process;
-  ModelProviderStatus _status = ModelProviderStatus.idle;
+  OllamaModelProviderStatus _status = OllamaModelProviderStatus.idle;
 
-  ModelProvider._internal();
+  OllamaModelProvider._internal();
 
-  static final ModelProvider _instance = ModelProvider._internal();
+  static final OllamaModelProvider _instance = OllamaModelProvider._internal();
 
-  factory ModelProvider() {
+  factory OllamaModelProvider() {
     return _instance;
   }
 
@@ -139,7 +139,7 @@ class ModelProvider extends ChangeNotifier {
   Stream<OllamaPullResponse> pull(String name) async* {
     final completer = Completer<void>();
 
-    _status = ModelProviderStatus.pulling;
+    _status = OllamaModelProviderStatus.pulling;
 
     final request = http.Request('POST', Uri.parse('$_api/pull'));
     request.headers['Content-Type'] = 'application/json';
@@ -237,7 +237,7 @@ class ModelProvider extends ChangeNotifier {
 
     await updateList();
 
-    _status = ModelProviderStatus.idle;
+    _status = OllamaModelProviderStatus.idle;
 
     completer.complete();
   }
@@ -250,7 +250,7 @@ class ModelProvider extends ChangeNotifier {
   Stream<OllamaPushResponse> push(String name) async* {
     final completer = Completer<void>();
 
-    _status = ModelProviderStatus.pushing;
+    _status = OllamaModelProviderStatus.pushing;
 
     final request = http.Request('POST', Uri.parse('$_api/push'));
     request.headers['Content-Type'] = 'application/json';
@@ -348,7 +348,7 @@ class ModelProvider extends ChangeNotifier {
 
     await updateList();
 
-    _status = ModelProviderStatus.idle;
+    _status = OllamaModelProviderStatus.idle;
 
     completer.complete();
   }
@@ -362,7 +362,7 @@ class ModelProvider extends ChangeNotifier {
   Stream<OllamaCreateResponse> create(String name, String modelfile) async* {
     final completer = Completer<void>();
 
-    _status = ModelProviderStatus.creating;
+    _status = OllamaModelProviderStatus.creating;
 
     final request = http.Request('POST', Uri.parse('$_api/create'));
     request.headers['Content-Type'] = 'application/json';
@@ -460,7 +460,7 @@ class ModelProvider extends ChangeNotifier {
 
     await updateList();
 
-    _status = ModelProviderStatus.idle;
+    _status = OllamaModelProviderStatus.idle;
 
     completer.complete();
   }
@@ -498,9 +498,9 @@ class ModelProvider extends ChangeNotifier {
 
   int get modelsCount => _models.length;
 
-  bool get isPulling => _status == ModelProviderStatus.pulling;
+  bool get isPulling => _status == OllamaModelProviderStatus.pulling;
 
-  bool get isPushing => _status == ModelProviderStatus.pushing;
+  bool get isPushing => _status == OllamaModelProviderStatus.pushing;
 
-  bool get isCreating => _status == ModelProviderStatus.creating;
+  bool get isCreating => _status == OllamaModelProviderStatus.creating;
 }

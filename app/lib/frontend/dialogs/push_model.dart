@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
-import 'package:open_local_ui/backend/private/providers/model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:provider/provider.dart';
 import 'package:units_converter/units_converter.dart';
@@ -32,7 +32,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
     setState(() {
       _isPushing = true;
       _pushStream = context
-          .read<ModelProvider>()
+          .read<OllamaModelProvider>()
           .push(_modelSelectionController.text.toLowerCase());
     });
   }
@@ -40,7 +40,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
   @override
   Widget build(BuildContext context) {
     final List<DropdownMenuEntry> modelsMenuEntries =
-        context.read<ModelProvider>().models.map((model) {
+        context.read<OllamaModelProvider>().models.map((model) {
       final shortName = model.name.length > 20
           ? '${model.name.substring(0, 20)}...'
           : model.name;

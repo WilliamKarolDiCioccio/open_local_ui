@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
-import 'package:open_local_ui/backend/private/providers/model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
 import 'package:provider/provider.dart';
 
 class CreateModelDialog extends StatefulWidget {
@@ -29,7 +29,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   void initState() {
     super.initState();
 
-    for (final model in context.read<ModelProvider>().models) {
+    for (final model in context.read<OllamaModelProvider>().models) {
       final shortName = model.name.length > 20
           ? '${model.name.substring(0, 20)}...'
           : model.name;
@@ -77,7 +77,7 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
       modelBaseName = _modelSelectionController.text;
     }
 
-    final stream = context.read<ModelProvider>().create(
+    final stream = context.read<OllamaModelProvider>().create(
           _nameEditingController.text.toLowerCase(),
           "FROM $modelBaseName\nSYSTEM ${_fileEditingController.text}",
         );

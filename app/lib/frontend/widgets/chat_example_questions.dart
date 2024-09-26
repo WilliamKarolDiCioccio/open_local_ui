@@ -7,7 +7,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
-import 'package:open_local_ui/backend/private/providers/model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -187,14 +187,14 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
 
   void _sendMessage(String message) async {
     if (!context.read<ChatProvider>().isModelSelected) {
-      if (context.read<ModelProvider>().modelsCount == 0) {
+      if (context.read<OllamaModelProvider>().modelsCount == 0) {
         return SnackBarHelpers.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).noModelsAvailableSnackBar,
           SnackbarContentType.failure,
         );
       } else {
-        final models = context.read<ModelProvider>().models;
+        final models = context.read<OllamaModelProvider>().models;
         await context.read<ChatProvider>().setModel(models.first.name);
       }
     } else if (context.read<ChatProvider>().isGenerating) {
@@ -211,14 +211,14 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
 
   void _addEditableMessage(String message) {
     if (!context.read<ChatProvider>().isModelSelected) {
-      if (context.read<ModelProvider>().modelsCount == 0) {
+      if (context.read<OllamaModelProvider>().modelsCount == 0) {
         return SnackBarHelpers.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).noModelsAvailableSnackBar,
           SnackbarContentType.failure,
         );
       } else {
-        final models = context.read<ModelProvider>().models;
+        final models = context.read<OllamaModelProvider>().models;
         context.read<ChatProvider>().setModel(models.first.name);
       }
     } else if (context.read<ChatProvider>().isGenerating) {

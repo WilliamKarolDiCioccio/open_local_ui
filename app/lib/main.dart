@@ -11,7 +11,7 @@ import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
-import 'package:open_local_ui/backend/private/providers/model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
 import 'package:open_local_ui/backend/private/services/tts.dart';
 import 'package:open_local_ui/constants/assets.dart';
 import 'package:open_local_ui/constants/constants.dart';
@@ -42,7 +42,7 @@ void main() async {
   // Dependency injection
 
   final getIt = GetIt.instance;
-  getIt.registerSingleton<ModelProvider>(ModelProvider());
+  getIt.registerSingleton<OllamaModelProvider>(OllamaModelProvider());
   getIt.registerSingleton<ChatSessionsDatabase>(ChatSessionsDatabase());
   getIt.registerSingleton<TTSService>(TTSService());
 
@@ -50,7 +50,7 @@ void main() async {
 
   await initLogger();
 
-  await GetIt.instance<ModelProvider>().startOllama();
+  await GetIt.instance<OllamaModelProvider>().startOllama();
   await GetIt.instance<TTSService>().startServer();
   await GetIt.instance<ChatSessionsDatabase>().init();
 
@@ -104,8 +104,8 @@ void main() async {
         ChangeNotifierProvider<LocaleProvider>(
           create: (context) => LocaleProvider(),
         ),
-        ChangeNotifierProvider<ModelProvider>(
-          create: (context) => ModelProvider(),
+        ChangeNotifierProvider<OllamaModelProvider>(
+          create: (context) => OllamaModelProvider(),
         ),
         ChangeNotifierProvider<ChatProvider>(
           create: (context) => ChatProvider(),
@@ -156,7 +156,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    GetIt.instance<ModelProvider>().stopOllama();
+    GetIt.instance<OllamaModelProvider>().stopOllama();
     GetIt.instance<ChatSessionsDatabase>().deinit();
     GetIt.instance<TTSService>().stopServer();
 

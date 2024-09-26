@@ -14,7 +14,7 @@ import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:open_local_ui/backend/private/databases/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/models/chat_message.dart';
 import 'package:open_local_ui/backend/private/models/chat_session.dart';
-import 'package:open_local_ui/backend/private/providers/model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
 import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -63,7 +63,7 @@ class ChatProvider extends ChangeNotifier {
   void _init() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final models = GetIt.instance<ModelProvider>().models;
+    final models = GetIt.instance<OllamaModelProvider>().models;
     final modelName = prefs.getString('modelName') ?? '';
 
     if (models.any((model) => model.name == modelName)) {
@@ -179,7 +179,7 @@ class ChatProvider extends ChangeNotifier {
 
     for (final message in _session!.messages.reversed) {
       if (message is ChatModelMessageWrapper) {
-        final models = GetIt.instance<ModelProvider>().models;
+        final models = GetIt.instance<OllamaModelProvider>().models;
 
         if (models.any(
           (model) => model.name == message.senderName,
@@ -895,7 +895,7 @@ class ChatProvider extends ChangeNotifier {
   bool get isChatShowStatistics => _showStatistics;
 
   bool get isMultimodalModel {
-    final models = GetIt.instance<ModelProvider>().models;
+    final models = GetIt.instance<OllamaModelProvider>().models;
 
     if (!models.any((model) => model.name == _modelName)) return false;
 
