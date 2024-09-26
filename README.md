@@ -44,9 +44,11 @@ OpenLocalUI is a Flutter-based desktop application designed for Windows and macO
 
 Despite its simplicity, OpenLocalUI has enormous potential for growth and enhancement. Based on the LangChain Dart API, future updates will focus on adding more features and improving usability. Planned features include:
 
-1. **Model Customization**: Enhance the ability to customize LLM models according to specific needs.
-2. **Image and File Embedding**: Enable embedding images and files directly into the application for more versatile usage.
-3. **Improved User Interface**: Enhance the user experience with a more intuitive and visually appealing interface.
+1. ✅ **Model Customization**: Enhance the ability to customize LLM models according to specific needs.
+2. ✅ **Image and File Embedding**: Enable embedding images and files directly into the application for more versatile usage.
+3. ⚒️ **Web and Docs Search**: Integrate search functionality to allow users to access and retrieve information from web pages and local documents, making it easier to pull in relevant content for interactions.
+4. ❌ **Server Configuration and Mobile App**: Provide support for configuring the UI to run on different server environments, with an accompanying mobile app for easy, on-the-go access to the platform.
+5. ❌ **OpenLocalUI-based Ecosystem**: Develop an ecosystem around OpenLocalUI, including plugins, community-driven enhancements, and third-party integrations, fostering a collaborative development environment.
 
 ## 💻 Installation
 
