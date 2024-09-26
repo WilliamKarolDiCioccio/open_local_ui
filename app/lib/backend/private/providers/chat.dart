@@ -11,7 +11,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
-import 'package:open_local_ui/backend/private/databases/chat_sessions.dart';
+import 'package:open_local_ui/backend/private/storage/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/models/chat_message.dart';
 import 'package:open_local_ui/backend/private/models/chat_session.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_model.dart';

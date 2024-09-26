@@ -9,7 +9,7 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:open_local_ui/backend/private/databases/chat_sessions.dart';
+import 'package:open_local_ui/backend/private/storage/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
