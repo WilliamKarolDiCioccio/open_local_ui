@@ -18,15 +18,14 @@ import 'package:path_provider/path_provider.dart';
 class ModelSettingsHandler {
   final String modelName;
   late String _activeProfileName;
-  late ModelSettings _activeModelSettings;
+  final Map<String, ModelSettings> _modelSettingsMap;
 
   /// Default initializations for late variables are provided in the constructor because the [_init] method runs asynchronously and there is no way to await it in the constructor.
   ModelSettingsHandler(this.modelName)
       : _activeProfileName = 'default',
-        _activeModelSettings = ModelSettings.fromJson({});
+        _modelSettingsMap = {};
 
   /// Called when the provider is initialized from [ModelSettingsDialog]. It preloads the settings from the profile associations file.
-  ///
   /// Calling this in the constructor prevents late initialization errors.
   ///
   /// Returns a [Future] that evaluates to `void` when the settings are preloaded.
@@ -43,7 +42,18 @@ class ModelSettingsHandler {
       );
     } else {
       _activeProfileName = profileAssociations[modelName];
-      _activeModelSettings = await loadProfile(_activeProfileName);
+    }
+
+    // Load all profiles for the current model
+    final profileFiles = await getAllModelSettingsProfilesFiles();
+    for (final file in profileFiles) {
+      final profileName = file.uri.pathSegments.last.replaceAll('.json', '');
+      _modelSettingsMap[profileName] = await loadProfile(profileName);
+    }
+
+    // If no profiles exist, initialize the default profile
+    if (_modelSettingsMap.isEmpty) {
+      _modelSettingsMap['default'] = ModelSettings.fromJson({});
     }
   }
 
@@ -132,12 +142,11 @@ class ModelSettingsHandler {
   }
 
   /// Activates and loads the given profile. Updates the profile associations file.
-  ///
   /// If the [profileName] parameter is `null`, it loads the active profile.
   ///
   /// Returns a [Future] that evaluates to the [ModelSettings] object.
   Future<ModelSettings> activateProfile(String? profileName) async {
-    if (profileName == null) return _activeModelSettings;
+    if (profileName == null) return _modelSettingsMap[_activeProfileName]!;
 
     final profileAssociationsFile = await _getProfileAssociationsFile();
     final profileAssociations = jsonDecode(
@@ -145,22 +154,18 @@ class ModelSettingsHandler {
     );
 
     profileAssociations[modelName] = profileName;
-
     profileAssociationsFile.writeAsStringSync(
       jsonEncode(profileAssociations),
     );
 
     _activeProfileName = profileName;
-    _activeModelSettings = await loadProfile(_activeProfileName);
+    _modelSettingsMap[profileName] ??= await loadProfile(profileName);
 
-    return _activeModelSettings;
+    return _modelSettingsMap[profileName]!;
   }
 
   /// Loads the given settings profile file. It does not update the active profile.
-  ///
   /// If the profile does not exist, it returns an empty settings object.
-  ///
-  /// The [profileName] parameter is the name of the profile to load.
   ///
   /// Returns the a [ModelSettings] object.
   Future<ModelSettings> loadProfile(String? profileName) async {
@@ -179,10 +184,7 @@ class ModelSettingsHandler {
   }
 
   /// Saves the settings to the given profile.
-  ///
   /// If the [profileName] parameter is `null`, it saves to the active profile.
-  ///
-  /// Returns a [Future] that evaluates to `void` when the settings are saved.
   Future<void> saveProfile(String? profileName) async {
     profileName ??= _activeProfileName;
 
@@ -198,10 +200,12 @@ class ModelSettingsHandler {
     );
 
     if (!await settingsFile.exists()) {
-      await settingsFile.parent.create(recursive: true);
+      await settingsFile.create(recursive: true);
     }
 
-    await settingsFile.writeAsString(jsonEncode(_activeModelSettings.toJson()));
+    await settingsFile.writeAsString(
+      jsonEncode(_modelSettingsMap[profileName]!.toJson()),
+    );
 
     await loadProfile(profileName);
   }
@@ -215,14 +219,11 @@ class ModelSettingsHandler {
 
     await settingsFile.writeAsString(jsonEncode(<String, dynamic>{}));
 
+    _modelSettingsMap[profileName] = ModelSettings.fromJson({});
     await loadProfile(profileName);
   }
 
   /// Removes the settings file for the given model.
-  ///
-  /// If the [profileName] parameter is `null`, it removes the active profile.
-  ///
-  /// Returns a [Future] that evaluates to `void` when the settings are removed.
   Future<void> removeProfile(String? profileName) async {
     profileName ??= _activeProfileName;
 
@@ -231,13 +232,11 @@ class ModelSettingsHandler {
     if (await settingsFile.exists()) {
       await settingsFile.delete();
     }
+
+    _modelSettingsMap.remove(profileName);
   }
 
   /// Removes all profiles for the model.
-  ///
-  /// The [modelName] parameter is the name of the model.
-  ///
-  /// Returns a [Future] that evaluates to `void` when the profiles are removed.
   Future<void> removeAllProfiles() async {
     final dir = await getApplicationSupportDirectory();
 
@@ -253,17 +252,23 @@ class ModelSettingsHandler {
     if (await profilesDir.exists()) {
       await profilesDir.delete(recursive: true);
     }
+
+    _modelSettingsMap.clear();
   }
 
   /// Returns the active model settings.
-  ModelSettings get activeModelSettings => _activeModelSettings;
+  ModelSettings get activeModelSettings =>
+      _modelSettingsMap[_activeProfileName]!;
 
   /// Returns the active profile name.
   String get activeProfileName => _activeProfileName;
 
+  /// Returns the map of all model settings.
+  Map<String, ModelSettings> get modelSettingsMap => _modelSettingsMap;
+
   /// Sets the active model settings.
   set activeModelSettings(ModelSettings settings) {
-    _activeModelSettings = settings;
+    _modelSettingsMap[_activeProfileName] = settings;
   }
 
   /// Sets the active profile name.
@@ -325,76 +330,84 @@ class ModelSettingsProvider extends ModelSettingsHandler with ChangeNotifier {
   /// The [settingName] parameter is the name of the setting to get.
   ///
   /// Returns the value of the setting.
-  dynamic get(String settingName) {
+  dynamic get(String? profileName, String settingName) {
+    late String profile;
+
+    if (profileName != null) {
+      profile = profileName;
+    } else {
+      profile = super.activeProfileName;
+    }
+
     switch (settingName) {
       case 'systemPrompt':
-        return super.activeModelSettings.systemPrompt;
+        return super.modelSettingsMap[profile]!.systemPrompt;
       case 'enableWebSearch':
-        return super.activeModelSettings.enableWebSearch;
+        return super.modelSettingsMap[profile]!.enableWebSearch;
       case 'enableDocsSearch':
-        return super.activeModelSettings.enableDocsSearch;
+        return super.modelSettingsMap[profile]!.enableDocsSearch;
       case 'keepAlive':
-        return super.activeModelSettings.keepAlive;
+        return super.modelSettingsMap[profile]!.keepAlive;
       case 'temperature':
-        return super.activeModelSettings.temperature;
+        return super.modelSettingsMap[profile]!.temperature;
       case 'concurrencyLimit':
-        return super.activeModelSettings.concurrencyLimit;
+        return super.modelSettingsMap[profile]!.concurrencyLimit;
       case 'f16KV':
-        return super.activeModelSettings.f16KV;
+        return super.modelSettingsMap[profile]!.f16KV;
       case 'frequencyPenalty':
-        return super.activeModelSettings.frequencyPenalty;
+        return super.modelSettingsMap[profile]!.frequencyPenalty;
       case 'logitsAll':
-        return super.activeModelSettings.logitsAll;
+        return super.modelSettingsMap[profile]!.logitsAll;
       case 'lowVram':
-        return super.activeModelSettings.lowVram;
+        return super.modelSettingsMap[profile]!.lowVram;
       case 'numGpu':
-        return super.activeModelSettings.numGpu;
+        return super.modelSettingsMap[profile]!.numGpu;
       case 'mainGpu':
-        return super.activeModelSettings.mainGpu;
+        return super.modelSettingsMap[profile]!.mainGpu;
       case 'mirostat':
-        return super.activeModelSettings.mirostat;
+        return super.modelSettingsMap[profile]!.mirostat;
       case 'mirostatEta':
-        return super.activeModelSettings.mirostatEta;
+        return super.modelSettingsMap[profile]!.mirostatEta;
       case 'mirostatTau':
-        return super.activeModelSettings.mirostatTau;
+        return super.modelSettingsMap[profile]!.mirostatTau;
       case 'numBatch':
-        return super.activeModelSettings.numBatch;
+        return super.modelSettingsMap[profile]!.numBatch;
       case 'numCtx':
-        return super.activeModelSettings.numCtx;
+        return super.modelSettingsMap[profile]!.numCtx;
       case 'numKeep':
-        return super.activeModelSettings.numKeep;
+        return super.modelSettingsMap[profile]!.numKeep;
       case 'numPredict':
-        return super.activeModelSettings.numPredict;
+        return super.modelSettingsMap[profile]!.numPredict;
       case 'numThread':
-        return super.activeModelSettings.numThread;
+        return super.modelSettingsMap[profile]!.numThread;
       case 'numa':
-        return super.activeModelSettings.numa;
+        return super.modelSettingsMap[profile]!.numa;
       case 'penalizeNewline':
-        return super.activeModelSettings.penalizeNewline;
+        return super.modelSettingsMap[profile]!.penalizeNewline;
       case 'presencePenalty':
-        return super.activeModelSettings.presencePenalty;
+        return super.modelSettingsMap[profile]!.presencePenalty;
       case 'repeatLastN':
-        return super.activeModelSettings.repeatLastN;
+        return super.modelSettingsMap[profile]!.repeatLastN;
       case 'repeatPenalty':
-        return super.activeModelSettings.repeatPenalty;
+        return super.modelSettingsMap[profile]!.repeatPenalty;
       case 'seed':
-        return super.activeModelSettings.seed;
+        return super.modelSettingsMap[profile]!.seed;
       case 'stop':
-        return super.activeModelSettings.stop;
+        return super.modelSettingsMap[profile]!.stop;
       case 'tfsZ':
-        return super.activeModelSettings.tfsZ;
+        return super.modelSettingsMap[profile]!.tfsZ;
       case 'topK':
-        return super.activeModelSettings.topK;
+        return super.modelSettingsMap[profile]!.topK;
       case 'topP':
-        return super.activeModelSettings.topP;
+        return super.modelSettingsMap[profile]!.topP;
       case 'typicalP':
-        return super.activeModelSettings.typicalP;
+        return super.modelSettingsMap[profile]!.typicalP;
       case 'useMlock':
-        return super.activeModelSettings.useMlock;
+        return super.modelSettingsMap[profile]!.useMlock;
       case 'useMmap':
-        return super.activeModelSettings.useMmap;
+        return super.modelSettingsMap[profile]!.useMmap;
       case 'vocabOnly':
-        return super.activeModelSettings.vocabOnly;
+        return super.modelSettingsMap[profile]!.vocabOnly;
       default:
         throw ArgumentError('Invalid setting name: $settingName');
     }
@@ -407,40 +420,52 @@ class ModelSettingsProvider extends ModelSettingsHandler with ChangeNotifier {
   /// This sets the dirty flag to `true`. The settings are not saved until the [save] method is called.
   ///
   /// Return a [Future] that evaluates to `void` when the setting is set.
-  Future<void> set(String settingName, dynamic newValue) async {
+  Future<void> set(
+    String? profileName,
+    String settingName,
+    dynamic newValue,
+  ) async {
+    late String profile;
+
+    if (profileName != null) {
+      profile = profileName;
+    } else {
+      profile = super.activeProfileName;
+    }
+
     switch (settingName) {
       case 'systemPrompt':
-        super.activeModelSettings.systemPrompt = newValue;
+        super.modelSettingsMap[profile]!.systemPrompt = newValue;
         break;
       case 'enableWebSearch':
-        super.activeModelSettings.enableWebSearch = newValue;
+        super.modelSettingsMap[profile]!.enableWebSearch = newValue;
         break;
       case 'enableDocsSearch':
-        super.activeModelSettings.enableDocsSearch = newValue;
+        super.modelSettingsMap[profile]!.enableDocsSearch = newValue;
         break;
       case 'keepAlive':
-        super.activeModelSettings.keepAlive = newValue;
+        super.modelSettingsMap[profile]!.keepAlive = newValue;
         break;
       case 'temperature':
-        super.activeModelSettings.temperature = newValue;
+        super.modelSettingsMap[profile]!.temperature = newValue;
         break;
       case 'concurrencyLimit':
-        super.activeModelSettings.concurrencyLimit = newValue;
+        super.modelSettingsMap[profile]!.concurrencyLimit = newValue;
         break;
       case 'f16KV':
-        super.activeModelSettings.f16KV = newValue;
+        super.modelSettingsMap[profile]!.f16KV = newValue;
         break;
       case 'frequencyPenalty':
-        super.activeModelSettings.frequencyPenalty = newValue;
+        super.modelSettingsMap[profile]!.frequencyPenalty = newValue;
         break;
       case 'logitsAll':
-        super.activeModelSettings.logitsAll = newValue;
+        super.modelSettingsMap[profile]!.logitsAll = newValue;
         break;
       case 'lowVram':
-        super.activeModelSettings.lowVram = newValue;
+        super.modelSettingsMap[profile]!.lowVram = newValue;
         break;
       case 'numGpu':
-        super.activeModelSettings.numGpu = newValue;
+        super.modelSettingsMap[profile]!.numGpu = newValue;
         if (newValue == 0) {
           SnackBarHelpers.showSnackBar(
             AppLocalizations.of(scaffoldMessengerKey.currentContext!)
@@ -452,73 +477,73 @@ class ModelSettingsProvider extends ModelSettingsHandler with ChangeNotifier {
         }
         break;
       case 'mainGpu':
-        super.activeModelSettings.mainGpu = newValue;
+        super.modelSettingsMap[profile]!.mainGpu = newValue;
         break;
       case 'mirostat':
-        super.activeModelSettings.mirostat = newValue;
+        super.modelSettingsMap[profile]!.mirostat = newValue;
         break;
       case 'mirostatEta':
-        super.activeModelSettings.mirostatEta = newValue;
+        super.modelSettingsMap[profile]!.mirostatEta = newValue;
         break;
       case 'mirostatTau':
-        super.activeModelSettings.mirostatTau = newValue;
+        super.modelSettingsMap[profile]!.mirostatTau = newValue;
         break;
       case 'numBatch':
-        super.activeModelSettings.numBatch = newValue;
+        super.modelSettingsMap[profile]!.numBatch = newValue;
         break;
       case 'numCtx':
-        super.activeModelSettings.numCtx = newValue;
+        super.modelSettingsMap[profile]!.numCtx = newValue;
         break;
       case 'numKeep':
-        super.activeModelSettings.numKeep = newValue;
+        super.modelSettingsMap[profile]!.numKeep = newValue;
         break;
       case 'numPredict':
-        super.activeModelSettings.numPredict = newValue;
+        super.modelSettingsMap[profile]!.numPredict = newValue;
         break;
       case 'numThread':
-        super.activeModelSettings.numThread = newValue;
+        super.modelSettingsMap[profile]!.numThread = newValue;
         break;
       case 'numa':
-        super.activeModelSettings.numa = newValue;
+        super.modelSettingsMap[profile]!.numa = newValue;
         break;
       case 'penalizeNewline':
-        super.activeModelSettings.penalizeNewline = newValue;
+        super.modelSettingsMap[profile]!.penalizeNewline = newValue;
         break;
       case 'presencePenalty':
-        super.activeModelSettings.presencePenalty = newValue;
+        super.modelSettingsMap[profile]!.presencePenalty = newValue;
         break;
       case 'repeatLastN':
-        super.activeModelSettings.repeatLastN = newValue;
+        super.modelSettingsMap[profile]!.repeatLastN = newValue;
         break;
       case 'repeatPenalty':
-        super.activeModelSettings.repeatPenalty = newValue;
+        super.modelSettingsMap[profile]!.repeatPenalty = newValue;
         break;
       case 'seed':
-        super.activeModelSettings.seed = newValue;
+        super.modelSettingsMap[profile]!.seed = newValue;
         break;
       case 'stop':
-        super.activeModelSettings.stop = newValue;
+        super.modelSettingsMap[profile]!.stop = newValue;
         break;
       case 'tfsZ':
-        super.activeModelSettings.tfsZ = newValue;
+        super.modelSettingsMap[profile]!.tfsZ = newValue;
         break;
       case 'topK':
-        super.activeModelSettings.topK = newValue;
+        super.modelSettingsMap[profile]!.topK = newValue;
         break;
       case 'topP':
-        super.activeModelSettings.topP = newValue;
+        super.modelSettingsMap[profile]!.topP = newValue;
         break;
       case 'typicalP':
-        super.activeModelSettings.typicalP = newValue;
+        super.modelSettingsMap[profile]!.typicalP = newValue;
         break;
       case 'useMlock':
-        super.activeModelSettings.useMlock = newValue;
+        super.modelSettingsMap[profile]!.useMlock = newValue;
         break;
       case 'useMmap':
-        super.activeModelSettings.useMmap = newValue;
+        super.modelSettingsMap[profile]!.useMmap = newValue;
         break;
       case 'vocabOnly':
-        super.activeModelSettings.vocabOnly = newValue;
+        super.modelSettingsMap[profile]!.vocabOnly = newValue;
         break;
       default:
         throw ArgumentError('Invalid setting name: $settingName');

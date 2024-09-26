@@ -171,14 +171,13 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
           // Old path with new profile name
           final newPath = oldFile.path.replaceAll(oldProfileName, newName);
 
+          await File(newPath).create(recursive: true);
           await oldFile.copy(newPath);
 
           // Is it assured to exist but this gives time to the file system to release the file lock
           if (await oldFile.exists()) {
             await oldFile.delete(recursive: true);
           }
-
-          await _activateProfile(context, newName);
 
           if (mounted) {
             setState(() {
@@ -498,6 +497,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                                 onChanged: (value) async => await context
                                     .read<ModelSettingsProvider>()
                                     .set(
+                                      _visibleProfileName!,
                                       'systemPrompt',
                                       value,
                                     ),
@@ -642,6 +642,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                 final settingKey = settingMap['setting'];
 
                 return SettingWidget(
+                  visibleProfileName: _visibleProfileName!,
                   type: settingType,
                   label: settingLabel,
                   setting: settingKey,
@@ -674,12 +675,14 @@ enum SettingType {
 }
 
 class SettingWidget extends StatefulWidget {
+  final String visibleProfileName;
   final String label;
   final String setting;
   final SettingType type;
 
   const SettingWidget({
     super.key,
+    required this.visibleProfileName,
     required this.label,
     required this.setting,
     required this.type,
@@ -697,7 +700,7 @@ class _SettingWidgetState extends State<SettingWidget> {
   void initState() {
     super.initState();
     final modelSettings = context.read<ModelSettingsProvider>();
-    final value = modelSettings.get(widget.setting);
+    final value = modelSettings.get(widget.visibleProfileName, widget.setting);
 
     if (widget.type == SettingType.intSetting ||
         widget.type == SettingType.doubleSetting) {
@@ -726,7 +729,11 @@ class _SettingWidgetState extends State<SettingWidget> {
 
     switch (widget.type) {
       case SettingType.boolSetting:
-        final bool? value = modelSettings.get(widget.setting) as bool?;
+        final bool? value = modelSettings.get(
+          widget.visibleProfileName,
+          widget.setting,
+        ) as bool?;
+
         return Tooltip(
           message: tooltipText,
           child: Row(
@@ -743,7 +750,12 @@ class _SettingWidgetState extends State<SettingWidget> {
                       : null,
                 ),
                 onChanged: (bool? newValue) {
-                  modelSettings.set(widget.setting, newValue);
+                  modelSettings.set(
+                    widget.visibleProfileName,
+                    widget.setting,
+                    newValue,
+                  );
+
                   setState(() {
                     _editedValue = true;
                   });
@@ -794,7 +806,13 @@ class _SettingWidgetState extends State<SettingWidget> {
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     final newValue = int.tryParse(value);
-                    modelSettings.set(widget.setting, newValue);
+
+                    modelSettings.set(
+                      widget.visibleProfileName,
+                      widget.setting,
+                      newValue,
+                    );
+
                     setState(() {
                       _editedValue = true;
                     });
@@ -831,7 +849,13 @@ class _SettingWidgetState extends State<SettingWidget> {
                       const TextInputType.numberWithOptions(decimal: true),
                   onChanged: (value) {
                     final newValue = double.tryParse(value);
-                    modelSettings.set(widget.setting, newValue);
+
+                    modelSettings.set(
+                      widget.visibleProfileName,
+                      widget.setting,
+                      newValue,
+                    );
+
                     setState(() {
                       _editedValue = true;
                     });
