@@ -390,6 +390,9 @@ class _SessionListTileState extends State<SessionListTile> {
         AppLocalizations.of(context).createdAtTextShared(
           FortmatHelpers.standardDate(widget.session.createdAt),
         ),
+        style: const TextStyle(
+          color: Colors.grey,
+        ),
       ),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

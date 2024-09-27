@@ -14,6 +14,7 @@ import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/backend/private/services/tts.dart';
+import 'package:open_local_ui/backend/private/storage/ollama_models.dart';
 import 'package:open_local_ui/constants/assets.dart';
 import 'package:open_local_ui/constants/constants.dart';
 import 'package:open_local_ui/core/asset.dart';
@@ -43,9 +44,10 @@ void main() async {
   // Dependency injection
 
   final getIt = GetIt.instance;
-  getIt.registerSingleton<OllamaModelProvider>(OllamaModelProvider());
-  getIt.registerSingleton<ChatSessionsDatabase>(ChatSessionsDatabase());
+  getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
   getIt.registerSingleton<TTSService>(TTSService());
+  getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
+  getIt.registerSingleton<OllamaModelsDB>(OllamaModelsDB());
 
   // Internal services
 
@@ -54,6 +56,7 @@ void main() async {
   await GetIt.instance<OllamaAPIProvider>().startOllama();
   await GetIt.instance<TTSService>().startServer();
   await GetIt.instance<ChatSessionsDB>().init();
+  await GetIt.instance<OllamaModelsDB>().init();
 
   // Backend services
 
@@ -179,6 +182,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     GetIt.instance<ChatSessionsDB>().deinit();
+    GetIt.instance<OllamaModelsDB>().deinit();
     GetIt.instance<TTSService>().stopServer();
     GetIt.instance<OllamaAPIProvider>().stopOllama();
 

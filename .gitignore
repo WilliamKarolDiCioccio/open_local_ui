@@ -73,3 +73,7 @@ dist/
 
 # Ignore local VS Code settings
 .vscode/settings.json
+
+# SQLite temporary files
+*.db-shm
+*.db-wal

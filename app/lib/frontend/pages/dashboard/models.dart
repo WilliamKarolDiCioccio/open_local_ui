@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
-import 'package:open_local_ui/core/asset.dart';
+import 'package:open_local_ui/backend/private/storage/ollama_models.dart';
 import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
@@ -353,21 +354,19 @@ class _ModelListTileState extends State<ModelListTile> {
   }
 
   Widget _buildTags(String modelName) {
-    const metadataPath = 'assets/metadata/ollama_models.json';
-
     if (modelName.isEmpty) return const SizedBox.shrink();
 
-    final cleanModelName = modelName.toLowerCase().split(':')[0];
+    final cleanModelName = modelName.toLowerCase().split(':').first;
 
-    final metadata = AssetManager.getAsset(metadataPath, type: AssetType.json);
+    final db = GetIt.instance<OllamaModelsDB>();
 
-    if (!metadata['models'].containsKey(cleanModelName)) {
+    if (!db.isModelInDatabase(cleanModelName)) {
       return const SizedBox.shrink();
     }
 
     final tags = <Widget>[];
 
-    if (metadata['models'][cleanModelName]['vision']) {
+    if (db.doesModelSupport(cleanModelName, 'vision')) {
       tags.add(
         Chip(
           avatar: const Icon(
@@ -392,7 +391,7 @@ class _ModelListTileState extends State<ModelListTile> {
       );
     }
 
-    if (metadata['models'][cleanModelName]['tools']) {
+    if (db.doesModelSupport(cleanModelName, 'tools')) {
       tags.add(
         Chip(
           avatar: const Icon(
@@ -417,7 +416,7 @@ class _ModelListTileState extends State<ModelListTile> {
       );
     }
 
-    if (metadata['models'][cleanModelName]['embedding']) {
+    if (db.doesModelSupport(cleanModelName, 'embedding')) {
       tags.add(
         Chip(
           avatar: const Icon(
@@ -442,7 +441,7 @@ class _ModelListTileState extends State<ModelListTile> {
       );
     }
 
-    if (metadata['models'][cleanModelName]['code']) {
+    if (db.doesModelSupport(cleanModelName, 'code')) {
       tags.add(
         Chip(
           avatar: const Icon(
@@ -483,6 +482,9 @@ class _ModelListTileState extends State<ModelListTile> {
       subtitle: Text(
         AppLocalizations.of(context).modifiedAtTextShared(
           FortmatHelpers.standardDate(widget.model.modifiedAt),
+        ),
+        style: const TextStyle(
+          color: Colors.grey,
         ),
       ),
       trailing: Row(

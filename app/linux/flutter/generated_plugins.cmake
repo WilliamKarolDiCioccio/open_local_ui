@@ -9,8 +9,8 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_linux
   gtk
   irondash_engine_context
-  isar_flutter_libs
   rive_common
+  sqlite3_flutter_libs
   super_native_extensions
   system_theme
   url_launcher_linux

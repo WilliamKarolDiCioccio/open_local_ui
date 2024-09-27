@@ -21,11 +21,6 @@ class Assets {
       AssetType.rivefile,
     ),
     _Asset(
-      'assets/metadata/ollama_models.json',
-      AssetSource.local,
-      AssetType.json,
-    ),
-    _Asset(
       'assets/graphics/logos/apache.svg',
       AssetSource.local,
       AssetType.binary,

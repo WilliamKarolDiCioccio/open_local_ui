@@ -58,6 +58,8 @@ dependencies:
 
   # Local Storage
   hive_flutter: ^1.1.0
+  sqlite3: ^2.4.6
+  sqlite3_flutter_libs: ^0.5.24
 
   # JSON and Annotations
   freezed_annotation: ^2.4.1
@@ -119,6 +121,7 @@ dependencies:
 
   # Others
   discord_rpc: ^0.0.2
+  duckduckgo_search: ^0.1.3
 
 dev_dependencies:
   flutter_test:
@@ -139,8 +142,8 @@ flutter:
     # Prompts
     - assets/prompts/default.txt
     - assets/prompts/sessions_title_generator.txt
-    # Model Metadata
-    - assets/metadata/ollama_models.json
+    - assets/prompts/search_keywords_extractor.txt
+    - assets/prompts/search_results_summarizer.txt
     # App metadata
     - assets/app_changelog.json
     # Logos

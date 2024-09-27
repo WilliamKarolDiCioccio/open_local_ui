@@ -202,8 +202,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               Text(
                 FortmatHelpers.standardDate(widget.message.createdAt),
                 style: const TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 12.0,
                   fontWeight: FontWeight.w100,
+                  color: Colors.grey,
                 ),
               ),
             ],
