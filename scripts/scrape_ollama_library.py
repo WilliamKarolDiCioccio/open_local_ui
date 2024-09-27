@@ -1,10 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-import json
-from datetime import datetime  # Import datetime for timestamp
+import sqlite3
+from datetime import datetime
 
-# Function to send a GET request to a URL and return a BeautifulSoup object if successful.
-# Returns None if the request fails.
+
 def get_soup(url):
     response = requests.get(url)
     if response.status_code == 200:  # Check if the request was successful
@@ -13,8 +12,7 @@ def get_soup(url):
         print(f"Failed to retrieve the page: {url}")
         return None
 
-# Function to scrape detailed information about a specific model from its page.
-# Extracts the model name and all available releases (excluding "latest").
+
 def scrape_model_details(model_url):
     soup = get_soup(model_url)
     if soup is None:
@@ -25,49 +23,45 @@ def scrape_model_details(model_url):
     # Find model name
     model_name = soup.find('h1', attrs={'class': 'flex items-center sm:text-[28px] text-xl tracking-tight'}, recursive=True)
     if model_name:
-        model_details['name'] = model_name.text.strip()  # Clean up and store the model name
+        model_details['name'] = model_name.text.strip()
+        
+    # Find model description
+    model_description = soup.find('h2', attrs={'class': 'break-words sm:max-w-md'}, recursive=True)
+    if model_description:
+        model_details['description'] = model_description.text.strip()
+    
+    # Store model page url
+    model_details['url'] = model_url
+    
+    print(f"Scraping: {model_details['url']}")
 
-    vision = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Vision')
-    model_details['vision'] = vision is not None
-    
-    tools = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Tools')
-    model_details['tools'] = tools is not None
-    
-    embedding = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Embedding')
-    model_details['embedding'] = embedding is not None
-    
-    code = soup.find('span', attrs={'class': 'inline-flex items-center rounded-md bg-indigo-50 px-2 py-[2px] text-xs sm:text-[13px] font-medium text-indigo-600'}, string='Code')
-    model_details['code'] = code is not None
-    
+    # Check for various capabilities (vision, tools, embedding, code)
+    model_details['vision'] = soup.find('span', string='Vision') is not None
+    model_details['tools'] = soup.find('span', string='Tools') is not None
+    model_details['embedding'] = soup.find('span', string='Embedding') is not None
+    model_details['code'] = soup.find('span', string='Code') is not None
+
     model_releases = []
 
     # Select all <a> tags within the div with id 'primary-tags'
     release_links = soup.select('#primary-tags a')
     
     for link in release_links:
-        # Extract the name of the release from the <span> with a specific class
         release_name = link.find('span', class_='truncate group-hover:underline').text.strip()
-        
-        # Skip the release if its name is 'latest' to avoid duplicates
         if release_name == 'latest':
             continue
         
-        # Extract the size of the release from the <span> with a specific class
         release_size = link.find('span', class_='text-neutral-400 text-xs').text.strip()
-        
-        # Store the release details in a dictionary and append to the model_releases list
         model_releases.append({
             'num_params': release_name,
             'size': release_size
         })
 
-    # Add the releases to the model_details dictionary if any were found
-    if model_releases:
-        model_details['releases'] = model_releases
+    model_details['releases'] = model_releases
 
     return model_details
 
-# Function to scrape the main library page and retrieve details for each model.
+
 def scrape_ollama_library():
     base_url = 'https://ollama.com'
     library_url = f'{base_url}/library'
@@ -77,7 +71,7 @@ def scrape_ollama_library():
         return {}  # Return an empty dictionary if the library page could not be retrieved
 
     models = {}
-    
+
     # Find all <a> tags that contain links to individual model pages
     model_links = library_soup.find_all('a', href=True)
     for link in model_links:
@@ -86,27 +80,74 @@ def scrape_ollama_library():
             model_url = f"{base_url}{model_href}"  # Construct the full URL for the model page
             model_details = scrape_model_details(model_url)  # Scrape the model details
             if model_details:
-                # Use the model name as the key in the dictionary
                 model_name = model_details.get('name')
                 if model_name:
                     models[model_name] = model_details  # Assign details to the model name key
     
     return models
 
-# Main execution block to run the scraper and save the data to a JSON file.
+
+def save_data_to_sqlite(models_info):
+    # Connect to SQLite database (it will be created if it doesn't exist)
+    conn = sqlite3.connect('ollama_models.db')
+    c = conn.cursor()
+
+    # Create table for models with a 'url' column
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS models (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT UNIQUE,
+            description TEXT,
+            url TEXT,  -- Include 'url' column here
+            vision BOOLEAN,
+            tools BOOLEAN,
+            embedding BOOLEAN,
+            code BOOLEAN
+        )
+    ''')
+
+    # Create table for releases
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS releases (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            model_id INTEGER,
+            num_params TEXT,
+            size TEXT,
+            FOREIGN KEY(model_id) REFERENCES models(id)
+        )
+    ''')
+
+    # Create indexes on model attributes for fast querying
+    c.execute('CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)')
+    c.execute('CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (vision, tools, embedding, code)')
+
+    # Insert data into the tables
+    for model_name, details in models_info.items():
+        # Insert the model details into the models table
+        c.execute('''
+            INSERT OR IGNORE INTO models (name, description, url, vision, tools, embedding, code)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (model_name, details['description'], details['url'], details['vision'], details['tools'], details['embedding'], details['code']))
+
+        # Get the last inserted model ID (or fetch the existing one)
+        c.execute('SELECT id FROM models WHERE name = ?', (model_name,))
+        model_id = c.fetchone()[0]
+
+        # Insert the release information for this model
+        for release in details['releases']:
+            c.execute('''
+                INSERT INTO releases (model_id, num_params, size)
+                VALUES (?, ?, ?)
+            ''', (model_id, release['num_params'], release['size']))
+
+    # Commit the transaction and close the connection
+    conn.commit()
+    conn.close()
+    
+
 if __name__ == "__main__":
-    models_info = scrape_ollama_library()  # Scrape the entire Ollama library
+    models_info = scrape_ollama_library()
+
+    save_data_to_sqlite(models_info)
     
-    # Prepare data to be saved, including timestamp and model count
-    output_data = {
-        'timestamp': datetime.now().isoformat(),  # Add the current timestamp
-        'num_models': len(models_info),  # Add the number of models scraped
-        'models': models_info  # Include the scraped models data
-    }
-    
-    # Save the scraped data to a JSON file with pretty printing (indented format)
-    with open('ollama_models.json', 'w') as outfile:
-        json.dump(output_data, outfile, indent=4)
-    
-    # Print a message indicating how many models were scraped and where the data was saved
-    print(f"Scraped {len(models_info)} models. Data saved to 'ollama_models.json'.")
+    print(f"Scraped {len(models_info)} models. Data saved to 'ollama_models.db'.")
