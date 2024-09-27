@@ -58,13 +58,11 @@ dependencies:
 
   # Local Storage
   hive_flutter: ^1.1.0
-  isar_flutter_libs: ^3.1.0+1
 
   # JSON and Annotations
   freezed_annotation: ^2.4.1
   json_annotation: ^4.9.0
 
-  # Filesystem
   # Currently using both due to cross-platform requirements
   file_selector: ^1.0.3
   file_picker: ^8.1.2
