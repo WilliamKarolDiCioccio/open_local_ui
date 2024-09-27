@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
-import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +46,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
   Widget _buildModelSelectionWidget(BuildContext context) {
     final List<DropdownMenuEntry> modelsMenuEntries = [];
 
-    for (final model in context.read<OllamaModelProvider>().models) {
+    for (final model in context.read<OllamaAPIProvider>().models) {
       late String shortenedModelName;
 
       if (model.name.length > 20) {
@@ -65,7 +65,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
 
     return DropdownMenu(
       key: const Key('model_selector'),
-      enabled: context.watch<OllamaModelProvider>().modelsCount > 0 &&
+      enabled: context.watch<OllamaAPIProvider>().modelsCount > 0 &&
           !context.watch<ChatProvider>().isGenerating,
       menuHeight: 128,
       menuStyle: MenuStyle(

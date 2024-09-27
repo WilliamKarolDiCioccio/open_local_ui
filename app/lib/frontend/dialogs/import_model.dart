@@ -7,7 +7,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
-import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -60,7 +60,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
     setState(() => _isImporting = true);
 
     // ignore: use_build_context_synchronously
-    final stream = context.read<OllamaModelProvider>().create(
+    final stream = context.read<OllamaAPIProvider>().create(
           path.basenameWithoutExtension(_file!.path).toLowerCase(),
           'FROM "${_file!.path}"',
         );

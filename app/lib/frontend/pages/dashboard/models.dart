@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
-import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/core/snackbar.dart';
@@ -82,7 +82,7 @@ class _ModelsPageState extends State<ModelsPage> {
   Future<int> _totalOnDiskSize() async {
     var size = 0;
 
-    for (final model in context.read<OllamaModelProvider>().models) {
+    for (final model in context.read<OllamaAPIProvider>().models) {
       size += model.size;
     }
 
@@ -91,7 +91,7 @@ class _ModelsPageState extends State<ModelsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var sortedModels = List.from(context.watch<OllamaModelProvider>().models);
+    var sortedModels = List.from(context.watch<OllamaAPIProvider>().models);
 
     sortedModels.sort(
       (a, b) {
@@ -166,7 +166,7 @@ class _ModelsPageState extends State<ModelsPage> {
               ),
               icon: const Icon(UniconsLine.sync),
               onPressed: () {
-                context.read<OllamaModelProvider>().updateList();
+                context.read<OllamaAPIProvider>().updateList();
               },
             ),
           ],
@@ -285,7 +285,7 @@ class _ModelsPageState extends State<ModelsPage> {
                 model: prototypeModel,
                 pageController: widget.pageController,
               ),
-              itemCount: context.watch<OllamaModelProvider>().modelsCount,
+              itemCount: context.watch<OllamaAPIProvider>().modelsCount,
               itemBuilder: (context, index) {
                 return ModelListTile(
                   model: sortedModels[index],
@@ -348,7 +348,7 @@ class _ModelListTileState extends State<ModelListTile> {
         SnackbarContentType.failure,
       );
     } else {
-      await context.read<OllamaModelProvider>().remove(widget.model.name);
+      await context.read<OllamaAPIProvider>().remove(widget.model.name);
     }
   }
 

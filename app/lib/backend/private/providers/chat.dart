@@ -14,7 +14,7 @@ import 'package:langchain_ollama/langchain_ollama.dart';
 import 'package:open_local_ui/backend/private/storage/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/models/chat_message.dart';
 import 'package:open_local_ui/backend/private/models/chat_session.dart';
-import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -57,13 +57,13 @@ class ChatProvider extends ChangeNotifier {
   ///
   /// Global override settings are stored using the [SharedPreferences] plugin.
   /// Model specific settings are stored in the app's data directory as JSON files (see [ModelSettingsProvider]).
-  /// Chat sessions are stored in the app's data directory using the Hive database (see [ChatSessionsDatabase]).
+  /// Chat sessions are stored in the app's data directory using the Hive database (see [ChatSessionsDB]).
   ///
   /// Returns a `void`.
   void _init() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final models = GetIt.instance<OllamaModelProvider>().models;
+    final models = GetIt.instance<OllamaAPIProvider>().models;
     final modelName = prefs.getString('modelName') ?? '';
 
     if (models.any((model) => model.name == modelName)) {
@@ -83,7 +83,7 @@ class ChatProvider extends ChangeNotifier {
       await Isolate.run(
         () async {
           final getIt = GetIt.instance;
-          getIt.registerSingleton<ChatSessionsDatabase>(ChatSessionsDatabase());
+          getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
 
           // Using Hive.init in the isolate instead of the DB init method due to path_provider initialization issues
           Hive.init('${dataDir.path}/sessions');
@@ -114,7 +114,7 @@ class ChatProvider extends ChangeNotifier {
             legacySessionsDir.deleteSync(recursive: true);
           }
 
-          return await GetIt.instance<ChatSessionsDatabase>().loadSessions();
+          return await GetIt.instance<ChatSessionsDB>().loadSessions();
         },
       ),
     );
@@ -138,7 +138,7 @@ class ChatProvider extends ChangeNotifier {
       ),
     );
 
-    GetIt.instance<ChatSessionsDatabase>().saveSession(_sessions.last);
+    GetIt.instance<ChatSessionsDB>().saveSession(_sessions.last);
 
     notifyListeners();
 
@@ -179,7 +179,7 @@ class ChatProvider extends ChangeNotifier {
 
     for (final message in _session!.messages.reversed) {
       if (message is ChatModelMessageWrapperV1) {
-        final models = GetIt.instance<OllamaModelProvider>().models;
+        final models = GetIt.instance<OllamaAPIProvider>().models;
 
         if (models.any(
           (model) => model.name == message.senderName,
@@ -218,7 +218,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session = null;
 
-    GetIt.instance<ChatSessionsDatabase>().deleteSession(uuid);
+    GetIt.instance<ChatSessionsDB>().deleteSession(uuid);
 
     notifyListeners();
   }
@@ -257,7 +257,7 @@ class ChatProvider extends ChangeNotifier {
       }();
     }
 
-    GetIt.instance<ChatSessionsDatabase>().updateSession(_sessions[index]);
+    GetIt.instance<ChatSessionsDB>().updateSession(_sessions[index]);
 
     notifyListeners();
   }
@@ -284,7 +284,7 @@ class ChatProvider extends ChangeNotifier {
 
     // System messages shouldn't be added to the memory
 
-    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+    GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
     notifyListeners();
 
@@ -326,7 +326,7 @@ class ChatProvider extends ChangeNotifier {
           messageBuffer.toString(),
         );
 
-        GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+        GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
         completer
             .complete(_session!.messages.last as ChatModelMessageWrapperV1);
@@ -368,7 +368,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.add(chatMessage);
     _session!.memory.chatHistory.addHumanChatMessage(message);
 
-    GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+    GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
     notifyListeners();
 
@@ -393,7 +393,7 @@ class ChatProvider extends ChangeNotifier {
       await _session!.memory.chatHistory.removeLast();
     }
 
-    await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -411,7 +411,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.removeLast();
     await _session!.memory.chatHistory.removeLast();
 
-    await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -422,7 +422,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.clear();
     await _session!.memory.chatHistory.clear();
 
-    await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -582,7 +582,7 @@ class ChatProvider extends ChangeNotifier {
         setSessionTitle(_session!.uuid, response.toString());
       }
 
-      await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+      await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
       notifyListeners();
     } catch (e) {
@@ -601,7 +601,7 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      await GetIt.instance<ChatSessionsDatabase>().updateSession(_session!);
+      await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
       logger.e(e);
     }
@@ -899,7 +899,7 @@ class ChatProvider extends ChangeNotifier {
   bool get isChatShowStatistics => _showStatistics;
 
   bool get isMultimodalModel {
-    final models = GetIt.instance<OllamaModelProvider>().models;
+    final models = GetIt.instance<OllamaAPIProvider>().models;
 
     if (!models.any((model) => model.name == _modelName)) return false;
 

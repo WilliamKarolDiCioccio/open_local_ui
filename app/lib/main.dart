@@ -12,7 +12,7 @@ import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/storage/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
-import 'package:open_local_ui/backend/private/providers/ollama_model.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/backend/private/services/tts.dart';
 import 'package:open_local_ui/constants/assets.dart';
 import 'package:open_local_ui/constants/constants.dart';
@@ -51,9 +51,9 @@ void main() async {
 
   await initLogger();
 
-  await GetIt.instance<OllamaModelProvider>().startOllama();
+  await GetIt.instance<OllamaAPIProvider>().startOllama();
   await GetIt.instance<TTSService>().startServer();
-  await GetIt.instance<ChatSessionsDatabase>().init();
+  await GetIt.instance<ChatSessionsDB>().init();
 
   // Backend services
 
@@ -126,8 +126,8 @@ void main() async {
         ChangeNotifierProvider<LocaleProvider>(
           create: (context) => LocaleProvider(),
         ),
-        ChangeNotifierProvider<OllamaModelProvider>(
-          create: (context) => OllamaModelProvider(),
+        ChangeNotifierProvider<OllamaAPIProvider>(
+          create: (context) => OllamaAPIProvider(),
         ),
         ChangeNotifierProvider<ChatProvider>(
           create: (context) => ChatProvider(),
@@ -178,9 +178,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    GetIt.instance<OllamaModelProvider>().stopOllama();
-    GetIt.instance<ChatSessionsDatabase>().deinit();
+    GetIt.instance<ChatSessionsDB>().deinit();
     GetIt.instance<TTSService>().stopServer();
+    GetIt.instance<OllamaAPIProvider>().stopOllama();
 
     super.dispose();
   }
