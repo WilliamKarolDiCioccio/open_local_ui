@@ -93,7 +93,7 @@ class ChangelogDialog extends StatelessWidget {
         width: 900,
         child: FutureBuilder(
           future: DefaultAssetBundle.of(context).loadString(
-            'assets/metadata/app_changelog.json',
+            'assets/app_changelog.json',
           ),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

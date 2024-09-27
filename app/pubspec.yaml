@@ -144,7 +144,7 @@ flutter:
     # Model Metadata
     - assets/metadata/ollama_models.json
     # App metadata
-    - assets/metadata/app_changelog.json
+    - assets/app_changelog.json
     # Logos
     - assets/graphics/logos/
     # Animations
