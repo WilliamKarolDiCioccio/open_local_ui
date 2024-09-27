@@ -184,7 +184,10 @@ class ModelSettingsHandler {
   }
 
   /// Saves the settings to the given profile.
+  ///
   /// If the [profileName] parameter is `null`, it saves to the active profile.
+  ///
+  /// Returns a [Future] that evaluates to `void` when the settings are saved.
   Future<void> saveProfile(String? profileName) async {
     profileName ??= _activeProfileName;
 
@@ -211,6 +214,10 @@ class ModelSettingsHandler {
   }
 
   /// Resets the profile settings to default.
+  ///
+  /// If the [profileName] parameter is `null`, it resets the active profile.
+  ///
+  /// Returns a [Future] that evaluates to `void` when the settings are reset.
   Future<void> resetProfile(String? profileName) async {
     profileName ??= _activeProfileName;
 
@@ -224,6 +231,10 @@ class ModelSettingsHandler {
   }
 
   /// Removes the settings file for the given model.
+  ///
+  /// If the [profileName] parameter is `null`, it removes the active profile.
+  ///
+  /// Returns a [Future] that evaluates to `void` when the settings are removed.
   Future<void> removeProfile(String? profileName) async {
     profileName ??= _activeProfileName;
 
@@ -237,6 +248,10 @@ class ModelSettingsHandler {
   }
 
   /// Removes all profiles for the model.
+  ///
+  /// Returns a [Future] that evaluates to `void` when the settings are removed.
+  ///
+  /// This method also clears the model settings map.
   Future<void> removeAllProfiles() async {
     final dir = await getApplicationSupportDirectory();
 

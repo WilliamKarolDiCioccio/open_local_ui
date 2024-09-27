@@ -7,6 +7,7 @@ part 'chat_session.g.dart';
 /// Converts JSON data to [ChatMessageWrapperV1] object and vice versa.
 ///
 /// This class determines the type of [ChatMessageWrapperV1] object to be created based on the 'sender' property.
+@visibleForTesting
 class ChatMessagesJSONConverter
     implements
         JsonConverter<List<ChatMessageWrapperV1>, List<Map<String, dynamic>>> {

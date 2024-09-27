@@ -8,6 +8,7 @@ part 'chat_message.g.dart';
 /// Converts [Uint8List] to [Object] and vice versa for JSON serialization.
 ///
 /// This class is used as a JSON converter for the [ChatUserMessageWrapper.imageBytes] property.
+@visibleForTesting
 class ImageBytesJSONConverter implements JsonConverter<Uint8List?, Object?> {
   const ImageBytesJSONConverter();
 
@@ -37,6 +38,7 @@ enum ChatMessageSender { user, model, system }
 /// Converts the [ChatMessageSender] object to JSON and vice versa.
 ///
 /// This class is used as a JSON converter for the [ChatMessageWrapper.sender] property.
+@visibleForTesting
 class ChatMessageSenderJSONConverter
     implements JsonConverter<ChatMessageSender, String> {
   const ChatMessageSenderJSONConverter();
@@ -244,4 +246,207 @@ class ChatUserMessageWrapperV1 extends ChatMessageWrapperV1 {
 
   static Object? _imageBytesToJson(Uint8List? imageBytes) =>
       const ImageBytesJSONConverter().toJson(imageBytes);
+}
+
+/// NOTE: named with 'Wrapper' suffix to avoid conflict with langchain.dart
+///
+/// This class is used to encapsulate the properties of a chat message.
+///
+/// The [ChatMessageWrapper] class is annotated with `@JsonSerializable` to enable JSON serialization and deserialization.
+///
+/// Properties:
+/// - `text`: The text content of the chat message.
+/// - `createdAt`: The date and time when the chat message was created.
+/// - `uuid`: The unique identifier of the chat message.
+/// - `senderName`: The name of the sender of the chat message (optional).
+/// - `sender`: The sender of the chat message.
+///
+/// For metadata and usage statistics see [ChatResult.metadata] in langchain.dart.
+/// - `totalDuration`: The total duration of the chat message.
+/// - `loadDuration`: The duration it took to load the chat message.
+/// - `promptEvalCount`: The number of prompt evaluations performed on the chat message.
+/// - `promptEvalDuration`: The duration of prompt evaluations performed on the chat message.
+/// - `evalCount`: The number of evaluations performed on the chat message.
+/// - `evalDuration`: The duration of evaluations performed on the chat message.
+/// - `promptTokens`: The number of prompt tokens in the chat message.
+/// - `responseTokens`: The number of response tokens in the chat message.
+/// - `totalTokens`: The total number of tokens in the chat message.
+/// - `locators`: The list of locators for the chat message following messages (required by the conversation branching feature).
+@JsonSerializable()
+class ChatMessageWrapperV2 {
+  String text;
+  final DateTime createdAt;
+  final String uuid;
+  final String? senderName;
+
+  // Metadata
+  int totalDuration;
+  int loadDuration;
+  int promptEvalCount;
+  int promptEvalDuration;
+  int evalCount;
+  int evalDuration;
+
+  // Usage
+  int promptTokens;
+  int responseTokens;
+  int totalTokens;
+
+  // Locators
+  late final List<String> locators;
+
+  @JsonKey(
+    includeToJson: true,
+    includeFromJson: true,
+    toJson: _senderToJson,
+    fromJson: _senderFromJson,
+  )
+  final ChatMessageSender sender;
+
+  ChatMessageWrapperV2(
+    this.text,
+    this.createdAt,
+    this.uuid,
+    this.sender, {
+    this.senderName,
+    this.totalDuration = 0,
+    this.loadDuration = 0,
+    this.promptEvalCount = 0,
+    this.promptEvalDuration = 0,
+    this.evalCount = 0,
+    this.evalDuration = 0,
+    this.promptTokens = 0,
+    this.responseTokens = 0,
+    this.totalTokens = 0,
+    this.locators = const [],
+  });
+
+  factory ChatMessageWrapperV2.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageWrapperV2FromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChatMessageWrapperV2ToJson(this);
+
+  static ChatMessageSender _senderFromJson(String json) =>
+      const ChatMessageSenderJSONConverter().fromJson(json);
+
+  static String _senderToJson(ChatMessageSender object) =>
+      const ChatMessageSenderJSONConverter().toJson(object);
+}
+
+/// Represents a system message in the chat.
+///
+/// This class extends the [ChatMessageWrapperV2] class and sets the sender name and type to 'System'.
+@JsonSerializable()
+class ChatSystemMessageWrapperV2 extends ChatMessageWrapperV2 {
+  ChatSystemMessageWrapperV2(
+    String text,
+    DateTime createdAt,
+    String uuid,
+  ) : super(
+          text,
+          createdAt,
+          uuid,
+          ChatMessageSender.system,
+          senderName: 'System',
+        );
+
+  factory ChatSystemMessageWrapperV2.fromJson(Map<String, dynamic> json) =>
+      _$ChatSystemMessageWrapperV2FromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ChatSystemMessageWrapperV2ToJson(this);
+}
+
+/// Represents a model message in the chat.
+///
+/// This class extends the [ChatMessageWrapperV2] class and sets the sender name and type to 'Model'.
+@JsonSerializable()
+class ChatModelMessageWrapperV2 extends ChatMessageWrapperV2 {
+  ChatModelMessageWrapperV2(
+    String text,
+    DateTime createdAt,
+    String uuid,
+    String senderName,
+  ) : super(
+          text,
+          createdAt,
+          uuid,
+          ChatMessageSender.model,
+          senderName: senderName,
+        );
+
+  factory ChatModelMessageWrapperV2.fromJson(Map<String, dynamic> json) =>
+      _$ChatModelMessageWrapperV2FromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ChatModelMessageWrapperV2ToJson(this);
+}
+
+/// Represents a user message in the chat.
+///
+/// This class extends the [ChatMessageWrapperV2] class and sets the sender name and type to 'User'.
+@JsonSerializable()
+class ChatUserMessageWrapperV2 extends ChatMessageWrapperV2 {
+  @JsonKey(
+    includeToJson: true,
+    includeFromJson: true,
+    includeIfNull: true,
+    fromJson: _imageBytesFromJson,
+    toJson: _imageBytesToJson,
+  )
+  final Uint8List? imageBytes;
+
+  final List<String>? filePaths;
+
+  ChatUserMessageWrapperV2(
+    String text,
+    DateTime createdAt,
+    String uuid, {
+    this.imageBytes,
+    this.filePaths,
+  }) : super(
+          text,
+          createdAt,
+          uuid,
+          ChatMessageSender.user,
+          senderName: 'User',
+        );
+
+  factory ChatUserMessageWrapperV2.fromJson(Map<String, dynamic> json) =>
+      _$ChatUserMessageWrapperV2FromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ChatUserMessageWrapperV2ToJson(this);
+
+  static Uint8List? _imageBytesFromJson(Object? json) =>
+      const ImageBytesJSONConverter().fromJson(json);
+
+  static Object? _imageBytesToJson(Uint8List? imageBytes) =>
+      const ImageBytesJSONConverter().toJson(imageBytes);
+}
+
+/// Helper function to convert a [ChatMessageWrapperV1] object to a [ChatMessageWrapperV2] object.
+///
+/// Returns a [ChatMessageWrapperV2] object.
+ChatMessageWrapperV2 convertChatMessageWrapperV1ToV2(
+  ChatMessageWrapperV1 message,
+  String locator,
+) {
+  return ChatMessageWrapperV2(
+    message.text,
+    message.createdAt,
+    message.uuid,
+    message.sender,
+    senderName: message.senderName,
+    totalDuration: message.totalDuration,
+    loadDuration: message.loadDuration,
+    promptEvalCount: message.promptEvalCount,
+    promptEvalDuration: message.promptEvalDuration,
+    evalCount: message.evalCount,
+    evalDuration: message.evalDuration,
+    promptTokens: message.promptTokens,
+    responseTokens: message.responseTokens,
+    totalTokens: message.totalTokens,
+    locators: [locator],
+  );
 }
