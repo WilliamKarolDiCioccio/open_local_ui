@@ -6,17 +6,17 @@ def create_database_schema():
     conn = sqlite3.connect('ollama_models.db')
     c = conn.cursor()
 
-    # Create table for models with a 'url' column
+    # Create table for models
+    # Even doe using an integer bitmask to store capabilities is a waste of local storage
+    # as SQLite INTEGER takes 64-bit while four bools take 8-bits each for a total of 32-bits,
+    # it saves space in the cloud storage and makes querying faster that uses PostgreSQL
     c.execute('''
         CREATE TABLE IF NOT EXISTS models (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT UNIQUE,
             description TEXT,
             url TEXT,
-            vision BOOLEAN,
-            tools BOOLEAN,
-            embedding BOOLEAN,
-            code BOOLEAN
+            capabilities INTEGER
         )
     ''')
 
@@ -31,9 +31,11 @@ def create_database_schema():
         )
     ''')
 
-    # Create indexes on model attributes for fast querying
+    # Create an index on the model name for fast querying
     c.execute('CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)')
-    c.execute('CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (vision, tools, embedding, code)')
+    
+    # Create an index on the model capabilities for fast querying
+    c.execute('CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (capabilities)')
 
     # Commit the transaction and close the connection
     conn.commit()

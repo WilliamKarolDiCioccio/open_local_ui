@@ -36,10 +36,7 @@ class OllamaModelsDB {
             name TEXT UNIQUE,
             description TEXT,
             url TEXT,
-            vision BOOLEAN,
-            tools BOOLEAN,
-            embedding BOOLEAN,
-            code BOOLEAN
+            capabilities INTEGER
         )
     ''');
 
@@ -53,9 +50,13 @@ class OllamaModelsDB {
         )
     ''');
 
-    _db!.execute('CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)');
     _db!.execute(
-        'CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (vision, tools, embedding, code)');
+      'CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)',
+    );
+
+    _db!.execute(
+      'CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (capabilities)',
+    );
 
     debugPrint("Database initialized at $dbPath");
   }
@@ -91,23 +92,44 @@ class OllamaModelsDB {
     return result.isNotEmpty;
   }
 
-  // Check if a model supports a specific feature (vision, tools, embedding, or code)
-  bool doesModelSupport(String name, String feature) {
+  // Get the capabilities of a model by its name
+  List<String> getModelCapabilities(String name) {
     if (_db == null) {
       throw Exception("Database not initialized");
     }
 
     final result = _db!.select(
-      'SELECT $feature FROM models WHERE name = ?',
+      'SELECT capabilities FROM models WHERE name = ?',
       [name],
     );
 
     if (result.isEmpty) {
-      return false;
+      return [];
     }
 
     final model = result.first;
-    return model[feature] == 1;
+    final int capabilities = model['capabilities'];
+    final List<String> availableCapabilities = [];
+
+    const int visionMask = 1 << 0;
+    const int toolsMask = 1 << 1;
+    const int embeddingMask = 1 << 2;
+    const int codeMask = 1 << 3;
+
+    if ((capabilities & visionMask) != 0) {
+      availableCapabilities.add('vision');
+    }
+    if ((capabilities & toolsMask) != 0) {
+      availableCapabilities.add('tools');
+    }
+    if ((capabilities & embeddingMask) != 0) {
+      availableCapabilities.add('embedding');
+    }
+    if ((capabilities & codeMask) != 0) {
+      availableCapabilities.add('code');
+    }
+
+    return availableCapabilities;
   }
 
   // Get the description of a model by its name

@@ -365,8 +365,11 @@ class _ModelListTileState extends State<ModelListTile> {
     }
 
     final tags = <Widget>[];
+    final capabilities = db.getModelCapabilities(cleanModelName);
 
-    if (db.doesModelSupport(cleanModelName, 'vision')) {
+    if (capabilities.isEmpty) return const SizedBox.shrink();
+
+    if (capabilities.contains('vision')) {
       tags.add(
         Chip(
           avatar: const Icon(
@@ -391,7 +394,7 @@ class _ModelListTileState extends State<ModelListTile> {
       );
     }
 
-    if (db.doesModelSupport(cleanModelName, 'tools')) {
+    if (capabilities.contains('tools')) {
       tags.add(
         Chip(
           avatar: const Icon(
@@ -416,7 +419,7 @@ class _ModelListTileState extends State<ModelListTile> {
       );
     }
 
-    if (db.doesModelSupport(cleanModelName, 'embedding')) {
+    if (capabilities.contains('embedding')) {
       tags.add(
         Chip(
           avatar: const Icon(
@@ -441,7 +444,7 @@ class _ModelListTileState extends State<ModelListTile> {
       );
     }
 
-    if (db.doesModelSupport(cleanModelName, 'code')) {
+    if (capabilities.contains('code')) {
       tags.add(
         Chip(
           avatar: const Icon(

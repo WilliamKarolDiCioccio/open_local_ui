@@ -4,6 +4,19 @@ import sqlite3
 from datetime import datetime
 
 
+def calculate_capabilities(vision=False, tools=False, embedding=False, code=False):
+    capabilities = 0
+    if vision:
+        capabilities |= 1  # 1st bit for vision
+    if tools:
+        capabilities |= 2  # 2nd bit for tools
+    if embedding:
+        capabilities |= 4  # 3rd bit for embedding
+    if code:
+        capabilities |= 8  # 4th bit for code
+    return capabilities
+
+
 def get_soup(url):
     response = requests.get(url)
     if response.status_code == 200:  # Check if the request was successful
@@ -92,17 +105,17 @@ def save_data_to_sqlite(models_info):
     conn = sqlite3.connect('ollama_models.db')
     c = conn.cursor()
 
-    # Create table for models with a 'url' column
+    # Create table for models
+    # Even doe using an integer bitmask to store capabilities is a waste of local storage
+    # as SQLite INTEGER takes 64-bit while four bools take 8-bits each for a total of 32-bits,
+    # it saves space in the cloud storage and makes querying faster that uses PostgreSQL
     c.execute('''
         CREATE TABLE IF NOT EXISTS models (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT UNIQUE,
             description TEXT,
-            url TEXT,  -- Include 'url' column here
-            vision BOOLEAN,
-            tools BOOLEAN,
-            embedding BOOLEAN,
-            code BOOLEAN
+            url TEXT,
+            capabilities INTEGER
         )
     ''')
 
@@ -117,17 +130,27 @@ def save_data_to_sqlite(models_info):
         )
     ''')
 
-    # Create indexes on model attributes for fast querying
+    # Create an index on the model name for fast querying
     c.execute('CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)')
-    c.execute('CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (vision, tools, embedding, code)')
+    
+    # Create an index on the model capabilities for fast querying
+    c.execute('CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (capabilities)')
 
     # Insert data into the tables
     for model_name, details in models_info.items():
+        # Calculate the capabilities bitmask
+        capabilities_value = calculate_capabilities(
+            vision=details['vision'],
+            tools=details['tools'],
+            embedding=details['embedding'],
+            code=details['code']
+        )
+        
         # Insert the model details into the models table
         c.execute('''
-            INSERT OR IGNORE INTO models (name, description, url, vision, tools, embedding, code)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (model_name, details['description'], details['url'], details['vision'], details['tools'], details['embedding'], details['code']))
+            INSERT OR IGNORE INTO models (name, description, url, capabilities)
+            VALUES (?, ?, ?, ?)
+        ''', (model_name, details['description'], details['url'], capabilities_value))
 
         # Get the last inserted model ID (or fetch the existing one)
         c.execute('SELECT id FROM models WHERE name = ?', (model_name,))
