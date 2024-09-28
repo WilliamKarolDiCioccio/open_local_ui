@@ -108,6 +108,7 @@
   "dialogSkipButton": "Skip",
   "dialogStartButtonShared": "Start",
   "dialogUpdateButton": "Update",
+  "digestCopiedSnackBar": "Digest copied to clipboard",
   "enableDocsSearch": "Docs Search",
   "enableWebSearch": "Web Search",
   "enteringCriticalSectionSnackBar": "You're entering critical section. Tap if you want to continue",
