@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -6,6 +7,8 @@ import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/backend/private/storage/ollama_models.dart';
+import 'package:open_local_ui/core/snackbar.dart';
+import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 
 class ModelDetailsDialog extends StatelessWidget {
@@ -92,6 +95,33 @@ class ModelDetailsDialog extends StatelessWidget {
         ),
       ),
       actions: [
+        TextButton.icon(
+          label: Text(AppLocalizations.of(context).copyButtonShared),
+          icon: const Icon(UniconsLine.copy),
+          onPressed: () {
+            final details = '''
+Name: ${model.name}
+Modified at: ${model.modifiedAt}
+Size: ${model.size.convertFromTo(
+                      DIGITAL_DATA.byte,
+                      DIGITAL_DATA.gigabyte,
+                    )!.toStringAsFixed(2)} GB
+Digest: ${model.digest}
+Format: ${model.details.format}
+Families: ${model.details.families?.join(', ') ?? 'None'}
+Parameter size: ${model.details.parameterSize}
+Quantization level: ${model.details.quantizationLevel}
+            ''';
+
+            Clipboard.setData(ClipboardData(text: details));
+
+            SnackBarHelpers.showSnackBar(
+              AppLocalizations.of(context).snackBarSuccessTitle,
+              AppLocalizations.of(context).digestCopiedSnackBar,
+              SnackbarContentType.success,
+            );
+          },
+        ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();

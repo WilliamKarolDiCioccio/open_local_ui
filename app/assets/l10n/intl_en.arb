@@ -77,6 +77,7 @@
   "codeCopiedSnackBar": "Code copied to clipboard",
   "colorPickerDialogTitle": "Pick a color",
   "concurrencyLimit": "Concurrency Limit",
+  "copyButtonShared": "Copy",
   "createButtonShared": "Create",
   "createModelDialogGuideText1": "Select the model to use:",
   "createModelDialogGuideText2": "Enter the name of the model to create:",
