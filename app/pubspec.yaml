@@ -142,8 +142,6 @@ flutter:
     # Prompts
     - assets/prompts/default.txt
     - assets/prompts/sessions_title_generator.txt
-    - assets/prompts/search_keywords_extractor.txt
-    - assets/prompts/search_results_summarizer.txt
     # App metadata
     - assets/app_changelog.json
     # Logos
