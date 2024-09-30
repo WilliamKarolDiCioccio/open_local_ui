@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
@@ -10,29 +11,44 @@ import 'package:provider/provider.dart';
 import 'package:units_converter/units_converter.dart';
 
 class PullModelDialog extends StatefulWidget {
-  const PullModelDialog({super.key});
+  final String modelName;
+  final List<String> releases;
+
+  const PullModelDialog({
+    super.key,
+    required this.modelName,
+    required this.releases,
+  });
 
   @override
   State<PullModelDialog> createState() => _PullModelDialogState();
 }
 
 class _PullModelDialogState extends State<PullModelDialog> {
-  final TextEditingController _textEditingController = TextEditingController();
+  String? _selectedRelease;
   bool _isPulling = false;
   Stream<OllamaPullResponse>? _pullStream;
 
   @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+
+    // Add the latest release to the list of releases
+    widget.releases.add('latest');
+
+    if (widget.releases.isNotEmpty) {
+      _selectedRelease = 'latest';
+    }
   }
 
   void _pullModel() {
+    final modelNameWithRelease = '${widget.modelName}:${_selectedRelease!}';
+
     setState(() {
       _isPulling = true;
       _pullStream = context
           .read<OllamaAPIProvider>()
-          .pull(_textEditingController.text.toLowerCase());
+          .pull(modelNameWithRelease.toLowerCase());
     });
   }
 
@@ -46,15 +62,22 @@ class _PullModelDialogState extends State<PullModelDialog> {
         children: [
           if (!_isPulling) ...[
             Text(AppLocalizations.of(context).pullModelDialogGuideText),
-            const SizedBox(width: 8.0),
-            TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                labelText:
-                    AppLocalizations.of(context).pullModelDialogModelNameLabel,
-                hintText:
-                    AppLocalizations.of(context).pullModelDialogModelNameHint,
-              ),
+            const SizedBox(height: 8.0),
+            DropdownButton<String>(
+              value: _selectedRelease,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedRelease = newValue;
+                });
+              },
+              items: widget.releases
+                  .map<DropdownMenuItem<String>>((String release) {
+                return DropdownMenuItem<String>(
+                  value: release,
+                  child: Text(release),
+                );
+              }).toList(),
+              isExpanded: true,
             ),
           ] else ...[
             StreamBuilder<OllamaPullResponse>(
@@ -64,7 +87,6 @@ class _PullModelDialogState extends State<PullModelDialog> {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     setState(() {
                       _isPulling = false;
-                      _textEditingController.clear();
                     });
                   });
                 }
@@ -119,7 +141,7 @@ class _PullModelDialogState extends State<PullModelDialog> {
         ),
         if (!_isPulling)
           TextButton(
-            onPressed: _pullModel,
+            onPressed: _selectedRelease != null ? _pullModel : null,
             child: Text(AppLocalizations.of(context).dialogStartButtonShared),
           ),
       ],
@@ -130,11 +152,18 @@ class _PullModelDialogState extends State<PullModelDialog> {
   }
 }
 
-Future<void> showPullModelDialog(BuildContext context) async {
+Future<void> showPullModelDialog(
+  BuildContext context,
+  String modelName,
+  List<String> releases,
+) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return const PullModelDialog();
+      return PullModelDialog(
+        modelName: modelName,
+        releases: releases,
+      );
     },
   );
 }

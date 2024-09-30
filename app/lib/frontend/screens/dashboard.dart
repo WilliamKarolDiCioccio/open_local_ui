@@ -20,9 +20,10 @@ import 'package:open_local_ui/frontend/dialogs/changelog.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/about.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/chat.dart';
-import 'package:open_local_ui/frontend/pages/dashboard/models.dart';
+import 'package:open_local_ui/frontend/pages/dashboard/inventory.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/sessions.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/settings.dart';
+import 'package:open_local_ui/frontend/pages/dashboard/market.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_info2/system_info2.dart';
@@ -326,6 +327,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _changePage(3),
           const SingleActivator(LogicalKeyboardKey.digit4, control: true): () =>
               _changePage(4),
+          const SingleActivator(LogicalKeyboardKey.digit5, control: true): () =>
+              _changePage(5),
         },
         child: Focus(
           autofocus: true,
@@ -360,11 +363,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               TextButton.icon(
                 label: Text(
-                  AppLocalizations.of(context).dashboardModelsButton,
+                  AppLocalizations.of(context).dashboardInventoryButton,
                   style: const TextStyle(fontSize: 18.0),
                 ),
-                icon: const Icon(UniconsLine.robot),
+                icon: const Icon(UniconsLine.backpack),
                 onPressed: () => _changePage(2),
+              ),
+              TextButton.icon(
+                label: Text(
+                  AppLocalizations.of(context).dashboardMarketButton,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                icon: const Icon(UniconsLine.shop),
+                onPressed: () => _changePage(3),
               ),
               const SizedBox(
                 width: 200,
@@ -376,7 +387,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.setting),
-                onPressed: () => _changePage(3),
+                onPressed: () => _changePage(4),
               ),
               TextButton.icon(
                 label: Text(
@@ -384,7 +395,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.info_circle),
-                onPressed: () => _changePage(4),
+                onPressed: () => _changePage(5),
               ),
               const Spacer(),
               TextButton(
@@ -435,7 +446,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           const ChatPage(),
           SessionsPage(pageController: _pageController),
-          ModelsPage(pageController: _pageController),
+          InventoryPage(pageController: _pageController),
+          MarketPage(pageController: _pageController),
           const SettingsPage(),
           const AboutPage(),
         ],

@@ -15,7 +15,6 @@ import 'package:open_local_ui/frontend/dialogs/create_model.dart';
 import 'package:open_local_ui/frontend/dialogs/import_model.dart';
 import 'package:open_local_ui/frontend/dialogs/model_details.dart';
 import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
-import 'package:open_local_ui/frontend/dialogs/pull_model.dart';
 import 'package:open_local_ui/frontend/dialogs/push_model.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:provider/provider.dart';
@@ -35,16 +34,16 @@ enum SortOrder {
   descending,
 }
 
-class ModelsPage extends StatefulWidget {
+class InventoryPage extends StatefulWidget {
   final PageController pageController;
 
-  const ModelsPage({super.key, required this.pageController});
+  const InventoryPage({super.key, required this.pageController});
 
   @override
-  State<ModelsPage> createState() => _ModelsPageState();
+  State<InventoryPage> createState() => _InventoryPageState();
 }
 
-class _ModelsPageState extends State<ModelsPage> {
+class _InventoryPageState extends State<InventoryPage> {
   late Set<SortBy> _sortBy;
   late Set<SortOrder> _sortOrder;
 
@@ -118,7 +117,7 @@ class _ModelsPageState extends State<ModelsPage> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          AppLocalizations.of(context).modelsPageTitle,
+          AppLocalizations.of(context).inventoryPageTitle,
           style: const TextStyle(
             fontSize: 32.0,
             fontWeight: FontWeight.bold,
@@ -130,15 +129,7 @@ class _ModelsPageState extends State<ModelsPage> {
           children: [
             TextButton.icon(
               label: Text(
-                AppLocalizations.of(context).modelsPagePullButton,
-                style: const TextStyle(fontSize: 18.0),
-              ),
-              icon: const Icon(UniconsLine.download_alt),
-              onPressed: () => showPullModelDialog(context),
-            ),
-            TextButton.icon(
-              label: Text(
-                AppLocalizations.of(context).modelsPagePushButton,
+                AppLocalizations.of(context).inventoryPagePushButton,
                 style: const TextStyle(fontSize: 18.0),
               ),
               icon: const Icon(UniconsLine.upload_alt),
@@ -146,7 +137,7 @@ class _ModelsPageState extends State<ModelsPage> {
             ),
             TextButton.icon(
               label: Text(
-                AppLocalizations.of(context).modelsPageCreateButton,
+                AppLocalizations.of(context).inventoryPageCreateButton,
                 style: const TextStyle(fontSize: 18.0),
               ),
               icon: const Icon(UniconsLine.create_dashboard),
@@ -154,7 +145,7 @@ class _ModelsPageState extends State<ModelsPage> {
             ),
             TextButton.icon(
               label: Text(
-                AppLocalizations.of(context).modelsPageImportButton,
+                AppLocalizations.of(context).inventoryPageImportButton,
                 style: const TextStyle(fontSize: 18.0),
               ),
               icon: const Icon(UniconsLine.import),
@@ -162,7 +153,7 @@ class _ModelsPageState extends State<ModelsPage> {
             ),
             TextButton.icon(
               label: Text(
-                AppLocalizations.of(context).modelsPageRefreshButton,
+                AppLocalizations.of(context).inventoryPageRefreshButton,
                 style: const TextStyle(fontSize: 18.0),
               ),
               icon: const Icon(UniconsLine.sync),
@@ -353,7 +344,7 @@ class _ModelListTileState extends State<ModelListTile> {
     }
   }
 
-  Widget _buildTags(String modelName) {
+  Widget _buildCapabilitiesTags(String modelName) {
     if (modelName.isEmpty) return const SizedBox.shrink();
 
     final cleanModelName = modelName.toLowerCase().split(':').first;
@@ -494,10 +485,10 @@ class _ModelListTileState extends State<ModelListTile> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildTags(widget.model.name),
+          _buildCapabilitiesTags(widget.model.name),
           const Gap(16),
           IconButton(
-            tooltip: AppLocalizations.of(context).modelsPageSettingsButton,
+            tooltip: AppLocalizations.of(context).inventoryPageSettingsButton,
             icon: const Icon(UniconsLine.setting),
             onPressed: () => SnackBarHelpers.showSnackBar(
               AppLocalizations.of(context).snackBarWarningTitle,
@@ -508,13 +499,13 @@ class _ModelListTileState extends State<ModelListTile> {
           ),
           const Gap(8),
           IconButton(
-            tooltip: AppLocalizations.of(context).modelsPageDetailsButton,
+            tooltip: AppLocalizations.of(context).inventoryPageDetailsButton,
             icon: const Icon(UniconsLine.info_circle),
             onPressed: () => showModelDetailsDialog(widget.model, context),
           ),
           const Gap(8),
           IconButton(
-            tooltip: AppLocalizations.of(context).modelsPageDeleteButton,
+            tooltip: AppLocalizations.of(context).inventoryPageDeleteButton,
             icon: const Icon(
               UniconsLine.trash,
               color: Colors.red,
@@ -522,9 +513,10 @@ class _ModelListTileState extends State<ModelListTile> {
             onPressed: () {
               showConfirmationDialog(
                 context: context,
-                title: AppLocalizations.of(context).modelsPageDeleteDialogTitle,
+                title:
+                    AppLocalizations.of(context).inventoryPageDeleteDialogTitle,
                 content:
-                    AppLocalizations.of(context).modelsPageDeleteDialogText(
+                    AppLocalizations.of(context).inventoryPageDeleteDialogText(
                   widget.model.name,
                 ),
                 onConfirm: () => _deleteModel(),

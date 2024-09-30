@@ -83,7 +83,8 @@ class ModelDetailsDialog extends StatelessWidget {
                 ),
               SelectableText(
                 AppLocalizations.of(context).modelDetailsParametersSizeText(
-                    model.details.parameterSize),
+                  model.details.parameterSize,
+                ),
               ),
               SelectableText(
                 AppLocalizations.of(context).modelDetailsQuantizationLevelText(

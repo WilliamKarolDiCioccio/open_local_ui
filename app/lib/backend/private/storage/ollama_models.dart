@@ -78,6 +78,90 @@ class OllamaModelsDB {
     return result.map((row) => row).toList();
   }
 
+  // Get models filtered by name and/or capabilities
+  List<Map<String, dynamic>> getModelsFiltered({
+    String? name,
+    List<String>? capabilities,
+    double? minSize,
+    double? maxSize,
+  }) {
+    if (_db == null) {
+      throw Exception("Database not initialized");
+    }
+
+    // Start query with a join between models and releases
+    String query = '''
+    SELECT m.* 
+    FROM models m
+    JOIN releases r ON m.id = r.model_id
+    WHERE 1=1
+  ''';
+
+    final List<Object?> queryParams = [];
+
+    // Filter by model name
+    if (name != null && name.isNotEmpty) {
+      query += ' AND m.name LIKE ?';
+      queryParams.add('%$name%');
+    }
+
+    // Filter by capabilities
+    if (capabilities != null && capabilities.isNotEmpty) {
+      int capabilitiesMask = 0;
+
+      const int visionMask = 1 << 0;
+      const int toolsMask = 1 << 1;
+      const int embeddingMask = 1 << 2;
+      const int codeMask = 1 << 3;
+
+      for (String capability in capabilities) {
+        if (capability == 'vision') {
+          capabilitiesMask |= visionMask;
+        } else if (capability == 'tools') {
+          capabilitiesMask |= toolsMask;
+        } else if (capability == 'embedding') {
+          capabilitiesMask |= embeddingMask;
+        } else if (capability == 'code') {
+          capabilitiesMask |= codeMask;
+        }
+      }
+
+      query += ' AND (m.capabilities & ?) = ?';
+      queryParams.add(capabilitiesMask);
+      queryParams.add(capabilitiesMask);
+    }
+
+    // Filter by minSize and maxSize of the release
+    if (minSize != null) {
+      query += ' AND r.size >= ?';
+      queryParams.add(minSize);
+    }
+
+    if (maxSize != null) {
+      query += ' AND r.size <= ?';
+      queryParams.add(maxSize);
+    }
+
+    // Execute the query and return the result
+    final result = _db!.select(query, queryParams);
+
+    return result.map((row) => row).toList();
+  }
+
+  // Get model releases by model name
+  List<Map<String, dynamic>> getModelReleases(String name) {
+    if (_db == null) {
+      throw Exception("Database not initialized");
+    }
+
+    final result = _db!.select(
+      'SELECT * FROM releases WHERE model_id = (SELECT id FROM models WHERE name = ?)',
+      [name],
+    );
+
+    return result.map((row) => row).toList();
+  }
+
   // Check if a specific model exists in the database by its name
   bool isModelInDatabase(String name) {
     if (_db == null) {

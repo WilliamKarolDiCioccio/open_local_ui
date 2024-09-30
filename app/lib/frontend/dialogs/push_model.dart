@@ -17,38 +17,37 @@ class PushModelDialog extends StatefulWidget {
 }
 
 class _PushModelDialogState extends State<PushModelDialog> {
-  final TextEditingController _modelSelectionController =
-      TextEditingController();
+  String? _selectedModel;
+  final List<DropdownMenuItem<String>> _modelsMenuEntries = [];
   bool _isPushing = false;
   Stream<OllamaPushResponse>? _pushStream;
 
   @override
-  void dispose() {
-    _modelSelectionController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+
+    _modelsMenuEntries.addAll(
+      context.read<OllamaAPIProvider>().models.map((model) {
+        return DropdownMenuItem<String>(
+          value: model.name,
+          child: Text(model.name),
+        );
+      }).toList(),
+    );
   }
 
   void _pushModel() {
     setState(() {
       _isPushing = true;
-      _pushStream = context
-          .read<OllamaAPIProvider>()
-          .push(_modelSelectionController.text.toLowerCase());
+      _pushStream =
+          context.read<OllamaAPIProvider>().push(_selectedModel!.toLowerCase());
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuEntry> modelsMenuEntries =
-        context.read<OllamaAPIProvider>().models.map((model) {
-      final shortName = model.name.length > 20
-          ? '${model.name.substring(0, 20)}...'
-          : model.name;
-      return DropdownMenuEntry(value: model.name, label: shortName);
-    }).toList();
-
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).pullModelDialogTitle),
+      title: Text(AppLocalizations.of(context).pushModelDialogTitle),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -56,29 +55,15 @@ class _PushModelDialogState extends State<PushModelDialog> {
           if (!_isPushing) ...[
             Text(AppLocalizations.of(context).pushModelDialogGuideText),
             const SizedBox(width: 8.0),
-            DropdownMenu(
-              menuHeight: 128,
-              menuStyle: MenuStyle(
-                elevation: WidgetStateProperty.all(8.0),
-                shape: WidgetStateProperty.all(
-                  const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                  ),
-                ),
-              ),
-              controller: _modelSelectionController,
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-              ),
-              enableFilter: true,
-              enableSearch: true,
-              hintText:
-                  AppLocalizations.of(context).pushModelDialogModelSelectorHint,
-              dropdownMenuEntries: modelsMenuEntries,
-              onSelected: null,
+            DropdownButton<String>(
+              value: _selectedModel,
+              onChanged: (String? value) {
+                setState(() {
+                  _selectedModel = value;
+                });
+              },
+              items: _modelsMenuEntries,
+              isExpanded: true,
             ),
           ] else ...[
             StreamBuilder<OllamaPushResponse>(
@@ -88,7 +73,6 @@ class _PushModelDialogState extends State<PushModelDialog> {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     setState(() {
                       _isPushing = false;
-                      _modelSelectionController.clear();
                     });
                   });
                 }

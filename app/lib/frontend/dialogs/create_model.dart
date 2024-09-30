@@ -17,9 +17,8 @@ class CreateModelDialog extends StatefulWidget {
 class _CreateModelDialogState extends State<CreateModelDialog> {
   final TextEditingController _nameEditingController = TextEditingController();
   final TextEditingController _fileEditingController = TextEditingController();
-  final TextEditingController _modelSelectionController =
-      TextEditingController();
-  final List<DropdownMenuEntry> _modelsMenuEntries = [];
+  String? _selectedModel;
+  final List<DropdownMenuItem<String>> _modelsMenuEntries = [];
   bool _isCreating = false;
   int _stepsCount = 0;
   double _progressValue = 0.0;
@@ -29,21 +28,20 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   void initState() {
     super.initState();
 
-    for (final model in context.read<OllamaAPIProvider>().models) {
-      final shortName = model.name.length > 20
-          ? '${model.name.substring(0, 20)}...'
-          : model.name;
-
-      _modelsMenuEntries
-          .add(DropdownMenuEntry(value: model.name, label: shortName));
-    }
+    _modelsMenuEntries.addAll(
+      context.read<OllamaAPIProvider>().models.map((model) {
+        return DropdownMenuItem<String>(
+          value: model.name,
+          child: Text(model.name),
+        );
+      }).toList(),
+    );
   }
 
   @override
   void dispose() {
     _nameEditingController.dispose();
     _fileEditingController.dispose();
-    _modelSelectionController.dispose();
     super.dispose();
   }
 
@@ -65,21 +63,9 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
   void _createModel() async {
     setState(() => _isCreating = true);
 
-    final splitIndex = _modelSelectionController.text.indexOf(':');
-    String modelBaseName;
-
-    if (splitIndex != -1) {
-      modelBaseName = _modelSelectionController.text.substring(
-        0,
-        splitIndex,
-      );
-    } else {
-      modelBaseName = _modelSelectionController.text;
-    }
-
     final stream = context.read<OllamaAPIProvider>().create(
           _nameEditingController.text.toLowerCase(),
-          "FROM $modelBaseName\nSYSTEM ${_fileEditingController.text}",
+          "FROM $_selectedModel\nSYSTEM ${_fileEditingController.text}",
         );
 
     await for (final data in stream) {
@@ -115,31 +101,15 @@ class _CreateModelDialogState extends State<CreateModelDialog> {
                   AppLocalizations.of(context).createModelDialogGuideText1,
                 ),
                 const Gap(8.0),
-                DropdownMenu(
-                  menuHeight: 128,
-                  menuStyle: MenuStyle(
-                    elevation: WidgetStateProperty.all(
-                      8.0,
-                    ),
-                    shape: WidgetStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                      ),
-                    ),
-                  ),
-                  controller: _modelSelectionController,
-                  inputDecorationTheme: const InputDecorationTheme(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                  ),
-                  enableFilter: true,
-                  enableSearch: true,
-                  hintText: AppLocalizations.of(context)
-                      .createModelDialogModelSelectorHint,
-                  dropdownMenuEntries: _modelsMenuEntries,
-                  onSelected: null,
+                DropdownButton(
+                  value: _selectedModel,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedModel = value;
+                    });
+                  },
+                  items: _modelsMenuEntries,
+                  isExpanded: true,
                 ),
                 const SizedBox(height: 16.0),
                 Text(

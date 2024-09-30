@@ -92,10 +92,10 @@
   "dashboardAboutButton": "About",
   "dashboardChatButton": "Chat",
   "dashboardHomeButton": "Home",
-  "dashboardModelsButton": "Models",
+  "dashboardInventoryButton": "Inventory",
+  "dashboardMarketButton": "Market",
   "dashboardSessionsButton": "Sessions",
   "dashboardSettingsButton": "Settings",
-  "dashboardTuningButton": "Tuning",
   "devicePluggedInSnackBar": "Device plugged in. Power delivery increased.",
   "deviceUnpluggedSnackBar": "Device unplugged. Power delivery reduced.",
   "dialogAttachButton": "Attach",
@@ -124,6 +124,24 @@
   "folderCreatedSnackBar": "Folder created",
   "frequencyPenalty": "Frequency Penalty",
   "importModelDialogTitle": "Import model",
+  "inventoryPageCreateButton": "Create",
+  "inventoryPageDeleteButton": "Delete model",
+  "inventoryPageDeleteDialogText": "This will delete {modelName}. Do you confirm?",
+  "@inventoryPageDeleteDialogText": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryPageDeleteDialogTitle": "Delete model",
+  "inventoryPageDetailsButton": "View model details",
+  "inventoryPageImportButton": "Import",
+  "inventoryPagePullButton": "Pull",
+  "inventoryPagePushButton": "Push",
+  "inventoryPageRefreshButton": "Refresh",
+  "inventoryPageSettingsButton": "Open model settings",
+  "inventoryPageTitle": "Inventory",
   "keepAlive": "Keep Alive",
   "licenseButton": "License",
   "listFiltersSortByLabel": "Sort by",
@@ -231,24 +249,6 @@
       }
     }
   },
-  "modelsPageCreateButton": "Create",
-  "modelsPageDeleteButton": "Delete model",
-  "modelsPageDeleteDialogText": "This will delete {modelName}. Do you confirm?",
-  "@modelsPageDeleteDialogText": {
-    "placeholders": {
-      "modelName": {
-        "type": "String"
-      }
-    }
-  },
-  "modelsPageDeleteDialogTitle": "Delete model",
-  "modelsPageDetailsButton": "View model details",
-  "modelsPageImportButton": "Import",
-  "modelsPagePullButton": "Pull",
-  "modelsPagePushButton": "Push",
-  "modelsPageRefreshButton": "Refresh",
-  "modelsPageSettingsButton": "Open model settings",
-  "modelsPageTitle": "Models management",
   "modifiedAtTextShared": "Modified at: {modifiedAt}",
   "moreOptionsButton": "More options",
   "noModelsAvailableSnackBar": "No models available",
@@ -301,7 +301,7 @@
       }
     }
   },
-  "pullModelDialogGuideText": "Please type the name of the model to pull:",
+  "pullModelDialogGuideText": "Please type the release of the model to pull:",
   "pullModelDialogModelNameHint": "Type model name...",
   "pullModelDialogModelNameLabel": "Model name",
   "pullModelDialogTitle": "Pull model",

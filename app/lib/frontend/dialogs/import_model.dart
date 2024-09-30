@@ -145,7 +145,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
           TextButton(
             onPressed: () => _importModel(),
             child: Text(
-              AppLocalizations.of(context).modelsPageImportButton,
+              AppLocalizations.of(context).inventoryPageImportButton,
             ),
           ),
       ],

@@ -98,7 +98,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       children: [
         if (context.read<ChatProvider>().modelName.isNotEmpty)
           IconButton(
-            tooltip: AppLocalizations.of(context).modelsPageSettingsButton,
+            tooltip: AppLocalizations.of(context).inventoryPageSettingsButton,
             icon: const Icon(UniconsLine.setting),
             onPressed: () => SnackBarHelpers.showSnackBar(
               AppLocalizations.of(context).snackBarWarningTitle,

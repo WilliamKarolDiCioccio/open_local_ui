@@ -4,6 +4,43 @@ import sqlite3
 from datetime import datetime
 
 
+def convert_to_bytes(size_string: str) -> float:
+    # Mapping of units to their corresponding byte multipliers
+    units = {
+        'B': 1,
+        'kB': 10**3,        # Kilobyte (base 10)
+        'MB': 10**6,        # Megabyte (base 10)
+        'GB': 10**9,        # Gigabyte (base 10)
+        'TB': 10**12,       # Terabyte (base 10)
+        'KiB': 2**10,       # Kibibyte (base 2)
+        'MiB': 2**20,       # Mebibyte (base 2)
+        'GiB': 2**30,       # Gibibyte (base 2)
+        'TiB': 2**40,       # Tebibyte (base 2)
+    }
+
+    # Split the string into the numeric part and the unit
+    import re
+    match = re.match(r"([\d.]+)\s*([a-zA-Z]+)", size_string)
+    
+    if not match:
+        raise ValueError(f"Invalid size string: {size_string}")
+
+    # Extract the numeric part and the unit
+    number, unit = match.groups()
+
+    # Convert the numeric part to a float
+    number = float(number)
+
+    # Get the byte multiplier for the unit
+    if unit not in units:
+        raise ValueError(f"Unknown unit: {unit}")
+    
+    multiplier = units[unit]
+
+    # Return the size in bytes
+    return number * multiplier
+
+
 def calculate_capabilities(vision=False, tools=False, embedding=False, code=False):
     capabilities = 0
     if vision:
@@ -64,7 +101,10 @@ def scrape_model_details(model_url):
         if release_name == 'latest':
             continue
         
-        release_size = link.find('span', class_='text-neutral-400 text-xs').text.strip()
+        # Extract the release size string and convert it to bytes
+        release_size_string = link.find('span', class_='text-neutral-400 text-xs').text.strip()
+        release_size = convert_to_bytes(release_size_string)
+        
         model_releases.append({
             'num_params': release_name,
             'size': release_size
@@ -125,7 +165,7 @@ def save_data_to_sqlite(models_info):
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             model_id INTEGER,
             num_params TEXT,
-            size TEXT,
+            size REAL,
             FOREIGN KEY(model_id) REFERENCES models(id)
         )
     ''')
