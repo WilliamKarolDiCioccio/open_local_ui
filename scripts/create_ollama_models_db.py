@@ -26,7 +26,7 @@ def create_database_schema():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             model_id INTEGER,
             num_params TEXT,
-            size REAL,
+            size INTEGER,
             FOREIGN KEY(model_id) REFERENCES models(id)
         )
     ''')

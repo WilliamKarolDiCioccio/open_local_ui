@@ -19,7 +19,7 @@ class ModelRelease {
     return ModelRelease(
       id: map['release_id'] as int,
       numParams: map['num_params'] as String,
-      size: map['size'] as double,
+      size: map['size'].toDouble(),
     );
   }
 
@@ -224,7 +224,7 @@ class OllamaModelsDB {
   }
 
   // Get model releases by model name
-  List<Map<String, dynamic>> getModelReleases(String name) {
+  List<ModelRelease> getModelReleases(String name) {
     if (_db == null) {
       throw Exception("Database not initialized");
     }
@@ -234,7 +234,7 @@ class OllamaModelsDB {
       [name],
     );
 
-    return result.map((row) => row).toList();
+    return result.map((row) => ModelRelease.fromMap(row)).toList();
   }
 
   // Check if a specific model exists in the database by its name
