@@ -137,7 +137,6 @@
   "inventoryPageDeleteDialogTitle": "Delete model",
   "inventoryPageDetailsButton": "View model details",
   "inventoryPageImportButton": "Import",
-  "inventoryPagePullButton": "Pull",
   "inventoryPagePushButton": "Push",
   "inventoryPageRefreshButton": "Refresh",
   "inventoryPageSettingsButton": "Open model settings",
@@ -154,6 +153,29 @@
   "@markdownLanguageLabel": {
     "placeholders": {
       "language": {
+        "type": "String"
+      }
+    }
+  },
+  "marketPageCapabilitiesLabel": "Capabilities",
+  "marketPagePullButton": "Pull",
+  "marketPageReleasesLabel": "Releases",
+  "marketPageSearchFiltersButtonTooltip": "Search filters",
+  "marketPageSearchResultsLabel": "{totalResults} results found",
+  "@marketPageSearchResultsLabel": {
+    "placeholders": {
+      "totalResults": {
+        "type": "int"
+      }
+    }
+  },
+  "marketPageSearchTextFieldHint": "Search models by name...",
+  "marketPageTitle": "Market",
+  "marketPageViewMoreButton": "View more",
+  "marketPageViewMoreButtonTooltip": "Redirects to {url}",
+  "@marketPageViewMoreButtonTooltip": {
+    "placeholders": {
+      "url": {
         "type": "String"
       }
     }
@@ -226,6 +248,31 @@
   "modelPerformanceSettingsLabel": "Performance Settings",
   "modelPulledSuccessfullySnackBar": "Model pulled successfully",
   "modelPushedSuccessfullySnackBar": "Model pushed successfully",
+  "modelSearchFiltersDialogSelectedMaxResultsLabel": "Max results: {maxResults}",
+  "@modelSearchFiltersDialogSelectedMaxResultsLabel": {
+    "placeholders": {
+      "maxResults": {
+        "type": "int"
+      }
+    }
+  },
+  "modelSearchFiltersDialogSelectedMaxSizeLabel": "Max size: {maxSize} GB",
+  "@modelSearchFiltersDialogSelectedMaxSizeLabel": {
+    "placeholders": {
+      "maxSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelSearchFiltersDialogSelectedMinSizeLabel": "Min size: {minSize} GB",
+  "@modelSearchFiltersDialogSelectedMinSizeLabel": {
+    "placeholders": {
+      "minSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelSearchFiltersDialogTitle": "Search filters",
   "modelSettingsDialogClearProfilesButton": "Clear profiles",
   "modelSettingsDialogClearProfilesText": "This will clear all profiles. Do you confirm?",
   "modelSettingsDialogCreateDialogLabel": "Profile name",
@@ -311,7 +358,7 @@
   "redoButtonShared": "Redo",
   "repeatLastN": "Repeat Last N",
   "repeatPenalty": "Repeat Penalty",
-  "resetToDefaultsButton": "Reset to defaults",
+  "resetToDefaultsButtonShared": "Reset to defaults",
   "saveButtonShared": "Save",
   "searchButtonShared": "Search",
   "seed": "Seed",
@@ -494,6 +541,7 @@
       }
     }
   },
+  "translationNotAvailable": "Translation not available",
   "typicalP": "typicalP",
   "undoButtonShared": "Undo",
   "updateAvailableDialogTitle": "Update available",

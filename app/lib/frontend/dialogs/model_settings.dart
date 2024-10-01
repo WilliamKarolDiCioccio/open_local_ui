@@ -546,7 +546,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                 if (_visibleProfileName != null)
                   TextButton.icon(
                     label: Text(
-                      AppLocalizations.of(context).resetToDefaultsButton,
+                      AppLocalizations.of(context).resetToDefaultsButtonShared,
                       style: const TextStyle(color: Colors.orange),
                     ),
                     icon: const Icon(UniconsLine.redo, color: Colors.orange),

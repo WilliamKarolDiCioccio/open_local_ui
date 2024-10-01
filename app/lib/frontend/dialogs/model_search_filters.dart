@@ -3,13 +3,17 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 
 class ModelSearchFilters {
   Set<String> selectedCapabilities = {};
-  double maxSize = 512;
+  double maxSize = 512.convertFromTo(
+    DIGITAL_DATA.gigabyte,
+    DIGITAL_DATA.byte,
+  )!;
   double minSize = 0;
   int maxResults = 255;
 }
@@ -25,7 +29,7 @@ class ModelSearchFiltersDialog extends StatefulWidget {
 }
 
 class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
-  final _filters = ModelSearchFilters();
+  ModelSearchFilters _filters = ModelSearchFilters();
 
   @override
   void initState() {
@@ -48,7 +52,7 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Search Filters'),
+      title: Text(AppLocalizations.of(context).modelSearchFiltersDialogTitle),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -87,10 +91,17 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
             },
           ),
           const Gap(16),
-          Text('Minimum size: ${_filters.minSize.convertFromTo(
-                DIGITAL_DATA.byte,
-                DIGITAL_DATA.gigabyte,
-              )!.toStringAsFixed(2)} GB'),
+          Text(
+            AppLocalizations.of(context)
+                .modelSearchFiltersDialogSelectedMinSizeLabel(
+              _filters.minSize
+                  .convertFromTo(
+                    DIGITAL_DATA.byte,
+                    DIGITAL_DATA.gigabyte,
+                  )!
+                  .toStringAsFixed(2),
+            ),
+          ),
           const Gap(8),
           Slider(
             value: linearToExponential(_filters.minSize),
@@ -110,10 +121,17 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
             },
           ),
           const Gap(16),
-          Text('Max size: ${_filters.maxSize.convertFromTo(
-                DIGITAL_DATA.byte,
-                DIGITAL_DATA.gigabyte,
-              )!.toStringAsFixed(2)} GB'),
+          Text(
+            AppLocalizations.of(context)
+                .modelSearchFiltersDialogSelectedMaxSizeLabel(
+              _filters.maxSize
+                  .convertFromTo(
+                    DIGITAL_DATA.byte,
+                    DIGITAL_DATA.gigabyte,
+                  )!
+                  .toStringAsFixed(2),
+            ),
+          ),
           const Gap(8),
           Slider(
             value: linearToExponential(_filters.maxSize),
@@ -139,7 +157,12 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
             },
           ),
           const Gap(16),
-          Text('Max results: ${_filters.maxResults.toString()}'),
+          Text(
+            AppLocalizations.of(context)
+                .modelSearchFiltersDialogSelectedMaxResultsLabel(
+              _filters.maxResults,
+            ),
+          ),
           const Gap(8),
           Slider(
             value: _filters.maxResults.toDouble(),
@@ -154,11 +177,19 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
         ],
       ),
       actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(_filters);
-          },
-          child: const Text('Save'),
+        TextButton.icon(
+          label: Text(
+            AppLocalizations.of(context).resetToDefaultsButtonShared,
+          ),
+          icon: const Icon(UniconsLine.redo),
+          onPressed: () => setState(() {
+            _filters = ModelSearchFilters();
+          }),
+        ),
+        TextButton.icon(
+          label: Text(AppLocalizations.of(context).saveButtonShared),
+          icon: const Icon(UniconsLine.save),
+          onPressed: () => Navigator.of(context).pop(_filters),
         ),
       ],
     );

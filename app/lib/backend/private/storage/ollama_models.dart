@@ -4,6 +4,64 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
+class ModelRelease {
+  final int id;
+  final String numParams;
+  final double size;
+
+  ModelRelease({
+    required this.id,
+    required this.numParams,
+    required this.size,
+  });
+
+  factory ModelRelease.fromMap(Map<String, dynamic> map) {
+    return ModelRelease(
+      id: map['release_id'] as int,
+      numParams: map['num_params'] as String,
+      size: map['size'] as double,
+    );
+  }
+
+  @override
+  String toString() => 'Release(id: $id, numParams: $numParams, size: $size)';
+}
+
+class ModelSearchResult {
+  final int id;
+  final String name;
+  final String description;
+  final String url;
+  final int capabilities;
+  final List<ModelRelease> releases;
+
+  ModelSearchResult({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.url,
+    required this.capabilities,
+    required this.releases,
+  });
+
+  factory ModelSearchResult.fromMap(
+    Map<String, dynamic> map,
+    List<ModelRelease> releases,
+  ) {
+    return ModelSearchResult(
+      id: map['model_id'] as int,
+      name: map['name'] as String,
+      description: map['description'] as String,
+      url: map['url'] as String,
+      capabilities: map['capabilities'] as int,
+      releases: releases,
+    );
+  }
+
+  @override
+  String toString() => 'Model(id: $id, name: $name, releases: $releases)';
+}
+
 class OllamaModelsDB {
   static final OllamaModelsDB _instance = OllamaModelsDB._internal();
   Database? _db;
@@ -78,8 +136,8 @@ class OllamaModelsDB {
     return result.map((row) => row).toList();
   }
 
-  // Get models filtered by name and/or capabilities
-  List<Map<String, dynamic>> getModelsFiltered({
+  // Get models filtered by name, release size and/or capabilities
+  List<ModelSearchResult> getModelsFiltered({
     String? name,
     List<String>? capabilities,
     double? minSize,
@@ -89,9 +147,9 @@ class OllamaModelsDB {
       throw Exception("Database not initialized");
     }
 
-    // Start query with a join between models and releases
     String query = '''
-    SELECT m.* 
+    SELECT m.id AS model_id, m.name, m.description, m.url, m.capabilities,
+           r.id AS release_id, r.num_params, r.size
     FROM models m
     JOIN releases r ON m.id = r.model_id
     WHERE 1=1
@@ -99,13 +157,11 @@ class OllamaModelsDB {
 
     final List<Object?> queryParams = [];
 
-    // Filter by model name
     if (name != null && name.isNotEmpty) {
       query += ' AND m.name LIKE ?';
       queryParams.add('%$name%');
     }
 
-    // Filter by capabilities
     if (capabilities != null && capabilities.isNotEmpty) {
       int capabilitiesMask = 0;
 
@@ -131,7 +187,6 @@ class OllamaModelsDB {
       queryParams.add(capabilitiesMask);
     }
 
-    // Filter by minSize and maxSize of the release
     if (minSize != null) {
       query += ' AND r.size >= ?';
       queryParams.add(minSize);
@@ -142,10 +197,30 @@ class OllamaModelsDB {
       queryParams.add(maxSize);
     }
 
-    // Execute the query and return the result
     final result = _db!.select(query, queryParams);
 
-    return result.map((row) => row).toList();
+    final Map<int, ModelSearchResult> modelsMap = {};
+
+    for (final row in result) {
+      final modelId = row['model_id'] as int;
+
+      final release = ModelRelease.fromMap(row);
+
+      if (!modelsMap.containsKey(modelId)) {
+        modelsMap[modelId] = ModelSearchResult(
+          id: modelId,
+          name: row['name'] as String,
+          description: row['description'] as String,
+          url: row['url'] as String,
+          capabilities: row['capabilities'] as int,
+          releases: [],
+        );
+      }
+
+      modelsMap[modelId]!.releases.add(release);
+    }
+
+    return modelsMap.values.toList();
   }
 
   // Get model releases by model name

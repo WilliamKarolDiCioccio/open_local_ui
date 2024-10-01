@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/storage/ollama_models.dart';
@@ -20,7 +22,7 @@ class MarketPage extends StatefulWidget {
 
 class _MarketPageState extends State<MarketPage> {
   final _searchController = TextEditingController();
-  List<Map<String, dynamic>> _filteredModels = [];
+  List<ModelSearchResult> _filteredModels = [];
   ModelSearchFilters _filters = ModelSearchFilters();
 
   @override
@@ -54,6 +56,14 @@ class _MarketPageState extends State<MarketPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Text(
+          AppLocalizations.of(context).marketPageTitle,
+          style: const TextStyle(
+            fontSize: 32.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Gap(16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -62,7 +72,8 @@ class _MarketPageState extends State<MarketPage> {
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search by model name',
+                  hintText: AppLocalizations.of(context)
+                      .marketPageSearchTextFieldHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -84,19 +95,27 @@ class _MarketPageState extends State<MarketPage> {
                 }
               },
               icon: const Icon(UniconsLine.filter),
+              tooltip: AppLocalizations.of(context)
+                  .marketPageSearchFiltersButtonTooltip,
+            ),
+            const Gap(16),
+            Text(
+              AppLocalizations.of(context).marketPageSearchResultsLabel(
+                _filteredModels.length,
+              ),
+              style: const TextStyle(color: Colors.grey),
             ),
           ],
         ),
         const Gap(16),
-        Text(
-          'Results: ${_filteredModels.length}',
-          style: const TextStyle(color: Colors.grey),
-        ),
+        const Divider(),
         const Gap(16),
         Expanded(
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: MediaQuery.of(context).size.width > 1280 ? 4 : 2,
+              childAspectRatio:
+                  MediaQuery.of(context).size.width > 1280 ? 0.8 : 1,
             ),
             itemCount: _filteredModels.length,
             itemBuilder: (context, index) {
@@ -111,7 +130,7 @@ class _MarketPageState extends State<MarketPage> {
 }
 
 class ModelCard extends StatefulWidget {
-  final Map<String, dynamic> model;
+  final ModelSearchResult model;
 
   const ModelCard({super.key, required this.model});
 
@@ -120,18 +139,11 @@ class ModelCard extends StatefulWidget {
 }
 
 class _ModelCardState extends State<ModelCard> {
-  final List<Map<String, dynamic>> _releases = [];
   bool _isHovering = false;
 
   @override
   void initState() {
     super.initState();
-
-    _releases.addAll(
-      GetIt.instance<OllamaModelsDB>().getModelReleases(
-        widget.model['name'],
-      ),
-    );
   }
 
   List<Widget> _buildCapabilitiesTags(String modelName) {
@@ -282,32 +294,82 @@ class _ModelCardState extends State<ModelCard> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  children: [
+                    Text(
+                      widget.model.name,
+                      style: const TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    if (widget.model.url.contains('ollama.com/library'))
+                      SvgPicture.asset(
+                        'assets/graphics/logos/ollama.svg',
+                        width: 24,
+                        height: 24,
+                        // ignore: deprecated_member_use
+                        color: AdaptiveTheme.of(context).mode.isDark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                  ],
+                ),
+                const Gap(8),
+                Row(
+                  children: [
+                    const Icon(
+                      UniconsLine.language,
+                      color: Colors.red,
+                    ),
+                    const Gap(4),
+                    Text(
+                      AppLocalizations.of(context).translationNotAvailable,
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(8),
                 Text(
-                  widget.model['name'],
+                  widget.model.description,
+                  textAlign: TextAlign.justify,
+                ),
+                if (widget.model.capabilities != 0) const Gap(16),
+                if (widget.model.capabilities != 0)
+                  Text(
+                    AppLocalizations.of(context).marketPageCapabilitiesLabel,
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                if (widget.model.capabilities != 0) const Gap(8),
+                if (widget.model.capabilities != 0)
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: _buildCapabilitiesTags(widget.model.name),
+                  ),
+                const Gap(16),
+                Text(
+                  AppLocalizations.of(context).marketPageReleasesLabel,
                   style: const TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const Gap(8),
-                Text(
-                  widget.model['description'] ?? 'No description available',
-                  textAlign: TextAlign.justify,
-                ),
-                const Gap(16),
                 Wrap(
                   spacing: 8.0,
                   runSpacing: 8.0,
-                  children: _buildCapabilitiesTags(widget.model['name']),
-                ),
-                const Gap(16),
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: _releases.map((release) {
+                  children: widget.model.releases.map((release) {
                     return Chip(
                       label: Text(
-                        release['num_params'],
+                        release.numParams,
                         style: const TextStyle(fontSize: 12),
                       ),
                       backgroundColor: Colors.blue.withOpacity(0.25),
@@ -327,27 +389,35 @@ class _ModelCardState extends State<ModelCard> {
                   children: [
                     TextButton.icon(
                       label: Text(
-                        AppLocalizations.of(context).inventoryPagePullButton,
+                        AppLocalizations.of(context).marketPagePullButton,
                         style: const TextStyle(fontSize: 18.0),
                       ),
                       icon: const Icon(UniconsLine.download_alt),
                       onPressed: () => showPullModelDialog(
                         context,
-                        widget.model['name'],
-                        GetIt.instance<OllamaModelsDB>()
-                            .getModelReleases(widget.model['name'])
+                        widget.model.name,
+                        widget.model.releases
                             .map(
-                              (release) => release['num_params'] as String,
+                              (release) => release.numParams,
                             )
                             .toList(),
                       ),
                     ),
-                    TextButton.icon(
-                      onPressed: () {
-                        launchUrl(Uri.parse(widget.model['url']));
-                      },
-                      icon: const Icon(UniconsLine.arrow_right),
-                      label: const Text('View more'),
+                    Tooltip(
+                      message: AppLocalizations.of(context)
+                          .marketPageViewMoreButtonTooltip(
+                        widget.model.url,
+                      ),
+                      child: TextButton.icon(
+                        onPressed: () {
+                          launchUrl(Uri.parse(widget.model.url));
+                        },
+                        icon: const Icon(UniconsLine.arrow_right),
+                        label: Text(
+                          AppLocalizations.of(context).marketPageViewMoreButton,
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                      ),
                     ),
                   ],
                 ),
