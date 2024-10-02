@@ -22,7 +22,7 @@ class MarketPage extends StatefulWidget {
 
 class _MarketPageState extends State<MarketPage> {
   final _searchController = TextEditingController();
-  List<ModelSearchResult> _filteredModels = [];
+  List<ModelDBEntry> _filteredModels = [];
   ModelSearchFilters _filters = ModelSearchFilters();
 
   @override
@@ -39,7 +39,7 @@ class _MarketPageState extends State<MarketPage> {
   void _updateFilteredModels() {
     _filteredModels = GetIt.instance<OllamaModelsDB>().getModelsFiltered(
       name: _searchController.text,
-      capabilities: _filters.selectedCapabilities.toList(),
+      capabilities: _filters.selectedCapabilities,
       maxSize: _filters.maxSize,
       minSize: _filters.minSize,
     );
@@ -130,7 +130,7 @@ class _MarketPageState extends State<MarketPage> {
 }
 
 class ModelCard extends StatefulWidget {
-  final ModelSearchResult model;
+  final ModelDBEntry model;
 
   const ModelCard({super.key, required this.model});
 
@@ -152,10 +152,6 @@ class _ModelCardState extends State<ModelCard> {
     final cleanModelName = modelName.toLowerCase().split(':').first;
 
     final db = GetIt.instance<OllamaModelsDB>();
-
-    if (!db.isModelInDatabase(cleanModelName)) {
-      return [];
-    }
 
     final tags = <Widget>[];
     final capabilities = db.getModelCapabilities(cleanModelName);
@@ -297,7 +293,9 @@ class _ModelCardState extends State<ModelCard> {
                 Row(
                   children: [
                     Text(
-                      widget.model.name,
+                      widget.model.name.length > 20
+                          ? '${widget.model.name.substring(0, 20)}...'
+                          : widget.model.name,
                       style: const TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,
@@ -313,6 +311,12 @@ class _ModelCardState extends State<ModelCard> {
                         color: AdaptiveTheme.of(context).mode.isDark
                             ? Colors.white
                             : Colors.black,
+                      ),
+                    if (widget.model.url.contains('huggingface.co'))
+                      SvgPicture.asset(
+                        'assets/graphics/logos/huggingface.svg',
+                        width: 32,
+                        height: 32,
                       ),
                   ],
                 ),
@@ -355,14 +359,15 @@ class _ModelCardState extends State<ModelCard> {
                     children: _buildCapabilitiesTags(widget.model.name),
                   ),
                 const Gap(16),
-                Text(
-                  AppLocalizations.of(context).marketPageReleasesLabel,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
+                if (widget.model.releases.isNotEmpty)
+                  Text(
+                    AppLocalizations.of(context).marketPageReleasesLabel,
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const Gap(8),
+                if (widget.model.releases.isNotEmpty) const Gap(8),
                 Wrap(
                   spacing: 8.0,
                   runSpacing: 8.0,
@@ -387,38 +392,41 @@ class _ModelCardState extends State<ModelCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton.icon(
-                      label: Text(
-                        AppLocalizations.of(context).marketPagePullButton,
-                        style: const TextStyle(fontSize: 18.0),
-                      ),
-                      icon: const Icon(UniconsLine.download_alt),
-                      onPressed: () => showPullModelDialog(
-                        context,
-                        widget.model.name,
-                        widget.model.releases
-                            .map(
-                              (release) => release.numParams,
-                            )
-                            .toList(),
-                      ),
-                    ),
-                    Tooltip(
-                      message: AppLocalizations.of(context)
-                          .marketPageViewMoreButtonTooltip(
-                        widget.model.url,
-                      ),
-                      child: TextButton.icon(
-                        onPressed: () {
-                          launchUrl(Uri.parse(widget.model.url));
-                        },
-                        icon: const Icon(UniconsLine.arrow_right),
+                    if (widget.model.url.contains('ollama.com/library'))
+                      TextButton.icon(
                         label: Text(
-                          AppLocalizations.of(context).marketPageViewMoreButton,
+                          AppLocalizations.of(context).marketPagePullButton,
                           style: const TextStyle(fontSize: 18.0),
                         ),
+                        icon: const Icon(UniconsLine.download_alt),
+                        onPressed: () => showPullModelDialog(
+                          context,
+                          widget.model.name,
+                          widget.model.releases
+                              .map(
+                                (release) => release.numParams,
+                              )
+                              .toList(),
+                        ),
                       ),
-                    ),
+                    if (widget.model.url.isNotEmpty)
+                      Tooltip(
+                        message: AppLocalizations.of(context)
+                            .marketPageViewMoreButtonTooltip(
+                          widget.model.url,
+                        ),
+                        child: TextButton.icon(
+                          onPressed: () {
+                            launchUrl(Uri.parse(widget.model.url));
+                          },
+                          icon: const Icon(UniconsLine.arrow_right),
+                          label: Text(
+                            AppLocalizations.of(context)
+                                .marketPageViewMoreButton,
+                            style: const TextStyle(fontSize: 18.0),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ],

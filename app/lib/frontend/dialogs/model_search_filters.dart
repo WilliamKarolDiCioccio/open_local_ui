@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,11 +7,13 @@ import 'package:units_converter/units_converter.dart';
 
 class ModelSearchFilters {
   Set<String> selectedCapabilities = {};
-  double maxSize = 512.convertFromTo(
-    DIGITAL_DATA.gigabyte,
-    DIGITAL_DATA.byte,
-  )!;
-  double minSize = 0;
+  int maxSize = 512
+      .convertFromTo(
+        DIGITAL_DATA.gigabyte,
+        DIGITAL_DATA.byte,
+      )!
+      .toInt();
+  int minSize = 0;
   int maxResults = 255;
 }
 
@@ -39,14 +38,6 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
     _filters.maxSize = widget.filters.maxSize;
     _filters.minSize = widget.filters.minSize;
     _filters.maxResults = widget.filters.maxResults;
-  }
-
-  double linearToExponential(double value) {
-    return value <= 0 ? 0 : pow(value, 1.5).toDouble();
-  }
-
-  double exponentialToLinear(double value) {
-    return pow(value, 1 / 1.5).toDouble();
   }
 
   @override
@@ -104,19 +95,16 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
           ),
           const Gap(8),
           Slider(
-            value: linearToExponential(_filters.minSize),
+            value: _filters.minSize.toDouble(),
             min: 0,
-            max: linearToExponential(
-              512.convertFromTo(
-                DIGITAL_DATA.gigabyte,
-                DIGITAL_DATA.byte,
-              )!,
-            ),
+            max: 512.convertFromTo(
+              DIGITAL_DATA.gigabyte,
+              DIGITAL_DATA.byte,
+            )!,
             onChanged: (value) {
               setState(() {
-                _filters.minSize = exponentialToLinear(value);
-                _filters.minSize =
-                    clampDouble(_filters.minSize, 0, _filters.maxSize);
+                _filters.minSize = value.toInt();
+                _filters.minSize = _filters.minSize.clamp(0, _filters.maxSize);
               });
             },
           ),
@@ -134,25 +122,22 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
           ),
           const Gap(8),
           Slider(
-            value: linearToExponential(_filters.maxSize),
+            value: _filters.maxSize.toDouble(),
             min: 0,
-            max: linearToExponential(
-              512.convertFromTo(
-                DIGITAL_DATA.gigabyte,
-                DIGITAL_DATA.byte,
-              )!,
-            ),
+            max: 512.convertFromTo(
+              DIGITAL_DATA.gigabyte,
+              DIGITAL_DATA.byte,
+            )!,
             onChanged: (value) {
               setState(() {
-                _filters.maxSize = exponentialToLinear(value);
-                _filters.maxSize = clampDouble(
-                  _filters.maxSize,
-                  _filters.minSize,
-                  512.convertFromTo(
-                    DIGITAL_DATA.gigabyte,
-                    DIGITAL_DATA.byte,
-                  )!,
-                );
+                _filters.maxSize = value.toInt();
+                _filters.maxSize = 512
+                    .convertFromTo(
+                      DIGITAL_DATA.gigabyte,
+                      DIGITAL_DATA.byte,
+                    )!
+                    .toInt()
+                    .clamp(_filters.minSize, _filters.maxSize);
               });
             },
           ),
