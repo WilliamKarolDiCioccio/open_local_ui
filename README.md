@@ -47,7 +47,7 @@ Despite its simplicity, OpenLocalUI has enormous potential for growth and enhanc
 1. ✅ **Model Customization**: Enhance the ability to customize LLM models according to specific needs.
 2. ✅ **Image and File Embedding**: Enable embedding images and files directly into the application for more versatile usage.
 3. ⚒️ **Web and Docs Search**: Integrate search functionality to allow users to access and retrieve information from web pages and local documents, making it easier to pull in relevant content for interactions.
-4. ⚒️ **Model Cross Database**: Maintaining our own Ollama compatible models database will allow users to browse through a wide offer of LLMs from all sources (Ollama Library, Huggingface, 3rd parties of any kind)
+4. ✅ **Model Cross Database**: Maintaining our own Ollama compatible models database will allow users to browse through a wide offer of LLMs from all sources (Ollama Library, Huggingface, 3rd parties of any kind).
 5. ❌ **Server Configuration and Mobile App**: Provide support for configuring the UI to run on different server environments, with an accompanying mobile app for easy, on-the-go access to the platform.
 6. ⚠️ **OpenLocalUI-based Ecosystem**: Develop an ecosystem around OpenLocalUI, including plugins, community-driven enhancements, and third-party integrations, fostering a collaborative development environment. WE NEED YOU!
 
