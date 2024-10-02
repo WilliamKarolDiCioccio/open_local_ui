@@ -41,23 +41,6 @@ void _preloadAssets() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Dependency injection
-
-  final getIt = GetIt.instance;
-  getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
-  getIt.registerSingleton<TTSService>(TTSService());
-  getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
-  getIt.registerSingleton<OllamaModelsDB>(OllamaModelsDB());
-
-  // Internal services
-
-  await initLogger();
-
-  await GetIt.instance<OllamaAPIProvider>().startOllama();
-  await GetIt.instance<TTSService>().startServer();
-  await GetIt.instance<ChatSessionsDB>().init();
-  await GetIt.instance<OllamaModelsDB>().init();
-
   // Backend services
 
   final prefs = await SharedPreferences.getInstance();
@@ -66,6 +49,24 @@ void main() async {
     url: Env.supabaseUrl,
     anonKey: Env.supabaseAnonKey,
   );
+
+  // Debugging and tracing
+
+  await initLogger();
+
+  // Dependency injection
+
+  final getIt = GetIt.instance;
+
+  getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
+  getIt.registerSingleton<TTSService>(TTSService());
+  getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
+  getIt.registerSingleton<OllamaModelsDB>(OllamaModelsDB());
+
+  await GetIt.instance<OllamaAPIProvider>().startOllama();
+  await GetIt.instance<TTSService>().startServer();
+  await GetIt.instance<ChatSessionsDB>().init();
+  await GetIt.instance<OllamaModelsDB>().init();
 
   // Preload assets
 
