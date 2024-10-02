@@ -11,14 +11,21 @@ import 'package:open_local_ui/core/snackbar.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 
-class ModelDetailsDialog extends StatelessWidget {
+class ModelDetailsDialog extends StatefulWidget {
   final Model model;
 
   const ModelDetailsDialog({super.key, required this.model});
 
   @override
+  State<ModelDetailsDialog> createState() => _ModelDetailsDialogState();
+}
+
+class _ModelDetailsDialogState extends State<ModelDetailsDialog> {
+  bool _showFullDigest = false;
+
+  @override
   Widget build(BuildContext context) {
-    final cleanModelName = model.name.toLowerCase().split(':')[0];
+    final cleanModelName = widget.model.name.toLowerCase().split(':')[0];
 
     final db = GetIt.instance<OllamaModelsDB>();
 
@@ -31,7 +38,7 @@ class ModelDetailsDialog extends StatelessWidget {
     }
 
     return AlertDialog(
-      title: Text(model.name),
+      title: Text(widget.model.name),
       content: SizedBox(
         width: 360,
         height: 240,
@@ -50,7 +57,7 @@ class ModelDetailsDialog extends StatelessWidget {
               if (description.isNotEmpty) const Divider(),
               Text(
                 AppLocalizations.of(context).modifiedAtTextShared(
-                  model.modifiedAt,
+                  widget.model.modifiedAt,
                 ),
                 style: const TextStyle(
                   color: Colors.grey,
@@ -58,7 +65,7 @@ class ModelDetailsDialog extends StatelessWidget {
               ),
               Text(
                 AppLocalizations.of(context).modelDetailsSizeText(
-                  '${model.size.convertFromTo(
+                  '${widget.model.size.convertFromTo(
                         DIGITAL_DATA.byte,
                         DIGITAL_DATA.gigabyte,
                       )!.toStringAsFixed(2)} GB',
@@ -66,29 +73,39 @@ class ModelDetailsDialog extends StatelessWidget {
                 style: const TextStyle(color: Colors.grey),
               ),
               const Gap(8),
-              SelectableText(
-                AppLocalizations.of(context).modelDetailsDigestText(
-                  '${model.digest.substring(0, 6)}...',
+              MouseRegion(
+                onEnter: (event) => setState(() {
+                  _showFullDigest = true;
+                }),
+                onExit: (event) => setState(() {
+                  _showFullDigest = false;
+                }),
+                child: SelectableText(
+                  AppLocalizations.of(context).modelDetailsDigestText(
+                    _showFullDigest
+                        ? widget.model.digest
+                        : '${widget.model.digest.substring(0, 6)}... (mouse)',
+                  ),
                 ),
               ),
               SelectableText(
                 AppLocalizations.of(context)
-                    .modelDetailsFormatText(model.details.format),
+                    .modelDetailsFormatText(widget.model.details.format),
               ),
-              if (model.details.families != null)
+              if (widget.model.details.families != null)
                 SelectableText(
                   AppLocalizations.of(context).modelDetailsFamilyText(
-                    model.details.families!.join(', '),
+                    widget.model.details.families!.join(', '),
                   ),
                 ),
               SelectableText(
                 AppLocalizations.of(context).modelDetailsParametersSizeText(
-                  model.details.parameterSize,
+                  widget.model.details.parameterSize,
                 ),
               ),
               SelectableText(
                 AppLocalizations.of(context).modelDetailsQuantizationLevelText(
-                  model.details.quantizationLevel.toString(),
+                  widget.model.details.quantizationLevel.toString(),
                 ),
               ),
             ],
@@ -101,17 +118,17 @@ class ModelDetailsDialog extends StatelessWidget {
           icon: const Icon(UniconsLine.copy),
           onPressed: () {
             final details = '''
-Name: ${model.name}
-Modified at: ${model.modifiedAt}
-Size: ${model.size.convertFromTo(
+Name: ${widget.model.name}
+Modified at: ${widget.model.modifiedAt}
+Size: ${widget.model.size.convertFromTo(
                       DIGITAL_DATA.byte,
                       DIGITAL_DATA.gigabyte,
                     )!.toStringAsFixed(2)} GB
-Digest: ${model.digest}
-Format: ${model.details.format}
-Families: ${model.details.families?.join(', ') ?? 'None'}
-Parameter size: ${model.details.parameterSize}
-Quantization level: ${model.details.quantizationLevel}
+Digest: ${widget.model.digest}
+Format: ${widget.model.details.format}
+Families: ${widget.model.details.families?.join(', ') ?? 'None'}
+Parameter size: ${widget.model.details.parameterSize}
+Quantization level: ${widget.model.details.quantizationLevel}
             ''';
 
             Clipboard.setData(ClipboardData(text: details));
