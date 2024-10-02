@@ -14,6 +14,7 @@ import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/core/update.dart';
+import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/components/floating_menu.dart';
 import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 import 'package:open_local_ui/frontend/dialogs/changelog.dart';
@@ -39,7 +40,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final _key = GlobalKey<_DashboardScreenState>();
   final _buttonKey = GlobalKey();
   final _pageController = PageController();
   final _overlayPortalController = OverlayPortalController();
@@ -65,26 +65,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final battery = Battery();
 
     battery.onBatteryStateChanged.listen((BatteryState state) {
-      switch (state) {
-        case BatteryState.discharging:
-          SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(_key.currentContext!).snackBarWarningTitle,
-            AppLocalizations.of(_key.currentContext!).deviceUnpluggedSnackBar,
-            SnackbarContentType.warning,
-          );
-          logger.i('Battery charging');
-          break;
-        case BatteryState.charging:
-          SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(_key.currentContext!).snackBarSuccessTitle,
-            AppLocalizations.of(_key.currentContext!).devicePluggedInSnackBar,
-            SnackbarContentType.success,
-          );
-          logger.i('Battery discharging');
-          break;
-        default:
-          logger.i('Battery state: $state');
-          break;
+      if (mounted) {
+        switch (state) {
+          case BatteryState.discharging:
+            SnackBarHelpers.showSnackBar(
+              AppLocalizations.of(context).snackBarWarningTitle,
+              AppLocalizations.of(context).deviceUnpluggedSnackBar,
+              SnackbarContentType.warning,
+            );
+            logger.i('Battery charging');
+            break;
+          case BatteryState.charging:
+            SnackBarHelpers.showSnackBar(
+              AppLocalizations.of(context).snackBarSuccessTitle,
+              AppLocalizations.of(context).devicePluggedInSnackBar,
+              SnackbarContentType.success,
+            );
+            logger.i('Battery discharging');
+            break;
+          default:
+            logger.i('Battery state: $state');
+            break;
+        }
       }
     });
   }
@@ -92,10 +94,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _checkForUpdates() {
     UpdateHelper.isAppUpdateAvailable().then(
       (updateAvailable) {
-        if (updateAvailable) {
+        if (updateAvailable && mounted) {
           SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(_key.currentContext!).snackBarUpdateTitle,
-            AppLocalizations.of(_key.currentContext!)
+            AppLocalizations.of(context).snackBarUpdateTitle,
+            AppLocalizations.of(context)
                 .clickToDownloadLatestAppVersionSnackBar,
             SnackbarContentType.info,
             onTap: () => showUpdateDialog(
@@ -339,6 +341,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 style: TextStyle(
                   fontSize: 32.0,
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Gap(8),
+              Text(
+                "${Env.version}-${Env.buildNumber}-${Env.buildTag}",
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w100,
                 ),
               ),
               const SizedBox(

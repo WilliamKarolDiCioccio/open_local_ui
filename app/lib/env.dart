@@ -21,4 +21,10 @@ final class Env {
 
   @EnviedField(varName: 'VERSION', obfuscate: false)
   static const String version = _Env.version;
+
+  @EnviedField(varName: 'BUILDNUMBER', obfuscate: true)
+  static final String buildNumber = _Env.buildNumber;
+
+  @EnviedField(varName: 'BUILDTAG', obfuscate: true)
+  static final String buildTag = _Env.buildTag;
 }
