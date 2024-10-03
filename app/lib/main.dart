@@ -10,7 +10,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
-import 'package:open_local_ui/backend/private/services/tts.dart';
 import 'package:open_local_ui/backend/private/storage/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/storage/ollama_models.dart';
 import 'package:open_local_ui/constants/constants.dart';
@@ -111,7 +110,6 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     GetIt.instance<ChatSessionsDB>().deinit();
     GetIt.instance<OllamaModelsDB>().deinit();
-    GetIt.instance<TTSService>().stopServer();
     GetIt.instance<OllamaAPIProvider>().stopOllama();
 
     super.dispose();

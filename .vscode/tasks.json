@@ -62,34 +62,15 @@
       }
     },
     {
-      "label": "Generate gRPC app files",
-      "type": "shell",
-      "windows": {
-        "command": "powershell.exe",
-        "args": ["./scripts/generate_grpc_app_files.ps1"],
-      },
-      "linux": {
-        "command": "bash",
-        "args": ["./scripts/generate_grpc_app_files.sh"],
-      },
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
       "label": "Build app",
       "type": "shell",
       "windows": {
         "command": "powershell.exe",
-        "args": ["../scripts/build_app.ps1", "-config", "${input:config}"],
+        "args": ["../scripts/build_app.ps1", "-config", "${input:config}"]
       },
       "linux": {
         "command": "bash",
-        "args": ["../scripts/build_app.sh", "${input:config}"],
+        "args": ["../scripts/build_app.sh", "${input:config}"]
       },
       "options": {
         "cwd": "${workspaceFolder}/app"
@@ -100,61 +81,15 @@
       }
     },
     {
-      "label": "Generate gRPC server files",
-      "type": "shell",
-      "windows": {
-        "command": "powershell.exe",
-        "args": ["./scripts/generate_grpc_server_files.ps1"],
-      },
-      "linux": {
-        "command": "bash",
-        "args": ["./scripts/generate_grpc_server_files.sh"],
-      },
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "label": "Build server",
-      "type": "shell",
-      "windows": {
-        "command": "powershell.exe",
-        "args": ["./scripts/build_server.ps1", "-config", "${input:config}"],
-      },
-      "linux": {
-        "command": "bash",
-        "args": ["./scripts/build_server.sh", "${input:config}"],
-      },
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "label": "Build all",
-      "dependsOn": [ "Build server", "Build app"],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
       "label": "Generate intl files",
       "type": "shell",
       "windows": {
         "command": "powershell.exe",
-        "args": ["../scripts/generate_intl_files.ps1"],
+        "args": ["../scripts/generate_intl_files.ps1"]
       },
       "linux": {
         "command": "bash",
-        "args": ["../scripts/generate_intl_files.sh"],
+        "args": ["../scripts/generate_intl_files.sh"]
       },
       "options": {
         "cwd": "${workspaceFolder}/app"
@@ -180,6 +115,6 @@
           "label": "Release"
         }
       ]
-    },
+    }
   ]
 }

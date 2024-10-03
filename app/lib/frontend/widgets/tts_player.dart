@@ -7,7 +7,6 @@ import 'package:gap/gap.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:markdown/markdown.dart' as md;
 import 'package:open_local_ui/backend/private/providers/chat.dart';
-import 'package:open_local_ui/backend/private/services/tts.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
