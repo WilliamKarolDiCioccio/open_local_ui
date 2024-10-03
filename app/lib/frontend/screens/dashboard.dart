@@ -10,6 +10,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:image/image.dart' as img;
+import 'package:open_local_ui/backend/private/providers/chat.dart';
+import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/snackbar.dart';
@@ -22,10 +24,11 @@ import 'package:open_local_ui/frontend/dialogs/update.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/about.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/chat.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/inventory.dart';
+import 'package:open_local_ui/frontend/pages/dashboard/market.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/sessions.dart';
 import 'package:open_local_ui/frontend/pages/dashboard/settings.dart';
-import 'package:open_local_ui/frontend/pages/dashboard/market.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_info2/system_info2.dart';
 import 'package:unicons/unicons.dart';
@@ -115,28 +118,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          body: Row(
-            textDirection: TextDirection.rtl,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: _buildPageView(),
-              ),
-              _buildSideMenu(),
-            ],
-          ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<OllamaAPIProvider>(
+          create: (context) => OllamaAPIProvider(),
         ),
-        Positioned(
-          top: 0.0,
-          right: 0.0,
-          width: MediaQuery.of(context).size.width,
-          height: 32.0,
-          child: const WindowManagementBarComponent(),
+        ChangeNotifierProvider<ChatProvider>(
+          create: (context) => ChatProvider(),
         ),
       ],
+      child: Stack(
+        children: [
+          Scaffold(
+            body: Row(
+              textDirection: TextDirection.rtl,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: _buildPageView(),
+                ),
+                _buildSideMenu(),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 0.0,
+            right: 0.0,
+            width: MediaQuery.of(context).size.width,
+            height: 32.0,
+            child: const WindowManagementBarComponent(),
+          ),
+        ],
+      ),
     );
   }
 

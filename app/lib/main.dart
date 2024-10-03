@@ -3,76 +3,35 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:discord_rpc/discord_rpc.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:open_local_ui/backend/private/storage/chat_sessions.dart';
-import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/backend/private/services/tts.dart';
+import 'package:open_local_ui/backend/private/storage/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/storage/ollama_models.dart';
-import 'package:open_local_ui/constants/assets.dart';
 import 'package:open_local_ui/constants/constants.dart';
-import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/screens/splash.dart';
 import 'package:provider/provider.dart';
-import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_theme/system_theme.dart';
 
-void _preloadAssets() async {
-  for (final asset in Assets.all) {
-    await AssetManager.loadAsset(
-      asset.path,
-      source: asset.source,
-      type: asset.type,
-    );
-  }
-}
-
 void main() async {
+  /// All loading and initialization code that does not return or yield data
+  /// needed for the material app or locale provider creation must be placed in the splash screen.
+
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Backend services
-
   final prefs = await SharedPreferences.getInstance();
-
-  await Supabase.initialize(
-    url: Env.supabaseUrl,
-    anonKey: Env.supabaseAnonKey,
-  );
 
   // Debugging and tracing
 
   await initLogger();
-
-  // Dependency injection
-
-  final getIt = GetIt.instance;
-
-  getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
-  getIt.registerSingleton<TTSService>(TTSService());
-  getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
-  getIt.registerSingleton<OllamaModelsDB>(OllamaModelsDB());
-
-  await GetIt.instance<OllamaAPIProvider>().startOllama();
-  await GetIt.instance<TTSService>().startServer();
-  await GetIt.instance<ChatSessionsDB>().init();
-  await GetIt.instance<OllamaModelsDB>().init();
-
-  // Preload assets
-
-  _preloadAssets();
-
-  await RiveFile.initialize();
 
   // Theme
 
@@ -101,27 +60,6 @@ void main() async {
     await prefs.setBool('userOnboarded', true);
   }
 
-  // Discord RPC
-
-  final discordRPCEnabled = prefs.getBool('discordRPCEnabled') ?? false;
-
-  if (discordRPCEnabled) {
-    DiscordRPC.initialize();
-
-    final rpc = DiscordRPC(
-      applicationId: '1288789740338020392',
-    );
-
-    rpc.start(autoRegister: true);
-    rpc.updatePresence(
-      DiscordPresence(
-        state: 'Chatting in OpenLocalUI 🚀',
-        details: 'github.com/WilliamKarolDiCioccio/open_local_ui',
-        startTimeStamp: DateTime.now().millisecondsSinceEpoch,
-      ),
-    );
-  }
-
   // Run app
 
   runApp(
@@ -129,12 +67,6 @@ void main() async {
       providers: [
         ChangeNotifierProvider<LocaleProvider>(
           create: (context) => LocaleProvider(),
-        ),
-        ChangeNotifierProvider<OllamaAPIProvider>(
-          create: (context) => OllamaAPIProvider(),
-        ),
-        ChangeNotifierProvider<ChatProvider>(
-          create: (context) => ChatProvider(),
         ),
       ],
       child: BetterFeedback(
@@ -175,11 +107,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   void dispose() {
     GetIt.instance<ChatSessionsDB>().deinit();
