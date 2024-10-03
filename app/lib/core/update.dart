@@ -79,9 +79,21 @@ class UpdateHelper {
     final currentVersion = Env.version.split('.').map(int.parse).toList();
     final newVersion = version.split('.').map(int.parse).toList();
 
-    for (var i = 0; i < currentVersion.length; i++) {
-      if (currentVersion[i] < newVersion[i]) {
+    logger.d('Current version: $currentVersion');
+    logger.d('New version: $newVersion');
+
+    final maxLength = [currentVersion.length, newVersion.length].reduce(
+      (a, b) => a > b ? a : b,
+    );
+
+    for (var i = 0; i < maxLength; i++) {
+      final current = i < currentVersion.length ? currentVersion[i] : 0;
+      final newVer = i < newVersion.length ? newVersion[i] : 0;
+
+      if (current < newVer) {
         return true;
+      } else if (current > newVer) {
+        return false;
       }
     }
 
@@ -121,7 +133,7 @@ class UpdateHelper {
         break;
       }
 
-      logger.i('New version available: $release.tag_name');
+      logger.i('New version available: ${release.tag_name}');
 
       for (final asset in release.assets) {
         if (Platform.isWindows && _windowsIsAppUpdateAvailable(asset)) {
