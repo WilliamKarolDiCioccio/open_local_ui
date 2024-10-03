@@ -312,6 +312,16 @@ class _ModelCardState extends State<ModelCard> {
                             ? Colors.white
                             : Colors.black,
                       ),
+                    if (widget.model.url.contains('github.com'))
+                      SvgPicture.asset(
+                        'assets/graphics/logos/github.svg',
+                        width: 24,
+                        height: 24,
+                        // ignore: deprecated_member_use
+                        color: AdaptiveTheme.of(context).mode.isDark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     if (widget.model.url.contains('huggingface.co'))
                       SvgPicture.asset(
                         'assets/graphics/logos/huggingface.svg',
