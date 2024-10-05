@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:markdown/markdown.dart' as md;
 import 'package:open_local_ui/backend/private/providers/chat.dart';
+import 'package:open_local_ui/backend/private/services/tts.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -104,14 +105,12 @@ class _TTSPlayerState extends State<TTSPlayer>
   }
 
   Future<bool> _load() async {
-    final service = TTSService();
-
     final html = md.markdownToHtml(widget.text);
     final document = parser.parse(html);
     final text = document.body!.text;
 
     try {
-      _audioBytes = await service.synthesize(text);
+      _audioBytes = await TTSService.synthesyzeText(text);
 
       await _audioPlayer.setSource(
         BytesSource(
