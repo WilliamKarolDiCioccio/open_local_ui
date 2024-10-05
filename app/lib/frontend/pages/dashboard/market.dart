@@ -42,11 +42,7 @@ class _MarketPageState extends State<MarketPage> {
       capabilities: _filters.selectedCapabilities,
       maxSize: _filters.maxSize,
       minSize: _filters.minSize,
-    );
-
-    _filteredModels = _filteredModels.sublist(
-      0,
-      _filteredModels.length.clamp(0, _filters.maxResults),
+      maxResults: _filters.maxResults,
     );
 
     setState(() {});
@@ -378,26 +374,27 @@ class _ModelCardState extends State<ModelCard> {
                     ),
                   ),
                 if (widget.model.releases.isNotEmpty) const Gap(8),
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: widget.model.releases.map((release) {
-                    return Chip(
-                      label: Text(
-                        release.numParams,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      backgroundColor: Colors.blue.withOpacity(0.25),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        side: const BorderSide(
-                          color: Colors.blue,
-                          width: 1,
+                if (widget.model.releases.isNotEmpty)
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: widget.model.releases.map((release) {
+                      return Chip(
+                        label: Text(
+                          release.numParams,
+                          style: const TextStyle(fontSize: 12),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
+                        backgroundColor: Colors.blue.withOpacity(0.25),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          side: const BorderSide(
+                            color: Colors.blue,
+                            width: 1,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

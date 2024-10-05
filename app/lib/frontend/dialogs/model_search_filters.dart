@@ -48,6 +48,7 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
+          const Gap(16),
           SegmentedButton<String>(
             emptySelectionAllowed: true,
             multiSelectionEnabled: true,

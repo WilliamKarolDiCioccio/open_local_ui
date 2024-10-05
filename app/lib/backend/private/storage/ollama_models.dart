@@ -108,7 +108,7 @@ class OllamaModelsDB {
             model_id INTEGER,
             num_params TEXT,
             size INTEGER,
-            FOREIGN KEY(model_id) REFERENCES models(id)
+            FOREIGN KEY(model_id) REFERENCES models(id) ON DELETE CASCADE
         )
     ''');
 
@@ -237,11 +237,6 @@ class OllamaModelsDB {
       for (final localModel in localModels) {
         if (!onlineModelIds.contains(localModel['id'])) {
           _db!.execute(
-            'DELETE FROM releases WHERE model_id = ?',
-            [localModel['id']],
-          );
-
-          _db!.execute(
             'DELETE FROM models WHERE id = ?',
             [localModel['id']],
           );
@@ -280,6 +275,7 @@ class OllamaModelsDB {
     Set<String>? capabilities,
     int? minSize,
     int? maxSize,
+    int? maxResults,
   }) {
     if (_db == null) {
       throw Exception("Database not initialized");
@@ -315,12 +311,11 @@ class OllamaModelsDB {
 
     // Main query to fetch models with releases
     String query = '''
-    SELECT m.id AS model_id, m.name, m.description, m.url, m.capabilities,
-           r.id AS release_id, r.num_params, r.size
-    FROM models m
-    JOIN releases r ON m.id = r.model_id
-    WHERE 1=1
-  ''';
+      SELECT m.id AS model_id, m.name, m.description, m.url, m.capabilities, r.id AS release_id, r.num_params, r.size
+      FROM models m
+      LEFT JOIN releases r ON m.id = r.model_id
+      WHERE 1=1
+    ''';
 
     if (name != null && name.isNotEmpty) {
       query += ' AND m.name LIKE ?';
@@ -334,12 +329,12 @@ class OllamaModelsDB {
     }
 
     if (minSize != null) {
-      query += ' AND r.size >= ?';
+      query += ' AND r.size >= ? OR r.size IS NULL';
       queryParams.add(minSize);
     }
 
     if (maxSize != null) {
-      query += ' AND r.size <= ?';
+      query += ' AND r.size <= ? OR r.size IS NULL';
       queryParams.add(maxSize);
     }
 
@@ -349,7 +344,6 @@ class OllamaModelsDB {
 
     for (final row in result) {
       final modelId = row['model_id'] as int;
-      final release = ModelReleaseDBEntry.fromMap(row);
 
       if (!modelsMap.containsKey(modelId)) {
         modelsMap[modelId] = ModelDBEntry(
@@ -362,45 +356,17 @@ class OllamaModelsDB {
         );
       }
 
-      modelsMap[modelId]!.releases.add(release);
-    }
+      if (row['release_id'] != null &&
+          row['num_params'] != null &&
+          row['size'] != null) {
+        final release = ModelReleaseDBEntry.fromMap(row);
 
-    // Query to fetch models without any releases but matching capabilities
-    String queryWithoutReleases = '''
-    SELECT m.id AS model_id, m.name, m.description, m.url, m.capabilities
-    FROM models m
-    WHERE NOT EXISTS (SELECT 1 FROM releases r WHERE r.model_id = m.id)
-  ''';
-
-    final List<Object?> queryWithoutReleasesParams = [];
-
-    if (name != null && name.isNotEmpty) {
-      queryWithoutReleases += ' AND m.name LIKE ?';
-      queryWithoutReleasesParams.add('%$name%');
-    }
-
-    if (capabilitiesMask != null) {
-      queryWithoutReleases += ' AND (m.capabilities & ?) = ?';
-      queryWithoutReleasesParams.add(capabilitiesMask);
-      queryWithoutReleasesParams.add(capabilitiesMask);
-    }
-
-    final resultWithoutReleases =
-        _db!.select(queryWithoutReleases, queryWithoutReleasesParams);
-
-    for (final row in resultWithoutReleases) {
-      final modelId = row['model_id'] as int;
-
-      if (!modelsMap.containsKey(modelId)) {
-        modelsMap[modelId] = ModelDBEntry(
-          id: modelId,
-          name: row['name'] as String,
-          description: row['description'] as String,
-          url: row['url'] as String,
-          capabilities: row['capabilities'] as int,
-          releases: [],
-        );
+        modelsMap[modelId]!.releases.add(release);
       }
+    }
+
+    if (maxResults != null && maxResults > 0) {
+      return modelsMap.values.take(maxResults).toList();
     }
 
     return modelsMap.values.toList();
