@@ -27,6 +27,7 @@
 6. [License](#-license)
 7. [Support](#-support)
 8. [Contact](#-contact)
+9. [Related Projects](#-related-projects)
 
 ## 🚀 What is OpenLocalUI
 
