@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
-import 'package:open_local_ui/backend/private/storage/ollama_models.dart';
+import 'package:open_local_ui/backend/private/repositories/ollama_models.dart';
 import 'package:open_local_ui/frontend/dialogs/model_search_filters.dart';
 import 'package:open_local_ui/frontend/dialogs/pull_model.dart';
 import 'package:unicons/unicons.dart';

@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
-import 'package:open_local_ui/backend/private/storage/ollama_models.dart';
+import 'package:open_local_ui/backend/private/repositories/ollama_models.dart';
 import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/core/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
