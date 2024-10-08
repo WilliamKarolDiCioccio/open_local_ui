@@ -260,14 +260,24 @@ class _SessionsPageState extends State<SessionsPage> {
               shrinkWrap: true,
               physics: physics,
               controller: controller,
-              prototypeItem: SessionListTile(
-                session: prototypeChatSession,
-                pageController: widget.pageController,
-              ),
+              prototypeItem: !_sortBy.contains(SortBy.date)
+                  ? SessionListTile(
+                      session: prototypeChatSession,
+                      pageController: widget.pageController,
+                    )
+                  : null,
               itemCount: context.watch<ChatProvider>().sessionCount,
               itemBuilder: (context, index) {
-                return SessionListTile(
-                  session: sortedSessions[index],
+                final session = sortedSessions[index];
+                final previousSession =
+                    index > 0 ? sortedSessions[index - 1] : null;
+
+                final bool showDateHeader = _sortBy.contains(SortBy.date) &&
+                    previousSession != null &&
+                    session.createdAt.day != previousSession.createdAt.day;
+
+                final sessionTile = SessionListTile(
+                  session: session,
                   pageController: widget.pageController,
                 )
                     .animate(delay: (index * 100).ms)
@@ -276,6 +286,35 @@ class _SessionsPageState extends State<SessionsPage> {
                       begin: const Offset(-16, 0),
                       curve: Curves.easeOutQuad,
                     );
+
+                if (showDateHeader) {
+                  final dateHeader = Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          FortmatHelpers.standardDate(session.createdAt),
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(),
+                      ],
+                    ),
+                  );
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      dateHeader,
+                      sessionTile,
+                    ],
+                  );
+                } else {
+                  return sessionTile;
+                }
               },
             ),
           ),
