@@ -329,14 +329,21 @@ class OllamaModelsDB {
     }
 
     if (minSize != null) {
-      query += ' AND r.size >= ? OR r.size IS NULL';
+      query += ' AND r.size >= ?';
       queryParams.add(minSize);
     }
 
     if (maxSize != null) {
-      query += ' AND r.size <= ? OR r.size IS NULL';
+      query += ' AND r.size <= ?';
       queryParams.add(maxSize);
     }
+
+    query += '''
+      UNION
+      SELECT m.id AS model_id, m.name, m.description, m.url, m.capabilities, NULL AS release_id, NULL AS num_params, NULL AS size
+      FROM models m
+      WHERE NOT EXISTS (SELECT 1 FROM releases r WHERE m.id = r.model_id)
+    ''';
 
     final result = _db!.select(query, queryParams);
 
