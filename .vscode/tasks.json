@@ -98,6 +98,18 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Package app",
+      "type": "shell",
+      "command": "flutter_distributor release --name dev",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     }
   ],
   "inputs": [

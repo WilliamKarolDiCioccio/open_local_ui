@@ -78,3 +78,9 @@ dist/
 *.db
 *.db-shm
 *.db-wal
+
+# Certificate files
+*.pfx
+*.cer
+# Contains the PFX password
+make_config.yaml
