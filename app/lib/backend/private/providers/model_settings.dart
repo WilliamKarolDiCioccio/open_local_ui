@@ -132,7 +132,7 @@ class ModelSettingsHandler {
   }
 
   /// Returns the active profile name for the given model.
-  Future<String> getAssociatedProfileName(String modelName) async {
+  Future<String> getAssociatedProfileName() async {
     final profileAssociationsFile = await _getProfileAssociationsFile();
     final profileAssociations = jsonDecode(
       await profileAssociationsFile.readAsString(),

@@ -37,6 +37,15 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
   @override
   void initState() {
     super.initState();
+
+    final handler = ModelSettingsHandler(widget.modelName);
+    handler.getAssociatedProfileName().then((value) {
+      if (mounted) {
+        setState(() {
+          _visibleProfileName = value;
+        });
+      }
+    });
   }
 
   @override
