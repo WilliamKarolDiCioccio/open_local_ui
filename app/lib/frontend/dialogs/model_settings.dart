@@ -13,7 +13,7 @@ import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:open_local_ui/constants/languages.dart';
 import 'package:open_local_ui/core/format.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/dialogs/text_field.dart';
 import 'package:provider/provider.dart';

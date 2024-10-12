@@ -12,7 +12,7 @@ import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
 enum OllamaAPIProviderStatus {

@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/model_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -100,14 +100,9 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
           IconButton(
             tooltip: AppLocalizations.of(context).inventoryPageSettingsButton,
             icon: const Icon(UniconsLine.setting),
-            onPressed: () => SnackBarHelpers.showSnackBar(
-              AppLocalizations.of(context).snackBarWarningTitle,
-              AppLocalizations.of(context).enteringCriticalSectionSnackBar,
-              SnackbarContentType.warning,
-              onTap: () => showModelSettingsDialog(
-                context.read<ChatProvider>().modelName,
-                context,
-              ),
+            onPressed: () => showModelSettingsDialog(
+              context.read<ChatProvider>().modelName,
+              context,
             ),
           ),
         if (context.read<ChatProvider>().modelName.isNotEmpty) const Gap(16),

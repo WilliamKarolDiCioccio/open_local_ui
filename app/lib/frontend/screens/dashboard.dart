@@ -14,7 +14,7 @@ import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/core/github.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/components/floating_menu.dart';
@@ -127,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           create: (context) => ChatProvider(),
         ),
       ],
-      child: Stack(
+      builder: (context, child) => Stack(
         children: [
           Scaffold(
             body: Row(

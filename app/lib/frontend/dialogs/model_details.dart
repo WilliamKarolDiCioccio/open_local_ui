@@ -7,7 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/backend/private/repositories/ollama_models.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 

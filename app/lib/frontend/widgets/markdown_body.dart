@@ -8,7 +8,7 @@ import 'package:flutter_highlight/themes/atom-one-dark.dart';
 import 'package:flutter_highlight/themes/atom-one-light.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:open_local_ui/constants/style.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/frontend/widgets/markdown_code_wrapper.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/constants/constants.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// A class for managing model settings within a Flutter app.

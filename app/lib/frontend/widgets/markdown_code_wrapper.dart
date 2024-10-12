@@ -11,7 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/constants/constants.dart';
 import 'package:open_local_ui/core/asset.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:unicons/unicons.dart';
 import 'package:uuid/uuid.dart';
 

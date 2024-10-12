@@ -15,7 +15,7 @@ import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/process.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/frontend/components/rive_animation.dart';
 import 'package:open_local_ui/frontend/components/typewriter_text.dart';
 import 'package:open_local_ui/frontend/components/window_management_bar.dart';

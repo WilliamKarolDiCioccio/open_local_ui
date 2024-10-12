@@ -10,7 +10,7 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/chat_session.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/core/format.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/dialogs/text_field.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
@@ -207,14 +207,14 @@ class _SessionsPageState extends State<SessionsPage> {
                   label: Text(
                     AppLocalizations.of(context).sortOrderAscendingOption,
                   ),
-                  icon: const Icon(UniconsLine.arrow_up),
+                  icon: const Icon(UniconsLine.sort_amount_up),
                 ),
                 ButtonSegment(
                   value: SortOrder.descending,
                   label: Text(
                     AppLocalizations.of(context).sortOrderDescendingOption,
                   ),
-                  icon: const Icon(UniconsLine.arrow_down),
+                  icon: const Icon(UniconsLine.sort_amount_down),
                 ),
               ],
               selected: _sortOrder,

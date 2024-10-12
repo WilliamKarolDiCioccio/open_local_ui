@@ -12,7 +12,7 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/chat_message.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/core/format.dart';
-import 'package:open_local_ui/core/snackbar.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/frontend/widgets/markdown_body.dart';
 import 'package:open_local_ui/frontend/widgets/tts_player.dart';
 import 'package:provider/provider.dart';

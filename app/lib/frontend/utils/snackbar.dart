@@ -10,6 +10,7 @@ class SnackBarHelpers {
     SnackbarContentType type, {
     Duration duration = const Duration(seconds: 5),
     Function? onTap,
+    BuildContext? context,
   }) async {
     // Determine the background color based on the content type
     Color backgroundColor;
@@ -69,6 +70,10 @@ class SnackBarHelpers {
       ),
     );
 
-    scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    if (context == null) {
+      scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 }
