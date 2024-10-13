@@ -37,56 +37,62 @@ class SplashScreen extends StatelessWidget {
 
   /// All loading and initialization code that returns or yields data
   /// needed for the material app or locale provider creation must be placed in the main function.
-  Future<void> _init() async {
-    final prefs = await SharedPreferences.getInstance();
+  Future<bool> _init() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
 
-    // Supabase
+      // Supabase
 
-    await Supabase.initialize(
-      url: Env.supabaseUrl,
-      anonKey: Env.supabaseAnonKey,
-    );
-
-    // Rive
-
-    await RiveFile.initialize();
-
-    // Discord RPC
-
-    final discordRPCEnabled = prefs.getBool('discordRPCEnabled') ?? false;
-
-    if (discordRPCEnabled) {
-      DiscordRPC.initialize();
-
-      final rpc = DiscordRPC(
-        applicationId: '1288789740338020392',
+      await Supabase.initialize(
+        url: Env.supabaseUrl,
+        anonKey: Env.supabaseAnonKey,
       );
 
-      rpc.start(autoRegister: true);
-      rpc.updatePresence(
-        DiscordPresence(
-          state: 'Chatting in OpenLocalUI 🚀',
-          details: 'github.com/WilliamKarolDiCioccio/open_local_ui',
-          startTimeStamp: DateTime.now().millisecondsSinceEpoch,
-        ),
-      );
+      // Rive
+
+      await RiveFile.initialize();
+
+      // Discord RPC
+
+      final discordRPCEnabled = prefs.getBool('discordRPCEnabled') ?? false;
+
+      if (discordRPCEnabled) {
+        DiscordRPC.initialize();
+
+        final rpc = DiscordRPC(
+          applicationId: '1288789740338020392',
+        );
+
+        rpc.start(autoRegister: true);
+        rpc.updatePresence(
+          DiscordPresence(
+            state: 'Chatting in OpenLocalUI 🚀',
+            details: 'github.com/WilliamKarolDiCioccio/open_local_ui',
+            startTimeStamp: DateTime.now().millisecondsSinceEpoch,
+          ),
+        );
+      }
+
+      // Dependency injection
+
+      final getIt = GetIt.instance;
+
+      getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
+      getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
+      getIt.registerSingleton<OllamaModelsDB>(OllamaModelsDB());
+
+      await GetIt.instance<OllamaAPIProvider>().startOllama();
+      await GetIt.instance<ChatSessionsDB>().init();
+      await GetIt.instance<OllamaModelsDB>().init();
+
+      // Preload assets
+
+      await _preloadAssets();
+    } catch (e) {
+      return false;
     }
 
-    // Dependency injection
-
-    final getIt = GetIt.instance;
-
-    getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
-    getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
-    getIt.registerSingleton<OllamaModelsDB>(OllamaModelsDB());
-
-    await GetIt.instance<OllamaAPIProvider>().startOllama();
-    await GetIt.instance<ChatSessionsDB>().init();
-    await GetIt.instance<OllamaModelsDB>().init();
-
-    // Preload assets
-
-    await _preloadAssets();
+    return true;
   }
 
   @override
@@ -97,7 +103,8 @@ class SplashScreen extends StatelessWidget {
     return FutureBuilder(
       future: _init(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+        if (snapshot.connectionState != ConnectionState.done ||
+            !snapshot.hasData) {
           return Scaffold(
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +133,7 @@ class SplashScreen extends StatelessWidget {
           backgroundColor: AdaptiveTheme.of(context).theme.primaryColor,
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.theme,
-          duration: 1500,
+          duration: 750,
           animationDuration: const Duration(seconds: 1),
         );
       },
