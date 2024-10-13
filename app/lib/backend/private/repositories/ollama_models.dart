@@ -276,6 +276,8 @@ class OllamaModelsDB {
     int? minSize,
     int? maxSize,
     int? maxResults,
+    required String order,
+    required String sort,
   }) {
     if (_db == null) {
       throw Exception("Database not initialized");
@@ -338,12 +340,51 @@ class OllamaModelsDB {
       queryParams.add(maxSize);
     }
 
+    // The UNION clause is used to fetch models without releases
     query += '''
       UNION
       SELECT m.id AS model_id, m.name, m.description, m.url, m.capabilities, NULL AS release_id, NULL AS num_params, NULL AS size
       FROM models m
       WHERE NOT EXISTS (SELECT 1 FROM releases r WHERE m.id = r.model_id)
     ''';
+
+    // Models without releases should be filtered by capabilities too as as it is a property from the models table
+    if (capabilitiesMask != null) {
+      query += ' AND (m.capabilities & ?) = ?';
+      queryParams.add(capabilitiesMask);
+      queryParams.add(capabilitiesMask);
+    }
+
+    // ORDER BY clause comes after the UNION
+    if (order.isNotEmpty) {
+      query += ' ORDER BY ';
+
+      switch (order) {
+        case 'name':
+          query += 'm.name';
+          break;
+        case 'size':
+          query += 'r.size';
+          break;
+        default:
+          query += 'm.name';
+          break;
+      }
+    }
+
+    if (sort.isNotEmpty) {
+      switch (sort) {
+        case 'ascending':
+          query += ' ASC';
+          break;
+        case 'descending':
+          query += ' DESC';
+          break;
+        default:
+          query += ' ASC';
+          break;
+      }
+    }
 
     final result = _db!.select(query, queryParams);
 

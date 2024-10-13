@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 
 class ModelSearchFilters {
-  Set<String> selectedCapabilities = {};
+  Set<String> order = {'name'};
+  Set<String> sort = {'ascending'};
+  Set<String> capabilities = {};
   int maxSize = 512
       .convertFromTo(
         DIGITAL_DATA.gigabyte,
@@ -15,6 +18,51 @@ class ModelSearchFilters {
       .toInt();
   int minSize = 0;
   int maxResults = 255;
+
+  ModelSearchFilters fromSharedPreferences(SharedPreferences prefs) {
+    final order = prefs.getString('model_search_filters_order') ?? 'name';
+    final sort = prefs.getString('model_search_filters_sort') ?? 'ascending';
+    final capabilities =
+        prefs.getStringList('model_search_filters_capabilities') ?? [];
+    final maxSize = prefs.getInt('model_search_filters_max_size') ??
+        512
+            .convertFromTo(
+              DIGITAL_DATA.gigabyte,
+              DIGITAL_DATA.byte,
+            )!
+            .toInt();
+    final minSize = prefs.getInt('model_search_filters_min_size') ?? 0;
+    final maxResults = prefs.getInt('model_search_filters_max_results') ?? 255;
+
+    this.order.clear();
+    this.order.add(order);
+    this.sort.clear();
+    this.sort.add(sort);
+    this.capabilities.addAll(capabilities);
+    this.maxSize = maxSize;
+    this.minSize = minSize;
+    this.maxResults = maxResults;
+
+    return this;
+  }
+
+  void toSharedPreferences(SharedPreferences prefs) {
+    prefs.setString(
+      'model_search_filters_order',
+      order.first,
+    );
+    prefs.setString(
+      'model_search_filters_sort',
+      sort.first,
+    );
+    prefs.setStringList(
+      'model_search_filters_capabilities',
+      capabilities.toList(),
+    );
+    prefs.setInt('model_search_filters_max_size', maxSize);
+    prefs.setInt('model_search_filters_min_size', minSize);
+    prefs.setInt('model_search_filters_max_results', maxResults);
+  }
 }
 
 class ModelSearchFiltersDialog extends StatefulWidget {
@@ -34,10 +82,13 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
   void initState() {
     super.initState();
 
-    _filters.selectedCapabilities.addAll(widget.filters.selectedCapabilities);
-    _filters.maxSize = widget.filters.maxSize;
-    _filters.minSize = widget.filters.minSize;
-    _filters.maxResults = widget.filters.maxResults;
+    SharedPreferences.getInstance().then((prefs) {
+      if (mounted) {
+        setState(() {
+          _filters = widget.filters.fromSharedPreferences(prefs);
+        });
+      }
+    });
   }
 
   @override
@@ -48,11 +99,89 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text(
+            AppLocalizations.of(context)
+                .modelSearchFiltersDialogSelectedOrderLabel,
+          ),
+          const Gap(8),
+          SegmentedButton<String>(
+            emptySelectionAllowed: false,
+            multiSelectionEnabled: false,
+            selected: _filters.order,
+            segments: [
+              ButtonSegment(
+                value: 'name',
+                label: Text(
+                  AppLocalizations.of(context).sortByNameOption,
+                ),
+                icon: const Icon(UniconsLine.tag),
+              ),
+              ButtonSegment(
+                value: 'size',
+                label: Text(
+                  AppLocalizations.of(context).sortBySizeOption,
+                ),
+                icon: const Icon(UniconsLine.database),
+              ),
+              ButtonSegment(
+                enabled: false,
+                value: 'popularity',
+                label: Text(
+                  AppLocalizations.of(context).sortByPopularityOption,
+                ),
+                icon: const Icon(UniconsLine.star),
+              ),
+            ],
+            onSelectionChanged: (order) {
+              setState(() {
+                _filters.order.clear();
+                _filters.order.addAll(order);
+              });
+            },
+          ),
           const Gap(16),
+          Text(
+            AppLocalizations.of(context)
+                .modelSearchFiltersDialogSelectedSortLabel,
+          ),
+          const Gap(8),
+          SegmentedButton<String>(
+            emptySelectionAllowed: false,
+            multiSelectionEnabled: false,
+            selected: _filters.sort,
+            segments: [
+              ButtonSegment(
+                value: 'ascending',
+                label: Text(
+                  AppLocalizations.of(context).sortOrderAscendingOption,
+                ),
+                icon: const Icon(UniconsLine.sort_amount_up),
+              ),
+              ButtonSegment(
+                value: 'descending',
+                label: Text(
+                  AppLocalizations.of(context).sortOrderDescendingOption,
+                ),
+                icon: const Icon(UniconsLine.sort_amount_down),
+              ),
+            ],
+            onSelectionChanged: (sort) {
+              setState(() {
+                _filters.sort.clear();
+                _filters.sort.addAll(sort);
+              });
+            },
+          ),
+          const Gap(16),
+          Text(
+            AppLocalizations.of(context)
+                .modelSearchFiltersDialogSelectedCapabilitiesLabel,
+          ),
+          const Gap(8),
           SegmentedButton<String>(
             emptySelectionAllowed: true,
             multiSelectionEnabled: true,
-            selected: _filters.selectedCapabilities,
+            selected: _filters.capabilities,
             segments: const [
               ButtonSegment(
                 value: 'vision',
@@ -77,8 +206,8 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
             ],
             onSelectionChanged: (capabilities) {
               setState(() {
-                _filters.selectedCapabilities.clear();
-                _filters.selectedCapabilities.addAll(capabilities);
+                _filters.capabilities.clear();
+                _filters.capabilities.addAll(capabilities);
               });
             },
           ),
@@ -175,7 +304,13 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
         TextButton.icon(
           label: Text(AppLocalizations.of(context).saveButtonShared),
           icon: const Icon(UniconsLine.save),
-          onPressed: () => Navigator.of(context).pop(_filters),
+          onPressed: () {
+            SharedPreferences.getInstance().then((prefs) {
+              widget.filters.toSharedPreferences(prefs);
+            });
+
+            Navigator.of(context).pop(_filters);
+          },
         ),
       ],
     );

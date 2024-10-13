@@ -248,6 +248,7 @@
   "modelPerformanceSettingsLabel": "Performance Settings",
   "modelPulledSuccessfullySnackBar": "Model pulled successfully",
   "modelPushedSuccessfullySnackBar": "Model pushed successfully",
+  "modelSearchFiltersDialogSelectedCapabilitiesLabel": "Capabilities:",
   "modelSearchFiltersDialogSelectedMaxResultsLabel": "Max results: {maxResults}",
   "@modelSearchFiltersDialogSelectedMaxResultsLabel": {
     "placeholders": {
@@ -272,6 +273,8 @@
       }
     }
   },
+  "modelSearchFiltersDialogSelectedOrderLabel": "Order by:",
+  "modelSearchFiltersDialogSelectedSortLabel": "Sort by:",
   "modelSearchFiltersDialogTitle": "Search filters",
   "modelSettingsDialogClearProfilesButton": "Clear profiles",
   "modelSettingsDialogClearProfilesText": "This will clear all profiles. Do you confirm?",
@@ -441,6 +444,7 @@
   "somethingWentWrongSnackBar": "Something went wrong",
   "sortByDateOption": "Date",
   "sortByNameOption": "Name",
+  "sortByPopularityOption": "Popularity",
   "sortBySizeOption": "Size",
   "sortOrderAscendingOption": "Ascending",
   "sortOrderDescendingOption": "Descending",

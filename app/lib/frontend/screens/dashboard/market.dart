@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/repositories/ollama_models.dart';
 import 'package:open_local_ui/frontend/dialogs/model_search_filters.dart';
 import 'package:open_local_ui/frontend/dialogs/pull_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,20 +33,30 @@ class _MarketPageState extends State<MarketPage> {
   }
 
   void _fetchModels() {
-    _filteredModels = GetIt.instance<OllamaModelsDB>().getModelsFiltered();
-    setState(() {});
+    SharedPreferences.getInstance().then((prefs) {
+      _filters = ModelSearchFilters().fromSharedPreferences(prefs);
+      _updateFilteredModels();
+
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   void _updateFilteredModels() {
     _filteredModels = GetIt.instance<OllamaModelsDB>().getModelsFiltered(
       name: _searchController.text,
-      capabilities: _filters.selectedCapabilities,
+      order: _filters.order.first,
+      sort: _filters.sort.first,
+      capabilities: _filters.capabilities,
       maxSize: _filters.maxSize,
       minSize: _filters.minSize,
       maxResults: _filters.maxResults,
     );
 
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

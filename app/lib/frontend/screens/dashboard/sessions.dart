@@ -61,8 +61,8 @@ class _SessionsPageState extends State<SessionsPage> {
 
     SharedPreferences.getInstance().then(
       (prefs) {
-        final sortBy = prefs.getInt('sessionsSortBy') ?? 0;
-        final sortOrder = prefs.getBool('sessionsSortOrder') ?? false;
+        final sortBy = prefs.getInt('sessions_sort_by') ?? 0;
+        final sortOrder = prefs.getBool('sessions_sort_order') ?? false;
 
         if (mounted) {
           setState(
@@ -187,7 +187,7 @@ class _SessionsPageState extends State<SessionsPage> {
               onSelectionChanged: (value) async {
                 final prefs = await SharedPreferences.getInstance();
 
-                await prefs.setInt('sessionsSortBy', value.first.index);
+                await prefs.setInt('sessions_sort_by', value.first.index);
 
                 setState(() {
                   _sortBy = value;
@@ -222,9 +222,9 @@ class _SessionsPageState extends State<SessionsPage> {
                 final prefs = await SharedPreferences.getInstance();
 
                 if (value.contains(SortOrder.descending)) {
-                  await prefs.setBool('sessionsSortOrder', true);
+                  await prefs.setBool('sessions_sort_order', true);
                 } else {
-                  await prefs.setBool('sessionsSortOrder', false);
+                  await prefs.setBool('sessions_sort_order', false);
                 }
 
                 setState(() {

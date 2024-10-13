@@ -69,8 +69,8 @@ class _InventoryPageState extends State<InventoryPage> {
     _sortOrder = {SortOrder.ascending};
 
     SharedPreferences.getInstance().then((prefs) {
-      final sortBy = prefs.getInt('modelsSortBy') ?? 0;
-      final sortOrder = prefs.getBool('modelsSortOrder') ?? false;
+      final sortBy = prefs.getInt('inventory_model_sort_by') ?? 0;
+      final sortOrder = prefs.getBool('inventory_models_sort_order') ?? false;
 
       setState(() {
         _sortBy = {SortBy.values[sortBy]};
@@ -200,7 +200,10 @@ class _InventoryPageState extends State<InventoryPage> {
               onSelectionChanged: (value) async {
                 final prefs = await SharedPreferences.getInstance();
 
-                await prefs.setInt('modelsSortBy', value.first.index);
+                await prefs.setInt(
+                  'inventory_model_sort_by',
+                  value.first.index,
+                );
 
                 setState(() {
                   _sortBy = value;
@@ -220,14 +223,14 @@ class _InventoryPageState extends State<InventoryPage> {
                   label: Text(
                     AppLocalizations.of(context).sortOrderAscendingOption,
                   ),
-                  icon: const Icon(UniconsLine.arrow_up),
+                  icon: const Icon(UniconsLine.sort_amount_up),
                 ),
                 ButtonSegment(
                   value: SortOrder.descending,
                   label: Text(
                     AppLocalizations.of(context).sortOrderDescendingOption,
                   ),
-                  icon: const Icon(UniconsLine.arrow_down),
+                  icon: const Icon(UniconsLine.sort_amount_down),
                 ),
               ],
               selected: _sortOrder,
@@ -235,9 +238,9 @@ class _InventoryPageState extends State<InventoryPage> {
                 final prefs = await SharedPreferences.getInstance();
 
                 if (value.contains(SortOrder.descending)) {
-                  await prefs.setBool('modelsSortOrder', true);
+                  await prefs.setBool('inventory_models_sort_order', true);
                 } else {
-                  await prefs.setBool('modelsSortOrder', false);
+                  await prefs.setBool('inventory_models_sort_order', false);
                 }
 
                 setState(() {
