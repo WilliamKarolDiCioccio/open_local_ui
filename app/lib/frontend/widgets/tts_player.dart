@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:gap/gap.dart';
+import 'package:get_it/get_it.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:markdown/markdown.dart' as md;
 import 'package:open_local_ui/backend/private/providers/chat.dart';
@@ -110,7 +111,7 @@ class _TTSPlayerState extends State<TTSPlayer>
     final text = document.body!.text;
 
     try {
-      _audioBytes = await TTSService.synthesyzeText(text);
+      _audioBytes = GetIt.instance<TTSService>().synthesyzeText(text);
 
       await _audioPlayer.setSource(
         BytesSource(

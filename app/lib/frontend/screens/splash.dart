@@ -10,6 +10,7 @@ import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/backend/private/repositories/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/repositories/ollama_models.dart';
+import 'package:open_local_ui/backend/private/services/tts.dart';
 import 'package:open_local_ui/constants/assets.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/env.dart';
@@ -80,6 +81,7 @@ class SplashScreen extends StatelessWidget {
       getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
       getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
       getIt.registerSingleton<OllamaModelsDB>(OllamaModelsDB());
+      getIt.registerSingleton<TTSService>(TTSService());
 
       await GetIt.instance<OllamaAPIProvider>().startOllama();
       await GetIt.instance<ChatSessionsDB>().init();
