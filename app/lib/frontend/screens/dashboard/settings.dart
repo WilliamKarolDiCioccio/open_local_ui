@@ -288,8 +288,6 @@ class AccessibilitySettings extends StatelessWidget {
         ),
         const Gap(16.0),
         DropdownMenu(
-          enableFilter: true,
-          enableSearch: true,
           menuHeight: 256,
           menuStyle: MenuStyle(
             elevation: WidgetStateProperty.all(
