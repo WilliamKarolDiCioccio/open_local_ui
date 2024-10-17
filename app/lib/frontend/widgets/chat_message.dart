@@ -200,7 +200,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               ),
               const Gap(8),
               Text(
-                FortmatHelpers.standardDate(widget.message.createdAt),
+                FormatHelpers.standardDate(widget.message.createdAt),
                 style: const TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w100,

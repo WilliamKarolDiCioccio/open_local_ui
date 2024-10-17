@@ -365,7 +365,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                                     subtitle: Text(
                                       AppLocalizations.of(context)
                                           .modifiedAtTextShared(
-                                        FortmatHelpers.standardDate(
+                                        FormatHelpers.standardDate(
                                           lastAccessTimestamp,
                                         ),
                                       ),
