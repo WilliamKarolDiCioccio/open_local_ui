@@ -80,7 +80,7 @@ class UpdateHelper {
     final newVersion = version.split('.').map(int.parse).toList();
 
     logger.d('Current version: $currentVersion');
-    logger.d('New version: $newVersion');
+    logger.d('Latest available version: $newVersion');
 
     final maxLength = [currentVersion.length, newVersion.length].reduce(
       (a, b) => a > b ? a : b,
