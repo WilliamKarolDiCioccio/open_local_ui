@@ -23,13 +23,13 @@ import 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 
-enum SortBy {
+enum ModelsSortBy {
   name,
   date,
   size,
 }
 
-enum SortOrder {
+enum ModelsSortOrder {
   ascending,
   descending,
 }
@@ -44,8 +44,8 @@ class InventoryPage extends StatefulWidget {
 }
 
 class _InventoryPageState extends State<InventoryPage> {
-  late Set<SortBy> _sortBy;
-  late Set<SortOrder> _sortOrder;
+  late Set<ModelsSortBy> _sortBy;
+  late Set<ModelsSortOrder> _sortOrder;
 
   final prototypeModel = Model(
     name: '',
@@ -65,16 +65,18 @@ class _InventoryPageState extends State<InventoryPage> {
   void initState() {
     super.initState();
 
-    _sortBy = {SortBy.name};
-    _sortOrder = {SortOrder.ascending};
+    _sortBy = {ModelsSortBy.name};
+    _sortOrder = {ModelsSortOrder.ascending};
 
     SharedPreferences.getInstance().then((prefs) {
       final sortBy = prefs.getInt('inventory_model_sort_by') ?? 0;
       final sortOrder = prefs.getBool('inventory_models_sort_order') ?? false;
 
       setState(() {
-        _sortBy = {SortBy.values[sortBy]};
-        _sortOrder = {sortOrder ? SortOrder.descending : SortOrder.ascending};
+        _sortBy = {ModelsSortBy.values[sortBy]};
+        _sortOrder = {
+          sortOrder ? ModelsSortOrder.descending : ModelsSortOrder.ascending,
+        };
       });
     });
   }
@@ -95,20 +97,20 @@ class _InventoryPageState extends State<InventoryPage> {
 
     sortedModels.sort(
       (a, b) {
-        if (_sortBy.contains(SortBy.name)) {
+        if (_sortBy.contains(ModelsSortBy.name)) {
           return a.name.compareTo(b.name);
-        } else if (_sortBy.contains(SortBy.date)) {
+        } else if (_sortBy.contains(ModelsSortBy.date)) {
           return a.modifiedAt.compareTo(
             b.modifiedAt,
           );
-        } else if (_sortBy.contains(SortBy.size)) {
+        } else if (_sortBy.contains(ModelsSortBy.size)) {
           return a.size.compareTo(b.size);
         }
         return 0;
       },
     );
 
-    if (_sortOrder.contains(SortOrder.descending)) {
+    if (_sortOrder.contains(ModelsSortOrder.descending)) {
       sortedModels = sortedModels.reversed.toList();
     }
 
@@ -171,25 +173,25 @@ class _InventoryPageState extends State<InventoryPage> {
           children: [
             Text(AppLocalizations.of(context).listFiltersSortByLabel),
             const Gap(16),
-            SegmentedButton<SortBy>(
+            SegmentedButton<ModelsSortBy>(
               selectedIcon: const Icon(UniconsLine.check),
               segments: [
                 ButtonSegment(
-                  value: SortBy.name,
+                  value: ModelsSortBy.name,
                   label: Text(
                     AppLocalizations.of(context).sortByNameOption,
                   ),
                   icon: const Icon(UniconsLine.tag),
                 ),
                 ButtonSegment(
-                  value: SortBy.date,
+                  value: ModelsSortBy.date,
                   label: Text(
                     AppLocalizations.of(context).sortByDateOption,
                   ),
                   icon: const Icon(UniconsLine.clock),
                 ),
                 ButtonSegment(
-                  value: SortBy.size,
+                  value: ModelsSortBy.size,
                   label: Text(
                     AppLocalizations.of(context).sortBySizeOption,
                   ),
@@ -215,18 +217,18 @@ class _InventoryPageState extends State<InventoryPage> {
               AppLocalizations.of(context).listFiltersSortOrderLabel,
             ),
             const Gap(16),
-            SegmentedButton<SortOrder>(
+            SegmentedButton<ModelsSortOrder>(
               selectedIcon: const Icon(UniconsLine.check),
               segments: [
                 ButtonSegment(
-                  value: SortOrder.ascending,
+                  value: ModelsSortOrder.ascending,
                   label: Text(
                     AppLocalizations.of(context).sortOrderAscendingOption,
                   ),
                   icon: const Icon(UniconsLine.sort_amount_up),
                 ),
                 ButtonSegment(
-                  value: SortOrder.descending,
+                  value: ModelsSortOrder.descending,
                   label: Text(
                     AppLocalizations.of(context).sortOrderDescendingOption,
                   ),
@@ -237,7 +239,7 @@ class _InventoryPageState extends State<InventoryPage> {
               onSelectionChanged: (value) async {
                 final prefs = await SharedPreferences.getInstance();
 
-                if (value.contains(SortOrder.descending)) {
+                if (value.contains(ModelsSortOrder.descending)) {
                   await prefs.setBool('inventory_models_sort_order', true);
                 } else {
                   await prefs.setBool('inventory_models_sort_order', false);
@@ -478,7 +480,7 @@ class _ModelListTileState extends State<ModelListTile> {
       title: Text(widget.model.name),
       subtitle: Text(
         AppLocalizations.of(context).modifiedAtTextShared(
-          FortmatHelpers.standardDate(widget.model.modifiedAt),
+          FormatHelpers.standardDate(widget.model.modifiedAt),
         ),
         style: const TextStyle(
           color: Colors.grey,
