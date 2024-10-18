@@ -461,8 +461,6 @@ class _SocialSettingsState extends State<SocialSettings> {
       _discordRPCEnabled = value;
     });
 
-    DiscordRPC.initialize();
-
     final rpc = DiscordRPC(
       applicationId: '1288789740338020392',
     );
