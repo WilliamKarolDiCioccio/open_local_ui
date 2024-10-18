@@ -69,6 +69,17 @@ class ThemeSettings extends StatefulWidget {
 }
 
 class _ThemeSettingsState extends State<ThemeSettings> {
+  @override
+  void initState() {
+    super.initState();
+
+    SystemTheme.onChange.listen((event) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
   Future<bool> _isAccentSynced() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('sync_accent_color') ?? false;

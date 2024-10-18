@@ -37,6 +37,27 @@ void main() async {
 
   if (defaultTargetPlatform.supportsAccentColor) {
     await SystemTheme.accentColor.load();
+
+    SystemTheme.onChange.listen((event) {
+      if (prefs.getBool('sync_accent_color') ?? false) {
+        AdaptiveTheme.of(scaffoldMessengerKey.currentContext!).setTheme(
+          light: ThemeData(
+            fontFamily: 'ValeraRound',
+            useMaterial3: true,
+            brightness: Brightness.light,
+            colorSchemeSeed: event.accent,
+          ),
+          dark: ThemeData(
+            fontFamily: 'ValeraRound',
+            useMaterial3: true,
+            brightness: Brightness.dark,
+            colorSchemeSeed: event.accent,
+          ),
+        );
+
+        logger.i('System accent color changed: ${event.accent}');
+      }
+    });
   }
 
   late Color themeAccentColor;
