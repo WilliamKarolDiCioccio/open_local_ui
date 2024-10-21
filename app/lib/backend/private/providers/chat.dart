@@ -63,6 +63,11 @@ class ChatProvider extends ChangeNotifier {
   void _init() async {
     final prefs = await SharedPreferences.getInstance();
 
+    // Ensure the Ollama API provider is initialized before loading the models
+    // This is already done in the OllamaAPIProvider startOllama method however
+    // even doe Ollama endpoints might be available, the models might not be loaded yet
+    await GetIt.instance<OllamaAPIProvider>().updateList();
+
     final models = GetIt.instance<OllamaAPIProvider>().models;
     final modelName = prefs.getString('modelName') ?? '';
 

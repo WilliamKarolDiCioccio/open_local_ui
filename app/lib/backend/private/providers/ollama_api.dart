@@ -65,9 +65,11 @@ class OllamaAPIProvider extends ChangeNotifier {
           }
         });
 
-        await _process.exitCode.then((int code) {
-          logger.d('Process exited with code $code');
-        });
+        unawaited(
+          _process.exitCode.then((int code) {
+            logger.d('Process exited with code $code');
+          }),
+        );
       }
 
       await updateList();
