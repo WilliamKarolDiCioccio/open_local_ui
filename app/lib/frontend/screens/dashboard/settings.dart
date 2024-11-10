@@ -11,6 +11,7 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/core/color.dart';
+import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -462,7 +463,7 @@ class _SocialSettingsState extends State<SocialSettings> {
     });
 
     final rpc = DiscordRPC(
-      applicationId: '1288789740338020392',
+      applicationId: Env.discordClientId,
     );
 
     if (_discordRPCEnabled) {

@@ -61,7 +61,7 @@ class SplashScreen extends StatelessWidget {
 
       if (discordRPCEnabled) {
         final rpc = DiscordRPC(
-          applicationId: '1288789740338020392',
+          applicationId: Env.discordClientId,
         );
 
         rpc.start(autoRegister: true);
