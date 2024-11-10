@@ -82,5 +82,14 @@ dist/
 # Certificate files
 *.pfx
 *.cer
+
 # Contains the PFX password
 make_config.yaml
+
+# Supabase local environment files
+.branches
+.temp
+.env
+supabase/migrations
+supabase/.gitignore
+supabase/config.toml
