@@ -1,3 +1,15 @@
+# IMPORTANT UPDATE
+
+Hello everyone! Thank you all for your patience. I'm thrilled to announce that development on OpenLocalUI will be resuming soon! 🎉 Exciting updates and major improvements are just around the corner. Also, thanks to the incredible developers behind Langchainze.dart for their amazing job.
+
+A heartfelt thank you to the 40+ amazing stargazers, contributors, and supporters who have shown genuine appreciation for OpenLocalUI's potential. Your support motivates me to push OpenLocalUI towards a bright and innovative future.
+
+Stay tuned—great things are coming! 🚀
+ 
+Let me seize the opportunity to remember our official Discord server!
+
+[![](https://dcbadge.limes.pink/api/server/S82WPJbPpz)](https://discord.gg/S82WPJbPpz)
+
 # OpenLocalUI
 
 ![coverage](./app/coverage_badge.svg?sanitize=true)
