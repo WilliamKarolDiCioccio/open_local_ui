@@ -96,5 +96,4 @@ You can join our Discord server to get help or take part in the devlopment of Op
 
 ## ⚒️ Related Projects
 
-- [Tacotron.CPP](https://github.com/WilliamKarolDiCioccio/tacotron.cpp): a [llama.cpp](https://github.com/ggerganov/llama.cpp) inpired local accelerated inference engine to TTS and STT models for OpenLocalUI.
 - [gpu_info](https://github.com/WilliamKarolDiCioccio/gpu_info): a dart package to retieve GPU details to model suggestions to the user with more or less no reason to exist outside of OpenLocalUI.
