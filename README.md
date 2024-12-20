@@ -96,4 +96,5 @@ You can join our Discord server to get help or take part in the devlopment of Op
 
 ## ⚒️ Related Projects
 
+- [fl_nodes](https://github.com/WilliamKarolDiCioccio/fl_nodes): a fully customizable, lightweight, and scalable node-based editor for Flutter.
 - [gpu_info](https://github.com/WilliamKarolDiCioccio/gpu_info): a dart package to retieve GPU details to model suggestions to the user with more or less no reason to exist outside of OpenLocalUI.
