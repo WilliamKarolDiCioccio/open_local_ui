@@ -43,7 +43,7 @@ dependencies:
   # Icons and Graphics
   unicons: ^2.1.1
   image: ^4.2.0
-  flutter_image_converter: ^0.3.1
+  flutter_image_converter: ^0.4.1
   cached_network_image: ^3.3.1
   flutter_svg: ^2.0.10+1
 
