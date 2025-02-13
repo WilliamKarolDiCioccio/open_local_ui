@@ -87,7 +87,7 @@ class GitHubAPI {
     );
 
     final headers = {
-      'Authorization': 'token ${Env.gitHubReleasesPat}',
+      'Authorization': 'token ${Env.gitHubPat}',
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json',
       'X-GitHub-Api-Version': '2022-11-28',
@@ -125,7 +125,7 @@ class GitHubAPI {
     );
 
     final headers = {
-      'Authorization': 'token ${Env.gitHubReleasesPat}',
+      'Authorization': 'token ${Env.gitHubPat}',
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json',
       'X-GitHub-Api-Version': '2022-11-28',
@@ -160,7 +160,7 @@ class GitHubAPI {
     );
 
     final headers = {
-      'Authorization': 'token ${Env.gitHubCollaboratorsPat}',
+      'Authorization': 'token ${Env.gitHubPat}',
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
       'X-GitHub-Api-Version': '2022-11-28',
@@ -213,7 +213,7 @@ class GitHubAPI {
     );
 
     final headers = {
-      'Authorization': 'token ${Env.gitHubFeedbackPat}',
+      'Authorization': 'token ${Env.gitHubPat}',
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json',
       'X-GitHub-Api-Version': '2022-11-28',
