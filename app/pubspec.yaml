@@ -123,7 +123,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   mockito: ^5.4.4
   test_coverage_badge: ^0.3.2
   build_runner: ^2.4.9
