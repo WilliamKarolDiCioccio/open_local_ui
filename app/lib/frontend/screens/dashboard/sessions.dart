@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:open_local_ui/backend/private/models/chat_session.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/core/format.dart';
-import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/frontend/dialogs/confirmation.dart';
 import 'package:open_local_ui/frontend/dialogs/text_field.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,13 +23,13 @@ import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum SortBy {
+enum SessionsSortBy {
   name,
   date,
   size,
 }
 
-enum SortOrder {
+enum SessionsSortOrder {
   ascending,
   descending,
 }
@@ -43,8 +44,8 @@ class SessionsPage extends StatefulWidget {
 }
 
 class _SessionsPageState extends State<SessionsPage> {
-  late Set<SortBy> _sortBy;
-  late Set<SortOrder> _sortOrder;
+  late Set<SessionsSortBy> _sortBy;
+  late Set<SessionsSortOrder> _sortOrder;
 
   final prototypeChatSession = ChatSessionWrapperV1(
     DateTime(0),
@@ -56,8 +57,8 @@ class _SessionsPageState extends State<SessionsPage> {
   void initState() {
     super.initState();
 
-    _sortBy = {SortBy.name};
-    _sortOrder = {SortOrder.ascending};
+    _sortBy = {SessionsSortBy.name};
+    _sortOrder = {SessionsSortOrder.ascending};
 
     SharedPreferences.getInstance().then(
       (prefs) {
@@ -67,9 +68,11 @@ class _SessionsPageState extends State<SessionsPage> {
         if (mounted) {
           setState(
             () {
-              _sortBy = {SortBy.values[sortBy]};
+              _sortBy = {SessionsSortBy.values[sortBy]};
               _sortOrder = {
-                sortOrder ? SortOrder.descending : SortOrder.ascending,
+                sortOrder
+                    ? SessionsSortOrder.descending
+                    : SessionsSortOrder.ascending,
               };
             },
           );
@@ -95,18 +98,18 @@ class _SessionsPageState extends State<SessionsPage> {
 
     sortedSessions.sort(
       (a, b) {
-        if (_sortBy.contains(SortBy.name)) {
+        if (_sortBy.contains(SessionsSortBy.name)) {
           return a.title.compareTo(b.title);
-        } else if (_sortBy.contains(SortBy.date)) {
+        } else if (_sortBy.contains(SessionsSortBy.date)) {
           return a.createdAt.compareTo(b.createdAt);
-        } else if (_sortBy.contains(SortBy.size)) {
+        } else if (_sortBy.contains(SessionsSortBy.size)) {
           return a.title.length.compareTo(b.title.length);
         }
         return 0;
       },
     );
 
-    if (_sortOrder.contains(SortOrder.descending)) {
+    if (_sortOrder.contains(SessionsSortOrder.descending)) {
       sortedSessions = sortedSessions.reversed.toList();
     }
 
@@ -158,25 +161,25 @@ class _SessionsPageState extends State<SessionsPage> {
           children: [
             Text(AppLocalizations.of(context).listFiltersSortByLabel),
             const Gap(16),
-            SegmentedButton<SortBy>(
+            SegmentedButton<SessionsSortBy>(
               selectedIcon: const Icon(UniconsLine.check),
               segments: [
                 ButtonSegment(
-                  value: SortBy.name,
+                  value: SessionsSortBy.name,
                   label: Text(
                     AppLocalizations.of(context).sortByNameOption,
                   ),
                   icon: const Icon(UniconsLine.tag),
                 ),
                 ButtonSegment(
-                  value: SortBy.date,
+                  value: SessionsSortBy.date,
                   label: Text(
                     AppLocalizations.of(context).sortByDateOption,
                   ),
                   icon: const Icon(UniconsLine.clock),
                 ),
                 ButtonSegment(
-                  value: SortBy.size,
+                  value: SessionsSortBy.size,
                   label: Text(
                     AppLocalizations.of(context).sortBySizeOption,
                   ),
@@ -199,18 +202,18 @@ class _SessionsPageState extends State<SessionsPage> {
               AppLocalizations.of(context).listFiltersSortOrderLabel,
             ),
             const Gap(16),
-            SegmentedButton<SortOrder>(
+            SegmentedButton<SessionsSortOrder>(
               selectedIcon: const Icon(UniconsLine.check),
               segments: [
                 ButtonSegment(
-                  value: SortOrder.ascending,
+                  value: SessionsSortOrder.ascending,
                   label: Text(
                     AppLocalizations.of(context).sortOrderAscendingOption,
                   ),
                   icon: const Icon(UniconsLine.sort_amount_up),
                 ),
                 ButtonSegment(
-                  value: SortOrder.descending,
+                  value: SessionsSortOrder.descending,
                   label: Text(
                     AppLocalizations.of(context).sortOrderDescendingOption,
                   ),
@@ -221,7 +224,7 @@ class _SessionsPageState extends State<SessionsPage> {
               onSelectionChanged: (value) async {
                 final prefs = await SharedPreferences.getInstance();
 
-                if (value.contains(SortOrder.descending)) {
+                if (value.contains(SessionsSortOrder.descending)) {
                   await prefs.setBool('sessions_sort_order', true);
                 } else {
                   await prefs.setBool('sessions_sort_order', false);
@@ -260,7 +263,7 @@ class _SessionsPageState extends State<SessionsPage> {
               shrinkWrap: true,
               physics: physics,
               controller: controller,
-              prototypeItem: !_sortBy.contains(SortBy.date)
+              prototypeItem: !_sortBy.contains(SessionsSortBy.date)
                   ? SessionListTile(
                       session: prototypeChatSession,
                       pageController: widget.pageController,
@@ -272,9 +275,10 @@ class _SessionsPageState extends State<SessionsPage> {
                 final previousSession =
                     index > 0 ? sortedSessions[index - 1] : null;
 
-                final bool showDateHeader = _sortBy.contains(SortBy.date) &&
-                    previousSession != null &&
-                    session.createdAt.day != previousSession.createdAt.day;
+                final bool showDateHeader =
+                    _sortBy.contains(SessionsSortBy.date) &&
+                        previousSession != null &&
+                        session.createdAt.day != previousSession.createdAt.day;
 
                 final sessionTile = SessionListTile(
                   session: session,
@@ -288,13 +292,22 @@ class _SessionsPageState extends State<SessionsPage> {
                     );
 
                 if (showDateHeader) {
+                  final isOlderThanSixDays =
+                      DateTime.now().difference(session.createdAt).inDays > 6;
+
+                  final sessionDateText = isOlderThanSixDays
+                      ? FormatHelpers.standardDate(session.createdAt)
+                      : DateFormat('EEEE').format(session.createdAt);
+
+                  final dateHeaderText = 'Before $sessionDateText';
+
                   final dateHeader = Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          FortmatHelpers.standardDate(session.createdAt),
+                          dateHeaderText,
                           style: const TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -302,7 +315,10 @@ class _SessionsPageState extends State<SessionsPage> {
                         ),
                         const Divider(),
                       ],
-                    ),
+                    ).animate(delay: (index * 100).ms).fadeIn(
+                          duration: 900.ms,
+                          delay: 300.ms,
+                        ),
                   );
 
                   return Column(
@@ -427,7 +443,7 @@ class _SessionListTileState extends State<SessionListTile> {
       title: Text(widget.session.title),
       subtitle: Text(
         AppLocalizations.of(context).createdAtTextShared(
-          FortmatHelpers.standardDate(widget.session.createdAt),
+          FormatHelpers.standardDate(widget.session.createdAt),
         ),
         style: const TextStyle(
           color: Colors.grey,

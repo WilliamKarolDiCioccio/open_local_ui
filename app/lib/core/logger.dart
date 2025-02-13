@@ -53,7 +53,7 @@ Future<void> initLogger() async {
 }
 
 Future<File> _createLogFile() async {
-  final timeStamp = FortmatHelpers.standardDate(DateTime.now())
+  final timeStamp = FormatHelpers.standardDate(DateTime.now())
       .replaceAll(' ', '_')
       .replaceAll('/', '-')
       .replaceAll(':', '-');

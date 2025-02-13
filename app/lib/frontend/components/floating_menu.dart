@@ -98,6 +98,8 @@ class _FloatingMenuComponentState extends State<FloatingMenuComponent> {
       topPosition = margin;
     }
 
+    MediaQuery.of(context);
+
     return Positioned(
       top: topPosition,
       left: leftPosition,

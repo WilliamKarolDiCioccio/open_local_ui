@@ -55,6 +55,10 @@ class ModelSettingsHandler {
     if (_modelSettingsMap.isEmpty) {
       _modelSettingsMap['default'] = ModelSettings.fromJson({});
     }
+
+    if (!_modelSettingsMap.containsKey(_activeProfileName)) {
+      throw ArgumentError('Active profile does not exist');
+    }
   }
 
   /// Returns the specified settings profile file for the given model.

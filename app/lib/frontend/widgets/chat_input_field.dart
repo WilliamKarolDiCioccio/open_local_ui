@@ -203,6 +203,13 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
               expands: false,
             ),
           ),
+          const Gap(8.0),
+          Text(
+            AppLocalizations.of(context).llmMistakesWarningText,
+            style: const TextStyle(
+              color: Colors.grey,
+            ),
+          ),
         ],
       ),
     );

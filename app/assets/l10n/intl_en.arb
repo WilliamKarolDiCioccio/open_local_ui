@@ -145,6 +145,7 @@
   "licenseButton": "License",
   "listFiltersSortByLabel": "Sort by",
   "listFiltersSortOrderLabel": "In order",
+  "llmMistakesWarningText": "LLMs can make mistakes. Please check important information.",
   "logitsAll": "Logits All",
   "lowVram": "Low VRAM",
   "mainGpu": "Main GPU",

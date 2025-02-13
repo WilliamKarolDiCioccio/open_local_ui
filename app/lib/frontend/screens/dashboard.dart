@@ -1,36 +1,28 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:battery_plus/battery_plus.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:gpu_info/gpu_info.dart';
-import 'package:image/image.dart' as img;
+import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
-import 'package:open_local_ui/core/github.dart';
+import 'package:open_local_ui/backend/private/services/auth.dart';
+import 'package:open_local_ui/core/feedback.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/components/floating_menu.dart';
 import 'package:open_local_ui/frontend/components/window_management_bar.dart';
 import 'package:open_local_ui/frontend/dialogs/changelog.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
-import 'package:open_local_ui/frontend/screens/dashboard/about.dart';
-import 'package:open_local_ui/frontend/screens/dashboard/chat.dart';
-import 'package:open_local_ui/frontend/screens/dashboard/inventory.dart';
-import 'package:open_local_ui/frontend/screens/dashboard/market.dart';
-import 'package:open_local_ui/frontend/screens/dashboard/sessions.dart';
-import 'package:open_local_ui/frontend/screens/dashboard/settings.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:open_local_ui/frontend/screens/dashboard/dashboard.dart';
+import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:system_info2/system_info2.dart';
 import 'package:unicons/unicons.dart';
 
 enum PageIndex { chat, sessions, models, settings, about }
@@ -43,9 +35,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final _buttonKey = GlobalKey();
   final _pageController = PageController();
-  final _overlayPortalController = OverlayPortalController();
 
   @override
   void initState() {
@@ -112,10 +102,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  void _changePage(int pageIndex) {
-    _pageController.jumpToPage(pageIndex);
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -135,9 +121,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  child: _buildPageView(),
+                  child: _PageView(_pageController),
                 ),
-                _buildSideMenu(),
+                _SideMenu(_pageController),
               ],
             ),
           ),
@@ -152,94 +138,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+}
 
-  Future<String> _getDeviceInfo() async {
-    final gpuInfoPlugin = GpuInfo();
+class _PageView extends StatelessWidget {
+  final PageController pageController;
 
-    List<GpuInfoStruct> gpusInfo;
+  const _PageView(this.pageController);
 
-    gpusInfo = await gpuInfoPlugin.getGpusInfo();
-
-    GpuInfoStruct? bestGpu;
-
-    for (final gpuInfo in gpusInfo) {
-      if (bestGpu == null) {
-        bestGpu = gpuInfo;
-      } else {
-        if (gpuInfo.memoryAmount > bestGpu.memoryAmount) {
-          bestGpu = gpuInfo;
-        }
-      }
-    }
-
-    return '''
-- OS Name: ${SysInfo.operatingSystemName}
-- Kernel Version: ${SysInfo.kernelVersion}
-- OS Version: ${SysInfo.operatingSystemVersion}
-- CPU: ${SysInfo.cores[0].name}
-- CPU Cores: ${SysInfo.cores.length}
-- System Memory: ${(SysInfo.getTotalPhysicalMemory() / (1024 * 1024)).round()}
-- GPU: ${bestGpu?.deviceName}
-- GPU Memory: ${bestGpu?.memoryAmount}
-''';
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AdaptiveTheme.of(context).mode.isDark
+            ? Colors.black12
+            : Colors.white,
+      ),
+      padding: const EdgeInsets.all(32.0),
+      child: PageView(
+        controller: pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          const ChatPage(),
+          SessionsPage(pageController: pageController),
+          InventoryPage(pageController: pageController),
+          MarketPage(pageController: pageController),
+          const SettingsPage(),
+          const AboutPage(),
+        ],
+      ),
+    );
   }
+}
 
-  void _uploadFeedback(UserFeedback feedback) async {
-    final supabase = Supabase.instance.client;
+class _SideMenu extends StatefulWidget {
+  final PageController pageController;
 
-    final tempDir = await getTemporaryDirectory();
-    final filename = DateTime.now().millisecondsSinceEpoch;
+  const _SideMenu(this.pageController);
 
-    final screenshotFile = File(
-      '${tempDir.path}/feedback-screenshot.temp.jpg',
-    );
+  @override
+  State<_SideMenu> createState() => _SideMenuState();
+}
 
-    if (!await screenshotFile.exists()) {
-      await screenshotFile.parent.create(recursive: true);
-    }
-
-    final pngImage = img.decodePng(feedback.screenshot);
-    final resizedImage = img.copyResize(pngImage!, width: 1280);
-    final jpgImage = img.encodeJpg(resizedImage);
-
-    await screenshotFile.writeAsBytes(jpgImage);
-
-    await supabase.storage
-        .from('feedback')
-        .upload('screenshots/$filename.jpg', screenshotFile);
-
-    final screenshotUrl = supabase.storage
-        .from('feedback')
-        .getPublicUrl('screenshots/$filename.jpg');
-
-    await supabase.storage
-        .from('feedback')
-        .upload('logs/$filename.txt', getLogFile());
-
-    final logUrl =
-        supabase.storage.from('feedback').getPublicUrl('logs/$filename.txt');
-
-    logger.d(
-      '''
-      Feedback attachment uploaded successfully!
-      \n
-      Screenshot: $screenshotUrl
-      \n
-      Log: $logUrl
-      ''',
-    );
-
-    final deviceInfo = await _getDeviceInfo();
-
-    await GitHubAPI.createGitHubIssue(
-      feedback.text,
-      screenshotUrl,
-      logUrl,
-      deviceInfo,
-    );
-
-    await screenshotFile.delete();
-  }
+class _SideMenuState extends State<_SideMenu> {
+  final _overlayPortalController = OverlayPortalController();
+  final _buttonKey = GlobalKey();
 
   Widget _buildOptionsOverlay() {
     return FloatingMenuComponent(
@@ -248,7 +190,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         TextButton.icon(
           onPressed: () {
             BetterFeedback.of(context).show(
-              (UserFeedback feedback) => _uploadFeedback(
+              (UserFeedback feedback) async =>
+                  await FeedbackHelpers.uploadFeedback(
                 feedback,
               ),
             );
@@ -314,7 +257,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildSideMenu() {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -333,17 +277,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: CallbackShortcuts(
         bindings: {
           const SingleActivator(LogicalKeyboardKey.digit0, control: true): () =>
-              _changePage(0),
+              widget.pageController.jumpToPage(0),
           const SingleActivator(LogicalKeyboardKey.digit1, control: true): () =>
-              _changePage(1),
+              widget.pageController.jumpToPage(1),
           const SingleActivator(LogicalKeyboardKey.digit2, control: true): () =>
-              _changePage(2),
+              widget.pageController.jumpToPage(2),
           const SingleActivator(LogicalKeyboardKey.digit3, control: true): () =>
-              _changePage(3),
+              widget.pageController.jumpToPage(3),
           const SingleActivator(LogicalKeyboardKey.digit4, control: true): () =>
-              _changePage(4),
+              widget.pageController.jumpToPage(4),
           const SingleActivator(LogicalKeyboardKey.digit5, control: true): () =>
-              _changePage(5),
+              widget.pageController.jumpToPage(5),
         },
         child: Focus(
           autofocus: true,
@@ -375,7 +319,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.comment),
-                onPressed: () => _changePage(0),
+                onPressed: () => widget.pageController.jumpToPage(0),
               ),
               TextButton.icon(
                 label: Text(
@@ -383,7 +327,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.archive),
-                onPressed: () => _changePage(1),
+                onPressed: () => widget.pageController.jumpToPage(1),
               ),
               TextButton.icon(
                 label: Text(
@@ -391,7 +335,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.backpack),
-                onPressed: () => _changePage(2),
+                onPressed: () => widget.pageController.jumpToPage(2),
               ),
               TextButton.icon(
                 label: Text(
@@ -399,7 +343,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.shop),
-                onPressed: () => _changePage(3),
+                onPressed: () => widget.pageController.jumpToPage(3),
               ),
               const SizedBox(
                 width: 200,
@@ -411,7 +355,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.setting),
-                onPressed: () => _changePage(4),
+                onPressed: () => widget.pageController.jumpToPage(4),
               ),
               TextButton.icon(
                 label: Text(
@@ -419,7 +363,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 icon: const Icon(UniconsLine.info_circle),
-                onPressed: () => _changePage(5),
+                onPressed: () => widget.pageController.jumpToPage(5),
               ),
               const Spacer(),
               TextButton(
@@ -452,29 +396,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildPageView() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AdaptiveTheme.of(context).mode.isDark
-            ? Colors.black12
-            : Colors.white,
-      ),
-      padding: const EdgeInsets.all(32.0),
-      child: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          const ChatPage(),
-          SessionsPage(pageController: _pageController),
-          InventoryPage(pageController: _pageController),
-          MarketPage(pageController: _pageController),
-          const SettingsPage(),
-          const AboutPage(),
-        ],
       ),
     );
   }

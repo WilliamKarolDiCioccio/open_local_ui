@@ -11,6 +11,7 @@ import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/core/color.dart';
+import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,6 +70,17 @@ class ThemeSettings extends StatefulWidget {
 }
 
 class _ThemeSettingsState extends State<ThemeSettings> {
+  @override
+  void initState() {
+    super.initState();
+
+    SystemTheme.onChange.listen((event) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
   Future<bool> _isAccentSynced() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('sync_accent_color') ?? false;
@@ -288,8 +300,6 @@ class AccessibilitySettings extends StatelessWidget {
         ),
         const Gap(16.0),
         DropdownMenu(
-          enableFilter: true,
-          enableSearch: true,
           menuHeight: 256,
           menuStyle: MenuStyle(
             elevation: WidgetStateProperty.all(
@@ -452,10 +462,8 @@ class _SocialSettingsState extends State<SocialSettings> {
       _discordRPCEnabled = value;
     });
 
-    DiscordRPC.initialize();
-
     final rpc = DiscordRPC(
-      applicationId: '1288789740338020392',
+      applicationId: Env.discordClientId,
     );
 
     if (_discordRPCEnabled) {
