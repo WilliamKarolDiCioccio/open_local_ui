@@ -131,7 +131,7 @@ dev_dependencies:
   json_serializable: ^6.7.1
   isar_generator: ^3.1.0+1
   envied_generator: ^0.5.4+1
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.3
   msix: ^3.16.8
 
 flutter:
