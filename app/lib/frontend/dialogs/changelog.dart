@@ -27,7 +27,7 @@ class ChangelogDialog extends StatelessWidget {
               fontSize: 12,
             ),
           ),
-          backgroundColor: Colors.red.withOpacity(0.25),
+          backgroundColor: Colors.red.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: const BorderSide(
@@ -49,7 +49,7 @@ class ChangelogDialog extends StatelessWidget {
               fontSize: 12,
             ),
           ),
-          backgroundColor: Colors.green.withOpacity(0.25),
+          backgroundColor: Colors.green.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: const BorderSide(
@@ -71,7 +71,7 @@ class ChangelogDialog extends StatelessWidget {
               fontSize: 12,
             ),
           ),
-          backgroundColor: Colors.tealAccent.withOpacity(0.25),
+          backgroundColor: Colors.tealAccent.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: const BorderSide(

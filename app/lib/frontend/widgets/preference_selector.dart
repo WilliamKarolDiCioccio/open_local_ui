@@ -100,7 +100,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                             .buttonTheme
                             .colorScheme!
                             .primary
-                            .withOpacity(0.5),
+                            .withAlpha((255 * 0.5).toInt()),
                         blurRadius: 10.0,
                         offset: const Offset(0, 5),
                       ),

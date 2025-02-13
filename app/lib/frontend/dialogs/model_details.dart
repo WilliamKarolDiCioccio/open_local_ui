@@ -57,7 +57,7 @@ class _ModelDetailsDialogState extends State<ModelDetailsDialog> {
               if (description.isNotEmpty) const Divider(),
               Text(
                 AppLocalizations.of(context).modifiedAtTextShared(
-                  widget.model.modifiedAt,
+                  widget.model.modifiedAt.toString(),
                 ),
                 style: const TextStyle(
                   color: Colors.grey,

@@ -378,7 +378,7 @@ class _ModelListTileState extends State<ModelListTile> {
               fontSize: 12,
             ),
           ),
-          backgroundColor: Colors.purple.withOpacity(0.25),
+          backgroundColor: Colors.purple.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: const BorderSide(
@@ -403,7 +403,7 @@ class _ModelListTileState extends State<ModelListTile> {
               fontSize: 12,
             ),
           ),
-          backgroundColor: Colors.blue.withOpacity(0.25),
+          backgroundColor: Colors.blue.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: const BorderSide(
@@ -428,7 +428,7 @@ class _ModelListTileState extends State<ModelListTile> {
               fontSize: 12,
             ),
           ),
-          backgroundColor: Colors.green.withOpacity(0.25),
+          backgroundColor: Colors.green.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: const BorderSide(
@@ -453,7 +453,7 @@ class _ModelListTileState extends State<ModelListTile> {
               fontSize: 12,
             ),
           ),
-          backgroundColor: Colors.deepOrange.withOpacity(0.25),
+          backgroundColor: Colors.deepOrange.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: const BorderSide(

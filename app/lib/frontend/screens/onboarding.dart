@@ -13,7 +13,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:open_local_ui/core/color.dart';
 import 'package:open_local_ui/core/process.dart';
 import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:open_local_ui/frontend/components/rive_animation.dart';
@@ -26,6 +25,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_info2/system_info2.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:unicons/unicons.dart';
+
+import '../../core/json_extensions.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -512,7 +513,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
   Future<Color> _getAccent() async {
     final prefs = await SharedPreferences.getInstance();
-    return ColorHelpers.colorFromHex(
+    return JSONColor.fromJson(
       prefs.getString('accent_color') ?? Colors.cyan.hex,
     );
   }
@@ -636,7 +637,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
                     await prefs.setString(
                       'accent_color',
-                      ColorHelpers.colorToHex(color),
+                      color.toJson(color),
                     );
                   },
                 );
@@ -694,7 +695,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
                         _setAccent(
                           context,
-                          ColorHelpers.colorFromHex(
+                          JSONColor.fromJson(
                             savedColorCode ?? Colors.cyan.hex,
                           ),
                         );

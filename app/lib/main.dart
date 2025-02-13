@@ -14,7 +14,7 @@ import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/backend/private/repositories/chat_sessions.dart';
 import 'package:open_local_ui/backend/private/repositories/ollama_models.dart';
 import 'package:open_local_ui/constants/constants.dart';
-import 'package:open_local_ui/core/color.dart';
+import 'package:open_local_ui/core/json_extensions.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/frontend/screens/splash.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +63,7 @@ void main() async {
   late Color themeAccentColor;
 
   if ((prefs.getBool('sync_accent_color') ?? false) == false) {
-    themeAccentColor = ColorHelpers.colorFromHex(
+    themeAccentColor = JSONColor.fromJson(
       prefs.getString('accent_color') ?? Colors.cyan.hex,
     );
   } else {

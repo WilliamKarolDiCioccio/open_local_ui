@@ -3,14 +3,11 @@ import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
-import 'package:open_local_ui/backend/private/services/auth.dart';
 import 'package:open_local_ui/core/feedback.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/update.dart';
@@ -22,7 +19,6 @@ import 'package:open_local_ui/frontend/dialogs/update.dart';
 import 'package:open_local_ui/frontend/screens/dashboard/dashboard.dart';
 import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:unicons/unicons.dart';
 
 enum PageIndex { chat, sessions, models, settings, about }
@@ -301,9 +297,9 @@ class _SideMenuState extends State<_SideMenu> {
                 ),
               ),
               const Gap(8),
-              Text(
+              const Text(
                 "${Env.version}-${Env.buildNumber}-${Env.buildTag}",
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.grey,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w100,

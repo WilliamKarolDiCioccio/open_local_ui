@@ -10,7 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
-import 'package:open_local_ui/core/color.dart';
+import 'package:open_local_ui/core/json_extensions.dart';
 import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +88,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
   Future<Color> _getAccent() async {
     final prefs = await SharedPreferences.getInstance();
-    return ColorHelpers.colorFromHex(
+    return JSONColor.fromJson(
       prefs.getString('accent_color') ?? Colors.cyan.hex,
     );
   }
@@ -212,7 +212,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
                     await prefs.setString(
                       'accent_color',
-                      ColorHelpers.colorToHex(color),
+                      color.toJson(color),
                     );
                   },
                 );
@@ -270,7 +270,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
                         _setAccent(
                           context,
-                          ColorHelpers.colorFromHex(
+                          JSONColor.fromJson(
                             savedColorCode ?? Colors.cyan.hex,
                           ),
                         );

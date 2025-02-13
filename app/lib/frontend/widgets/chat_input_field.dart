@@ -257,7 +257,7 @@ class _AttachmentsPreviewCardWidgetState
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withAlpha((255 * 0.2).toInt()),
                   blurRadius: 1,
                   spreadRadius: 1,
                   offset: const Offset(0, 1),

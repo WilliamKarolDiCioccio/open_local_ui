@@ -89,6 +89,13 @@
   "createModelDialogModelSelectorHint": "Select model",
   "createModelDialogTitle": "Create model",
   "createdAtTextShared": "Created at: {createdAt}",
+  "@createdAtTextShared": {
+    "placeholders": {
+      "createdAt": {
+        "type": "String"
+      }
+    }
+  },
   "dashboardAboutButton": "About",
   "dashboardChatButton": "Chat",
   "dashboardHomeButton": "Home",
@@ -301,6 +308,13 @@
     }
   },
   "modifiedAtTextShared": "Modified at: {modifiedAt}",
+  "@modifiedAtTextShared": {
+    "placeholders": {
+      "modifiedAt": {
+        "type": "String"
+      }
+    }
+  },
   "moreOptionsButton": "More options",
   "noModelsAvailableSnackBar": "No models available",
   "noNeedToCreateSessionSnackBar": "No need to create a new session",

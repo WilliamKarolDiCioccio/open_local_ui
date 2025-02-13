@@ -878,9 +878,6 @@ class _SettingWidgetState extends State<SettingWidget> {
             ],
           ),
         );
-
-      default:
-        return const SizedBox.shrink();
     }
   }
 }

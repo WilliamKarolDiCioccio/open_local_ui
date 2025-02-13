@@ -111,8 +111,6 @@ class AssetManager {
         return _getAssetAsBytes(key);
       case AssetType.rivefile:
         return _getAssetAsRiveFile(key);
-      default:
-        throw Exception('Invalid asset type');
     }
   }
 
@@ -157,8 +155,6 @@ class AssetManager {
             case AssetType.rivefile:
               assetContent = RiveFile.import(await rootBundle.load(key));
               break;
-            default:
-              throw Exception('Invalid asset type');
           }
           break;
         case AssetSource.remote:
@@ -166,8 +162,6 @@ class AssetManager {
             (response) => response.body,
           );
           break;
-        default:
-          throw Exception('Invalid asset source');
       }
 
       _assetRegistry[key] = assetContent;
