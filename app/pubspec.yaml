@@ -41,7 +41,7 @@ dependencies:
       ref: main
 
   # Icons and Graphics
-  unicons: ^2.1.1
+  unicons: ^3.0.0
   image: ^4.2.0
   flutter_image_converter: ^0.3.1
   cached_network_image: ^3.3.1
