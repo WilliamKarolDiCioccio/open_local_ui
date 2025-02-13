@@ -1,0 +1,576 @@
+{
+  "@@locale": "en",
+  "abortModelRemovalSnackBar": "Abort model removal",
+  "abortSessionRemovalSnackBar": "Abort session removal",
+  "aboutPageContributorsTitle": "Contributors",
+  "aboutPageCopyrightNotice": "© 2024 William Karol Di Cioccio",
+  "aboutPageDiscoverTitle": "Discover more",
+  "aboutPagePoweredByTitle": "Powered by",
+  "aboutPageSocialButtonContributeTooltip": "Contribute",
+  "aboutPageSocialButtonJoinServerTooltip": "Join server",
+  "aboutPageSocialButtonWatchTrailerTooltip": "Watch trailer",
+  "aboutPageVisitProfileTooltip": "Visit profile",
+  "activateButtonShared": "Activate",
+  "appTitle": "MyApp",
+  "attachFilesDialogAllowedFormats": "Allowed formats: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "Browse files",
+  "attachFilesDialogDropFilesText": "Drop files here",
+  "cancelButtonShared": "Cancel",
+  "changelogButton": "Changelog",
+  "chatAttachFilesTooltip": "Attach files",
+  "chatCancelEditButton": "Cancel editing",
+  "chatCancelGenerationTooltip": "Cancel generation",
+  "chatCopyMessageTooltip": "Copy message",
+  "chatDetachFilesTooltip": "Detach files",
+  "chatEditFieldHint": "Type a message...",
+  "chatEditMessageTooltip": "Edit message",
+  "chatInputFieldHint": "Type a message...",
+  "chatReadAloudTooltip": "Read aloud",
+  "chatRefreshSuggestions": "Refresh suggestions",
+  "chatRegenerateMessageTooltip": "Regenerate message",
+  "chatResendMessageButton": "Resend message",
+  "chatSendTooltip": "Send message",
+  "chatStatisticsDuration": "Duration: {duration} ms",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "Speed: {speed} tokens/s",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "Tokens: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestionsPrompt": "Want some suggestions?",
+  "chatSystemSender": "System",
+  "chatTitleEditHint": "Type a title...",
+  "chatToolbarDocsSearchOption": "Docs search:",
+  "chatToolbarModelSelectorHint": "Select model",
+  "chatToolbarNewSessionButton": "New session",
+  "chatToolbarWebSearchOption": "Web search:",
+  "chatUserSender": "You",
+  "chatWelcomeMessage": "Welcome!",
+  "checkingForUpdatesDialogTitle": "Checking for updates",
+  "clickToDownloadLatestAppVersionSnackBar": "Click here to download the latest version",
+  "clickToDownloadLatestOllamaVersionSnackBar": "Click here to download the latest version",
+  "closeButtonShared": "Close",
+  "codeCopiedSnackBar": "Code copied to clipboard",
+  "colorPickerDialogTitle": "Pick a color",
+  "concurrencyLimit": "Concurrency Limit",
+  "copyButtonShared": "Copy",
+  "createButtonShared": "Create",
+  "createModelDialogGuideText1": "Select the model to use:",
+  "createModelDialogGuideText2": "Enter the name of the model to create:",
+  "createModelDialogGuideText3": "Optionally, write a model file:",
+  "createModelDialogModelFileHint": "Enter the model file...",
+  "createModelDialogModelFileLabel": "Model file",
+  "createModelDialogModelNameHint": "Enter the model name...",
+  "createModelDialogModelNameLabel": "Model name",
+  "createModelDialogModelSelectorHint": "Select model",
+  "createModelDialogTitle": "Create model",
+  "createdAtTextShared": "Created at: {createdAt}",
+  "@createdAtTextShared": {
+    "placeholders": {
+      "createdAt": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardAboutButton": "About",
+  "dashboardChatButton": "Chat",
+  "dashboardHomeButton": "Home",
+  "dashboardInventoryButton": "Inventory",
+  "dashboardMarketButton": "Market",
+  "dashboardSessionsButton": "Sessions",
+  "dashboardSettingsButton": "Settings",
+  "devicePluggedInSnackBar": "Device plugged in. Power delivery increased.",
+  "deviceUnpluggedSnackBar": "Device unplugged. Power delivery reduced.",
+  "dialogAttachButton": "Attach",
+  "dialogCancelButtonShared": "Cancel",
+  "dialogCloseButtonShared": "Close",
+  "dialogConfirmButtonShared": "Confirm",
+  "dialogContinueInBackgroundButtonShared": "Continue in background",
+  "dialogCreateButtonShared": "Create",
+  "dialogRemoveButton": "Remove",
+  "dialogSkipButton": "Skip",
+  "dialogStartButtonShared": "Start",
+  "dialogUpdateButton": "Update",
+  "digestCopiedSnackBar": "Digest copied to clipboard",
+  "enableDocsSearch": "Docs Search",
+  "enableWebSearch": "Web Search",
+  "enteringCriticalSectionSnackBar": "You're entering critical section. Tap if you want to continue",
+  "errorRetrievingSystemInfoSnackBar": "Error retrieving system info",
+  "f16KV": "F16KV",
+  "failedToCreateFolderSnackBar": "Failed to create folder",
+  "failedToCreateModelSnackBar": "Failed to create model",
+  "failedToPullModelSnackBar": "Failed to pull model",
+  "failedToPushModelSnackBar": "Failed to push model",
+  "failedToShareProfileSnackBar": "Failed to share profile",
+  "failedToShareSessionSnackBar": "Failed to share session",
+  "feedbackButton": "Feedback",
+  "folderCreatedSnackBar": "Folder created",
+  "frequencyPenalty": "Frequency Penalty",
+  "importModelDialogTitle": "Import model",
+  "inventoryPageCreateButton": "Create",
+  "inventoryPageDeleteButton": "Delete model",
+  "inventoryPageDeleteDialogText": "This will delete {modelName}. Do you confirm?",
+  "@inventoryPageDeleteDialogText": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "inventoryPageDeleteDialogTitle": "Delete model",
+  "inventoryPageDetailsButton": "View model details",
+  "inventoryPageImportButton": "Import",
+  "inventoryPagePushButton": "Push",
+  "inventoryPageRefreshButton": "Refresh",
+  "inventoryPageSettingsButton": "Open model settings",
+  "inventoryPageTitle": "Inventory",
+  "keepAlive": "Keep Alive",
+  "licenseButton": "License",
+  "listFiltersSortByLabel": "Sort by",
+  "listFiltersSortOrderLabel": "In order",
+  "llmMistakesWarningText": "LLMs can make mistakes. Please check important information.",
+  "logitsAll": "Logits All",
+  "lowVram": "Low VRAM",
+  "mainGpu": "Main GPU",
+  "markdownCopyTooltip": "Copy markdown",
+  "markdownLanguageLabel": "Language: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "marketPageCapabilitiesLabel": "Capabilities",
+  "marketPagePullButton": "Pull",
+  "marketPageReleasesLabel": "Releases",
+  "marketPageSearchFiltersButtonTooltip": "Search filters",
+  "marketPageSearchResultsLabel": "{totalResults} results found",
+  "@marketPageSearchResultsLabel": {
+    "placeholders": {
+      "totalResults": {
+        "type": "int"
+      }
+    }
+  },
+  "marketPageSearchTextFieldHint": "Search models by name...",
+  "marketPageTitle": "Market",
+  "marketPageViewMoreButton": "View more",
+  "marketPageViewMoreButtonTooltip": "Redirects to {url}",
+  "@marketPageViewMoreButtonTooltip": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "Message copied to clipboard",
+  "mirostat": "Microstat",
+  "mirostatEta": "Microstat ETA",
+  "mirostatTau": "Microstat TAU",
+  "modelCreatedSuccessfullySnackBar": "Model created successfully",
+  "modelDetailsDigestText": "Digest: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "Family: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "Format: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "Parameters: {parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "Quantization: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsSizeText": "Size: {size} GB",
+  "@modelDetailsSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsTitle": "{modelName} details",
+  "@modelDetailsTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelGeneralSettingsLabel": "General Settings",
+  "modelIsGeneratingSnackBar": "Model is generating",
+  "modelMiscSettingsLabel": "Miscellaneous Settings",
+  "modelPenaltySettingsLabel": "Penalty Settings",
+  "modelPerformanceSettingsLabel": "Performance Settings",
+  "modelPulledSuccessfullySnackBar": "Model pulled successfully",
+  "modelPushedSuccessfullySnackBar": "Model pushed successfully",
+  "modelSearchFiltersDialogSelectedCapabilitiesLabel": "Capabilities:",
+  "modelSearchFiltersDialogSelectedMaxResultsLabel": "Max results: {maxResults}",
+  "@modelSearchFiltersDialogSelectedMaxResultsLabel": {
+    "placeholders": {
+      "maxResults": {
+        "type": "int"
+      }
+    }
+  },
+  "modelSearchFiltersDialogSelectedMaxSizeLabel": "Max size: {maxSize} GB",
+  "@modelSearchFiltersDialogSelectedMaxSizeLabel": {
+    "placeholders": {
+      "maxSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelSearchFiltersDialogSelectedMinSizeLabel": "Min size: {minSize} GB",
+  "@modelSearchFiltersDialogSelectedMinSizeLabel": {
+    "placeholders": {
+      "minSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelSearchFiltersDialogSelectedOrderLabel": "Order by:",
+  "modelSearchFiltersDialogSelectedSortLabel": "Sort by:",
+  "modelSearchFiltersDialogTitle": "Search filters",
+  "modelSettingsDialogClearProfilesButton": "Clear profiles",
+  "modelSettingsDialogClearProfilesText": "This will clear all profiles. Do you confirm?",
+  "modelSettingsDialogCreateDialogLabel": "Profile name",
+  "modelSettingsDialogCreateDialogTitle": "Create profile",
+  "modelSettingsDialogDeleteDialogText": "This will delete {profileName}. Do you confirm?",
+  "@modelSettingsDialogDeleteDialogText": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelSettingsDialogDeleteDialogTitle": "Delete profile",
+  "modelSettingsDialogEditDialogLabel": "Profile name",
+  "modelSettingsDialogEditDialogTitle": "Edit profile",
+  "modelSpecificSettingsDialogTitle": "{modelName} settings profiles",
+  "@modelSpecificSettingsDialogTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modifiedAtTextShared": "Modified at: {modifiedAt}",
+  "@modifiedAtTextShared": {
+    "placeholders": {
+      "modifiedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "moreOptionsButton": "More options",
+  "noModelsAvailableSnackBar": "No models available",
+  "noNeedToCreateSessionSnackBar": "No need to create a new session",
+  "noUpdatesAvailableDialogTitle": "No updates available",
+  "nothingToSynthesizeSnackBar": "Nothing to synthesize",
+  "numBatch": "Num. Batch",
+  "numCtx": "Context Window Size",
+  "numGpu": "Num. GPU",
+  "numKeep": "Num. Keep",
+  "numPredict": "Num. Predict",
+  "numThread": "Num. Threads",
+  "numa": "NUMA",
+  "offlineWarningTextShared": "You are offline",
+  "ollamaDisabledGPUWarningSnackBar": "Disabling GPU is harmful for performance",
+  "penalizeNewline": "Penalize Newline",
+  "presencePenalty": "Presence Penalty",
+  "privacyButton": "Privacy",
+  "profileSharedSnackBar": "Profile shared",
+  "profilesPageDeleteButton": "Delete profile",
+  "profilesPageShareButton": "Share profile",
+  "progressBarStatusWithStepsText": "Status: {status} - Step {completedSteps} of {totalSteps}",
+  "@progressBarStatusWithStepsText": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "totalSteps": {
+        "type": "int"
+      },
+      "completedSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "progressBarStatusWithTimeText": "Status: {status} - Remaining time: {hours}:{minutes}:{seconds}",
+  "@progressBarStatusWithTimeText": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "pullModelDialogGuideText": "Please type the release of the model to pull:",
+  "pullModelDialogModelNameHint": "Type model name...",
+  "pullModelDialogModelNameLabel": "Model name",
+  "pullModelDialogTitle": "Pull model",
+  "pushModelDialogGuideText": "Please select the model to push:",
+  "pushModelDialogModelSelectorHint": "Select model",
+  "pushModelDialogTitle": "Push model",
+  "redoButtonShared": "Redo",
+  "repeatLastN": "Repeat Last N",
+  "repeatPenalty": "Repeat Penalty",
+  "resetToDefaultsButtonShared": "Reset to defaults",
+  "saveButtonShared": "Save",
+  "searchButtonShared": "Search",
+  "seed": "Seed",
+  "sessionSharedSnackBar": "Session shared",
+  "sessionsPageClearDialogText": "This will clear all sessions. Do you confirm?",
+  "sessionsPageClearDialogTitle": "Clear sessions",
+  "sessionsPageClearSessionsButton": "Clear sessions",
+  "sessionsPageCreateFolderButton": "Create folder",
+  "sessionsPageDeleteButton": "Delete session",
+  "sessionsPageDeleteDialogText": "This will delete {sessionName}. Do you confirm?",
+  "@sessionsPageDeleteDialogText": {
+    "placeholders": {
+      "sessionName": {
+        "type": "String"
+      }
+    }
+  },
+  "sessionsPageDeleteDialogTitle": "Delete session",
+  "sessionsPageEditDialogLabel": "Session name",
+  "sessionsPageEditDialogTitle": "Edit title",
+  "sessionsPageEditTitleButton": "Edit title",
+  "sessionsPageShareButton": "Share session",
+  "sessionsPageTitle": "Sessions management",
+  "settingsLanguageArabic": "Arabic",
+  "settingsLanguageChinese": "Chinese",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageFrench": "French",
+  "settingsLanguageGerman": "Deutsch",
+  "settingsLanguageHindi": "Indian",
+  "settingsLanguageItalian": "Italian",
+  "settingsLanguageJapanese": "Japanese",
+  "settingsLanguageKorean": "Korean",
+  "settingsLanguagePortuguese": "Portuguese",
+  "settingsLanguageRussian": "Russian",
+  "settingsLanguageSpanish": "Spanish",
+  "settingsLanguageSystem": "System",
+  "settingsModelDefault": "Default",
+  "settingsModelOff": "Off",
+  "settingsModelOn": "On",
+  "settingsPageAccentColorLabel": "Accent Color",
+  "settingsPageAccessibilityLabel": "Accessibility",
+  "settingsPageDebugLabel": "Debug",
+  "settingsPageDebugShowStatistics": "Show Statistics",
+  "settingsPageDiscordRPCLabel": "Discord RPC",
+  "settingsPageSocialLabel": "Social",
+  "settingsPageSyncAccentColorLabel": "Sync Accent Color",
+  "settingsPageThemeLabel": "Theme",
+  "settingsPageTitle": "Settings",
+  "settingsThemeModeDark": "Dark",
+  "settingsThemeModeLight": "Light",
+  "settingsThemeModeSystem": "System",
+  "setupPageAppearanceSlideTitle": "Style matters!",
+  "setupPageCustomizeSlideText": "Choose your preferences to get the best experience.",
+  "setupPageCustomizeSlideTitle": "Customize your experience",
+  "setupPageInstallOllamaButton": "Install Ollama",
+  "setupPageOllamaSlideTitle": "Get your superpowers!",
+  "setupPagePreferenceTileDesignDescription": "Assist you in designing graphics.",
+  "setupPagePreferenceTileDesignTitle": "Design",
+  "setupPagePreferenceTilePersonalDescription": "Assist you in your personal life.",
+  "setupPagePreferenceTilePersonalTitle": "Personal",
+  "setupPagePreferenceTileProgrammingDescription": "Assist you in writing code.",
+  "setupPagePreferenceTileProgrammingTitle": "Programming",
+  "setupPagePreferenceTileResearchDescription": "Assist you in running experiments.",
+  "setupPagePreferenceTileResearchTitle": "Research",
+  "setupPagePreferenceTileStudyDescription": "Assist you in learning new concepts.",
+  "setupPagePreferenceTileStudyTitle": "Study",
+  "setupPagePreferenceTileWritingDescription": "Assist you in writing documents.",
+  "setupPagePreferenceTileWritingTitle": "Writing",
+  "setupPageReadySlideText": "You're ready to start using OpenLocalUI.",
+  "setupPageReadySlideTitle": "You're all set!",
+  "setupPageSystemAnalysisSlideTitle": "We're analyzing your system",
+  "setupPageUsagePreferencesSlideTitle": "What can we help you with?",
+  "setupPageWelcomeSlideText": "OpenLocalUI is a local-first, open-source, and privacy-focused LLM client.",
+  "setupPageWelcomeSlideTitle": "Welcome to OpenLocalUI",
+  "snackBarErrorTitle": "Error",
+  "snackBarInfoTitle": "Info",
+  "snackBarSuccessTitle": "Success",
+  "snackBarUpdateTitle": "Update Available",
+  "snackBarWarningTitle": "Warning",
+  "somethingWentWrongSnackBar": "Something went wrong",
+  "sortByDateOption": "Date",
+  "sortByNameOption": "Name",
+  "sortByPopularityOption": "Popularity",
+  "sortBySizeOption": "Size",
+  "sortOrderAscendingOption": "Ascending",
+  "sortOrderDescendingOption": "Descending",
+  "suggestionAddressConflictsInRelationshipsPartOne": "Address conflicts in relationships",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "using effective communication",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "What are some common use cases",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "for problem-solving skills?",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "Describe the process",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "of decision-making in complex situations",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "Discuss advantages and disadvantages of remote work",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "for employees and employers",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "Distinguish between teaching and mentoring",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "and their benefits",
+  "suggestionEvaluateTeamPerformancePartOne": "Evaluate the performance of a team",
+  "suggestionEvaluateTeamPerformancePartTwo": "using teamwork metrics",
+  "suggestionExplainEmpathySignificancePartOne": "Explain the significance of empathy",
+  "suggestionExplainEmpathySignificancePartTwo": "in building strong connections",
+  "suggestionExplainLearningFromExperiencePartOne": "Explain the concept of learning from experience",
+  "suggestionExplainLearningFromExperiencePartTwo": "using everyday situations",
+  "suggestionHandleDailyStressPartOne": "Handle stress in daily life",
+  "suggestionHandleDailyStressPartTwo": "with effective coping strategies",
+  "suggestionImportanceOfCommunicationPartOne": "Understand the importance of communication",
+  "suggestionImportanceOfCommunicationPartTwo": "in personal and professional life",
+  "suggestionPersonalGrowthChallengesPartOne": "List some challenges",
+  "suggestionPersonalGrowthChallengesPartTwo": " in personal growth",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "Plan a birthday party",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "for your best friend with a surprise element",
+  "systemInfo": "Your system is running {osName} (Version: {osVersion}).\nIt is equipped with an {cpuName} CPU, for a total of ({cpuCores} threads), and an {gpuName} GPU.\nThe system has {totalMemory} GB of RAM and {gpuMemory} GB of VRAM.",
+  "@systemInfo": {
+    "placeholders": {
+      "osName": {
+        "type": "String"
+      },
+      "osVersion": {
+        "type": "String"
+      },
+      "cpuName": {
+        "type": "String"
+      },
+      "cpuCores": {
+        "type": "int"
+      },
+      "gpuName": {
+        "type": "String"
+      },
+      "totalMemory": {
+        "type": "int"
+      },
+      "gpuMemory": {
+        "type": "int"
+      }
+    }
+  },
+  "systemPromptTextFieldLabel": "System Prompt:",
+  "temperature": "Temperature",
+  "tfsZ": "tfsZ",
+  "tooltipConcurrencyLimit": "Set the maximum number of concurrent requests the model can handle.",
+  "tooltipEnableDocsSearch": "Toggle document search feature for better file indexing.",
+  "tooltipEnableWebSearch": "Enable or disable web search functionality for fetching real-time data.",
+  "tooltipF16KV": "Use 16-bit floating point precision for key-value pairs to reduce memory usage.",
+  "tooltipFrequencyPenalty": "Control the frequency penalty to reduce the likelihood of the model repeating the same phrases.",
+  "tooltipKeepAlive": "Duration to keep the connection alive after the last request (in minutes).",
+  "tooltipLogitsAll": "Return the logits for all tokens rather than just the predicted one.",
+  "tooltipLowVram": "Enable this to use less VRAM, which may help on lower-end devices.",
+  "tooltipMainGpu": "Select which GPU should be the main one when multiple GPUs are present.",
+  "tooltipMinP": "Ensures a balance of quality and variety. Filters logits below a certain threshold relative to the most likely token. (Default: 0.0)",
+  "tooltipMirostat": "Enable Mirostat sampling for controlling perplexity. (default: 0, 0 = disabled, 1 = Mirostat, 2 = Mirostat 2.0)",
+  "tooltipMirostatEta": "Influences how quickly the algorithm responds to feedback from the generated text. A lower value results in slower adjustments, while a higher value makes the algorithm more responsive. (Default: 0.1)",
+  "tooltipMirostatTau": "Controls the balance between coherence and diversity of the output. A lower value will result in more focused and coherent text. (Default: 5.0)",
+  "tooltipNumBatch": "Number of batches to process for each forward pass.",
+  "tooltipNumCtx": "Sets the size of the context window used to generate the next token. (Default: 2048)",
+  "tooltipNumGpu": "Select the number of GPUs to use for inference.",
+  "tooltipNumKeep": "Specify how many tokens from the previous context should be retained.",
+  "tooltipNumPredict": "Maximum number of tokens to predict when generating text. (Default: 128, -1 for infinite generation, -2 for context filling)",
+  "tooltipNumThread": "Control how many threads to allocate for computation.",
+  "tooltipNuma": "Enable Non-Uniform Memory Access (NUMA) optimization to improve memory management on multicore systems.",
+  "tooltipPenalizeNewline": "Enable or disable penalties for generating newlines frequently.",
+  "tooltipPresencePenalty": "Increase the presence penalty to prevent over-reliance on previously mentioned ideas.",
+  "tooltipRepeatLastN": "Sets how far back the model should look to prevent repetition. (Default: 64, 0 = disabled, -1 = numCtx)",
+  "tooltipRepeatPenalty": "Sets how strongly to penalize repetitions. A higher value will penalize repetitions more, while a lower value will be more lenient. (Default: 1.1)",
+  "tooltipSeed": "Sets the random number seed for generation. A specific seed will produce the same text for the same prompt. (Default: 0)",
+  "tooltipStop": "Sets stop sequences that, when encountered, will stop text generation. Multiple stop sequences can be specified. Example: 'AI assistant:'",
+  "tooltipTemperature": "Controls the creativity of the output. Higher values make the output more creative, while lower values make it more focused. (Default: 0.8)",
+  "tooltipTfsZ": "Tail-free sampling reduces the impact of less probable tokens in the output. Higher values reduce the impact of less likely tokens more. (Default: 1.0)",
+  "tooltipTopK": "Reduces the probability of generating nonsense. Higher values increase diversity, while lower values are more conservative. (Default: 40)",
+  "tooltipTopP": "Works with top-k. Higher values increase diversity, while lower values generate more focused text. (Default: 0.9)",
+  "tooltipTypicalP": "Use typical probability sampling to maintain consistent and likely outputs.",
+  "tooltipUseMlock": "Lock model weights in memory to prevent swapping, useful in environments with limited disk access.",
+  "tooltipUseMmap": "Memory-map the model for better memory efficiency on large models.",
+  "tooltipVocabOnly": "Load only the model vocabulary, without performing inference. Useful for lightweight analysis.",
+  "topK": "topK",
+  "topP": "topP",
+  "totalOnDiskSizeLabel": "Total on disk: {size}",
+  "@totalOnDiskSizeLabel": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "translationNotAvailable": "Translation not available",
+  "typicalP": "typicalP",
+  "undoButtonShared": "Undo",
+  "updateAvailableDialogTitle": "Update available",
+  "updateAvailableSnackBar": "Update available",
+  "updateButton": "Update",
+  "updateDialogText1": "Do you want to get the latest version now?",
+  "updateDialogText2": "No updates available at the moment",
+  "updateInProgressPageDescription": "Please wait for the installer to come up and follow the instructions",
+  "updateInProgressPageTitle": "Update in progress",
+  "useMlock": "Use Mlock",
+  "useMmap": "Use Mmap",
+  "vocabOnly": "Vocab Only"
+}

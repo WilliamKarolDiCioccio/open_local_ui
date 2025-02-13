@@ -1,0 +1,469 @@
+{
+  "@@locale": "ru",
+  "abortModelRemovalSnackBar": "Отменить удаление модели",
+  "abortSessionRemovalSnackBar": "Отменить удаление сессии",
+  "aboutPageContributorsTitle": "Участники",
+  "aboutPageCopyrightNotice": "© 2024 Уильям Кэрол Ди Чуччио",
+  "aboutPageDiscoverTitle": "Узнать больше",
+  "aboutPagePoweredByTitle": "Работает на",
+  "aboutPageSocialButtonContributeTooltip": "Сделать вклад",
+  "aboutPageSocialButtonJoinServerTooltip": "Присоединиться к серверу",
+  "aboutPageSocialButtonWatchTrailerTooltip": "Посмотреть трейлер",
+  "aboutPageVisitProfileTooltip": "Посетить профиль",
+  "appTitle": "Мое приложение",
+  "attachFilesDialogAllowedFormats": "Допустимые форматы: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "Просмотреть файлы",
+  "attachFilesDialogDropFilesText": "Перетащите файлы сюда",
+  "cancelButtonShared": "Отменить",
+  "chatAttachFilesTooltip": "Прикрепить файл",
+  "chatCancelEditButton": "Отменить редактирование",
+  "chatCancelGenerationTooltip": "Отменить генерацию",
+  "chatCopyMessageTooltip": "Копировать сообщение",
+  "chatDetachFilesTooltip": "Открепить файлы",
+  "chatEditFieldHint": "Введите сообщение...",
+  "chatEditMessageTooltip": "Редактировать сообщение",
+  "chatInputFieldHint": "Введите сообщение...",
+  "chatReadAloudTooltip": "Прочитать вслух",
+  "chatRefreshSuggestions": "Обновить предложения",
+  "chatRegenerateMessageTooltip": "Регенерировать сообщение",
+  "chatResendMessageButton": "Повторно отправить сообщение",
+  "chatSendTooltip": "Отправить сообщение",
+  "chatStatisticsDuration": "Длительность: {duration} миллисекунд",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "Скорость: {speed} токенов/секунду",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "Количество токенов: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestionsPrompt": "Нужны предложения?",
+  "chatSystemSender": "Система",
+  "chatTitleEditHint": "Введите название...",
+  "chatToolbarDocsSearchOption": "Поиск документов:",
+  "chatToolbarModelSelectorHint": "Выберите модель",
+  "chatToolbarNewSessionButton": "Новая сессия",
+  "chatToolbarWebSearchOption": "Поиск в интернете:",
+  "chatUserSender": "Я",
+  "chatWelcomeMessage": "Добро пожаловать!",
+  "checkingForUpdatesDialogTitle": "Проверка обновлений",
+  "clickToDownloadLatestVersionSnackBar": "Нажмите, чтобы скачать последнюю версию",
+  "closeButtonShared": "Закрыть",
+  "codeCopiedSnackBar": "Код скопирован в буфер обмена",
+  "concurrencyLimit": "Ограничение параллельности",
+  "createFolderDialogFolderNameHint": "Введите название папки...",
+  "createFolderDialogFolderNameLabel": "Название папки",
+  "createFolderDialogGuideText1": "Введите название создаваемой папки:",
+  "createFolderDialogGuideText2": "Вы можете выбрать цвет папки:",
+  "createFolderDialogTitle": "Создать папку",
+  "createModelDialogGuideText1": "Выберите модель для использования:",
+  "createModelDialogGuideText2": "Введите название создаваемой модели:",
+  "createModelDialogGuideText3": "Выберите файл модели:",
+  "createModelDialogModelFileHint": "Введите файл модели...",
+  "createModelDialogModelFileLabel": "Файл модели",
+  "createModelDialogModelNameHint": "Введите название модели...",
+  "createModelDialogModelNameLabel": "Название модели",
+  "createModelDialogModelSelectorHint": "Выберите модель",
+  "createModelDialogTitle": "Создать модель",
+  "createdAtTextShared": "Дата создания: {createdAt}",
+  "@createdAtTextShared": {
+    "placeholders": {
+      "createdAt": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardAboutButton": "О программе",
+  "dashboardChatButton": "Чат",
+  "dashboardHomeButton": "Главная",
+  "dashboardModelsButton": "Модели",
+  "dashboardSessionsButton": "Сессии",
+  "dashboardSettingsButton": "Настройки",
+  "dialogAttachButton": "Прикрепить",
+  "dialogCancelButtonShared": "Отменить",
+  "dialogCloseButtonShared": "Закрыть",
+  "dialogConfirmButtonShared": "Подтвердить",
+  "dialogContinueInBackgroundButtonShared": "Продолжить в фоновом режиме",
+  "dialogCreateButtonShared": "Создать",
+  "dialogRemoveButton": "Удалить",
+  "dialogSkipButton": "Пропустить",
+  "dialogStartButtonShared": "Начать",
+  "dialogUpdateButton": "Обновить",
+  "enableDocsSearch": "Включить поиск по документам",
+  "enableWebSearch": "Включить поиск в интернете",
+  "f16KV": "F16KV",
+  "failedToCreateFolderSnackBar": "Не удалось создать папку",
+  "failedToCreateModelSnackBar": "Не удалось создать модель",
+  "failedToPullModelSnackBar": "Не удалось получить модель",
+  "failedToPushModelSnackBar": "Не удалось отправить модель",
+  "failedToShareSessionSnackBar": "Не удалось поделиться сессией",
+  "feedbackButton": "Обратная связь",
+  "folderCreatedSnackBar": "Папка создана",
+  "frequencyPenalty": "Штраф за частоту",
+  "importModelDialogTitle": "Импортировать модель",
+  "keepAlive": "Поддерживать соединение",
+  "licenseButton": "Лицензия",
+  "listFiltersSortByLabel": "Критерий сортировки",
+  "listFiltersSortOrderLabel": "Порядок сортировки",
+  "logitsAll": "Все логиты",
+  "lowVram": "Низкая VRAM",
+  "mainGpu": "Основная GPU",
+  "markdownCopyTooltip": "Скопировать markdown",
+  "markdownLanguageLabel": "Язык: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "Сообщение скопировано в буфер обмена",
+  "mirostat": "Миростат",
+  "mirostatEta": "ETA миростата",
+  "mirostatTau": "Тау миростата",
+  "modelCreatedSuccessfullySnackBar": "Модель успешно создана",
+  "modelDetailsDigestText": "Сводка: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "Семейство: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "Формат: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "Размер параметров: {parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "Уровень квантования: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsReadmeText": "README: {readme}",
+  "@modelDetailsReadmeText": {
+    "placeholders": {
+      "readme": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsShared": "Детали модели",
+  "modelDetailsSizeText": "Размер модели",
+  "modelDetailsTitle": "Название модели",
+  "modelGeneralSettingsLabel": "Общие настройки",
+  "modelIsGeneratingSnackBar": "Модель генерирует...",
+  "modelMiscSettingsLabel": "Разные настройки",
+  "modelPenaltySettingsLabel": "Настройки штрафов",
+  "modelPerformanceSettingsLabel": "Настройки производительности",
+  "modelPulledSuccessfullySnackBar": "Модель успешно получена.",
+  "modelPushedSuccessfullySnackBar": "Модель успешно загружена.",
+  "modelSpecificSettingsDialogTitle": "Настройки конкретной модели",
+  "modelTypeText": "Тип модели: {modelType}",
+  "@modelTypeText": {
+    "placeholders": {
+      "modelType": {
+        "type": "String"
+      }
+    }
+  },
+  "modelVersionText": "Версия модели: {modelVersion}",
+  "@modelVersionText": {
+    "placeholders": {
+      "modelVersion": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsAvailableSnackBar": "Доступные модели",
+  "modelsNotFoundSnackBar": "Модели не найдены",
+  "modelsPageCreateButton": "Создать модель",
+  "modelsPageDeleteButton": "Удалить модель",
+  "modelsPageDeleteDialogText": "Вы уверены, что хотите удалить эту модель?",
+  "modelsPageDeleteDialogTitle": "Удалить модель",
+  "modelsPageImportButton": "Кнопка Импортировать Модели",
+  "modelsPagePullButton": "Кнопка Загрузить Модели",
+  "modelsPagePushButton": "Кнопка Отправить Модели",
+  "modelsPageRefreshButton": "Обновить",
+  "modelsPageSettingsButton": "Настройки модели",
+  "modelsPageTitle": "Название Страницы Моделей",
+  "modelsPageUseButton": "Использовать модель",
+  "modifiedAtTextShared": "Последнее изменение: ",
+  "moreButtonShared": "Больше",
+  "moreOptionsButton": "Дополнительные параметры",
+  "namespace": "Пространство имен: {namespace}",
+  "newFolderDialogTitle": "Новая папка",
+  "newSessionDialogTitle": "Новая сессия",
+  "newSessionSnackBar": "Новая сессия создана",
+  "noAvailableModelsText": "Нет доступных моделей",
+  "noModelsAvailableSnackBar": "Нет доступных моделей.",
+  "noModelsText": "Нет моделей",
+  "noNeedToCreateSessionSnackBar": "Нет необходимости создавать сессию.",
+  "noSessionsText": "Нет сессий",
+  "noUpdatesAvailableDialogTitle": "Нет доступных обновлений",
+  "noUpdatesAvailableSnackBar": "Нет доступных обновлений",
+  "nodeStatusOffline": "Оффлайн",
+  "nodeStatusOnline": "Онлайн",
+  "nothingToSynthesizeSnackBar": "Нечего синтезировать.",
+  "nsfwSettingsLabel": "Настройки NSFW",
+  "numBatch": "Количество партий",
+  "numCtx": "Количество контекстов",
+  "numKeep": "Количество для сохранения",
+  "numPredict": "Количество предсказаний",
+  "numThread": "Количество потоков",
+  "numa": "NUMA",
+  "offlineWarningTextShared": "Предупреждение: Офлайн режим.",
+  "ollamaDisabledGPUWarningSnackBar": "Предупреждение: GPU отключена.",
+  "otherSettingsLabel": "Другие настройки",
+  "overflowMenuLabel": "Меню переполнения",
+  "partialResults": "Частичные результаты",
+  "pauseGenerationButtonTooltip": "Приостановить генерацию",
+  "peakMemoryTextShared": "Максимальная память: {peakMemory} МБ",
+  "@peakMemoryTextShared": {
+    "placeholders": {
+      "peakMemory": {
+        "type": "String"
+      }
+    }
+  },
+  "penalizeNewline": "Штрафовать за новую строку",
+  "perplexityLabel": "Сложность",
+  "pinMessageTooltip": "Закрепить сообщение",
+  "popularity": "Популярность",
+  "presencePenalty": "Штраф за присутствие",
+  "privacyButton": "Настройки конфиденциальности",
+  "progressBarStatusWithStepsText": "Статус: {status} - Шаг {completedSteps} из {totalSteps}",
+  "progressBarStatusWithTimeText": "Статус: {status} - Оставшееся время: {hours}:{minutes}:{seconds}",
+  "projectTitleHint": "Введите название проекта...",
+  "projectTitleLabel": "Название проекта",
+  "projectTypeHint": "Выберите тип проекта...",
+  "projectTypeLabel": "Тип проекта",
+  "pullModelDialogGuideText": "Получить модель:",
+  "pullModelDialogModelNameHint": "Введите имя модели для получения",
+  "pullModelDialogModelNameLabel": "Имя модели",
+  "pullModelDialogTitle": "Получить модель",
+  "pushModelDialogGuideText": "Отправить модель:",
+  "pushModelDialogModelSelectorHint": "Выберите модель для загрузки",
+  "pushModelDialogTitle": "Отправить модель",
+  "redoButtonShared": "Повторить",
+  "refreshButtonShared": "Обновить",
+  "removeButtonShared": "Удалить",
+  "removeFolderDialogTitle": "Удалить папку",
+  "removeSessionDialogTitle": "Удалить сессию",
+  "repeatLastN": "Повторить последние",
+  "repeatPenalty": "Штраф за повторение",
+  "resetButtonShared": "Сбросить",
+  "resetToDefaultsButton": "Сбросить на стандартные",
+  "retryButtonShared": "Попробовать снова",
+  "saveButtonShared": "Сохранить",
+  "savedAtTextShared": "Дата сохранения: {savedAt}",
+  "@savedAtTextShared": {
+    "placeholders": {
+      "savedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "savedButtonShared": "Сохранено успешно.",
+  "searchButtonShared": "Поиск",
+  "searchFieldHintShared": "Поиск...",
+  "searchFolderFieldHint": "Поиск папки...",
+  "searchModelFieldHint": "Поиск модели...",
+  "searchSessionFieldHint": "Поиск сессии...",
+  "seed": "Сид",
+  "selectAllButtonShared": "Выбрать все",
+  "selectFolderDialogGuideText": "Выбрать папку:",
+  "selectFolderDialogTitle": "Выбрать папку",
+  "selectLanguageHint": "Выберите язык интерфейса...",
+  "selectLanguageLabel": "Выбрать язык",
+  "selectModelButtonShared": "Выбрать модель",
+  "selectOptionButtonShared": "Выбрать опцию",
+  "selectSettingsButtonShared": "Выбрать настройки",
+  "sessionCreatedSnackBar": "Сессия создана",
+  "sessionSharedSnackBar": "Сессия успешно поделена.",
+  "sessionsPageClearDialogText": "Вы уверены, что хотите очистить сессию?",
+  "sessionsPageClearDialogTitle": "Очистить сессию",
+  "sessionsPageClearSessionsButton": "Очистить сессии",
+  "sessionsPageCreateFolderButton": "Создать папку",
+  "sessionsPageDeleteButton": "Удалить сессию",
+  "sessionsPageDeleteDialogText": "Вы действительно хотите удалить эту сессию?",
+  "sessionsPageDeleteDialogTitle": "Удалить сессию",
+  "sessionsPageEditTitleButton": "Редактировать заголовок",
+  "sessionsPageEnterButton": "Войти",
+  "sessionsPageShareButton": "Поделиться сессией",
+  "sessionsPageTitle": "Страница сессий",
+  "settingsAppearanceLabel": "Внешний вид",
+  "settingsBehaviorLabel": "Поведение",
+  "settingsGeneralLabel": "Общие",
+  "settingsHeaderTitle": "Настройки",
+  "settingsLanguageArabic": "Арабский",
+  "settingsLanguageChinese": "Китайский",
+  "settingsLanguageEnglish": "Английский",
+  "settingsLanguageFrench": "Французский",
+  "settingsLanguageGerman": "Немецкий",
+  "settingsLanguageHindi": "Хинди",
+  "settingsLanguageHint": "Пожалуйста, выберите язык интерфейса",
+  "settingsLanguageItalian": "Итальянский",
+  "settingsLanguageJapanese": "Японский",
+  "settingsLanguageKorean": "Корейский",
+  "settingsLanguageLabel": "Язык",
+  "settingsLanguagePortuguese": "Португальский",
+  "settingsLanguageRussian": "Русский",
+  "settingsLanguageSpanish": "Испанский",
+  "settingsLanguageSystem": "Язык системы",
+  "settingsModelDefault": "Стандартная модель",
+  "settingsModelOff": "Модель выключена",
+  "settingsModelOn": "Модель включена",
+  "settingsPageAccessibilityLabel": "Настройки доступности",
+  "settingsPageOllamaKeepAliveTimeLabel": "Время поддержания активности Ollama",
+  "settingsPageOllamaLabel": "Настройки Ollama",
+  "settingsPageOllamaShowStatistics": "Показать статистику",
+  "settingsPageOllamaTemperatureLabel": "Температура Ollama",
+  "settingsPageOllamaUseGPULabel": "Использовать GPU",
+  "settingsPageThemeLabel": "Настройки темы",
+  "settingsPageTitle": "Настройки",
+  "settingsThemeModeDark": "Темный режим",
+  "settingsThemeModeLight": "Светлый режим",
+  "settingsThemeModeSystem": "Режим системы",
+  "settingsTitle": "Настройки",
+  "shareButtonShared": "Поделиться",
+  "shareFolderDialogTitle": "Поделиться папкой",
+  "shareModelDialogTitle": "Поделиться моделью",
+  "shareSessionDialogTitle": "Поделиться сессией",
+  "sharingOptionsLabel": "Опции совместного использования",
+  "skipUpdateButtonShared": "Пропустить обновление",
+  "snackBarErrorTitle": "Ошибка",
+  "snackBarInfoTitle": "Информация",
+  "snackBarSuccessTitle": "Успех",
+  "snackBarUpdateTitle": "Обновление",
+  "snackBarWarningTitle": "Предупреждение",
+  "softwareUpdateDialogTitle": "Обновление ПО",
+  "somethingWentWrongSnackBar": "Что-то пошло не так.",
+  "sortByDateOption": "Сортировать по дате",
+  "sortByNameOption": "Сортировать по имени",
+  "sortBySizeOption": "Сортировать по размеру",
+  "sortOrderAscendingOption": "По возрастанию",
+  "sortOrderDescendingOption": "По убыванию",
+  "startChatButton": "Начать чат",
+  "statusTextShared": "Статус: {status}",
+  "@statusTextShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "submitFeedbackButtonShared": "Отправить отзыв",
+  "successSnackBar": "Успех",
+  "suggestionAddressConflictsInRelationshipsPartOne": "Решение конфликтов в отношениях.",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "Поиск потенциальных решений.",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "Распространенные случаи использования для решения проблем.",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "Обмен успешным опытом.",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "Сбор информации для принятия решений в сложных ситуациях.",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "Анализ доступных вариантов.",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "Обсуждение преимуществ удаленной работы.",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "Обзор индивидуального опыта.",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "Понимание различий между обучением и наставничеством.",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "Развитие навыков наставничества.",
+  "suggestionEvaluateTeamPerformancePartOne": "Регулярная оценка производительности команды.",
+  "suggestionEvaluateTeamPerformancePartTwo": "Предоставление конструктивной обратной связи.",
+  "suggestionExplainEmpathySignificancePartOne": "Объяснение важности эмпатии в работе.",
+  "suggestionExplainEmpathySignificancePartTwo": "Практика эмпатии к другим.",
+  "suggestionExplainLearningFromExperiencePartOne": "Объяснение того, как учиться на опыте.",
+  "suggestionExplainLearningFromExperiencePartTwo": "Стимулирование обмена знаниями.",
+  "suggestionHandleDailyStressPartOne": "Стратегии для справления с ежедневным стрессом.",
+  "suggestionHandleDailyStressPartTwo": "Эффективное управление временем.",
+  "suggestionImportanceOfCommunicationPartOne": "Важность эффективной коммуникации в команде.",
+  "suggestionImportanceOfCommunicationPartTwo": "Избегание недопонимания.",
+  "suggestionPersonalGrowthChallengesPartOne": "Идентификация проблем роста личности.",
+  "suggestionPersonalGrowthChallengesPartTwo": "Определение целей для их достижения.",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "Планирование вечеринки-сюрприза на день рождения.",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "Определение мероприятий и гостей.",
+  "supportLinkShared": "Поддержка",
+  "syncingTextShared": "Синхронизация...",
+  "systemPromptTextFieldLabel": "Текст системы",
+  "temperature": "Температура",
+  "tfsZ": "TFS Z",
+  "thankYouMessage": "Спасибо за использование нашего приложения!",
+  "tokenCountLabel": "Количество токенов",
+  "topK": "Top K",
+  "topP": "Top P",
+  "totalOnDiskSizeLabel": "Общий размер на диске",
+  "translationLanguageHint": "Выберите язык перевода...",
+  "translationLanguageLabel": "Язык перевода",
+  "tryAgainButtonShared": "Попробовать снова",
+  "turnOffButtonShared": "Выключить",
+  "typicalP": "Типичный P",
+  "undoButtonShared": "Отменить",
+  "unknownErrorSnackBar": "Неизвестная ошибка",
+  "updateAvailableDialogTitle": "Доступно обновление",
+  "updateAvailableSnackBar": "Обновление доступно",
+  "updateButton": "Обновить сейчас",
+  "updateDialogText1": "Доступно обновление.",
+  "updateDialogText2": "Вы хотите обновить сейчас?",
+  "updateInProgressPageDescription": "Идет обновление. Пожалуйста, подождите.",
+  "updateInProgressPageTitle": "Обновление в процессе...",
+  "updateNowButtonShared": "Обновить сейчас",
+  "uploadFilesDialogTitle": "Загрузить файлы",
+  "useButtonShared": "Использовать",
+  "useMlock": "Использовать Mlock",
+  "useMmap": "Использовать Mmap",
+  "versionTextShared": "Версия: {version}",
+  "@versionTextShared": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMoreButtonShared": "Смотреть больше",
+  "vocabOnly": "Только словарь",
+  "webSearchButtonShared": "Поиск в интернете",
+  "welcomeMessage": "Добро пожаловать!",
+  "zipFileUploadDialogTitle": "Загрузить ZIP-файл",
+  "zipFileUploadedSnackBar": "ZIP-файл загружен"
+}

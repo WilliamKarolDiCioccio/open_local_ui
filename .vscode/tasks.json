@@ -1,0 +1,132 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run",
+      "type": "shell",
+      "command": "flutter run",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "command": "flutter test",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Format",
+      "type": "shell",
+      "command": "dart format .",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Analyze",
+      "type": "shell",
+      "command": "flutter analyze",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Run build runner",
+      "type": "shell",
+      "command": "dart run build_runner build",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Build app",
+      "type": "shell",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["../scripts/build_app.ps1", "-config", "${input:config}"]
+      },
+      "linux": {
+        "command": "bash",
+        "args": ["../scripts/build_app.sh", "${input:config}"]
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Generate intl files",
+      "type": "shell",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["../scripts/generate_intl_files.ps1"]
+      },
+      "linux": {
+        "command": "bash",
+        "args": ["../scripts/generate_intl_files.sh"]
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Package app",
+      "type": "shell",
+      "command": "flutter_distributor release --name dev",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "config",
+      "type": "pickString",
+      "description": "Select configuration",
+      "options": [
+        {
+          "value": "debug",
+          "label": "Debug"
+        },
+        {
+          "value": "release",
+          "label": "Release"
+        }
+      ]
+    }
+  ]
+}

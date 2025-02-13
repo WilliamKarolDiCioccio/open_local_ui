@@ -1,0 +1,458 @@
+{
+  "@@locale": "ko",
+  "abortModelRemovalSnackBar": "모델 제거 취소",
+  "abortSessionRemovalSnackBar": "세션 제거 취소",
+  "aboutPageContributorsTitle": "기여자",
+  "aboutPageCopyrightNotice": "© 2024 윌리엄 캐롤 디 치우치오",
+  "aboutPageDiscoverTitle": "더 알아보기",
+  "aboutPagePoweredByTitle": "구동",
+  "aboutPageSocialButtonContributeTooltip": "기여하기",
+  "aboutPageSocialButtonJoinServerTooltip": "서버에 참여하기",
+  "aboutPageSocialButtonWatchTrailerTooltip": "예고편 보기",
+  "aboutPageVisitProfileTooltip": "프로필 방문하기",
+  "appTitle": "내 애플리케이션",
+  "attachFilesDialogAllowedFormats": "허용되는 형식: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "파일 찾아보기",
+  "attachFilesDialogDropFilesText": "여기에 파일을 드롭하세요",
+  "cancelButtonShared": "취소",
+  "chatAttachFilesTooltip": "파일 첨부",
+  "chatCancelEditButton": "편집 취소",
+  "chatCancelGenerationTooltip": "생성 취소",
+  "chatCopyMessageTooltip": "메시지 복사",
+  "chatDetachFilesTooltip": "파일 분리",
+  "chatEditFieldHint": "메시지를 입력하세요...",
+  "chatEditMessageTooltip": "메시지 편집",
+  "chatInputFieldHint": "메시지를 입력하세요...",
+  "chatReadAloudTooltip": "소리내어 읽기",
+  "chatRefreshSuggestions": "제안 새로고침",
+  "chatRegenerateMessageTooltip": "메시지 재생성",
+  "chatResendMessageButton": "메시지 다시 보내기",
+  "chatSendTooltip": "메시지 보내기",
+  "chatStatisticsDuration": "기간: {duration} 밀리초",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "속도: {speed} 토큰/초",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "토큰 수: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestionsPrompt": "제안이 필요하신가요?",
+  "chatSystemSender": "시스템",
+  "chatTitleEditHint": "제목을 입력하세요...",
+  "chatToolbarDocsSearchOption": "문서 검색:",
+  "chatToolbarModelSelectorHint": "모델 선택",
+  "chatToolbarNewSessionButton": "새 세션",
+  "chatToolbarWebSearchOption": "웹 검색:",
+  "chatUserSender": "나",
+  "chatWelcomeMessage": "환영합니다!",
+  "checkingForUpdatesDialogTitle": "업데이트 확인 중",
+  "clickToDownloadLatestVersionSnackBar": "최신 버전 다운로드를 위해 클릭하세요",
+  "closeButtonShared": "닫기",
+  "codeCopiedSnackBar": "코드가 클립보드에 복사되었습니다",
+  "concurrencyLimit": "동시성 제한",
+  "createFolderDialogFolderNameHint": "폴더 이름을 입력하세요...",
+  "createFolderDialogFolderNameLabel": "폴더 이름",
+  "createFolderDialogGuideText1": "생성할 폴더 이름을 입력하세요:",
+  "createFolderDialogGuideText2": "폴더 색상을 선택할 수 있습니다:",
+  "createFolderDialogTitle": "폴더 생성",
+  "createModelDialogGuideText1": "사용할 모델을 선택하세요:",
+  "createModelDialogGuideText2": "생성할 모델 이름을 입력하세요:",
+  "createModelDialogGuideText3": "모델 파일을 작성하려면 선택할 수 있습니다:",
+  "createModelDialogModelFileHint": "모델 파일을 입력하세요...",
+  "createModelDialogModelFileLabel": "모델 파일",
+  "createModelDialogModelNameHint": "모델 이름을 입력하세요...",
+  "createModelDialogModelNameLabel": "모델 이름",
+  "createModelDialogModelSelectorHint": "모델 선택",
+  "createModelDialogTitle": "모델 생성",
+  "createdAtTextShared": "생성 날짜: {createdAt}",
+  "dashboardAboutButton": "정보",
+  "dashboardChatButton": "채팅",
+  "dashboardHomeButton": "홈",
+  "dashboardModelsButton": "모델",
+  "dashboardSessionsButton": "세션",
+  "dashboardSettingsButton": "설정",
+  "dialogAttachButton": "첨부",
+  "dialogCancelButtonShared": "취소",
+  "dialogCloseButtonShared": "닫기",
+  "dialogConfirmButtonShared": "확인",
+  "dialogContinueInBackgroundButtonShared": "백그라운드에서 계속",
+  "dialogCreateButtonShared": "생성",
+  "dialogRemoveButton": "제거",
+  "dialogSkipButton": "건너뛰기",
+  "dialogStartButtonShared": "시작",
+  "dialogUpdateButton": "업데이트",
+  "enableDocsSearch": "문서 검색",
+  "enableWebSearch": "웹 검색",
+  "f16KV": "F16KV",
+  "failedToCreateFolderSnackBar": "폴더 생성 실패",
+  "failedToCreateModelSnackBar": "모델 생성 실패",
+  "failedToPullModelSnackBar": "모델 가져오기 실패",
+  "failedToPushModelSnackBar": "모델 푸시 실패",
+  "failedToShareSessionSnackBar": "세션 공유 실패",
+  "feedbackButton": "피드백",
+  "folderCreatedSnackBar": "폴더가 생성되었습니다",
+  "frequencyPenalty": "빈도 페널티",
+  "importModelDialogTitle": "모델 가져오기",
+  "keepAlive": "활성 상태 유지",
+  "licenseButton": "라이선스",
+  "listFiltersSortByLabel": "정렬 기준",
+  "listFiltersSortOrderLabel": "정렬 순서",
+  "logitsAll": "모든 로그리츠",
+  "lowVram": "낮은 VRAM",
+  "mainGpu": "주 GPU",
+  "markdownCopyTooltip": "Markdown 복사",
+  "markdownLanguageLabel": "언어: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "메시지가 클립보드에 복사되었습니다",
+  "mirostat": "미로스탯",
+  "mirostatEta": "미로스탯 ETA",
+  "mirostatTau": "미로스탯 TAU",
+  "modelCreatedSuccessfullySnackBar": "모델이 성공적으로 생성되었습니다",
+  "modelDetailsDigestText": "다이제스트: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "가족: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "형식: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "매개변수 크기: {parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "양자화 수준: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsSizeText": "크기: {size} GB",
+  "@modelDetailsSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsTitle": "{modelName}의 세부 정보",
+  "@modelDetailsTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelGeneralSettingsLabel": "일반 설정",
+  "modelIsGeneratingSnackBar": "모델이 생성 중입니다. 잠시 기다려주세요...",
+  "modelMiscSettingsLabel": "기타 설정",
+  "modelPenaltySettingsLabel": "패널티 설정",
+  "modelPerformanceSettingsLabel": "성능 설정",
+  "modelPulledSuccessfullySnackBar": "모델을 성공적으로 가져왔습니다.",
+  "modelPushedSuccessfullySnackBar": "모델을 성공적으로 푸시했습니다.",
+  "modelSpecificSettingsDialogTitle": "특정 모델 설정",
+  "modelsPageCreateButton": "모델 생성",
+  "modelsPageDeleteButton": "모델 삭제",
+  "modelsPageDeleteDialogText": "이 모델을 정말 삭제하시겠습니까?",
+  "modelsPageDeleteDialogTitle": "모델 삭제",
+  "modelsPageEditButton": "편집",
+  "modelsPageImportButton": "모델 가져오기",
+  "modelsPagePullButton": "가져오기",
+  "modelsPagePushButton": "푸시",
+  "modelsPageRefreshButton": "새로 고침",
+  "modelsPageSearchFieldHint": "모델 검색...",
+  "modelsPageSettingsButton": "모델 설정",
+  "modelsPageTitle": "모델",
+  "modelsPageUseButton": "모델 사용",
+  "modifiedAtTextShared": "최종 수정: ",
+  "moreOptionsButton": "추가 옵션",
+  "multimodal": "다중 모드",
+  "namespaceTextShared": "네임스페이스: {namespace}",
+  "@namespaceTextShared": {
+    "placeholders": {
+      "namespace": {
+        "type": "String"
+      }
+    }
+  },
+  "newFolderDialogTitle": "새 폴더",
+  "newSessionDialogTitle": "새 세션",
+  "newSessionSnackBar": "새 세션이 생성되었습니다",
+  "noAvailableModelsText": "사용 가능한 모델이 없습니다",
+  "noModelsAvailableSnackBar": "사용 가능한 모델이 없습니다.",
+  "noModelsText": "모델이 없습니다",
+  "noNeedToCreateSessionSnackBar": "세션을 만들 필요가 없습니다.",
+  "noSessionsText": "세션이 없습니다",
+  "noUpdatesAvailableDialogTitle": "사용 가능한 업데이트가 없습니다",
+  "noUpdatesAvailableSnackBar": "사용 가능한 업데이트가 없습니다",
+  "nodeStatusOffline": "오프라인",
+  "nodeStatusOnline": "온라인",
+  "nothingToSynthesizeSnackBar": "합성할 것이 없습니다.",
+  "nsfwSettingsLabel": "NSFW 설정",
+  "numBatch": "배치 수",
+  "numCtx": "컨텍스트 수",
+  "numKeep": "유지 수",
+  "numPredict": "예측 수",
+  "numThread": "스레드 수",
+  "numa": "NUMA",
+  "offlineWarningTextShared": "경고: 오프라인 모드입니다.",
+  "ollamaDisabledGPUWarningSnackBar": "경고: GPU가 비활성화되어 있습니다.",
+  "otherSettingsLabel": "기타 설정",
+  "overflowMenuLabel": "오버플로 메뉴",
+  "partialResults": "부분 결과",
+  "pauseGenerationButtonTooltip": "생성 일시 중지",
+  "peakMemoryTextShared": "최대 메모리: {peakMemory} MB",
+  "@peakMemoryTextShared": {
+    "placeholders": {
+      "peakMemory": {
+        "type": "String"
+      }
+    }
+  },
+  "penalizeNewline": "줄 바꿈에 패널티 부여",
+  "perplexityLabel": "혼란도",
+  "pinMessageTooltip": "메시지 고정",
+  "popularity": "인기도",
+  "presencePenalty": "존재 패널티",
+  "privacyButton": "개인정보 설정",
+  "progressBarStatusWithStepsText": "상태: {status} - {completedSteps}단계 중 {totalSteps}단계",
+  "progressBarStatusWithTimeText": "상태: {status} - 남은 시간: {hours}:{minutes}:{seconds}",
+  "projectTitleHint": "프로젝트 제목을 입력하세요...",
+  "projectTitleLabel": "프로젝트 제목",
+  "projectTypeHint": "프로젝트 유형을 선택하세요...",
+  "projectTypeLabel": "프로젝트 유형",
+  "pullModelDialogGuideText": "모델 가져오기:",
+  "pullModelDialogModelNameHint": "가져올 모델 이름을 입력하세요",
+  "pullModelDialogModelNameLabel": "모델 이름",
+  "pullModelDialogTitle": "모델 가져오기",
+  "pushModelDialogGuideText": "모델 푸시:",
+  "pushModelDialogModelSelectorHint": "푸시할 모델을 선택하세요",
+  "pushModelDialogTitle": "모델 푸시",
+  "redoButtonShared": "다시 하기",
+  "refreshButtonShared": "새로 고침",
+  "removeButtonShared": "제거",
+  "removeFolderDialogTitle": "폴더 제거",
+  "removeSessionDialogTitle": "세션 제거",
+  "repeatLastN": "마지막 회 반복",
+  "repeatPenalty": "반복 패널티",
+  "resetButtonShared": "초기화",
+  "resetToDefaultsButton": "기본값으로 재설정",
+  "retryButtonShared": "다시 시도",
+  "saveButtonShared": "저장",
+  "savedAtTextShared": "저장 시간: {savedAt}",
+  "@savedAtTextShared": {
+    "placeholders": {
+      "savedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "savedButtonShared": "저장되었습니다.",
+  "searchButtonShared": "검색",
+  "searchFieldHintShared": "검색...",
+  "searchFolderFieldHint": "폴더 검색...",
+  "searchModelFieldHint": "모델 검색...",
+  "searchSessionFieldHint": "세션 검색...",
+  "seed": "시드",
+  "selectAllButtonShared": "전체 선택",
+  "selectFolderDialogGuideText": "폴더 선택:",
+  "selectFolderDialogTitle": "폴더 선택",
+  "selectLanguageHint": "인터페이스 언어를 선택하세요...",
+  "selectLanguageLabel": "언어 선택",
+  "selectModelButtonShared": "모델 선택",
+  "selectOptionButtonShared": "옵션 선택",
+  "selectSettingsButtonShared": "설정 선택",
+  "sessionCreatedSnackBar": "세션이 생성되었습니다",
+  "sessionSharedSnackBar": "세션이 공유되었습니다.",
+  "sessionsPageClearDialogText": "세션을 정말 지우시겠습니까?",
+  "sessionsPageClearDialogTitle": "세션 지우기",
+  "sessionsPageClearSessionsButton": "세션 지우기",
+  "sessionsPageCreateFolderButton": "폴더 생성",
+  "sessionsPageDeleteButton": "세션 삭제",
+  "sessionsPageDeleteDialogText": "이 세션을 삭제하시겠습니까?",
+  "sessionsPageDeleteDialogTitle": "세션 삭제",
+  "sessionsPageEditTitleButton": "제목 편집",
+  "sessionsPageEnterButton": "입력",
+  "sessionsPageShareButton": "세션 공유",
+  "sessionsPageTitle": "세션 페이지",
+  "settingsAppearanceLabel": "외관",
+  "settingsBehaviorLabel": "동작",
+  "settingsGeneralLabel": "일반",
+  "settingsHeaderTitle": "설정",
+  "settingsLanguageArabic": "아랍어",
+  "settingsLanguageChinese": "중국어",
+  "settingsLanguageEnglish": "영어",
+  "settingsLanguageFrench": "프랑스어",
+  "settingsLanguageGerman": "독일어",
+  "settingsLanguageHindi": "힌디어",
+  "settingsLanguageHint": "인터페이스 언어를 선택하세요",
+  "settingsLanguageItalian": "이탈리아어",
+  "settingsLanguageJapanese": "일본어",
+  "settingsLanguageKorean": "한국어",
+  "settingsLanguageLabel": "언어",
+  "settingsLanguagePortuguese": "포르투갈어",
+  "settingsLanguageRussian": "러시아어",
+  "settingsLanguageSpanish": "스페인어",
+  "settingsLanguageSystem": "시스템 언어",
+  "settingsModelDefault": "기본 모델",
+  "settingsModelOff": "모델 꺼짐",
+  "settingsModelOn": "모델 켜짐",
+  "settingsPageAccessibilityLabel": "접근성 설정",
+  "settingsPageOllamaKeepAliveTimeLabel": "Ollama 유지 시간",
+  "settingsPageOllamaLabel": "Ollama 설정",
+  "settingsPageOllamaShowStatistics": "통계 보기",
+  "settingsPageOllamaTemperatureLabel": "Ollama 온도",
+  "settingsPageOllamaUseGPULabel": "GPU 사용",
+  "settingsPageThemeLabel": "테마 설정",
+  "settingsPageTitle": "설정",
+  "settingsThemeModeDark": "어두운 모드",
+  "settingsThemeModeLight": "밝은 모드",
+  "settingsThemeModeSystem": "시스템 모드",
+  "settingsTitle": "설정",
+  "shareButtonShared": "공유",
+  "shareFolderDialogTitle": "폴더 공유",
+  "shareModelDialogTitle": "모델 공유",
+  "shareSessionDialogTitle": "세션 공유",
+  "sharingOptionsLabel": "공유 옵션",
+  "skipUpdateButtonShared": "업데이트 건너뛰기",
+  "snackBarErrorTitle": "오류",
+  "snackBarInfoTitle": "정보",
+  "snackBarSuccessTitle": "성공",
+  "snackBarUpdateTitle": "업데이트",
+  "snackBarWarningTitle": "경고",
+  "softwareUpdateDialogTitle": "소프트웨어 업데이트",
+  "somethingWentWrongSnackBar": "문제가 발생했습니다.",
+  "sortByDateOption": "날짜별 정렬",
+  "sortByNameOption": "이름별 정렬",
+  "sortBySizeOption": "크기별 정렬",
+  "sortOrderAscendingOption": "오름차순",
+  "sortOrderDescendingOption": "내림차순",
+  "startChatButton": "채팅 시작",
+  "statusTextShared": "상태: {status}",
+  "@statusTextShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "submitFeedbackButtonShared": "피드백 제출",
+  "successSnackBar": "성공",
+  "suggestionAddressConflictsInRelationshipsPartOne": "관계의 충돌 해결하기.",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "잠재적 해결책 찾기.",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "문제 해결을 위한 일반적인 사용 사례.",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "성공적인 경험 공유하기.",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "복잡한 상황에서의 의사결정 정보 수집하기.",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "이용 가능한 선택 분석하기.",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "원격 근무의 장점 논의하기.",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "개별 경험 검토하기.",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "교육과 멘토링의 차이 이해하기.",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "멘토링 기술 개발하기.",
+  "suggestionEvaluateTeamPerformancePartOne": "팀 성과 정기적으로 평가하기.",
+  "suggestionEvaluateTeamPerformancePartTwo": "건설적인 피드백 제공하기.",
+  "suggestionExplainEmpathySignificancePartOne": "업무에서 공감의 중요성 설명하기.",
+  "suggestionExplainEmpathySignificancePartTwo": "타인과 공감하기 실천하기.",
+  "suggestionExplainLearningFromExperiencePartOne": "경험으로부터 학습하는 방법 설명하기.",
+  "suggestionExplainLearningFromExperiencePartTwo": "지식 공유 촉진하기.",
+  "suggestionHandleDailyStressPartOne": "일상 스트레스 처리 방법.",
+  "suggestionHandleDailyStressPartTwo": "효과적인 시간 관리.",
+  "suggestionImportanceOfCommunicationPartOne": "팀 내 효과적인 커뮤니케이션 중요성.",
+  "suggestionImportanceOfCommunicationPartTwo": "오해 방지하기.",
+  "suggestionPersonalGrowthChallengesPartOne": "개인 성장의 도전 과제 식별하기.",
+  "suggestionPersonalGrowthChallengesPartTwo": "목표 달성 계획 세우기.",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "서프라이즈 생일 파티 계획하기.",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "활동과 게스트 식별하기.",
+  "supportLinkShared": "지원",
+  "syncingTextShared": "동기화 중...",
+  "systemPromptTextFieldLabel": "시스템 텍스트",
+  "temperature": "온도",
+  "tfsZ": "TFS Z",
+  "thankYouMessage": "저희 애플리케이션을 사용해주셔서 감사합니다!",
+  "tokenCountLabel": "토큰 수",
+  "topK": "상위 K",
+  "topP": "상위 P",
+  "totalOnDiskSizeLabel": "디스크 상의 총 크기",
+  "translationLanguageHint": "번역 언어를 선택하세요...",
+  "translationLanguageLabel": "번역 언어",
+  "tryAgainButtonShared": "다시 시도",
+  "turnOffButtonShared": "끄기",
+  "typicalP": "전형적인 P",
+  "undoButtonShared": "되돌리기",
+  "unknownErrorSnackBar": "알 수 없는 오류",
+  "updateAvailableDialogTitle": "업데이트 가능",
+  "updateAvailableSnackBar": "업데이트 가능",
+  "updateButton": "지금 업데이트",
+  "updateDialogText1": "업데이트가 가능합니다.",
+  "updateDialogText2": "지금 업데이트 하시겠습니까?",
+  "updateInProgressPageDescription": "업데이트 중입니다. 잠시 기다려 주세요.",
+  "updateInProgressPageTitle": "업데이트 진행 중...",
+  "updateNowButtonShared": "지금 업데이트",
+  "uploadFilesDialogTitle": "파일 업로드",
+  "useButtonShared": "사용",
+  "useMlock": "Mlock 사용",
+  "useMmap": "Mmap 사용",
+  "versionTextShared": "버전: {version}",
+  "@versionTextShared": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMoreButtonShared": "더 보기",
+  "vocabOnly": "어휘만",
+  "webSearchButtonShared": "웹 검색",
+  "welcomeMessage": "환영합니다!",
+  "zipFileUploadDialogTitle": "ZIP 파일 업로드",
+  "zipFileUploadedSnackBar": "ZIP 파일이 업로드되었습니다"
+}

@@ -1,0 +1,468 @@
+{
+  "@@locale": "hi",
+  "abortModelRemovalSnackBar": "मॉडल हटाने को रद्द करें",
+  "abortSessionRemovalSnackBar": "सत्र हटाने को रद्द करें",
+  "aboutPageContributorsTitle": "योगदानकर्ता",
+  "aboutPageCopyrightNotice": "© 2024 विलियम कैरोल डी चिउचियो",
+  "aboutPageDiscoverTitle": "और जानें",
+  "aboutPagePoweredByTitle": "प्रस्तुत किया गया",
+  "aboutPageSocialButtonContributeTooltip": "योगदान करें",
+  "aboutPageSocialButtonJoinServerTooltip": "सर्वर में शामिल हों",
+  "aboutPageSocialButtonWatchTrailerTooltip": "ट्रेलर देखें",
+  "aboutPageVisitProfileTooltip": "प्रोफ़ाइल पर जाएं",
+  "appTitle": "मेरे एप्लिकेशन",
+  "attachFilesDialogAllowedFormats": "अनुमत प्रारूप: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "फाइलें ब्राउज़ करें",
+  "attachFilesDialogDropFilesText": "यहाँ फ़ाइलें छोड़ें",
+  "cancelButtonShared": "रद्द करें",
+  "chatAttachFilesTooltip": "फ़ाइल संलग्न करें",
+  "chatCancelEditButton": "संपादन रद्द करें",
+  "chatCancelGenerationTooltip": "जनरेशन रद्द करें",
+  "chatCopyMessageTooltip": "संदेश कॉपी करें",
+  "chatDetachFilesTooltip": "फ़ाइलें अलग करें",
+  "chatEditFieldHint": "संदेश दर्ज करें...",
+  "chatEditMessageTooltip": "संदेश संपादित करें",
+  "chatInputFieldHint": "संदेश दर्ज करें...",
+  "chatReadAloudTooltip": "आवाज में पढ़ें",
+  "chatRefreshSuggestions": "सुझाव ताज़ा करें",
+  "chatRegenerateMessageTooltip": "संदेश पुनः उत्पन्न करें",
+  "chatResendMessageButton": "संदेश पुनः भेजें",
+  "chatSendTooltip": "संदेश भेजें",
+  "chatStatisticsDuration": "अवधि: {duration} मिलीसेकंड",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "गति: {speed} टोकन/सेकंड",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "टोकन संख्या: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestionsPrompt": "क्या आपको सुझाव चाहिए?",
+  "chatSystemSender": "सिस्टम",
+  "chatTitleEditHint": "शीर्षक दर्ज करें...",
+  "chatToolbarDocsSearchOption": "दस्तावेज़ खोज:",
+  "chatToolbarModelSelectorHint": "मॉडल चुनें",
+  "chatToolbarNewSessionButton": "नई सत्र",
+  "chatToolbarWebSearchOption": "वेब खोज:",
+  "chatUserSender": "मैं",
+  "chatWelcomeMessage": "स्वागत है!",
+  "checkingForUpdatesDialogTitle": "अपडेट की जाँच कर रहा है",
+  "clickToDownloadLatestVersionSnackBar": "नवीनतम संस्करण डाउनलोड करने के लिए क्लिक करें",
+  "closeButtonShared": "बंद करें",
+  "codeCopiedSnackBar": "कोड क्लिपबोर्ड में कॉपी किया गया",
+  "concurrencyLimit": "समानांतरता सीमा",
+  "createFolderDialogFolderNameHint": "फोल्डर का नाम दर्ज करें...",
+  "createFolderDialogFolderNameLabel": "फोल्डर का नाम",
+  "createFolderDialogGuideText1": "निर्माण के लिए फोल्डर का नाम दर्ज करें:",
+  "createFolderDialogGuideText2": "फोल्डर का रंग चुन सकते हैं:",
+  "createFolderDialogTitle": "फोल्डर बनाएं",
+  "createModelDialogGuideText1": "उपयोग करने के लिए मॉडल चुनें:",
+  "createModelDialogGuideText2": "उत्पन्न करने के लिए मॉडल नाम दर्ज करें:",
+  "createModelDialogGuideText3": "मॉडल फ़ाइल चुनें:",
+  "createModelDialogModelFileHint": "मॉडल फ़ाइल दर्ज करें...",
+  "createModelDialogModelFileLabel": "मॉडल फ़ाइल",
+  "createModelDialogModelNameHint": "मॉडल नाम दर्ज करें...",
+  "createModelDialogModelNameLabel": "मॉडल नाम",
+  "createModelDialogModelSelectorHint": "मॉडल चुनें",
+  "createModelDialogTitle": "मॉडल बनाएं",
+  "createdAtTextShared": "निर्माण तिथि: {createdAt}",
+  "@createdAtTextShared": {
+    "placeholders": {
+      "createdAt": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardAboutButton": "जानकारी",
+  "dashboardChatButton": "चैट",
+  "dashboardHomeButton": "होम",
+  "dashboardModelsButton": "मॉडल",
+  "dashboardSessionsButton": "सत्र",
+  "dashboardSettingsButton": "सेटिंग",
+  "dialogAttachButton": "संलग्न करें",
+  "dialogCancelButtonShared": "रद्द करें",
+  "dialogCloseButtonShared": "बंद करें",
+  "dialogConfirmButtonShared": "पुष्ट करें",
+  "dialogContinueInBackgroundButtonShared": "पृष्ठभूमि में जारी रखें",
+  "dialogCreateButtonShared": "बनाएँ",
+  "dialogRemoveButton": "हटाएँ",
+  "dialogSkipButton": "छोड़ें",
+  "dialogStartButtonShared": "शुरू करें",
+  "dialogUpdateButton": "अद्यतन करें",
+  "enableDocsSearch": "दस्तावेज़ खोज सक्षम करें",
+  "enableWebSearch": "वेब खोज सक्षम करें",
+  "f16KV": "F16KV",
+  "failedToCreateFolderSnackBar": "फोल्डर बनाने में असफल",
+  "failedToCreateModelSnackBar": "मॉडल बनाने में असफल",
+  "failedToPullModelSnackBar": "मॉडल खींचने में असफल",
+  "failedToPushModelSnackBar": "मॉडल को पुश करने में असफल",
+  "failedToShareSessionSnackBar": "सत्र साझा करने में असफल",
+  "feedbackButton": "प्रतिपुष्टि",
+  "folderCreatedSnackBar": "फोल्डर बनाया गया",
+  "frequencyPenalty": "आवृत्ति दंड",
+  "importModelDialogTitle": "मॉडल आयात करें",
+  "keepAlive": "कनेक्शन बनाए रखें",
+  "licenseButton": "लाइसेंस",
+  "listFiltersSortByLabel": "छंटाई मानदंड",
+  "listFiltersSortOrderLabel": "छंटाई क्रम",
+  "logitsAll": "सभी लॉजिट्स",
+  "lowVram": "निम्न VRAM",
+  "mainGpu": "मुख्य GPU",
+  "markdownCopyTooltip": "मार्कडाउन कॉपी करें",
+  "markdownLanguageLabel": "भाषा: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "संदेश क्लिपबोर्ड में कॉपी किया गया",
+  "mirostat": "मायरोस्टैट",
+  "mirostatEta": "मायरोस्टैट ईटीए",
+  "mirostatTau": "मायरोस्टैट टौ",
+  "modelCreatedSuccessfullySnackBar": "मॉडल सफलतापूर्वक बनाया गया",
+  "modelDetailsDigestText": "डाइजेस्ट: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "परिवार: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "प्रारूप: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "पैरामीटर आकार: {parametersSize} बी",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "क्वांटाइजेशन स्तर: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsReadmeText": "रीडमी: {readme}",
+  "@modelDetailsReadmeText": {
+    "placeholders": {
+      "readme": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsShared": "मॉडल विवरण",
+  "modelDetailsSizeText": "मॉडल का आकार: ",
+  "modelDetailsTitle": "मॉडल विवरण",
+  "modelGeneralSettingsLabel": "सामान्य सेटिंग्स",
+  "modelIsGeneratingSnackBar": "मॉडल उत्पन्न कर रहा है...",
+  "modelMiscSettingsLabel": "विविध सेटिंग्स",
+  "modelPenaltySettingsLabel": "दंड सेटिंग्स",
+  "modelPerformanceSettingsLabel": "प्रदर्शन सेटिंग्स",
+  "modelPulledSuccessfullySnackBar": "मॉडल सफलतापूर्वक खींचा गया।",
+  "modelPushedSuccessfullySnackBar": "मॉडल सफलतापूर्वक पुश किया गया।",
+  "modelSpecificSettingsDialogTitle": "विशिष्ट मॉडल सेटिंग्स",
+  "modelTypeText": "मॉडल प्रकार: {modelType}",
+  "@modelTypeText": {
+    "placeholders": {
+      "modelType": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsPageCreateButton": "मॉडल बनाएँ",
+  "modelsPageDeleteButton": "मॉडल हटाएँ",
+  "modelsPageDeleteDialogText": "क्या आप वास्तव में इस मॉडल को हटाना चाहते हैं?",
+  "modelsPageDeleteDialogTitle": "मॉडल हटाएँ",
+  "modelsPageEditButton": "संपादित करें",
+  "modelsPageImportButton": "मॉडल आयात करें",
+  "modelsPagePullButton": "खींचें",
+  "modelsPagePushButton": "पुश करें",
+  "modelsPageRefreshButton": "ताज़ा करें",
+  "modelsPageSearchFieldHint": "मॉडल खोजें...",
+  "modelsPageSettingsButton": "मॉडल सेटिंग्स",
+  "modelsPageTitle": "मॉडल",
+  "modelsPageUseButton": "मॉडल का उपयोग करें",
+  "modifiedAtTextShared": "संशोधित समय: ",
+  "moreOptionsButton": "अधिक विकल्प",
+  "multimodal": "मल्टीमॉडल",
+  "namespaceTextShared": "नेमस्पेस: {namespace}",
+  "@namespaceTextShared": {
+    "placeholders": {
+      "namespace": {
+        "type": "String"
+      }
+    }
+  },
+  "newFolderDialogTitle": "नया फोल्डर",
+  "newSessionDialogTitle": "नया सत्र",
+  "newSessionSnackBar": "नया सत्र बनाया गया",
+  "noAvailableModelsText": "कोई उपलब्ध मॉडल नहीं है",
+  "noModelsAvailableSnackBar": "कोई मॉडल उपलब्ध नहीं है।",
+  "noModelsText": "कोई मॉडल नहीं है",
+  "noNeedToCreateSessionSnackBar": "नई सत्र बनाने की आवश्यकता नहीं है।",
+  "noSessionsText": "कोई सत्र नहीं है",
+  "noUpdatesAvailableDialogTitle": "कोई अपडेट उपलब्ध नहीं है",
+  "noUpdatesAvailableSnackBar": "कोई अपडेट उपलब्ध नहीं है",
+  "nodeStatusOffline": "ऑफलाइन",
+  "nodeStatusOnline": "ऑनलाइन",
+  "nothingToSynthesizeSnackBar": "सिंथेसाइज करने के लिए कुछ नहीं है।",
+  "nsfwSettingsLabel": "NSFW सेटिंग",
+  "numBatch": "बैच की संख्या",
+  "numCtx": "संदर्भ की संख्या",
+  "numKeep": "रखने की संख्या",
+  "numPredict": "पूर्वानुमान की संख्या",
+  "numThread": "थ्रेड की संख्या",
+  "numa": "NUMA",
+  "offlineWarningTextShared": "चेतावनी: ऑफ़लाइन मोड।",
+  "ollamaDisabledGPUWarningSnackBar": "चेतावनी: GPU अक्षम है।",
+  "otherSettingsLabel": "अन्य सेटिंग",
+  "overflowMenuLabel": "ओवरफ्लो मेनू",
+  "partialResults": "आंशिक परिणाम",
+  "pauseGenerationButtonTooltip": "उत्पादन को स्थगित करें",
+  "peakMemoryTextShared": "पीक मेमोरी: {peakMemory} एमबी",
+  "@peakMemoryTextShared": {
+    "placeholders": {
+      "peakMemory": {
+        "type": "String"
+      }
+    }
+  },
+  "penalizeNewline": "नई पंक्ति पर दंड",
+  "perplexityLabel": "असुविधा",
+  "pinMessageTooltip": "संदेश को पिन करें",
+  "popularity": "लोकप्रियता",
+  "presencePenalty": "उपस्थिति दंड",
+  "privacyButton": "गोपनीयता सेटिंग्स",
+  "progressBarStatusWithStepsText": "स्थिति: {status} - चरण {completedSteps} का {totalSteps}",
+  "progressBarStatusWithTimeText": "स्थिति: {status} - शेष समय: {hours}:{minutes}:{seconds}",
+  "projectTitleHint": "परियोजना का शीर्षक दर्ज करें...",
+  "projectTitleLabel": "परियोजना का शीर्षक",
+  "projectTypeHint": "परियोजना का प्रकार चुनें...",
+  "projectTypeLabel": "परियोजना का प्रकार",
+  "pullModelDialogGuideText": "मॉडल खींचें:",
+  "pullModelDialogModelNameHint": "मॉडल खींचने के लिए नाम दर्ज करें",
+  "pullModelDialogModelNameLabel": "मॉडल का नाम",
+  "pullModelDialogTitle": "मॉडल खींचें",
+  "pushModelDialogGuideText": "मॉडल पुश करें:",
+  "pushModelDialogModelSelectorHint": "पुश करने के लिए मॉडल चुनें",
+  "pushModelDialogTitle": "मॉडल पुश करें",
+  "redoButtonShared": "दोबारा करें",
+  "refreshButtonShared": "ताज़ा करें",
+  "removeButtonShared": "हटाएँ",
+  "removeFolderDialogTitle": "फोल्डर हटाएँ",
+  "removeSessionDialogTitle": "सत्र हटाएँ",
+  "repeatLastN": "आखिरी को दोहराएँ",
+  "repeatPenalty": "दोहराने का दंड",
+  "resetButtonShared": "रीसेट करें",
+  "resetToDefaultsButton": "डिफ़ॉल्ट पर रीसेट करें",
+  "retryButtonShared": "फिर से प्रयास करें",
+  "saveButtonShared": "सहेजें",
+  "savedAtTextShared": "सहेजने की तारीख: {savedAt}",
+  "@savedAtTextShared": {
+    "placeholders": {
+      "savedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "savedButtonShared": "सहेजा गया।",
+  "searchButtonShared": "खोजें",
+  "searchFieldHintShared": "खोजें...",
+  "searchFolderFieldHint": "फोल्डर खोजें...",
+  "searchModelFieldHint": "मॉडल खोजें...",
+  "searchSessionFieldHint": "सत्र खोजें...",
+  "seed": "बीज",
+  "selectAllButtonShared": "सभी चुनें",
+  "selectFolderDialogGuideText": "फोल्डर चुनें:",
+  "selectFolderDialogTitle": "फोल्डर चुनें",
+  "selectLanguageHint": "इंटरफेस भाषा चुनें...",
+  "selectLanguageLabel": "भाषा चुनें",
+  "selectModelButtonShared": "मॉडल चुनें",
+  "selectOptionButtonShared": "विकल्प चुनें",
+  "selectSettingsButtonShared": "सेटिंग चुनें",
+  "sessionCreatedSnackBar": "सत्र बनाया गया",
+  "sessionSharedSnackBar": "सत्र साझा किया गया।",
+  "sessionsPageClearDialogText": "क्या आप वास्तव में सत्रों को साफ़ करना चाहते हैं?",
+  "sessionsPageClearDialogTitle": "सत्र साफ़ करें",
+  "sessionsPageClearSessionsButton": "सत्र साफ़ करें",
+  "sessionsPageCreateFolderButton": "फ़ोल्डर बनाएँ",
+  "sessionsPageDeleteButton": "सत्र हटाएँ",
+  "sessionsPageDeleteDialogText": "क्या आप इस सत्र को हटाना चाहते हैं?",
+  "sessionsPageDeleteDialogTitle": "सत्र हटाएँ",
+  "sessionsPageEditTitleButton": "शीर्षक संपादित करें",
+  "sessionsPageEnterButton": "प्रवेश करें",
+  "sessionsPageShareButton": "सत्र साझा करें",
+  "sessionsPageTitle": "सत्र पृष्ठ",
+  "settingsAppearanceLabel": "रूप",
+  "settingsBehaviorLabel": "व्यवहार",
+  "settingsGeneralLabel": "सामान्य",
+  "settingsHeaderTitle": "सेटिंग",
+  "settingsLanguageArabic": "अरबी",
+  "settingsLanguageChinese": "चीनी",
+  "settingsLanguageEnglish": "अंग्रेज़ी",
+  "settingsLanguageFrench": "फ्रेंच",
+  "settingsLanguageGerman": "जर्मन",
+  "settingsLanguageHindi": "हिंदी",
+  "settingsLanguageHint": "कृपया इंटरफेस भाषा चुनें",
+  "settingsLanguageItalian": "इतालवी",
+  "settingsLanguageJapanese": "जापानी",
+  "settingsLanguageKorean": "कोरियाई",
+  "settingsLanguageLabel": "भाषा",
+  "settingsLanguagePortuguese": "पुर्तगाली",
+  "settingsLanguageRussian": "रूसी",
+  "settingsLanguageSpanish": "स्पेनिश",
+  "settingsLanguageSystem": "सिस्टम की भाषा",
+  "settingsModelDefault": "डिफ़ॉल्ट मॉडल",
+  "settingsModelOff": "मॉडल बंद",
+  "settingsModelOn": "मॉडल चालू",
+  "settingsPageAccessibilityLabel": "पहुँच सेटिंग्स",
+  "settingsPageOllamaKeepAliveTimeLabel": "ओलामा की जीवित रहने का समय",
+  "settingsPageOllamaLabel": "ओलामा सेटिंग्स",
+  "settingsPageOllamaShowStatistics": "आंकड़े दिखाएँ",
+  "settingsPageOllamaTemperatureLabel": "ओलामा तापमान",
+  "settingsPageOllamaUseGPULabel": "GPU का उपयोग करें",
+  "settingsPageThemeLabel": "थीम सेटिंग्स",
+  "settingsPageTitle": "सेटिंग्स",
+  "settingsThemeModeDark": "अंधेरा मोड",
+  "settingsThemeModeLight": "हल्का मोड",
+  "settingsThemeModeSystem": "सिस्टम मोड",
+  "settingsTitle": "सेटिंग",
+  "shareButtonShared": "शेयर करें",
+  "shareFolderDialogTitle": "फोल्डर साझा करें",
+  "shareModelDialogTitle": "मॉडल साझा करें",
+  "shareSessionDialogTitle": "सत्र साझा करें",
+  "sharingOptionsLabel": "साझा करने के विकल्प",
+  "skipUpdateButtonShared": "अपडेट छोड़ें",
+  "snackBarErrorTitle": "त्रुटि",
+  "snackBarInfoTitle": "जानकारी",
+  "snackBarSuccessTitle": "सफलता",
+  "snackBarUpdateTitle": "अपडेट",
+  "snackBarWarningTitle": "चेतावनी",
+  "softwareUpdateDialogTitle": "सॉफ़्टवेयर अपडेट",
+  "somethingWentWrongSnackBar": "कुछ गलत हुआ।",
+  "sortByDateOption": "तारीख़ के अनुसार क्रमबद्ध करें",
+  "sortByNameOption": "नाम के अनुसार क्रमबद्ध करें",
+  "sortBySizeOption": "आकार के अनुसार क्रमबद्ध करें",
+  "sortOrderAscendingOption": "चढ़ता क्रम",
+  "sortOrderDescendingOption": "उतरता क्रम",
+  "startChatButton": "चैट शुरू करें",
+  "statusTextShared": "स्थिति: {status}",
+  "@statusTextShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "submitFeedbackButtonShared": "प्रतिपुष्टि भेजें",
+  "successSnackBar": "सफलता",
+  "suggestionAddressConflictsInRelationshipsPartOne": "संबंधों में संघर्षों का पता लगाना।",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "संभावित समाधानों की पहचान करना।",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "समस्याओं के समाधान के लिए तकनीकों का उपयोग करना।",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "सफल अनुभवों को साझा करना।",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "निर्णय लेने के लिए आवश्यक जानकारी एकत्र करना।",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "उपलब्ध विकल्पों का विश्लेषण करना।",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "दूरस्थ कार्य के लाभों पर चर्चा करना।",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "व्यक्तिगत अनुभवों की समीक्षा करना।",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "शिक्षण और मार्गदर्शन के बीच भेद करना।",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "मार्गदर्शन कौशल विकसित करना।",
+  "suggestionEvaluateTeamPerformancePartOne": "टीम के प्रदर्शन का नियमित रूप से मूल्यांकन करना।",
+  "suggestionEvaluateTeamPerformancePartTwo": "निर्माणात्मक फीडबैक प्रदान करना।",
+  "suggestionExplainEmpathySignificancePartOne": "काम में सहानुभूति के महत्व को समझाना।",
+  "suggestionExplainEmpathySignificancePartTwo": "अन्य लोगों के साथ सहानुभूति लागू करना।",
+  "suggestionExplainLearningFromExperiencePartOne": "अनुभव से सीखने के तरीके को स्पष्ट करना।",
+  "suggestionExplainLearningFromExperiencePartTwo": "ज्ञान साझा करने को प्रोत्साहित करना।",
+  "suggestionHandleDailyStressPartOne": "दैनिक तनाव से निपटने की रणनीतियाँ।",
+  "suggestionHandleDailyStressPartTwo": "प्रभावी समय प्रबंधन।",
+  "suggestionImportanceOfCommunicationPartOne": "टीम में प्रभावी संचार का महत्व।",
+  "suggestionImportanceOfCommunicationPartTwo": "गलतफहमी से बचना।",
+  "suggestionPersonalGrowthChallengesPartOne": "व्यक्तिगत विकास की चुनौतियों की पहचान करना।",
+  "suggestionPersonalGrowthChallengesPartTwo": "लक्ष्यों को प्राप्त करने की योजना विकसित करना।",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "सरप्राइज बर्थडे पार्टी की योजना बनाना।",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "गतिविधियों और मेहमानों की पहचान करना।",
+  "supportLinkShared": "समर्थन",
+  "syncingTextShared": "सिंक कर रहा है...",
+  "systemPromptTextFieldLabel": "सिस्टम टेक्स्ट",
+  "temperature": "तापमान",
+  "tfsZ": "TFS Z",
+  "thankYouMessage": "हमारे एप्लिकेशन का उपयोग करने के लिए धन्यवाद!",
+  "tokenCountLabel": "टोकन संख्या",
+  "topK": "सर्वोत्तम K",
+  "topP": "सर्वोत्तम P",
+  "totalOnDiskSizeLabel": "डिस्क पर कुल आकार",
+  "translationLanguageHint": "अनुवाद भाषा चुनें...",
+  "translationLanguageLabel": "अनुवाद भाषा",
+  "tryAgainButtonShared": "फिर से प्रयास करें",
+  "turnOffButtonShared": "बंद करें",
+  "typicalP": "सामान्य P",
+  "undoButtonShared": "पूर्ववत करें",
+  "unknownErrorSnackBar": "अज्ञात त्रुटि",
+  "updateAvailableDialogTitle": "अपडेट उपलब्ध है",
+  "updateAvailableSnackBar": "अपडेट उपलब्ध है",
+  "updateButton": "अभी अपडेट करें",
+  "updateDialogText1": "एक अपडेट उपलब्ध है।",
+  "updateDialogText2": "क्या आप अभी अपडेट करना चाहते हैं?",
+  "updateInProgressPageDescription": "अपडेट हो रहा है, कृपया प्रतीक्षा करें।",
+  "updateInProgressPageTitle": "अपडेट हो रहा है...",
+  "updateNowButtonShared": "अभी अपडेट करें",
+  "uploadFilesDialogTitle": "फाइलें अपलोड करें",
+  "useButtonShared": "उपयोग करें",
+  "useMlock": "Mlock का उपयोग करें",
+  "useMmap": "Mmap का उपयोग करें",
+  "versionTextShared": "संस्करण: {version}",
+  "@versionTextShared": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMoreButtonShared": "और देखें",
+  "vocabOnly": "केवल शब्दावली",
+  "webSearchButtonShared": "वेब खोज",
+  "welcomeMessage": "स्वागत है!",
+  "zipFileUploadDialogTitle": "ZIP फ़ाइल अपलोड करें",
+  "zipFileUploadedSnackBar": "ZIP फ़ाइल अपलोड की गई"
+}

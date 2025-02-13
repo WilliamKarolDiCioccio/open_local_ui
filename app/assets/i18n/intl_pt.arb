@@ -1,0 +1,468 @@
+{
+  "@@locale": "pt",
+  "abortModelRemovalSnackBar": "Cancelar remoção do modelo",
+  "abortSessionRemovalSnackBar": "Cancelar remoção da sessão",
+  "aboutPageContributorsTitle": "Contribuidores",
+  "aboutPageCopyrightNotice": "© 2024 William Carol Di Chiuccio",
+  "aboutPageDiscoverTitle": "Saiba mais",
+  "aboutPagePoweredByTitle": "Powered by",
+  "aboutPageSocialButtonContributeTooltip": "Contribua",
+  "aboutPageSocialButtonJoinServerTooltip": "Junte-se ao servidor",
+  "aboutPageSocialButtonWatchTrailerTooltip": "Assista ao trailer",
+  "aboutPageVisitProfileTooltip": "Visite o perfil",
+  "appTitle": "Meu Aplicativo",
+  "attachFilesDialogAllowedFormats": "Formatos permitidos: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "Navegar arquivos",
+  "attachFilesDialogDropFilesText": "Solte arquivos aqui",
+  "cancelButtonShared": "Cancelar",
+  "chatAttachFilesTooltip": "Anexar arquivo",
+  "chatCancelEditButton": "Cancelar edição",
+  "chatCancelGenerationTooltip": "Cancelar geração",
+  "chatCopyMessageTooltip": "Copiar mensagem",
+  "chatDetachFilesTooltip": "Desanexar arquivos",
+  "chatEditFieldHint": "Digite a mensagem...",
+  "chatEditMessageTooltip": "Editar mensagem",
+  "chatInputFieldHint": "Digite a mensagem...",
+  "chatReadAloudTooltip": "Ler em voz alta",
+  "chatRefreshSuggestions": "Atualizar sugestões",
+  "chatRegenerateMessageTooltip": "Regenerar mensagem",
+  "chatResendMessageButton": "Reenviar mensagem",
+  "chatSendTooltip": "Enviar mensagem",
+  "chatStatisticsDuration": "Duração: {duration} milissegundos",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "Velocidade: {speed} tokens/segundo",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "Número de tokens: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestionsPrompt": "Você precisa de sugestões?",
+  "chatSystemSender": "Sistema",
+  "chatTitleEditHint": "Digite o título...",
+  "chatToolbarDocsSearchOption": "Pesquisar documentos:",
+  "chatToolbarModelSelectorHint": "Selecione o modelo",
+  "chatToolbarNewSessionButton": "Nova sessão",
+  "chatToolbarWebSearchOption": "Pesquisar na web:",
+  "chatUserSender": "Eu",
+  "chatWelcomeMessage": "Bem-vindo!",
+  "checkingForUpdatesDialogTitle": "Verificando atualizações",
+  "clickToDownloadLatestVersionSnackBar": "Clique para baixar a versão mais recente",
+  "closeButtonShared": "Fechar",
+  "codeCopiedSnackBar": "Código copiado para a área de transferência",
+  "concurrencyLimit": "Limite de concorrência",
+  "createFolderDialogFolderNameHint": "Digite o nome da pasta...",
+  "createFolderDialogFolderNameLabel": "Nome da pasta",
+  "createFolderDialogGuideText1": "Digite o nome da pasta a ser criada:",
+  "createFolderDialogGuideText2": "Você pode escolher a cor da pasta:",
+  "createFolderDialogTitle": "Criar pasta",
+  "createModelDialogGuideText1": "Escolha um modelo para usar:",
+  "createModelDialogGuideText2": "Digite o nome do modelo a ser gerado:",
+  "createModelDialogGuideText3": "Escolha o arquivo do modelo:",
+  "createModelDialogModelFileHint": "Digite o arquivo do modelo...",
+  "createModelDialogModelFileLabel": "Arquivo do modelo",
+  "createModelDialogModelNameHint": "Digite o nome do modelo...",
+  "createModelDialogModelNameLabel": "Nome do modelo",
+  "createModelDialogModelSelectorHint": "Selecione o modelo",
+  "createModelDialogTitle": "Criar modelo",
+  "createdAtTextShared": "Data de criação: {createdAt}",
+  "@createdAtTextShared": {
+    "placeholders": {
+      "createdAt": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardAboutButton": "Sobre",
+  "dashboardChatButton": "Chat",
+  "dashboardHomeButton": "Início",
+  "dashboardModelsButton": "Modelos",
+  "dashboardSessionsButton": "Sessões",
+  "dashboardSettingsButton": "Configurações",
+  "dialogAttachButton": "Anexar",
+  "dialogCancelButtonShared": "Cancelar",
+  "dialogCloseButtonShared": "Fechar",
+  "dialogConfirmButtonShared": "Confirmar",
+  "dialogContinueInBackgroundButtonShared": "Continuar em segundo plano",
+  "dialogCreateButtonShared": "Criar",
+  "dialogRemoveButton": "Remover",
+  "dialogSkipButton": "Pular",
+  "dialogStartButtonShared": "Iniciar",
+  "dialogUpdateButton": "Atualizar",
+  "enableDocsSearch": "Habilitar pesquisa de documentos",
+  "enableWebSearch": "Habilitar pesquisa na web",
+  "f16KV": "F16KV",
+  "failedToCreateFolderSnackBar": "Falha ao criar pasta",
+  "failedToCreateModelSnackBar": "Falha ao criar modelo",
+  "failedToPullModelSnackBar": "Falha ao puxar modelo",
+  "failedToPushModelSnackBar": "Falha ao enviar modelo",
+  "failedToShareSessionSnackBar": "Falha ao compartilhar sessão",
+  "feedbackButton": "Feedback",
+  "folderCreatedSnackBar": "Pasta criada",
+  "frequencyPenalty": "Penalidade de frequência",
+  "importModelDialogTitle": "Importar modelo",
+  "keepAlive": "Manter conexão",
+  "licenseButton": "Licença",
+  "listFiltersSortByLabel": "Critério de ordenação",
+  "listFiltersSortOrderLabel": "Ordem de ordenação",
+  "logitsAll": "Todos os logits",
+  "lowVram": "VRAM baixa",
+  "mainGpu": "GPU principal",
+  "markdownCopyTooltip": "Copiar markdown",
+  "markdownLanguageLabel": "Idioma: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "Mensagem copiada para a área de transferência",
+  "mirostat": "Mirostat",
+  "mirostatEta": "Mirostat ETA",
+  "mirostatTau": "Mirostat Tau",
+  "modelCreatedSuccessfullySnackBar": "Modelo criado com sucesso",
+  "modelDetailsDigestText": "Digest: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "Família: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "Formato: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "Tamanho dos parâmetros: {parametersSize} B",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "Nível de quantização: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsReadmeText": "README: {readme}",
+  "@modelDetailsReadmeText": {
+    "placeholders": {
+      "readme": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsShared": "Detalhes do modelo",
+  "modelDetailsSizeText": "Texto de tamanho dos detalhes do modelo",
+  "modelDetailsTitle": "Título dos detalhes do modelo",
+  "modelGeneralSettingsLabel": "Configurações Gerais",
+  "modelIsGeneratingSnackBar": "Modelo gerando...",
+  "modelMiscSettingsLabel": "Configurações Diversas",
+  "modelPenaltySettingsLabel": "Configurações de Penalidade",
+  "modelPerformanceSettingsLabel": "Configurações de Performance",
+  "modelPulledSuccessfullySnackBar": "Modelo puxado com sucesso.",
+  "modelPushedSuccessfullySnackBar": "Modelo enviado com sucesso.",
+  "modelSpecificSettingsDialogTitle": "Configurações Específicas do Modelo",
+  "modelTypeText": "Tipo de modelo: {modelType}",
+  "@modelTypeText": {
+    "placeholders": {
+      "modelType": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsPageCreateButton": "Criar Modelo",
+  "modelsPageDeleteButton": "Excluir Modelo",
+  "modelsPageDeleteDialogText": "Tem certeza que deseja excluir este modelo?",
+  "modelsPageDeleteDialogTitle": "Excluir Modelo",
+  "modelsPageEditButton": "Editar",
+  "modelsPageImportButton": "Importar modelo",
+  "modelsPagePullButton": "Puxar",
+  "modelsPagePushButton": "Enviar",
+  "modelsPageRefreshButton": "Atualizar",
+  "modelsPageSearchFieldHint": "Buscar modelo...",
+  "modelsPageSettingsButton": "Configurações do Modelo",
+  "modelsPageTitle": "Modelos",
+  "modelsPageUseButton": "Usar Modelo",
+  "modifiedAtTextShared": "Última modificação: ",
+  "moreOptionsButton": "Mais Opções",
+  "multimodal": "Multimodal",
+  "namespaceTextShared": "Namespace: {namespace}",
+  "@namespaceTextShared": {
+    "placeholders": {
+      "namespace": {
+        "type": "String"
+      }
+    }
+  },
+  "newFolderDialogTitle": "Nova pasta",
+  "newSessionDialogTitle": "Nova sessão",
+  "newSessionSnackBar": "Nova sessão criada",
+  "noAvailableModelsText": "Nenhum modelo disponível",
+  "noModelsAvailableSnackBar": "Nenhum modelo disponível.",
+  "noModelsText": "Nenhum modelo",
+  "noNeedToCreateSessionSnackBar": "Não há necessidade de criar uma sessão.",
+  "noSessionsText": "Nenhuma sessão",
+  "noUpdatesAvailableDialogTitle": "Nenhuma atualização disponível",
+  "noUpdatesAvailableSnackBar": "Nenhuma atualização disponível",
+  "nodeStatusOffline": "Offline",
+  "nodeStatusOnline": "Online",
+  "nothingToSynthesizeSnackBar": "Nada para sintetizar.",
+  "nsfwSettingsLabel": "Configuração NSFW",
+  "numBatch": "Número de Lotes",
+  "numCtx": "Número de Contextos",
+  "numKeep": "Número de Manter",
+  "numPredict": "Número de Previsões",
+  "numThread": "Número de Threads",
+  "numa": "NUMA",
+  "offlineWarningTextShared": "Aviso: Modo offline.",
+  "ollamaDisabledGPUWarningSnackBar": "Aviso: GPU desativada.",
+  "otherSettingsLabel": "Outras configurações",
+  "overflowMenuLabel": "Menu de overflow",
+  "partialResults": "Resultados parciais",
+  "pauseGenerationButtonTooltip": "Pausar geração",
+  "peakMemoryTextShared": "Memória máxima: {peakMemory} MB",
+  "@peakMemoryTextShared": {
+    "placeholders": {
+      "peakMemory": {
+        "type": "String"
+      }
+    }
+  },
+  "penalizeNewline": "Penalizar Nova Linha",
+  "perplexityLabel": "Perplexidade",
+  "pinMessageTooltip": "Fixar mensagem",
+  "popularity": "Popularidade",
+  "presencePenalty": "Penalidade de Presença",
+  "privacyButton": "Configurações de Privacidade",
+  "progressBarStatusWithStepsText": "Progresso: {status} - Passo {completedSteps} de {totalSteps}",
+  "progressBarStatusWithTimeText": "Progresso: {status} - Tempo restante: {hours}:{minutes}:{seconds}",
+  "projectTitleHint": "Digite o título do projeto...",
+  "projectTitleLabel": "Título do projeto",
+  "projectTypeHint": "Escolha o tipo de projeto...",
+  "projectTypeLabel": "Tipo de projeto",
+  "pullModelDialogGuideText": "Puxar modelo:",
+  "pullModelDialogModelNameHint": "Digite o nome do modelo a ser puxado",
+  "pullModelDialogModelNameLabel": "Nome do Modelo",
+  "pullModelDialogTitle": "Puxar modelo",
+  "pushModelDialogGuideText": "Enviar modelo:",
+  "pushModelDialogModelSelectorHint": "Selecione o modelo a ser enviado",
+  "pushModelDialogTitle": "Enviar modelo",
+  "redoButtonShared": "Refazer",
+  "refreshButtonShared": "Atualizar",
+  "removeButtonShared": "Remover",
+  "removeFolderDialogTitle": "Remover pasta",
+  "removeSessionDialogTitle": "Remover sessão",
+  "repeatLastN": "Repetir os últimos",
+  "repeatPenalty": "Penalidade de Repetição",
+  "resetButtonShared": "Redefinir",
+  "resetToDefaultsButton": "Restaurar Padrões",
+  "retryButtonShared": "Tentar novamente",
+  "saveButtonShared": "Salvar",
+  "savedAtTextShared": "Data de salvamento: {savedAt}",
+  "@savedAtTextShared": {
+    "placeholders": {
+      "savedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "savedButtonShared": "Salvo com sucesso.",
+  "searchButtonShared": "Buscar",
+  "searchFieldHintShared": "Buscar...",
+  "searchFolderFieldHint": "Buscar pasta...",
+  "searchModelFieldHint": "Buscar modelo...",
+  "searchSessionFieldHint": "Buscar sessão...",
+  "seed": "Semente",
+  "selectAllButtonShared": "Selecionar todos",
+  "selectFolderDialogGuideText": "Selecionar pasta:",
+  "selectFolderDialogTitle": "Selecionar pasta",
+  "selectLanguageHint": "Escolha o idioma da interface...",
+  "selectLanguageLabel": "Selecionar idioma",
+  "selectModelButtonShared": "Selecionar modelo",
+  "selectOptionButtonShared": "Selecionar opção",
+  "selectSettingsButtonShared": "Selecionar configurações",
+  "sessionCreatedSnackBar": "Sessão criada",
+  "sessionSharedSnackBar": "Sessão compartilhada.",
+  "sessionsPageClearDialogText": "Tem certeza que deseja limpar a sessão?",
+  "sessionsPageClearDialogTitle": "Limpar Sessão",
+  "sessionsPageClearSessionsButton": "Limpar Sessões",
+  "sessionsPageCreateFolderButton": "Criar Pasta",
+  "sessionsPageDeleteButton": "Excluir Sessão",
+  "sessionsPageDeleteDialogText": "Deseja realmente excluir esta sessão?",
+  "sessionsPageDeleteDialogTitle": "Excluir Sessão",
+  "sessionsPageEditTitleButton": "Editar Título",
+  "sessionsPageEnterButton": "Entrar",
+  "sessionsPageShareButton": "Compartilhar Sessão",
+  "sessionsPageTitle": "Página de Sessões",
+  "settingsAppearanceLabel": "Aparência",
+  "settingsBehaviorLabel": "Comportamento",
+  "settingsGeneralLabel": "Geral",
+  "settingsHeaderTitle": "Configurações",
+  "settingsLanguageArabic": "Árabe",
+  "settingsLanguageChinese": "Chinês",
+  "settingsLanguageEnglish": "Inglês",
+  "settingsLanguageFrench": "Francês",
+  "settingsLanguageGerman": "Alemão",
+  "settingsLanguageHindi": "Hindi",
+  "settingsLanguageHint": "Por favor, escolha o idioma da interface",
+  "settingsLanguageItalian": "Italiano",
+  "settingsLanguageJapanese": "Japonês",
+  "settingsLanguageKorean": "Coreano",
+  "settingsLanguageLabel": "Idioma",
+  "settingsLanguagePortuguese": "Português",
+  "settingsLanguageRussian": "Russo",
+  "settingsLanguageSpanish": "Espanhol",
+  "settingsLanguageSystem": "Idioma do Sistema",
+  "settingsModelDefault": "Modelo Padrão",
+  "settingsModelOff": "Modelo Desligado",
+  "settingsModelOn": "Modelo Ligado",
+  "settingsPageAccessibilityLabel": "Configurações de Acessibilidade",
+  "settingsPageOllamaKeepAliveTimeLabel": "Tempo de Manutenção do Ollama",
+  "settingsPageOllamaLabel": "Configurações do Ollama",
+  "settingsPageOllamaShowStatistics": "Mostrar Estatísticas",
+  "settingsPageOllamaTemperatureLabel": "Temperatura do Ollama",
+  "settingsPageOllamaUseGPULabel": "Usar GPU",
+  "settingsPageThemeLabel": "Configurações de Tema",
+  "settingsPageTitle": "Configurações",
+  "settingsThemeModeDark": "Modo Escuro",
+  "settingsThemeModeLight": "Modo Claro",
+  "settingsThemeModeSystem": "Modo do Sistema",
+  "settingsTitle": "Configurações",
+  "shareButtonShared": "Compartilhar",
+  "shareFolderDialogTitle": "Compartilhar pasta",
+  "shareModelDialogTitle": "Compartilhar modelo",
+  "shareSessionDialogTitle": "Compartilhar sessão",
+  "sharingOptionsLabel": "Opções de compartilhamento",
+  "skipUpdateButtonShared": "Ignorar atualização",
+  "snackBarErrorTitle": "Erro",
+  "snackBarInfoTitle": "Informação",
+  "snackBarSuccessTitle": "Sucesso",
+  "snackBarUpdateTitle": "Atualização",
+  "snackBarWarningTitle": "Aviso",
+  "softwareUpdateDialogTitle": "Atualização de software",
+  "somethingWentWrongSnackBar": "Ocorreu um problema.",
+  "sortByDateOption": "Ordenar por Data",
+  "sortByNameOption": "Ordenar por Nome",
+  "sortBySizeOption": "Ordenar por Tamanho",
+  "sortOrderAscendingOption": "Ordem Crescente",
+  "sortOrderDescendingOption": "Ordem Decrescente",
+  "startChatButton": "Iniciar chat",
+  "statusTextShared": "Status: {status}",
+  "@statusTextShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "submitFeedbackButtonShared": "Enviar feedback",
+  "successSnackBar": "Sucesso",
+  "suggestionAddressConflictsInRelationshipsPartOne": "Resolver conflitos em relacionamentos.",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "Encontrar soluções potenciais.",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "Casos de uso comuns para resolução de problemas.",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "Compartilhar experiências bem-sucedidas.",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "Coletar informações para tomada de decisão em situações complexas.",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "Analisar opções disponíveis.",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "Discutir as vantagens do trabalho remoto.",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "Revisar experiências individuais.",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "Entender a diferença entre ensino e mentoria.",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "Desenvolver habilidades de mentoria.",
+  "suggestionEvaluateTeamPerformancePartOne": "Avaliar regularmente o desempenho da equipe.",
+  "suggestionEvaluateTeamPerformancePartTwo": "Fornecer feedback construtivo.",
+  "suggestionExplainEmpathySignificancePartOne": "Explicar a importância da empatia no trabalho.",
+  "suggestionExplainEmpathySignificancePartTwo": "Praticar a empatia com os outros.",
+  "suggestionExplainLearningFromExperiencePartOne": "Explicar como aprender com a experiência.",
+  "suggestionExplainLearningFromExperiencePartTwo": "Promover o compartilhamento de conhecimento.",
+  "suggestionHandleDailyStressPartOne": "Estratégias para lidar com o estresse diário.",
+  "suggestionHandleDailyStressPartTwo": "Gerenciamento eficaz do tempo.",
+  "suggestionImportanceOfCommunicationPartOne": "A importância da comunicação eficaz dentro da equipe.",
+  "suggestionImportanceOfCommunicationPartTwo": "Evitar mal-entendidos.",
+  "suggestionPersonalGrowthChallengesPartOne": "Identificar desafios de crescimento pessoal.",
+  "suggestionPersonalGrowthChallengesPartTwo": "Definir metas para alcançá-las.",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "Planejar uma festa de aniversário surpresa.",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "Identificar atividades e convidados.",
+  "supportLinkShared": "Suporte",
+  "syncingTextShared": "Sincronizando...",
+  "systemPromptTextFieldLabel": "Texto do Sistema",
+  "temperature": "Temperatura",
+  "tfsZ": "TFS Z",
+  "thankYouMessage": "Obrigado por usar nosso aplicativo!",
+  "tokenCountLabel": "Número de tokens",
+  "topK": "Top K",
+  "topP": "Top P",
+  "totalOnDiskSizeLabel": "Tamanho Total em Disco",
+  "translationLanguageHint": "Escolha o idioma de tradução...",
+  "translationLanguageLabel": "Idioma de tradução",
+  "tryAgainButtonShared": "Tentar novamente",
+  "turnOffButtonShared": "Desligar",
+  "typicalP": "P Típico",
+  "undoButtonShared": "Desfazer",
+  "unknownErrorSnackBar": "Erro desconhecido",
+  "updateAvailableDialogTitle": "Atualização Disponível",
+  "updateAvailableSnackBar": "Atualização disponível",
+  "updateButton": "Atualizar Agora",
+  "updateDialogText1": "Uma atualização está disponível.",
+  "updateDialogText2": "Deseja atualizar agora?",
+  "updateInProgressPageDescription": "Atualizando. Por favor, aguarde.",
+  "updateInProgressPageTitle": "Atualização em Andamento...",
+  "updateNowButtonShared": "Atualizar agora",
+  "uploadFilesDialogTitle": "Carregar arquivos",
+  "useButtonShared": "Usar",
+  "useMlock": "Usar Mlock",
+  "useMmap": "Usar Mmap",
+  "versionTextShared": "Versão: {version}",
+  "@versionTextShared": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMoreButtonShared": "Ver mais",
+  "vocabOnly": "Apenas Vocabulário",
+  "webSearchButtonShared": "Pesquisar na web",
+  "welcomeMessage": "Bem-vindo!",
+  "zipFileUploadDialogTitle": "Carregar arquivo ZIP",
+  "zipFileUploadedSnackBar": "Arquivo ZIP carregado"
+}

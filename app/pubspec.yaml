@@ -1,0 +1,175 @@
+name: open_local_ui
+
+environment:
+  sdk: ">=3.3.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Basic Flutter Packages
+  cupertino_icons: ^1.0.6
+  flutter_localizations:
+    sdk: flutter
+
+  # Utility Packages
+  uuid: ^4.4.0
+  provider: ^6.1.2
+  shared_preferences: ^2.2.3
+  path_provider: ^2.1.3
+  units_converter: ^3.0.0
+  path: ^1.9.1
+  archive: ^3.6.1
+  http: ^1.2.1
+  gap: ^3.0.1
+  indexed: ^0.0.8
+  intl: any
+
+  # Theming and UI
+  adaptive_theme: ^3.6.0
+  system_theme: ^3.0.0
+  flex_color_picker: ^3.5.0
+  visibility_detector: any
+  page_transition: any
+  timelines_plus: ^1.0.3
+  flutter_sticky_widgets: ^0.0.3
+  flutter_form_builder: ^9.5.0
+  form_builder_validators: ^11.0.0
+  smooth_scroll_multiplatform:
+    git:
+      url: https://github.com/WilliamKarolDiCioccio/dyn_mouse_scroll.git
+      ref: main
+
+  # Icons and Graphics
+  unicons: ^3.0.0
+  image: ^4.2.0
+  flutter_image_converter: ^0.4.1
+  cached_network_image: ^3.3.1
+  flutter_svg: ^2.0.10+1
+
+  # Splash Screen
+  animated_splash_screen: ^1.3.0
+
+  # Window Management
+  bitsdojo_window: ^0.1.6
+
+  # Local Storage
+  hive_flutter: ^1.1.0
+  sqlite3: ^2.4.6
+  sqlite3_flutter_libs: ^0.5.24
+
+  # JSON and Annotations
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+
+  # File Management
+  # Currently using both due to cross-platform requirements
+  file_selector: ^1.0.3
+  file_picker: ^8.1.2
+
+  # Audio and Video
+  audioplayers: ^6.0.0
+
+  # Markdown and HTML
+  flutter_highlight: any
+  markdown_widget: ^2.3.2+6
+  markdown: ^7.2.2
+  html: ^0.15.4
+
+  # Feedback and User Interaction
+  feedback: ^3.1.0
+  super_drag_and_drop: ^0.8.12
+
+  # Logging
+  logger: ^2.2.0
+
+  # URL Launcher
+  url_launcher: ^6.2.6
+
+  # Device and Package Info
+  package_info_plus: ^8.2.1
+  language_code: ^0.5.3+2
+  system_info2: ^4.0.0
+  gpu_info: ^0.0.3
+  battery_plus: ^6.0.2
+
+  # Environment Variables
+  envied: ^0.5.4+1
+
+  # Animations
+  flutter_animate: ^4.5.0
+  flutter_spinkit: ^5.2.1
+
+  # Supabase Integration
+  supabase_flutter: ^2.7.0
+
+  # LangChain Integration
+  langchain: ^0.7.3
+  langchain_ollama: ^0.3.1
+  introduction_screen: ^3.1.14
+  rive: ^0.13.12
+
+  # Dependency Injection
+  get_it: ^7.7.0
+
+  # Third Party APIs
+  discord_rpc: ^0.0.2
+  duckduckgo_search: ^0.1.3
+
+  # Platform Specific
+  win32_registry: ^1.1.5
+  windows_taskbar: ^1.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  mockito: ^5.4.4
+  test_coverage_badge: ^0.3.2
+  build_runner: ^2.4.9
+  freezed: ^2.5.2
+  json_serializable: ^6.7.1
+  isar_generator: ^3.1.0+1
+  envied_generator: ^0.5.4+1
+  flutter_launcher_icons: ^0.14.3
+  msix: ^3.16.8
+
+flutter:
+  generate: true
+  assets:
+    # Prompts
+    - assets/prompts/default.txt
+    - assets/prompts/sessions_title_generator.txt
+    # App metadata
+    - assets/app_changelog.json
+    # Logos
+    - assets/graphics/logos/
+    # Animations
+    - assets/graphics/animations/gpu.riv
+    - assets/graphics/animations/human.riv
+  fonts:
+    - family: ValeraRound
+      fonts:
+        - asset: assets/fonts/VarelaRound/VarelaRound-Regular.ttf
+          style: normal
+    - family: Neuton
+      fonts:
+        - asset: assets/fonts/Neuton/Neuton-Regular.ttf
+          style: normal
+        - asset: assets/fonts/Neuton/Neuton-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Neuton/Neuton-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Neuton/Neuton-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Neuton/Neuton-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Neuton/Neuton-ExtraBold.ttf
+          weight: 800
+    - family: Agave
+      fonts:
+        - asset: assets/fonts/Agave/AgaveNerdFontMono-Regular.ttf
+          style: normal
+        - asset: assets/fonts/Agave/AgaveNerdFontMono-Bold.ttf
+          weight: 400
+  uses-material-design: true

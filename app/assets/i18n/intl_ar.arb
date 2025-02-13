@@ -1,0 +1,458 @@
+{
+  "@@locale": "ar",
+  "abortModelRemovalSnackBar": "إلغاء إزالة النموذج",
+  "abortSessionRemovalSnackBar": "إلغاء إزالة الجلسة",
+  "aboutPageContributorsTitle": "المساهمون",
+  "aboutPageCopyrightNotice": "© 2024 ويليام كارول دي تشيوتشيو",
+  "aboutPageDiscoverTitle": "اكتشف المزيد",
+  "aboutPagePoweredByTitle": "مدعوم من",
+  "aboutPageSocialButtonContributeTooltip": "ساهم",
+  "aboutPageSocialButtonJoinServerTooltip": "انضم إلى الخادم",
+  "aboutPageSocialButtonWatchTrailerTooltip": "شاهد العرض",
+  "aboutPageVisitProfileTooltip": "زيارة الملف الشخصي",
+  "appTitle": "تطبيقي",
+  "attachFilesDialogAllowedFormats": "التنسيقات المسموح بها: {formats}",
+  "@attachFilesDialogAllowedFormats": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "attachFilesDialogBrowseFilesButton": "تصفح الملفات",
+  "attachFilesDialogDropFilesText": "إسقاط الملفات هنا",
+  "cancelButtonShared": "إلغاء",
+  "chatAttachFilesTooltip": "إرفاق الملفات",
+  "chatCancelEditButton": "إلغاء التعديل",
+  "chatCancelGenerationTooltip": "إلغاء التوليد",
+  "chatCopyMessageTooltip": "نسخ الرسالة",
+  "chatDetachFilesTooltip": "فصل الملفات",
+  "chatEditFieldHint": "أدخل الرسالة...",
+  "chatEditMessageTooltip": "تعديل الرسالة",
+  "chatInputFieldHint": "أدخل الرسالة...",
+  "chatReadAloudTooltip": "قراءة بصوت عالٍ",
+  "chatRefreshSuggestions": "تحديث الاقتراحات",
+  "chatRegenerateMessageTooltip": "إعادة توليد الرسالة",
+  "chatResendMessageButton": "إعادة إرسال الرسالة",
+  "chatSendTooltip": "إرسال الرسالة",
+  "chatStatisticsDuration": "المدة: {duration} مللي ثانية",
+  "@chatStatisticsDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsSpeed": "السرعة: {speed} رمز/ثانية",
+  "@chatStatisticsSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "chatStatisticsTokens": "عدد الرموز: {tokens}",
+  "@chatStatisticsTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestionsPrompt": "هل تحتاج إلى بعض الاقتراحات؟",
+  "chatSystemSender": "النظام",
+  "chatTitleEditHint": "أدخل العنوان...",
+  "chatToolbarDocsSearchOption": "بحث في الوثائق:",
+  "chatToolbarModelSelectorHint": "اختر النموذج",
+  "chatToolbarNewSessionButton": "جلسة جديدة",
+  "chatToolbarWebSearchOption": "بحث على الويب:",
+  "chatUserSender": "أنت",
+  "chatWelcomeMessage": "أهلاً بك!",
+  "checkingForUpdatesDialogTitle": "التحقق من التحديثات",
+  "clickToDownloadLatestVersionSnackBar": "انقر هنا لتنزيل النسخة الأحدث",
+  "closeButtonShared": "إغلاق",
+  "codeCopiedSnackBar": "تم نسخ الكود إلى الحافظة",
+  "concurrencyLimit": "حد التوازي",
+  "createFolderDialogFolderNameHint": "أدخل اسم المجلد...",
+  "createFolderDialogFolderNameLabel": "اسم المجلد",
+  "createFolderDialogGuideText1": "أدخل اسم المجلد المراد إنشاؤه:",
+  "createFolderDialogGuideText2": "يمكنك اختيار لون المجلد:",
+  "createFolderDialogTitle": "إنشاء مجلد",
+  "createModelDialogGuideText1": "اختر النموذج الذي تريد استخدامه:",
+  "createModelDialogGuideText2": "أدخل اسم النموذج المراد إنشاؤه:",
+  "createModelDialogGuideText3": "يمكنك اختيار كتابة ملف نموذج:",
+  "createModelDialogModelFileHint": "أدخل ملف النموذج...",
+  "createModelDialogModelFileLabel": "ملف النموذج",
+  "createModelDialogModelNameHint": "أدخل اسم النموذج...",
+  "createModelDialogModelNameLabel": "اسم النموذج",
+  "createModelDialogModelSelectorHint": "اختر النموذج",
+  "createModelDialogTitle": "إنشاء نموذج",
+  "createdAtTextShared": "تم الإنشاء في: {createdAt}",
+  "dashboardAboutButton": "حول",
+  "dashboardChatButton": "الدردشة",
+  "dashboardHomeButton": "الصفحة الرئيسية",
+  "dashboardModelsButton": "النماذج",
+  "dashboardSessionsButton": "الجلسات",
+  "dashboardSettingsButton": "الإعدادات",
+  "dialogAttachButton": "إرفاق",
+  "dialogCancelButtonShared": "إلغاء",
+  "dialogCloseButtonShared": "إغلاق",
+  "dialogConfirmButtonShared": "تأكيد",
+  "dialogContinueInBackgroundButtonShared": "الاستمرار في الخلفية",
+  "dialogCreateButtonShared": "إنشاء",
+  "dialogRemoveButton": "إزالة",
+  "dialogSkipButton": "تخطى",
+  "dialogStartButtonShared": "بدء",
+  "dialogUpdateButton": "تحديث",
+  "enableDocsSearch": "بحث في الوثائق",
+  "enableWebSearch": "بحث على الويب",
+  "f16KV": "F16KV",
+  "failedToCreateFolderSnackBar": "فشل في إنشاء المجلد",
+  "failedToCreateModelSnackBar": "فشل في إنشاء النموذج",
+  "failedToPullModelSnackBar": "فشل في سحب النموذج",
+  "failedToPushModelSnackBar": "فشل في دفع النموذج",
+  "failedToShareSessionSnackBar": "فشل في مشاركة الجلسة",
+  "feedbackButton": "التغذية الراجعة",
+  "folderCreatedSnackBar": "تم إنشاء المجلد",
+  "frequencyPenalty": "عقوبة التكرار",
+  "importModelDialogTitle": "استيراد نموذج",
+  "keepAlive": "الحفاظ على الاتصال",
+  "licenseButton": "الترخيص",
+  "listFiltersSortByLabel": "الترتيب حسب",
+  "listFiltersSortOrderLabel": "الترتيب",
+  "logitsAll": "كافة Logits",
+  "lowVram": "ذاكرة VRAM منخفضة",
+  "mainGpu": "معالج الرسومات الرئيسي",
+  "markdownCopyTooltip": "نسخ Markdown",
+  "markdownLanguageLabel": "اللغة: {language}",
+  "@markdownLanguageLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "messageCopiedSnackBar": "تم نسخ الرسالة إلى الحافظة",
+  "mirostat": "ميكروستات",
+  "mirostatEta": "ميكروستات ETA",
+  "mirostatTau": "ميكروستات TAU",
+  "modelCreatedSuccessfullySnackBar": "تم إنشاء النموذج بنجاح",
+  "modelDetailsDigestText": "الملخص: {digest}",
+  "@modelDetailsDigestText": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFamilyText": "العائلة: {family}",
+  "@modelDetailsFamilyText": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsFormatText": "الصيغة: {format}",
+  "@modelDetailsFormatText": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsParametersSizeText": "المعلمات: {parametersSize} ب",
+  "@modelDetailsParametersSizeText": {
+    "placeholders": {
+      "parametersSize": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsQuantizationLevelText": "التكميم: {quantizationLevel}",
+  "@modelDetailsQuantizationLevelText": {
+    "placeholders": {
+      "quantizationLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsSizeText": "الحجم: {size} جيجابايت",
+  "@modelDetailsSizeText": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailsTitle": "تفاصيل {modelName}",
+  "@modelDetailsTitle": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "modelGeneralSettingsLabel": "الإعدادات العامة",
+  "modelIsGeneratingSnackBar": "النموذج قيد التوليد، يرجى الانتظار...",
+  "modelMiscSettingsLabel": "إعدادات متنوعة للنموذج",
+  "modelPenaltySettingsLabel": "إعدادات العقوبة للنموذج",
+  "modelPerformanceSettingsLabel": "إعدادات أداء النموذج",
+  "modelPulledSuccessfullySnackBar": "تم سحب النموذج بنجاح.",
+  "modelPushedSuccessfullySnackBar": "تم دفع النموذج بنجاح.",
+  "modelSpecificSettingsDialogTitle": "إعدادات نموذج محددة",
+  "modelsPageCreateButton": "إنشاء نموذج",
+  "modelsPageDeleteButton": "حذف النموذج",
+  "modelsPageDeleteDialogText": "هل أنت متأكد أنك تريد حذف هذا النموذج؟",
+  "modelsPageDeleteDialogTitle": "حذف النموذج",
+  "modelsPageEditButton": "تعديل",
+  "modelsPageImportButton": "استيراد نموذج",
+  "modelsPagePullButton": "سحب",
+  "modelsPagePushButton": "دفع",
+  "modelsPageRefreshButton": "تحديث",
+  "modelsPageSearchFieldHint": "بحث عن نموذج...",
+  "modelsPageSettingsButton": "إعدادات النموذج",
+  "modelsPageTitle": "النماذج",
+  "modelsPageUseButton": "استخدام النموذج",
+  "modifiedAtTextShared": "تم التعديل في: ",
+  "moreOptionsButton": "خيارات إضافية",
+  "multimodal": "متعدد الأوضاع",
+  "namespaceTextShared": "مساحة الأسماء: {namespace}",
+  "@namespaceTextShared": {
+    "placeholders": {
+      "namespace": {
+        "type": "String"
+      }
+    }
+  },
+  "newFolderDialogTitle": "مجلد جديد",
+  "newSessionDialogTitle": "جلسة جديدة",
+  "newSessionSnackBar": "تم إنشاء جلسة جديدة",
+  "noAvailableModelsText": "لا توجد نماذج متاحة",
+  "noModelsAvailableSnackBar": "لا توجد نماذج متاحة.",
+  "noModelsText": "لا توجد نماذج",
+  "noNeedToCreateSessionSnackBar": "لا حاجة لإنشاء جلسة جديدة.",
+  "noSessionsText": "لا توجد جلسات",
+  "noUpdatesAvailableDialogTitle": "لا توجد تحديثات متاحة",
+  "noUpdatesAvailableSnackBar": "لا توجد تحديثات متاحة",
+  "nodeStatusOffline": "غير متصل",
+  "nodeStatusOnline": "متصل",
+  "nothingToSynthesizeSnackBar": "لا يوجد شيء لتوليفه.",
+  "nsfwSettingsLabel": "إعدادات NSFW",
+  "numBatch": "عدد الدفعات",
+  "numCtx": "عدد السياقات",
+  "numKeep": "عدد الإبقاء",
+  "numPredict": "عدد التوقعات",
+  "numThread": "عدد الخيوط",
+  "numa": "NUMA",
+  "offlineWarningTextShared": "تحذير: الوضع غير متصل.",
+  "ollamaDisabledGPUWarningSnackBar": "تحذير: تم تعطيل GPU.",
+  "otherSettingsLabel": "إعدادات أخرى",
+  "overflowMenuLabel": "قائمة التجاوز",
+  "partialResults": "نتائج جزئية",
+  "pauseGenerationButtonTooltip": "إيقاف التوليد مؤقتًا",
+  "peakMemoryTextShared": "الذاكرة القصوى: {peakMemory} ميجابايت",
+  "@peakMemoryTextShared": {
+    "placeholders": {
+      "peakMemory": {
+        "type": "String"
+      }
+    }
+  },
+  "penalizeNewline": "معاقبة على السطر الجديد",
+  "perplexityLabel": "الارتباك",
+  "pinMessageTooltip": "تثبيت الرسالة",
+  "popularity": "الشعبية",
+  "presencePenalty": "عقوبة الوجود",
+  "privacyButton": "إعدادات الخصوصية",
+  "progressBarStatusWithStepsText": "الحالة: {status} - الخطوة {completedSteps} من {totalSteps}",
+  "progressBarStatusWithTimeText": "الحالة: {status} - الوقت المتبقي: {hours}:{minutes}:{seconds}",
+  "projectTitleHint": "أدخل عنوان المشروع...",
+  "projectTitleLabel": "عنوان المشروع",
+  "projectTypeHint": "اختر نوع المشروع...",
+  "projectTypeLabel": "نوع المشروع",
+  "pullModelDialogGuideText": "سحب النموذج:",
+  "pullModelDialogModelNameHint": "أدخل اسم النموذج لسحبه",
+  "pullModelDialogModelNameLabel": "اسم النموذج",
+  "pullModelDialogTitle": "سحب النموذج",
+  "pushModelDialogGuideText": "دفع النموذج:",
+  "pushModelDialogModelSelectorHint": "اختر النموذج للدفع",
+  "pushModelDialogTitle": "دفع النموذج",
+  "redoButtonShared": "إعادة",
+  "refreshButtonShared": "تحديث",
+  "removeButtonShared": "إزالة",
+  "removeFolderDialogTitle": "إزالة المجلد",
+  "removeSessionDialogTitle": "إزالة الجلسة",
+  "repeatLastN": "كرر آخر",
+  "repeatPenalty": "عقوبة التكرار",
+  "resetButtonShared": "إعادة ضبط",
+  "resetToDefaultsButton": "إعادة تعيين إلى الافتراضات",
+  "retryButtonShared": "إعادة المحاولة",
+  "saveButtonShared": "حفظ",
+  "savedAtTextShared": "تم الحفظ في: {savedAt}",
+  "@savedAtTextShared": {
+    "placeholders": {
+      "savedAt": {
+        "type": "String"
+      }
+    }
+  },
+  "savedButtonShared": "تم الحفظ.",
+  "searchButtonShared": "بحث",
+  "searchFieldHintShared": "بحث...",
+  "searchFolderFieldHint": "بحث في المجلدات...",
+  "searchModelFieldHint": "بحث في النماذج...",
+  "searchSessionFieldHint": "بحث في الجلسات...",
+  "seed": "البذور",
+  "selectAllButtonShared": "اختيار الكل",
+  "selectFolderDialogGuideText": "اختر مجلد:",
+  "selectFolderDialogTitle": "اختر مجلد",
+  "selectLanguageHint": "اختر لغة الواجهة...",
+  "selectLanguageLabel": "اختر اللغة",
+  "selectModelButtonShared": "اختر نموذج",
+  "selectOptionButtonShared": "اختر خيار",
+  "selectSettingsButtonShared": "اختر إعدادات",
+  "sessionCreatedSnackBar": "تم إنشاء الجلسة",
+  "sessionSharedSnackBar": "تم مشاركة الجلسة.",
+  "sessionsPageClearDialogText": "هل أنت متأكد أنك تريد مسح الجلسات؟",
+  "sessionsPageClearDialogTitle": "مسح الجلسات",
+  "sessionsPageClearSessionsButton": "مسح الجلسات",
+  "sessionsPageCreateFolderButton": "إنشاء مجلد",
+  "sessionsPageDeleteButton": "حذف الجلسة",
+  "sessionsPageDeleteDialogText": "هل أنت متأكد أنك تريد حذف هذه الجلسة؟",
+  "sessionsPageDeleteDialogTitle": "حذف الجلسة",
+  "sessionsPageEditTitleButton": "تعديل العنوان",
+  "sessionsPageEnterButton": "دخول",
+  "sessionsPageShareButton": "مشاركة الجلسة",
+  "sessionsPageTitle": "صفحة الجلسات",
+  "settingsAppearanceLabel": "المظهر",
+  "settingsBehaviorLabel": "السلوك",
+  "settingsGeneralLabel": "عام",
+  "settingsHeaderTitle": "الإعدادات",
+  "settingsLanguageArabic": "العربية",
+  "settingsLanguageChinese": "الصينية",
+  "settingsLanguageEnglish": "الإنجليزية",
+  "settingsLanguageFrench": "الفرنسية",
+  "settingsLanguageGerman": "الألمانية",
+  "settingsLanguageHindi": "الهندية",
+  "settingsLanguageHint": "اختر لغة الواجهة",
+  "settingsLanguageItalian": "الإيطالية",
+  "settingsLanguageJapanese": "اليابانية",
+  "settingsLanguageKorean": "الكورية",
+  "settingsLanguageLabel": "اللغة",
+  "settingsLanguagePortuguese": "البرتغالية",
+  "settingsLanguageRussian": "الروسية",
+  "settingsLanguageSpanish": "الإسبانية",
+  "settingsLanguageSystem": "لغة النظام",
+  "settingsModelDefault": "النموذج الافتراضي",
+  "settingsModelOff": "النموذج معطل",
+  "settingsModelOn": "النموذج مفعل",
+  "settingsPageAccessibilityLabel": "إعدادات الوصول",
+  "settingsPageOllamaKeepAliveTimeLabel": "مدة بقاء أولاما",
+  "settingsPageOllamaLabel": "إعدادات أولاما",
+  "settingsPageOllamaShowStatistics": "عرض الإحصائيات",
+  "settingsPageOllamaTemperatureLabel": "درجة حرارة أولاما",
+  "settingsPageOllamaUseGPULabel": "استخدام GPU",
+  "settingsPageThemeLabel": "إعدادات السمة",
+  "settingsPageTitle": "إعدادات",
+  "settingsThemeModeDark": "الوضع المظلم",
+  "settingsThemeModeLight": "الوضع الفاتح",
+  "settingsThemeModeSystem": "وضع النظام",
+  "settingsTitle": "الإعدادات",
+  "shareButtonShared": "مشاركة",
+  "shareFolderDialogTitle": "مشاركة المجلد",
+  "shareModelDialogTitle": "مشاركة النموذج",
+  "shareSessionDialogTitle": "مشاركة الجلسة",
+  "sharingOptionsLabel": "خيارات المشاركة",
+  "skipUpdateButtonShared": "تخطى التحديث",
+  "snackBarErrorTitle": "خطأ",
+  "snackBarInfoTitle": "معلومات",
+  "snackBarSuccessTitle": "نجاح",
+  "snackBarUpdateTitle": "تحديث",
+  "snackBarWarningTitle": "تحذير",
+  "softwareUpdateDialogTitle": "تحديث البرنامج",
+  "somethingWentWrongSnackBar": "حدث خطأ ما.",
+  "sortByDateOption": "ترتيب حسب التاريخ",
+  "sortByNameOption": "ترتيب حسب الاسم",
+  "sortBySizeOption": "ترتيب حسب الحجم",
+  "sortOrderAscendingOption": "ترتيب تصاعدي",
+  "sortOrderDescendingOption": "ترتيب تنازلي",
+  "startChatButton": "بدء الدردشة",
+  "statusTextShared": "الحالة: {status}",
+  "@statusTextShared": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "submitFeedbackButtonShared": "إرسال التعليقات",
+  "successSnackBar": "نجاح",
+  "suggestionAddressConflictsInRelationshipsPartOne": "فحص الصراعات في العلاقات.",
+  "suggestionAddressConflictsInRelationshipsPartTwo": "تحديد الحلول الممكنة.",
+  "suggestionCommonUseCasesForProblemSolvingPartOne": "استخدام التقنيات لتحسين الحلول.",
+  "suggestionCommonUseCasesForProblemSolvingPartTwo": "مشاركة التجارب الناجحة.",
+  "suggestionDecisionMakingInComplexSituationsPartOne": "جمع المعلومات اللازمة لاتخاذ القرار.",
+  "suggestionDecisionMakingInComplexSituationsPartTwo": "تحليل الخيارات المتاحة.",
+  "suggestionDiscussRemoteWorkAdvantagesPartOne": "مناقشة مزايا العمل عن بُعد.",
+  "suggestionDiscussRemoteWorkAdvantagesPartTwo": "استعراض التجارب الشخصية.",
+  "suggestionDistinguishTeachingAndMentoringPartOne": "تحديد الفروقات بين التدريس والإرشاد.",
+  "suggestionDistinguishTeachingAndMentoringPartTwo": "تطوير مهارات الإرشاد.",
+  "suggestionEvaluateTeamPerformancePartOne": "تقييم أداء الفريق بشكل دوري.",
+  "suggestionEvaluateTeamPerformancePartTwo": "تقديم ملاحظات بناءة.",
+  "suggestionExplainEmpathySignificancePartOne": "شرح أهمية التعاطف في العمل.",
+  "suggestionExplainEmpathySignificancePartTwo": "تطبيق التعاطف في التعامل مع الآخرين.",
+  "suggestionExplainLearningFromExperiencePartOne": "توضيح كيفية التعلم من التجارب.",
+  "suggestionExplainLearningFromExperiencePartTwo": "تشجيع مشاركة المعرفة.",
+  "suggestionHandleDailyStressPartOne": "استراتيجيات التعامل مع الضغط اليومي.",
+  "suggestionHandleDailyStressPartTwo": "تنظيم الوقت بفعالية.",
+  "suggestionImportanceOfCommunicationPartOne": "أهمية التواصل الفعال في الفريق.",
+  "suggestionImportanceOfCommunicationPartTwo": "تجنب سوء الفهم.",
+  "suggestionPersonalGrowthChallengesPartOne": "تحديد تحديات النمو الشخصي.",
+  "suggestionPersonalGrowthChallengesPartTwo": "تطوير خطة لتحقيق الأهداف.",
+  "suggestionPlanSurpriseBirthdayPartyPartOne": "خطط لحفلة عيد ميلاد مفاجئة.",
+  "suggestionPlanSurpriseBirthdayPartyPartTwo": "تحديد الأنشطة والضيوف.",
+  "supportLinkShared": "الدعم",
+  "syncingTextShared": "جارٍ المزامنة...",
+  "systemPromptTextFieldLabel": "نص النظام",
+  "temperature": "الحرارة",
+  "tfsZ": "TFS Z",
+  "thankYouMessage": "شكرًا لاستخدامك تطبيقنا!",
+  "tokenCountLabel": "عدد الرموز",
+  "topK": "أفضل K",
+  "topP": "أفضل P",
+  "totalOnDiskSizeLabel": "إجمالي الحجم على القرص",
+  "translationLanguageHint": "اختر لغة الترجمة...",
+  "translationLanguageLabel": "لغة الترجمة",
+  "tryAgainButtonShared": "أعد المحاولة",
+  "turnOffButtonShared": "إيقاف",
+  "typicalP": "P نموذجي",
+  "undoButtonShared": "تراجع",
+  "unknownErrorSnackBar": "خطأ غير معروف",
+  "updateAvailableDialogTitle": "تحديث متاح",
+  "updateAvailableSnackBar": "تحديث متاح",
+  "updateButton": "تحديث الآن",
+  "updateDialogText1": "هناك تحديث متاح.",
+  "updateDialogText2": "هل ترغب في التحديث الآن؟",
+  "updateInProgressPageDescription": "التحديث جارٍ، يرجى الانتظار.",
+  "updateInProgressPageTitle": "جارٍ تحديث...",
+  "updateNowButtonShared": "تحديث الآن",
+  "uploadFilesDialogTitle": "تحميل الملفات",
+  "useButtonShared": "استخدام",
+  "useMlock": "استخدام Mlock",
+  "useMmap": "استخدام Mmap",
+  "versionTextShared": "الإصدار: {version}",
+  "@versionTextShared": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMoreButtonShared": "عرض المزيد",
+  "vocabOnly": "المفردات فقط",
+  "webSearchButtonShared": "بحث على الويب",
+  "welcomeMessage": "أهلاً بك!",
+  "zipFileUploadDialogTitle": "تحميل ملف ZIP",
+  "zipFileUploadedSnackBar": "تم تحميل ملف ZIP"
+}

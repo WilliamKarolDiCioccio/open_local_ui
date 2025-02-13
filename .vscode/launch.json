@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "cwd": "${workspaceFolder}/app",
+            "name": "open_local_ui",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "cwd": "${workspaceFolder}/app",
+            "name": "open_local_ui (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "cwd": "${workspaceFolder}/app",
+            "name": "open_local_ui (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
