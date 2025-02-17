@@ -65,7 +65,7 @@ dependencies:
   # File Management
   # Currently using both due to cross-platform requirements
   file_selector: ^1.0.3
-  file_picker: ^8.1.2
+  file_picker: ^9.0.0
 
   # Audio and Video
   audioplayers: ^6.0.0
