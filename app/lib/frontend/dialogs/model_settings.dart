@@ -5,9 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/model_settings.dart';
 import 'package:open_local_ui/constants/languages.dart';
@@ -60,20 +59,21 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
     await showConfirmationDialog(
       context: context,
       title: AppLocalizations.of(context).modelSettingsDialogDeleteDialogTitle,
-      content:
-          AppLocalizations.of(context).modelSettingsDialogClearProfilesText,
+      content: AppLocalizations.of(
+        context,
+      ).modelSettingsDialogClearProfilesText,
       onConfirm: () async {
-        await context.read<ModelSettingsProvider>().removeAllProfiles().then(
-          (value) async {
-            await context.read<ChatProvider>().updateChatOllamaOptions();
+        await context.read<ModelSettingsProvider>().removeAllProfiles().then((
+          value,
+        ) async {
+          await context.read<ChatProvider>().updateChatOllamaOptions();
 
-            if (mounted) {
-              setState(() {
-                _visibleProfileName = null;
-              });
-            }
-          },
-        );
+          if (mounted) {
+            setState(() {
+              _visibleProfileName = null;
+            });
+          }
+        });
       },
     );
   }
@@ -82,13 +82,14 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
     await showTextFieldDialog(
       context: context,
       title: AppLocalizations.of(context).modelSettingsDialogCreateDialogTitle,
-      labelText:
-          AppLocalizations.of(context).modelSettingsDialogCreateDialogLabel,
+      labelText: AppLocalizations.of(
+        context,
+      ).modelSettingsDialogCreateDialogLabel,
       onConfirm: (name) async {
         await context.read<ModelSettingsProvider>().getModelSettingsProfileFile(
-              widget.modelName,
-              name,
-            );
+          widget.modelName,
+          name,
+        );
 
         if (mounted) {
           setState(() {
@@ -103,30 +104,25 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
     await context
         .read<ModelSettingsProvider>()
         .resetProfile(_visibleProfileName)
-        .then(
-      (value) async {
-        await context.read<ChatProvider>().updateChatOllamaOptions();
+        .then((value) async {
+          await context.read<ChatProvider>().updateChatOllamaOptions();
 
-        if (mounted) {
-          setState(() {});
-        }
-      },
-    );
+          if (mounted) {
+            setState(() {});
+          }
+        });
   }
 
-  Future<void> _selectProfile(
-    BuildContext context,
-    String profileName,
-  ) async {
-    await context.read<ModelSettingsProvider>().loadProfile(profileName).then(
-      (value) async {
-        if (mounted) {
-          setState(() {
-            _visibleProfileName = profileName;
-          });
-        }
-      },
-    );
+  Future<void> _selectProfile(BuildContext context, String profileName) async {
+    await context.read<ModelSettingsProvider>().loadProfile(profileName).then((
+      value,
+    ) async {
+      if (mounted) {
+        setState(() {
+          _visibleProfileName = profileName;
+        });
+      }
+    });
   }
 
   Future<void> _activateProfile(
@@ -136,26 +132,22 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
     await context
         .read<ModelSettingsProvider>()
         .activateProfile(profileName)
-        .then(
-      (value) async {
-        await context.read<ChatProvider>().updateChatOllamaOptions();
+        .then((value) async {
+          await context.read<ChatProvider>().updateChatOllamaOptions();
 
-        if (mounted) {
-          setState(() {});
-        }
-      },
-    );
+          if (mounted) {
+            setState(() {});
+          }
+        });
   }
 
   Future<void> _saveProfile(BuildContext context) async {
     await context
         .read<ModelSettingsProvider>()
         .saveProfile(_visibleProfileName)
-        .then(
-      (value) async {
-        await context.read<ChatProvider>().updateChatOllamaOptions();
-      },
-    );
+        .then((value) async {
+          await context.read<ChatProvider>().updateChatOllamaOptions();
+        });
   }
 
   Future<void> _editProfileName(
@@ -165,17 +157,15 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
     await showTextFieldDialog(
       context: context,
       title: AppLocalizations.of(context).modelSettingsDialogEditDialogTitle,
-      labelText:
-          AppLocalizations.of(context).modelSettingsDialogEditDialogLabel,
+      labelText: AppLocalizations.of(
+        context,
+      ).modelSettingsDialogEditDialogLabel,
       initialValue: oldProfileName,
       onConfirm: (newName) async {
         if (newName.isNotEmpty) {
           final oldFile = await context
               .read<ModelSettingsProvider>()
-              .getModelSettingsProfileFile(
-                widget.modelName,
-                oldProfileName,
-              );
+              .getModelSettingsProfileFile(widget.modelName, oldProfileName);
 
           // Old path with new profile name
           final newPath = oldFile.path.replaceAll(oldProfileName, newName);
@@ -198,15 +188,13 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
     );
   }
 
-  Future<void> _deleteProfile(
-    BuildContext context,
-    String profileName,
-  ) async {
+  Future<void> _deleteProfile(BuildContext context, String profileName) async {
     await showConfirmationDialog(
       context: context,
       title: AppLocalizations.of(context).modelSettingsDialogDeleteDialogTitle,
-      content:
-          AppLocalizations.of(context).modelSettingsDialogClearProfilesText,
+      content: AppLocalizations.of(
+        context,
+      ).modelSettingsDialogClearProfilesText,
       onConfirm: () async {
         await context.read<ModelSettingsProvider>().removeProfile(profileName);
         await context.read<ChatProvider>().updateChatOllamaOptions();
@@ -221,11 +209,9 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
   }
 
   void _shareSession(BuildContext context, String profileName) async {
-    final file =
-        await context.read<ModelSettingsProvider>().getModelSettingsProfileFile(
-              widget.modelName,
-              profileName,
-            );
+    final file = await context
+        .read<ModelSettingsProvider>()
+        .getModelSettingsProfileFile(widget.modelName, profileName);
 
     if (await launchUrl(file.uri)) {
       SnackBarHelpers.showSnackBar(
@@ -257,9 +243,9 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
 
         return AlertDialog(
           title: Text(
-            AppLocalizations.of(context).modelSpecificSettingsDialogTitle(
-              shortenedModelName,
-            ),
+            AppLocalizations.of(
+              context,
+            ).modelSpecificSettingsDialogTitle(shortenedModelName),
             style: const TextStyle(fontSize: 24.0),
             textAlign: TextAlign.center,
           ),
@@ -290,10 +276,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                         return const Center(
                           child: Text(
                             'No profiles available',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 18,
-                            ),
+                            style: TextStyle(color: Colors.grey, fontSize: 18),
                           ),
                         );
                       }
@@ -303,122 +286,135 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                         child: Column(
                           children: [
                             DynMouseScroll(
-                              controller: ScrollController(),
                               builder: (context, controller, physics) =>
                                   ListView.builder(
-                                shrinkWrap: true,
-                                physics: physics,
-                                controller: controller,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) {
-                                  final profileName = snapshot.data![index].path
-                                      .split('/')
-                                      .last
-                                      .split('\\')
-                                      .last
-                                      .replaceAll('.json', '');
+                                    shrinkWrap: true,
+                                    physics: physics,
+                                    controller: controller,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, index) {
+                                      final profileName = snapshot
+                                          .data![index]
+                                          .path
+                                          .split('/')
+                                          .last
+                                          .split('\\')
+                                          .last
+                                          .replaceAll('.json', '');
 
-                                  late DateTime lastAccessTimestamp;
+                                      late DateTime lastAccessTimestamp;
 
-                                  // This may throw an exception if the file is not found during rebuild
-                                  try {
-                                    lastAccessTimestamp = snapshot.data![index]
-                                        .lastAccessedSync();
-                                  } on PathNotFoundException catch (e) {
-                                    logger.e(e);
-                                  } finally {
-                                    lastAccessTimestamp = DateTime.now();
-                                  }
+                                      // This may throw an exception if the file is not found during rebuild
+                                      try {
+                                        lastAccessTimestamp = snapshot
+                                            .data![index]
+                                            .lastAccessedSync();
+                                      } on PathNotFoundException catch (e) {
+                                        logger.e(e);
+                                      } finally {
+                                        lastAccessTimestamp = DateTime.now();
+                                      }
 
-                                  return ListTile(
-                                    leading: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        if (context
-                                                .watch<ModelSettingsProvider>()
-                                                .activeProfileName ==
-                                            profileName)
-                                          const Icon(
-                                            UniconsLine.check_circle,
-                                            color: Colors.green,
-                                          )
-                                        else if (_visibleProfileName ==
-                                            profileName)
-                                          const Icon(
-                                            UniconsLine.eye,
-                                            color: Colors.blue,
-                                          )
-                                        else
-                                          Icon(
-                                            UniconsLine.times_circle,
+                                      return ListTile(
+                                        leading: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            if (context
+                                                    .watch<
+                                                      ModelSettingsProvider
+                                                    >()
+                                                    .activeProfileName ==
+                                                profileName)
+                                              const Icon(
+                                                UniconsLine.check_circle,
+                                                color: Colors.green,
+                                              )
+                                            else if (_visibleProfileName ==
+                                                profileName)
+                                              const Icon(
+                                                UniconsLine.eye,
+                                                color: Colors.blue,
+                                              )
+                                            else
+                                              Icon(
+                                                UniconsLine.times_circle,
+                                                color: Colors.grey[600],
+                                              ),
+                                          ],
+                                        ),
+                                        title: Text(
+                                          profileName,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          AppLocalizations.of(
+                                            context,
+                                          ).modifiedAtTextShared(
+                                            FormatHelpers.standardDate(
+                                              lastAccessTimestamp,
+                                            ),
+                                          ),
+                                          style: TextStyle(
+                                            fontSize: 14,
                                             color: Colors.grey[600],
                                           ),
-                                      ],
-                                    ),
-                                    title: Text(
-                                      profileName,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      AppLocalizations.of(context)
-                                          .modifiedAtTextShared(
-                                        FormatHelpers.standardDate(
-                                          lastAccessTimestamp,
                                         ),
-                                      ),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ),
-                                    trailing: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        IconButton(
-                                          tooltip: AppLocalizations.of(context)
-                                              .profilesPageShareButton,
-                                          icon: const Icon(UniconsLine.edit),
-                                          onPressed: () => _editProfileName(
-                                            context,
-                                            profileName,
-                                          ),
+                                        trailing: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              tooltip: AppLocalizations.of(
+                                                context,
+                                              ).profilesPageShareButton,
+                                              icon: const Icon(
+                                                UniconsLine.edit,
+                                              ),
+                                              onPressed: () => _editProfileName(
+                                                context,
+                                                profileName,
+                                              ),
+                                            ),
+
+                                            IconButton(
+                                              tooltip: AppLocalizations.of(
+                                                context,
+                                              ).profilesPageShareButton,
+                                              icon: const Icon(
+                                                UniconsLine.share,
+                                              ),
+                                              onPressed: () => _shareSession(
+                                                context,
+                                                profileName,
+                                              ),
+                                            ),
+
+                                            IconButton(
+                                              tooltip: AppLocalizations.of(
+                                                context,
+                                              ).profilesPageDeleteButton,
+                                              icon: const Icon(
+                                                UniconsLine.trash,
+                                                color: Colors.red,
+                                              ),
+                                              onPressed: () => _deleteProfile(
+                                                context,
+                                                profileName,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        const Gap(8),
-                                        IconButton(
-                                          tooltip: AppLocalizations.of(context)
-                                              .profilesPageShareButton,
-                                          icon: const Icon(UniconsLine.share),
-                                          onPressed: () => _shareSession(
-                                            context,
-                                            profileName,
-                                          ),
+                                        onTap: () => _selectProfile(
+                                          context,
+                                          profileName,
                                         ),
-                                        const Gap(8),
-                                        IconButton(
-                                          tooltip: AppLocalizations.of(context)
-                                              .profilesPageDeleteButton,
-                                          icon: const Icon(
-                                            UniconsLine.trash,
-                                            color: Colors.red,
-                                          ),
-                                          onPressed: () => _deleteProfile(
-                                            context,
-                                            profileName,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    onTap: () => _selectProfile(
-                                      context,
-                                      profileName,
-                                    ),
-                                  );
-                                },
-                              ),
+                                      );
+                                    },
+                                  ),
                             ),
                           ],
                         ),
@@ -426,9 +422,9 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     },
                   ),
                 ),
-                const Gap(8.0),
+
                 const VerticalDivider(),
-                const Gap(8.0),
+
                 Expanded(
                   flex: 3,
                   child: FutureBuilder(
@@ -455,10 +451,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                         return const Center(
                           child: Text(
                             'Profile data unavailable',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 18,
-                            ),
+                            style: TextStyle(color: Colors.grey, fontSize: 18),
                           ),
                         );
                       }
@@ -467,10 +460,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                         return const Center(
                           child: Text(
                             'No profile selected',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 18,
-                            ),
+                            style: TextStyle(color: Colors.grey, fontSize: 18),
                           ),
                         );
                       }
@@ -491,14 +481,13 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                           children: [
                             Container(
                               padding: const EdgeInsets.only(top: 8.0),
-                              constraints: const BoxConstraints(
-                                maxHeight: 200,
-                              ),
+                              constraints: const BoxConstraints(maxHeight: 200),
                               child: TextField(
                                 controller: _controller,
                                 decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(context)
-                                      .systemPromptTextFieldLabel,
+                                  labelText: AppLocalizations.of(
+                                    context,
+                                  ).systemPromptTextFieldLabel,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(16.0),
                                   ),
@@ -521,9 +510,9 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                                 expands: false,
                               ),
                             ),
-                            const Gap(8.0),
+
                             const Divider(),
-                            const Gap(8.0),
+
                             ..._buildSettingsExpansionTiles(context),
                           ],
                         ),
@@ -539,8 +528,9 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
               children: [
                 TextButton.icon(
                   label: Text(
-                    AppLocalizations.of(context)
-                        .modelSettingsDialogClearProfilesButton,
+                    AppLocalizations.of(
+                      context,
+                    ).modelSettingsDialogClearProfilesButton,
                     style: const TextStyle(color: Colors.red),
                   ),
                   icon: const Icon(UniconsLine.trash, color: Colors.red),
@@ -567,10 +557,8 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                       AppLocalizations.of(context).activateButtonShared,
                     ),
                     icon: const Icon(UniconsLine.power),
-                    onPressed: () => _activateProfile(
-                      context,
-                      _visibleProfileName!,
-                    ),
+                    onPressed: () =>
+                        _activateProfile(context, _visibleProfileName!),
                   ),
                 if (_visibleProfileName != null)
                   TextButton.icon(
@@ -677,11 +665,7 @@ Future<void> showModelSettingsDialog(
   );
 }
 
-enum SettingType {
-  boolSetting,
-  intSetting,
-  doubleSetting,
-}
+enum SettingType { boolSetting, intSetting, doubleSetting }
 
 class SettingWidget extends StatefulWidget {
   final String visibleProfileName;
@@ -738,10 +722,9 @@ class _SettingWidgetState extends State<SettingWidget> {
 
     switch (widget.type) {
       case SettingType.boolSetting:
-        final bool? value = modelSettings.get(
-          widget.visibleProfileName,
-          widget.setting,
-        ) as bool?;
+        final bool? value =
+            modelSettings.get(widget.visibleProfileName, widget.setting)
+                as bool?;
 
         return Tooltip(
           message: tooltipText,
@@ -778,15 +761,11 @@ class _SettingWidgetState extends State<SettingWidget> {
                   ),
                   DropdownMenuItem<bool?>(
                     value: true,
-                    child: Text(
-                      AppLocalizations.of(context).settingsModelOn,
-                    ),
+                    child: Text(AppLocalizations.of(context).settingsModelOn),
                   ),
                   DropdownMenuItem<bool?>(
                     value: false,
-                    child: Text(
-                      AppLocalizations.of(context).settingsModelOff,
-                    ),
+                    child: Text(AppLocalizations.of(context).settingsModelOff),
                   ),
                 ],
               ),
@@ -854,8 +833,9 @@ class _SettingWidgetState extends State<SettingWidget> {
                         : null,
                   ),
                   controller: _controller,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   onChanged: (value) {
                     final newValue = double.tryParse(value);
 

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import '../../../generated/i18n/app_localizations.dart';
+import '../../../localization/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/repositories/ollama_models.dart';
 import 'package:open_local_ui/frontend/dialogs/model_search_filters.dart';
@@ -65,12 +64,9 @@ class _MarketPageState extends State<MarketPage> {
       children: [
         Text(
           AppLocalizations.of(context).marketPageTitle,
-          style: const TextStyle(
-            fontSize: 32.0,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
         ),
-        const Gap(16),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -79,8 +75,9 @@ class _MarketPageState extends State<MarketPage> {
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)
-                      .marketPageSearchTextFieldHint,
+                  hintText: AppLocalizations.of(
+                    context,
+                  ).marketPageSearchTextFieldHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -88,7 +85,7 @@ class _MarketPageState extends State<MarketPage> {
                 onChanged: (value) => _updateFilteredModels(),
               ),
             ),
-            const Gap(16),
+
             IconButton(
               onPressed: () async {
                 final filters = await showModelSearchFiltersDialog(
@@ -102,27 +99,29 @@ class _MarketPageState extends State<MarketPage> {
                 }
               },
               icon: const Icon(UniconsLine.filter),
-              tooltip: AppLocalizations.of(context)
-                  .marketPageSearchFiltersButtonTooltip,
+              tooltip: AppLocalizations.of(
+                context,
+              ).marketPageSearchFiltersButtonTooltip,
             ),
-            const Gap(16),
+
             Text(
-              AppLocalizations.of(context).marketPageSearchResultsLabel(
-                _filteredModels.length,
-              ),
+              AppLocalizations.of(
+                context,
+              ).marketPageSearchResultsLabel(_filteredModels.length),
               style: const TextStyle(color: Colors.grey),
             ),
           ],
         ),
-        const Gap(16),
+
         const Divider(),
-        const Gap(16),
+
         Expanded(
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: MediaQuery.of(context).size.width > 1280 ? 4 : 2,
-              childAspectRatio:
-                  MediaQuery.of(context).size.width > 1280 ? 0.8 : 1,
+              childAspectRatio: MediaQuery.of(context).size.width > 1280
+                  ? 0.8
+                  : 1,
             ),
             itemCount: _filteredModels.length,
             itemBuilder: (context, index) {
@@ -168,23 +167,15 @@ class _ModelCardState extends State<ModelCard> {
     if (capabilities.contains('vision')) {
       tags.add(
         Chip(
-          avatar: const Icon(
-            UniconsLine.eye,
-            color: Colors.purple,
-          ),
+          avatar: const Icon(UniconsLine.eye, color: Colors.purple),
           label: Text(
             'vision'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontSize: 12),
           ),
           backgroundColor: Colors.purple.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.purple,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.purple, width: 1),
           ),
         ),
       );
@@ -193,23 +184,15 @@ class _ModelCardState extends State<ModelCard> {
     if (capabilities.contains('tools')) {
       tags.add(
         Chip(
-          avatar: const Icon(
-            UniconsLine.drill,
-            color: Colors.blue,
-          ),
+          avatar: const Icon(UniconsLine.drill, color: Colors.blue),
           label: Text(
             'tools'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontSize: 12),
           ),
           backgroundColor: Colors.blue.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.blue,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.blue, width: 1),
           ),
         ),
       );
@@ -218,23 +201,15 @@ class _ModelCardState extends State<ModelCard> {
     if (capabilities.contains('embedding')) {
       tags.add(
         Chip(
-          avatar: const Icon(
-            UniconsLine.arrow,
-            color: Colors.green,
-          ),
+          avatar: const Icon(UniconsLine.arrow, color: Colors.green),
           label: Text(
             'embedding'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontSize: 12),
           ),
           backgroundColor: Colors.green.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.green,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.green, width: 1),
           ),
         ),
       );
@@ -249,17 +224,12 @@ class _ModelCardState extends State<ModelCard> {
           ),
           label: Text(
             'code'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontSize: 12),
           ),
           backgroundColor: Colors.deepOrange.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.deepOrange,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.deepOrange, width: 1),
           ),
         ),
       );
@@ -287,9 +257,7 @@ class _ModelCardState extends State<ModelCard> {
           padding: const EdgeInsets.all(12.0),
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey,
-              ),
+              border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(16.0),
             ),
             padding: const EdgeInsets.all(16.0),
@@ -337,45 +305,35 @@ class _ModelCardState extends State<ModelCard> {
                       ),
                   ],
                 ),
-                const Gap(8),
+
                 Row(
                   children: [
-                    const Icon(
-                      UniconsLine.language,
-                      color: Colors.red,
-                    ),
-                    const Gap(4),
+                    const Icon(UniconsLine.language, color: Colors.red),
                     Text(
                       AppLocalizations.of(context).translationNotAvailable,
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.red,
-                      ),
+                      style: const TextStyle(fontSize: 14.0, color: Colors.red),
                     ),
                   ],
                 ),
-                const Gap(8),
-                Text(
-                  widget.model.description,
-                  textAlign: TextAlign.justify,
-                ),
-                if (widget.model.capabilities != 0) const Gap(16),
+
+                Text(widget.model.description, textAlign: TextAlign.justify),
                 if (widget.model.capabilities != 0)
-                  Text(
-                    AppLocalizations.of(context).marketPageCapabilitiesLabel,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                  if (widget.model.capabilities != 0)
+                    Text(
+                      AppLocalizations.of(context).marketPageCapabilitiesLabel,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                if (widget.model.capabilities != 0) const Gap(8),
+                if (widget.model.capabilities != 0) SizedBox(height: 8.0),
                 if (widget.model.capabilities != 0)
                   Wrap(
                     spacing: 8.0,
                     runSpacing: 8.0,
                     children: _buildCapabilitiesTags(widget.model.name),
                   ),
-                const Gap(16),
+
                 if (widget.model.releases.isNotEmpty)
                   Text(
                     AppLocalizations.of(context).marketPageReleasesLabel,
@@ -384,7 +342,7 @@ class _ModelCardState extends State<ModelCard> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                if (widget.model.releases.isNotEmpty) const Gap(8),
+                if (widget.model.releases.isNotEmpty) SizedBox(height: 8.0),
                 if (widget.model.releases.isNotEmpty)
                   Wrap(
                     spacing: 8.0,
@@ -395,14 +353,12 @@ class _ModelCardState extends State<ModelCard> {
                           release.numParams,
                           style: const TextStyle(fontSize: 12),
                         ),
-                        backgroundColor:
-                            Colors.blue.withAlpha((255 * 0.25).toInt()),
+                        backgroundColor: Colors.blue.withAlpha(
+                          (255 * 0.25).toInt(),
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          side: const BorderSide(
-                            color: Colors.blue,
-                            width: 1,
-                          ),
+                          side: const BorderSide(color: Colors.blue, width: 1),
                         ),
                       );
                     }).toList(),
@@ -422,26 +378,24 @@ class _ModelCardState extends State<ModelCard> {
                           context,
                           widget.model.name,
                           widget.model.releases
-                              .map(
-                                (release) => release.numParams,
-                              )
+                              .map((release) => release.numParams)
                               .toList(),
                         ),
                       ),
                     if (widget.model.url.isNotEmpty)
                       Tooltip(
-                        message: AppLocalizations.of(context)
-                            .marketPageViewMoreButtonTooltip(
-                          widget.model.url,
-                        ),
+                        message: AppLocalizations.of(
+                          context,
+                        ).marketPageViewMoreButtonTooltip(widget.model.url),
                         child: TextButton.icon(
                           onPressed: () {
                             launchUrl(Uri.parse(widget.model.url));
                           },
                           icon: const Icon(UniconsLine.arrow_right),
                           label: Text(
-                            AppLocalizations.of(context)
-                                .marketPageViewMoreButton,
+                            AppLocalizations.of(
+                              context,
+                            ).marketPageViewMoreButton,
                             style: const TextStyle(fontSize: 18.0),
                           ),
                         ),

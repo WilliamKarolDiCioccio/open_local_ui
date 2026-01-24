@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../generated/i18n/app_localizations.dart';
-import 'package:gap/gap.dart';
+import '../../localization/app_localizations.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 import 'package:unicons/unicons.dart';
 
@@ -16,46 +15,22 @@ class ChangelogDialog extends StatelessWidget {
     switch (type) {
       case 'bugfix':
         return Chip(
-          avatar: const Icon(
-            UniconsLine.bug,
-            size: 18,
-            color: Colors.red,
-          ),
-          label: Text(
-            type.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
-          ),
+          avatar: const Icon(UniconsLine.bug, size: 18, color: Colors.red),
+          label: Text(type.toUpperCase(), style: const TextStyle(fontSize: 12)),
           backgroundColor: Colors.red.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.red,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.red, width: 1),
           ),
         );
       case 'feature':
         return Chip(
-          avatar: const Icon(
-            UniconsLine.rocket,
-            size: 18,
-            color: Colors.green,
-          ),
-          label: Text(
-            type.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
-          ),
+          avatar: const Icon(UniconsLine.rocket, size: 18, color: Colors.green),
+          label: Text(type.toUpperCase(), style: const TextStyle(fontSize: 12)),
           backgroundColor: Colors.green.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.green,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.green, width: 1),
           ),
         );
       case 'improvement':
@@ -65,19 +40,11 @@ class ChangelogDialog extends StatelessWidget {
             size: 18,
             color: Colors.tealAccent,
           ),
-          label: Text(
-            type.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
-          ),
+          label: Text(type.toUpperCase(), style: const TextStyle(fontSize: 12)),
           backgroundColor: Colors.tealAccent.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.tealAccent,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.tealAccent, width: 1),
           ),
         );
       default:
@@ -92,9 +59,9 @@ class ChangelogDialog extends StatelessWidget {
       content: SizedBox(
         width: 900,
         child: FutureBuilder(
-          future: DefaultAssetBundle.of(context).loadString(
-            'assets/app_changelog.json',
-          ),
+          future: DefaultAssetBundle.of(
+            context,
+          ).loadString('assets/app_changelog.json'),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
@@ -143,16 +110,12 @@ class ChangelogDialog extends StatelessWidget {
                             ),
                             Text(
                               date,
-                              style: const TextStyle(
-                                color: Colors.grey,
-                              ),
+                              style: const TextStyle(color: Colors.grey),
                               textAlign: TextAlign.center,
                             ),
-                            const Gap(16.0),
+
                             if (release['image'] != null)
-                              CachedNetworkImage(
-                                imageUrl: release['image'],
-                              ),
+                              CachedNetworkImage(imageUrl: release['image']),
                           ],
                         ),
                       ),
@@ -188,10 +151,8 @@ class ChangelogDialog extends StatelessWidget {
                                       _buildChangeCategoryChip(
                                         changeData['category'],
                                       ),
-                                      const Gap(8.0),
-                                      Text(
-                                        changeData['description'],
-                                      ),
+
+                                      Text(changeData['description']),
                                     ],
                                   ),
                                 );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 
 class ConfirmationDialog extends StatelessWidget {
   final String title;
@@ -18,43 +18,36 @@ class ConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(title),
-      content: Text(content),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(
-            AppLocalizations.of(context).dialogCancelButtonShared,
-          ),
-        ),
-        TextButton(
-          autofocus: true,
-          onPressed: () {
-            onConfirm();
-            Navigator.of(context).pop();
-          },
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(Colors.red),
-          ),
-          child: Text(
-            AppLocalizations.of(context).dialogConfirmButtonShared,
-            style: const TextStyle(
-              color: Colors.white,
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                AppLocalizations.of(context).dialogCancelButtonShared,
+              ),
             ),
-          ),
-        ),
-      ],
-    )
-        .animate()
-        .fadeIn(
-          duration: 200.ms,
+            TextButton(
+              autofocus: true,
+              onPressed: () {
+                onConfirm();
+                Navigator.of(context).pop();
+              },
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(Colors.red),
+              ),
+              child: Text(
+                AppLocalizations.of(context).dialogConfirmButtonShared,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
         )
-        .move(
-          begin: const Offset(0, 160),
-          curve: Curves.easeOutQuad,
-        );
+        .animate()
+        .fadeIn(duration: 200.ms)
+        .move(begin: const Offset(0, 160), curve: Curves.easeOutQuad);
   }
 }
 

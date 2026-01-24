@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-import '../../../../generated/i18n/app_localizations.dart';
+import '../../../../localization/app_localizations.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/constants/constants.dart';
 import 'package:open_local_ui/frontend/utils/snackbar.dart';
@@ -22,14 +22,18 @@ class ModelSettingsHandler {
 
   /// Default initializations for late variables are provided in the constructor because the [_init] method runs asynchronously and there is no way to await it in the constructor.
   ModelSettingsHandler(this.modelName)
-      : _activeProfileName = 'default',
-        _modelSettingsMap = {};
+    : _activeProfileName = 'default',
+      _modelSettingsMap = {};
 
   /// Called when the provider is initialized from [ModelSettingsDialog]. It preloads the settings from the profile associations file.
   /// Calling this in the constructor prevents late initialization errors.
   ///
   /// Returns a [Future] that evaluates to `void` when the settings are preloaded.
   Future<void> preloadSettings() async {
+    if (modelName.isEmpty) {
+      throw ArgumentError('Model name cannot be empty');
+    }
+
     final profileAssociationsFile = await _getProfileAssociationsFile();
     final profileAssociations = jsonDecode(
       await profileAssociationsFile.readAsString(),
@@ -46,6 +50,7 @@ class ModelSettingsHandler {
 
     // Load all profiles for the current model
     final profileFiles = await getAllModelSettingsProfilesFiles();
+
     for (final file in profileFiles) {
       final profileName = file.uri.pathSegments.last.replaceAll('.json', '');
       _modelSettingsMap[profileName] = await loadProfile(profileName);
@@ -83,9 +88,7 @@ class ModelSettingsHandler {
     }
 
     if (await file.length() == 0) {
-      await file.writeAsString(
-        jsonEncode(ModelSettings.fromJson({}).toJson()),
-      );
+      await file.writeAsString(jsonEncode(ModelSettings.fromJson({}).toJson()));
     }
 
     return file;
@@ -120,9 +123,7 @@ class ModelSettingsHandler {
   Future<File> _getProfileAssociationsFile() async {
     final dir = await getApplicationSupportDirectory();
 
-    final file = File(
-      '${dir.path}/models_profiles/profiles_associations.json',
-    );
+    final file = File('${dir.path}/models_profiles/profiles_associations.json');
 
     if (!await file.exists()) {
       await file.create(recursive: true);
@@ -158,9 +159,7 @@ class ModelSettingsHandler {
     );
 
     profileAssociations[modelName] = profileName;
-    profileAssociationsFile.writeAsStringSync(
-      jsonEncode(profileAssociations),
-    );
+    profileAssociationsFile.writeAsStringSync(jsonEncode(profileAssociations));
 
     _activeProfileName = profileName;
     _modelSettingsMap[profileName] ??= await loadProfile(profileName);
@@ -175,8 +174,10 @@ class ModelSettingsHandler {
   Future<ModelSettings> loadProfile(String? profileName) async {
     profileName ??= _activeProfileName;
 
-    final settingsFile =
-        await getModelSettingsProfileFile(modelName, profileName);
+    final settingsFile = await getModelSettingsProfileFile(
+      modelName,
+      profileName,
+    );
 
     if (await settingsFile.exists()) {
       return ModelSettings.fromJson(
@@ -225,8 +226,10 @@ class ModelSettingsHandler {
   Future<void> resetProfile(String? profileName) async {
     profileName ??= _activeProfileName;
 
-    final settingsFile =
-        await getModelSettingsProfileFile(modelName, profileName);
+    final settingsFile = await getModelSettingsProfileFile(
+      modelName,
+      profileName,
+    );
 
     await settingsFile.writeAsString(jsonEncode(<String, dynamic>{}));
 
@@ -242,8 +245,10 @@ class ModelSettingsHandler {
   Future<void> removeProfile(String? profileName) async {
     profileName ??= _activeProfileName;
 
-    final settingsFile =
-        await getModelSettingsProfileFile(modelName, profileName);
+    final settingsFile = await getModelSettingsProfileFile(
+      modelName,
+      profileName,
+    );
     if (await settingsFile.exists()) {
       await settingsFile.delete();
     }
@@ -265,8 +270,9 @@ class ModelSettingsHandler {
         .replaceAll(RegExp(r'_latest$'), '')
         .toLowerCase();
 
-    final profilesDir =
-        Directory('${dir.path}/models_profiles/$cleanModelName');
+    final profilesDir = Directory(
+      '${dir.path}/models_profiles/$cleanModelName',
+    );
 
     if (await profilesDir.exists()) {
       await profilesDir.delete(recursive: true);
@@ -487,10 +493,12 @@ class ModelSettingsProvider extends ModelSettingsHandler with ChangeNotifier {
         super.modelSettingsMap[profile]!.numGpu = newValue;
         if (newValue == 0) {
           SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(scaffoldMessengerKey.currentContext!)
-                .snackBarWarningTitle,
-            AppLocalizations.of(scaffoldMessengerKey.currentContext!)
-                .ollamaDisabledGPUWarningSnackBar,
+            AppLocalizations.of(
+              scaffoldMessengerKey.currentContext!,
+            ).snackBarWarningTitle,
+            AppLocalizations.of(
+              scaffoldMessengerKey.currentContext!,
+            ).ollamaDisabledGPUWarningSnackBar,
             SnackbarContentType.warning,
           );
         }

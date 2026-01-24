@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../generated/i18n/app_localizations.dart';
-import 'package:gap/gap.dart';
+import '../../localization/app_localizations.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/frontend/utils/snackbar.dart';
@@ -56,22 +55,18 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
       }
 
       modelsMenuEntries.add(
-        DropdownMenuEntry(
-          value: model.name,
-          label: shortenedModelName,
-        ),
+        DropdownMenuEntry(value: model.name, label: shortenedModelName),
       );
     }
 
     return DropdownMenu(
       key: const Key('model_selector'),
-      enabled: context.watch<OllamaAPIProvider>().modelsCount > 0 &&
+      enabled:
+          context.watch<OllamaAPIProvider>().modelsCount > 0 &&
           !context.watch<ChatProvider>().isGenerating,
       menuHeight: 128,
       menuStyle: MenuStyle(
-        elevation: WidgetStateProperty.all(
-          8.0,
-        ),
+        elevation: WidgetStateProperty.all(8.0),
         shape: WidgetStateProperty.all(
           const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -79,9 +74,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
       enableSearch: true,
       hintText: AppLocalizations.of(context).chatToolbarModelSelectorHint,
@@ -105,11 +98,11 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
               context,
             ),
           ),
-        if (context.read<ChatProvider>().modelName.isNotEmpty) const Gap(16),
-        _buildModelSelectionWidget(context),
-        const Gap(16),
+        if (context.read<ChatProvider>().modelName.isNotEmpty)
+          _buildModelSelectionWidget(context),
+
         // _buildChatOptionBarWidget(context),
-        // const Gap(16),
+        //
         ElevatedButton.icon(
           key: const Key('new_session_button'),
           label: Text(

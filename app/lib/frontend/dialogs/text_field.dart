@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 
 class TextFieldDialog extends StatefulWidget {
   final String title;
@@ -39,40 +39,35 @@ class _TextFieldDialogState extends State<TextFieldDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.title),
-      content: TextField(
-        controller: _controller,
-        decoration: InputDecoration(labelText: widget.labelText),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(
-            AppLocalizations.of(context).dialogCancelButtonShared,
+          title: Text(widget.title),
+          content: TextField(
+            controller: _controller,
+            decoration: InputDecoration(labelText: widget.labelText),
           ),
-        ),
-        TextButton(
-          autofocus: true,
-          onPressed: () {
-            widget.onConfirm(_controller.text);
-            Navigator.of(context).pop();
-          },
-          child: Text(
-            AppLocalizations.of(context).dialogConfirmButtonShared,
-          ),
-        ),
-      ],
-    )
-        .animate()
-        .fadeIn(
-          duration: 200.ms,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                AppLocalizations.of(context).dialogCancelButtonShared,
+              ),
+            ),
+            TextButton(
+              autofocus: true,
+              onPressed: () {
+                widget.onConfirm(_controller.text);
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                AppLocalizations.of(context).dialogConfirmButtonShared,
+              ),
+            ),
+          ],
         )
-        .move(
-          begin: const Offset(0, 160),
-          curve: Curves.easeOutQuad,
-        );
+        .animate()
+        .fadeIn(duration: 200.ms)
+        .move(begin: const Offset(0, 160), curve: Curves.easeOutQuad);
   }
 }
 

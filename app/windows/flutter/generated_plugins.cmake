@@ -9,9 +9,10 @@ list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
   discord_rpc
   file_selector_windows
+  flutter_localization
   gpu_info
   irondash_engine_context
-  rive_common
+  rive_native
   sqlite3_flutter_libs
   super_native_extensions
   system_theme

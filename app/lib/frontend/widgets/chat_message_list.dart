@@ -49,7 +49,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
   }
 
   void _scrollListener() {
-    final atBottom = _scrollController.position.pixels >=
+    final atBottom =
+        _scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 20;
 
     if (atBottom) {
@@ -106,13 +107,13 @@ class _ChatMessageListState extends State<ChatMessageList> {
               final message = context.watch<ChatProvider>().messages[index];
 
               return ChatMessageWidget(
-                key: Key(message.uuid),
-                message,
-                _scrollController,
-              ).animate().fadeIn(duration: 300.ms).move(
-                    begin: const Offset(-16, 0),
-                    curve: Curves.easeOutQuad,
-                  );
+                    key: Key(message.uuid),
+                    message,
+                    _scrollController,
+                  )
+                  .animate()
+                  .fadeIn(duration: 300.ms)
+                  .move(begin: const Offset(-16, 0), curve: Curves.easeOutQuad);
             },
           ),
         ),
@@ -127,10 +128,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
                 opacity: 0.75,
                 child: IconButton.filled(
                   key: _overlayKey,
-                  icon: const Icon(
-                    UniconsLine.arrow_down,
-                    size: 32.0,
-                  ),
+                  icon: const Icon(UniconsLine.arrow_down, size: 32.0),
                   onPressed: () => _scrollToBottomWithAnimation(),
                 ),
               ),

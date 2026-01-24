@@ -5,10 +5,9 @@ import 'package:flutter/services.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:file_selector/file_selector.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 import 'package:flutter_sticky_widgets/flutter_sticky_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
 import 'package:open_local_ui/constants/constants.dart';
 import 'package:open_local_ui/core/asset.dart';
 import 'package:open_local_ui/frontend/utils/snackbar.dart';
@@ -103,15 +102,17 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
       await file.writeAsString(widget.text);
 
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(scaffoldMessengerKey.currentContext!)
-            .snackBarSuccessTitle,
+        AppLocalizations.of(
+          scaffoldMessengerKey.currentContext!,
+        ).snackBarSuccessTitle,
         'File saved at: ${file.path}',
         SnackbarContentType.success,
       );
     } else {
       SnackBarHelpers.showSnackBar(
-        AppLocalizations.of(scaffoldMessengerKey.currentContext!)
-            .snackBarErrorTitle,
+        AppLocalizations.of(
+          scaffoldMessengerKey.currentContext!,
+        ).snackBarErrorTitle,
         'No directory selected',
         SnackbarContentType.failure,
       );
@@ -148,14 +149,15 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (widget.programmingLanguage.isNotEmpty)
-                    if (programmingLanguagesLogos
-                        .containsKey(widget.programmingLanguage))
+                    if (programmingLanguagesLogos.containsKey(
+                      widget.programmingLanguage,
+                    ))
                       Tooltip(
                         message: widget.programmingLanguage.toUpperCase(),
                         child: SvgPicture.memory(
                           AssetManager.getAsset(
-                            programmingLanguagesLogos[
-                                widget.programmingLanguage]!,
+                            programmingLanguagesLogos[widget
+                                .programmingLanguage]!,
                             type: AssetType.binary,
                           ),
                           width: 20,
@@ -167,23 +169,22 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
                         ),
                       ),
                   if (widget.programmingLanguage.isNotEmpty)
-                    if (!programmingLanguagesLogos
-                        .containsKey(widget.programmingLanguage))
+                    if (!programmingLanguagesLogos.containsKey(
+                      widget.programmingLanguage,
+                    ))
                       SelectionContainer.disabled(
                         child: Text(
                           widget.programmingLanguage.toUpperCase(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                  const Gap(24.0),
                   IconButton(
                     onPressed: () => _copyMessage(),
-                    icon:
-                        Icon(_isCopied ? UniconsLine.check : UniconsLine.copy),
+                    icon: Icon(
+                      _isCopied ? UniconsLine.check : UniconsLine.copy,
+                    ),
                   ),
-                  const Gap(16.0),
+
                   IconButton(
                     onPressed: () => _saveFile(),
                     icon: Icon(_isSaved ? UniconsLine.check : UniconsLine.save),

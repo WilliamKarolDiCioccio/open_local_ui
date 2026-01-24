@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flex_color_picker/flex_color_picker.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 
 class ColorPickerDialog extends StatefulWidget {
   final Color initialColor;
 
-  const ColorPickerDialog({
-    super.key,
-    required this.initialColor,
-  });
+  const ColorPickerDialog({super.key, required this.initialColor});
 
   @override
   State<ColorPickerDialog> createState() => _ColorPickerDialogState();
@@ -59,16 +56,11 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   }
 }
 
-Future<Color?> showColorPickerDialog(
-  BuildContext context,
-  Color initialColor,
-) {
+Future<Color?> showColorPickerDialog(BuildContext context, Color initialColor) {
   return showDialog<Color>(
     context: context,
     builder: (context) {
-      return ColorPickerDialog(
-        initialColor: initialColor,
-      );
+      return ColorPickerDialog(initialColor: initialColor);
     },
   );
 }

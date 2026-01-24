@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 
 const languages = [
   Locale('en'), // English

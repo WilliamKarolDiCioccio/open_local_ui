@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../generated/i18n/app_localizations.dart';
-import 'package:gap/gap.dart';
+import '../../localization/app_localizations.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/frontend/utils/snackbar.dart';
@@ -23,50 +22,64 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
   List<Widget> _generateSuggestionsCards() {
     final List<List<String>> exampleQuestions = [
       [
-        AppLocalizations.of(context)
-            .suggestionAddressConflictsInRelationshipsPartOne,
-        AppLocalizations.of(context)
-            .suggestionAddressConflictsInRelationshipsPartTwo,
+        AppLocalizations.of(
+          context,
+        ).suggestionAddressConflictsInRelationshipsPartOne,
+        AppLocalizations.of(
+          context,
+        ).suggestionAddressConflictsInRelationshipsPartTwo,
       ],
       [
-        AppLocalizations.of(context)
-            .suggestionCommonUseCasesForProblemSolvingPartOne,
-        AppLocalizations.of(context)
-            .suggestionCommonUseCasesForProblemSolvingPartTwo,
+        AppLocalizations.of(
+          context,
+        ).suggestionCommonUseCasesForProblemSolvingPartOne,
+        AppLocalizations.of(
+          context,
+        ).suggestionCommonUseCasesForProblemSolvingPartTwo,
       ],
       [
-        AppLocalizations.of(context)
-            .suggestionDecisionMakingInComplexSituationsPartOne,
-        AppLocalizations.of(context)
-            .suggestionDecisionMakingInComplexSituationsPartTwo,
+        AppLocalizations.of(
+          context,
+        ).suggestionDecisionMakingInComplexSituationsPartOne,
+        AppLocalizations.of(
+          context,
+        ).suggestionDecisionMakingInComplexSituationsPartTwo,
       ],
       [
-        AppLocalizations.of(context)
-            .suggestionDiscussRemoteWorkAdvantagesPartOne,
-        AppLocalizations.of(context)
-            .suggestionDiscussRemoteWorkAdvantagesPartTwo,
+        AppLocalizations.of(
+          context,
+        ).suggestionDiscussRemoteWorkAdvantagesPartOne,
+        AppLocalizations.of(
+          context,
+        ).suggestionDiscussRemoteWorkAdvantagesPartTwo,
       ],
       [
-        AppLocalizations.of(context)
-            .suggestionDistinguishTeachingAndMentoringPartOne,
-        AppLocalizations.of(context)
-            .suggestionDistinguishTeachingAndMentoringPartTwo,
+        AppLocalizations.of(
+          context,
+        ).suggestionDistinguishTeachingAndMentoringPartOne,
+        AppLocalizations.of(
+          context,
+        ).suggestionDistinguishTeachingAndMentoringPartTwo,
       ],
       [
         AppLocalizations.of(context).suggestionEvaluateTeamPerformancePartOne,
         AppLocalizations.of(context).suggestionEvaluateTeamPerformancePartTwo,
       ],
       [
-        AppLocalizations.of(context)
-            .suggestionExplainEmpathySignificancePartOne,
-        AppLocalizations.of(context)
-            .suggestionExplainEmpathySignificancePartTwo,
+        AppLocalizations.of(
+          context,
+        ).suggestionExplainEmpathySignificancePartOne,
+        AppLocalizations.of(
+          context,
+        ).suggestionExplainEmpathySignificancePartTwo,
       ],
       [
-        AppLocalizations.of(context)
-            .suggestionExplainLearningFromExperiencePartOne,
-        AppLocalizations.of(context)
-            .suggestionExplainLearningFromExperiencePartTwo,
+        AppLocalizations.of(
+          context,
+        ).suggestionExplainLearningFromExperiencePartOne,
+        AppLocalizations.of(
+          context,
+        ).suggestionExplainLearningFromExperiencePartTwo,
       ],
       [
         AppLocalizations.of(context).suggestionHandleDailyStressPartOne,
@@ -93,18 +106,16 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
     final List<List<String>> randomQuestions = List.from(exampleQuestions)
       ..shuffle(random);
 
-    final List<List<String>> choosenQuestions =
-        randomQuestions.take(exampleQuestionsCount).toList();
+    final List<List<String>> choosenQuestions = randomQuestions
+        .take(exampleQuestionsCount)
+        .toList();
 
-    return List<Widget>.generate(
-      exampleQuestionsCount,
-      (index) {
-        return ChatExampleQuestionCard(
-          question: choosenQuestions[index][0],
-          questionDetails: randomQuestions[index][1],
-        );
-      },
-    );
+    return List<Widget>.generate(exampleQuestionsCount, (index) {
+      return ChatExampleQuestionCard(
+        question: choosenQuestions[index][0],
+        questionDetails: randomQuestions[index][1],
+      );
+    });
   }
 
   @override
@@ -116,23 +127,20 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            AppLocalizations.of(context).chatWelcomeMessage,
-            style: const TextStyle(
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ).animate().fadeIn(duration: 200.ms).move(
-                begin: const Offset(0, 160),
-                curve: Curves.easeOutQuad,
-              ),
+                AppLocalizations.of(context).chatWelcomeMessage,
+                style: const TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+              .animate()
+              .fadeIn(duration: 200.ms)
+              .move(begin: const Offset(0, 160), curve: Curves.easeOutQuad),
           Text(AppLocalizations.of(context).chatSuggestionsPrompt)
               .animate(delay: 300.ms)
               .fadeIn(duration: 200.ms)
-              .move(
-                begin: const Offset(0, 16),
-                curve: Curves.easeOutQuad,
-              ),
-          const Gap(8.0),
+              .move(begin: const Offset(0, 16), curve: Curves.easeOutQuad),
+
           Center(
             child: GridView.builder(
               shrinkWrap: true,
@@ -148,19 +156,19 @@ class _ChatExampleQuestionsState extends State<ChatExampleQuestions> {
               },
             ),
           ),
-          const Gap(8.0),
+
           TextButton.icon(
-            onPressed: () {
-              setState(() {});
-            },
-            label: Text(
-              AppLocalizations.of(context).chatRefreshSuggestions,
-            ),
-            icon: const Icon(UniconsLine.sync),
-          ).animate(delay: 1.seconds).fadeIn(duration: 300.ms).move(
-                begin: const Offset(0, 16),
-                curve: Curves.easeOutQuad,
-              ),
+                onPressed: () {
+                  setState(() {});
+                },
+                label: Text(
+                  AppLocalizations.of(context).chatRefreshSuggestions,
+                ),
+                icon: const Icon(UniconsLine.sync),
+              )
+              .animate(delay: 1.seconds)
+              .fadeIn(duration: 300.ms)
+              .move(begin: const Offset(0, 16), curve: Curves.easeOutQuad),
         ],
       ),
     );
@@ -248,64 +256,62 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
         curve: Curves.ease,
         padding: EdgeInsets.all(_isHovering ? 12.0 : 8.0),
         child: GestureDetector(
-          onTap: () => _sendMessage(
-            '${widget.question} ${widget.questionDetails}',
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AdaptiveTheme.of(context).theme.dividerColor,
-              ),
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: widget.question,
-                        style: TextStyle(
-                          fontFamily: 'Neuton',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AdaptiveTheme.of(context).mode.isDark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
+          onTap: () =>
+              _sendMessage('${widget.question} ${widget.questionDetails}'),
+          child:
+              Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AdaptiveTheme.of(context).theme.dividerColor,
                       ),
-                      const TextSpan(text: ' '),
-                      TextSpan(
-                        text: widget.questionDetails,
-                        style: TextStyle(
-                          fontFamily: 'Neuton',
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          color: AdaptiveTheme.of(context).mode.isDark
-                              ? Colors.white
-                              : Colors.black,
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: widget.question,
+                                style: TextStyle(
+                                  fontFamily: 'Neuton',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: AdaptiveTheme.of(context).mode.isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
+                              const TextSpan(text: ' '),
+                              TextSpan(
+                                text: widget.questionDetails,
+                                style: TextStyle(
+                                  fontFamily: 'Neuton',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                  color: AdaptiveTheme.of(context).mode.isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () => _addEditableMessage(
-                    '${widget.question} ${widget.questionDetails}',
-                  ),
-                  icon: const Icon(UniconsLine.edit),
-                ),
-              ],
-            ),
-          )
-              .animate(
-                delay: 500.ms + ((Random().nextInt(4) + 1) * 100).ms,
-              )
-              .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
-              .fade(),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () => _addEditableMessage(
+                            '${widget.question} ${widget.questionDetails}',
+                          ),
+                          icon: const Icon(UniconsLine.edit),
+                        ),
+                      ],
+                    ),
+                  )
+                  .animate(delay: 500.ms + ((Random().nextInt(4) + 1) * 100).ms)
+                  .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
+                  .fade(),
         ),
       ),
     );

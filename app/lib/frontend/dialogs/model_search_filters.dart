@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../generated/i18n/app_localizations.dart';
-import 'package:gap/gap.dart';
+import '../../localization/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
@@ -11,10 +10,7 @@ class ModelSearchFilters {
   Set<String> sort = {'ascending'};
   Set<String> capabilities = {};
   int maxSize = 512
-      .convertFromTo(
-        DIGITAL_DATA.gigabyte,
-        DIGITAL_DATA.byte,
-      )!
+      .convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!
       .toInt();
   int minSize = 0;
   int maxResults = 255;
@@ -24,13 +20,9 @@ class ModelSearchFilters {
     final sort = prefs.getString('model_search_filters_sort') ?? 'ascending';
     final capabilities =
         prefs.getStringList('model_search_filters_capabilities') ?? [];
-    final maxSize = prefs.getInt('model_search_filters_max_size') ??
-        512
-            .convertFromTo(
-              DIGITAL_DATA.gigabyte,
-              DIGITAL_DATA.byte,
-            )!
-            .toInt();
+    final maxSize =
+        prefs.getInt('model_search_filters_max_size') ??
+        512.convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!.toInt();
     final minSize = prefs.getInt('model_search_filters_min_size') ?? 0;
     final maxResults = prefs.getInt('model_search_filters_max_results') ?? 255;
 
@@ -47,14 +39,8 @@ class ModelSearchFilters {
   }
 
   void toSharedPreferences(SharedPreferences prefs) {
-    prefs.setString(
-      'model_search_filters_order',
-      order.first,
-    );
-    prefs.setString(
-      'model_search_filters_sort',
-      sort.first,
-    );
+    prefs.setString('model_search_filters_order', order.first);
+    prefs.setString('model_search_filters_sort', sort.first);
     prefs.setStringList(
       'model_search_filters_capabilities',
       capabilities.toList(),
@@ -100,10 +86,11 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)
-                .modelSearchFiltersDialogSelectedOrderLabel,
+            AppLocalizations.of(
+              context,
+            ).modelSearchFiltersDialogSelectedOrderLabel,
           ),
-          const Gap(8),
+
           SegmentedButton<String>(
             emptySelectionAllowed: false,
             multiSelectionEnabled: false,
@@ -111,16 +98,12 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
             segments: [
               ButtonSegment(
                 value: 'name',
-                label: Text(
-                  AppLocalizations.of(context).sortByNameOption,
-                ),
+                label: Text(AppLocalizations.of(context).sortByNameOption),
                 icon: const Icon(UniconsLine.tag),
               ),
               ButtonSegment(
                 value: 'size',
-                label: Text(
-                  AppLocalizations.of(context).sortBySizeOption,
-                ),
+                label: Text(AppLocalizations.of(context).sortBySizeOption),
                 icon: const Icon(UniconsLine.database),
               ),
               ButtonSegment(
@@ -139,12 +122,13 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
               });
             },
           ),
-          const Gap(16),
+
           Text(
-            AppLocalizations.of(context)
-                .modelSearchFiltersDialogSelectedSortLabel,
+            AppLocalizations.of(
+              context,
+            ).modelSearchFiltersDialogSelectedSortLabel,
           ),
-          const Gap(8),
+
           SegmentedButton<String>(
             emptySelectionAllowed: false,
             multiSelectionEnabled: false,
@@ -172,12 +156,13 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
               });
             },
           ),
-          const Gap(16),
+
           Text(
-            AppLocalizations.of(context)
-                .modelSearchFiltersDialogSelectedCapabilitiesLabel,
+            AppLocalizations.of(
+              context,
+            ).modelSearchFiltersDialogSelectedCapabilitiesLabel,
           ),
-          const Gap(8),
+
           SegmentedButton<String>(
             emptySelectionAllowed: true,
             multiSelectionEnabled: true,
@@ -211,26 +196,21 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
               });
             },
           ),
-          const Gap(16),
+
           Text(
-            AppLocalizations.of(context)
-                .modelSearchFiltersDialogSelectedMinSizeLabel(
+            AppLocalizations.of(
+              context,
+            ).modelSearchFiltersDialogSelectedMinSizeLabel(
               _filters.minSize
-                  .convertFromTo(
-                    DIGITAL_DATA.byte,
-                    DIGITAL_DATA.gigabyte,
-                  )!
+                  .convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!
                   .toStringAsFixed(2),
             ),
           ),
-          const Gap(8),
+
           Slider(
             value: _filters.minSize.toDouble(),
             min: 0,
-            max: 512.convertFromTo(
-              DIGITAL_DATA.gigabyte,
-              DIGITAL_DATA.byte,
-            )!,
+            max: 512.convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!,
             onChanged: (value) {
               setState(() {
                 _filters.minSize = value.toInt();
@@ -238,47 +218,40 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
               });
             },
           ),
-          const Gap(16),
+
           Text(
-            AppLocalizations.of(context)
-                .modelSearchFiltersDialogSelectedMaxSizeLabel(
+            AppLocalizations.of(
+              context,
+            ).modelSearchFiltersDialogSelectedMaxSizeLabel(
               _filters.maxSize
-                  .convertFromTo(
-                    DIGITAL_DATA.byte,
-                    DIGITAL_DATA.gigabyte,
-                  )!
+                  .convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!
                   .toStringAsFixed(2),
             ),
           ),
-          const Gap(8),
+
           Slider(
             value: _filters.maxSize.toDouble(),
             min: 0,
-            max: 512.convertFromTo(
-              DIGITAL_DATA.gigabyte,
-              DIGITAL_DATA.byte,
-            )!,
+            max: 512.convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!,
             onChanged: (value) {
               setState(() {
                 _filters.maxSize = value.toInt();
                 _filters.maxSize = 512
-                    .convertFromTo(
-                      DIGITAL_DATA.gigabyte,
-                      DIGITAL_DATA.byte,
-                    )!
+                    .convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!
                     .toInt()
                     .clamp(_filters.minSize, _filters.maxSize);
               });
             },
           ),
-          const Gap(16),
+
           Text(
-            AppLocalizations.of(context)
-                .modelSearchFiltersDialogSelectedMaxResultsLabel(
+            AppLocalizations.of(
+              context,
+            ).modelSearchFiltersDialogSelectedMaxResultsLabel(
               _filters.maxResults,
             ),
           ),
-          const Gap(8),
+
           Slider(
             value: _filters.maxResults.toDouble(),
             min: 1,
@@ -293,9 +266,7 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
       ),
       actions: <Widget>[
         TextButton.icon(
-          label: Text(
-            AppLocalizations.of(context).resetToDefaultsButtonShared,
-          ),
+          label: Text(AppLocalizations.of(context).resetToDefaultsButtonShared),
           icon: const Icon(UniconsLine.redo),
           onPressed: () => setState(() {
             _filters = ModelSearchFilters();

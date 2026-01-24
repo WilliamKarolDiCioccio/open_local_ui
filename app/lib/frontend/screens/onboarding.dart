@@ -7,17 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flex_color_picker/flex_color_picker.dart' as fcp;
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:open_local_ui/core/process.dart';
 import 'package:open_local_ui/frontend/utils/snackbar.dart';
-import 'package:open_local_ui/frontend/components/rive_animation.dart';
-import 'package:open_local_ui/frontend/components/typewriter_text.dart';
-import 'package:open_local_ui/frontend/components/window_management_bar.dart';
+import 'package:open_local_ui/shared/components/rive_animation.dart';
+import 'package:open_local_ui/shared/components/typewriter_text.dart';
+import 'package:open_local_ui/shared/components/window_management_bar.dart';
 import 'package:open_local_ui/frontend/dialogs/color_picker.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/widgets/preference_selector.dart';
@@ -50,7 +49,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             PageViewModel(
               image: const RiveAnimationComponent(
                 assetPath: 'assets/graphics/animations/human.riv',
-                animationName: 'greetings',
                 lightArtboardName: 'human_light',
                 darkArtboardName: 'human_dark',
               ),
@@ -68,10 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             PageViewModel(
-              image: const Icon(
-                UniconsLine.download_alt,
-                size: 150,
-              ),
+              image: const Icon(UniconsLine.download_alt, size: 150),
               title: AppLocalizations.of(context).setupPageOllamaSlideTitle,
               bodyWidget: const OllamaSetupPage(),
               decoration: const PageDecoration(
@@ -83,19 +78,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             PageViewModel(
-              image: const Icon(
-                UniconsLine.star,
-                size: 150,
-              ),
+              image: const Icon(UniconsLine.star, size: 150),
               title: AppLocalizations.of(context).setupPageCustomizeSlideTitle,
               bodyWidget: Column(
                 children: [
                   TypewriterTextComponent(
-                    text: AppLocalizations.of(context)
-                        .setupPageCustomizeSlideText,
+                    text: AppLocalizations.of(
+                      context,
+                    ).setupPageCustomizeSlideText,
                     duration: 1750.ms,
                   ),
-                  const Gap(16),
                 ],
               ),
               decoration: const PageDecoration(
@@ -107,8 +99,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             PageViewModel(
-              title: AppLocalizations.of(context)
-                  .setupPageUsagePreferencesSlideTitle,
+              title: AppLocalizations.of(
+                context,
+              ).setupPageUsagePreferencesSlideTitle,
               bodyWidget: SizedBox(
                 width: 700,
                 child: PreferenceSelector(
@@ -116,45 +109,57 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   cardsPerRow: 3,
                   preferences: [
                     Preference(
-                      title: AppLocalizations.of(context)
-                          .setupPagePreferenceTilePersonalTitle,
-                      description: AppLocalizations.of(context)
-                          .setupPagePreferenceTilePersonalDescription,
+                      title: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTilePersonalTitle,
+                      description: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTilePersonalDescription,
                       icon: UniconsLine.diary,
                     ),
                     Preference(
-                      title: AppLocalizations.of(context)
-                          .setupPagePreferenceTileStudyTitle,
-                      description: AppLocalizations.of(context)
-                          .setupPagePreferenceTileStudyDescription,
+                      title: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileStudyTitle,
+                      description: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileStudyDescription,
                       icon: UniconsLine.graduation_cap,
                     ),
                     Preference(
-                      title: AppLocalizations.of(context)
-                          .setupPagePreferenceTileResearchTitle,
-                      description: AppLocalizations.of(context)
-                          .setupPagePreferenceTileResearchDescription,
+                      title: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileResearchTitle,
+                      description: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileResearchDescription,
                       icon: UniconsLine.flask,
                     ),
                     Preference(
-                      title: AppLocalizations.of(context)
-                          .setupPagePreferenceTileProgrammingTitle,
-                      description: AppLocalizations.of(context)
-                          .setupPagePreferenceTileProgrammingDescription,
+                      title: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileProgrammingTitle,
+                      description: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileProgrammingDescription,
                       icon: UniconsLine.brackets_curly,
                     ),
                     Preference(
-                      title: AppLocalizations.of(context)
-                          .setupPagePreferenceTileWritingTitle,
-                      description: AppLocalizations.of(context)
-                          .setupPagePreferenceTileWritingDescription,
+                      title: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileWritingTitle,
+                      description: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileWritingDescription,
                       icon: UniconsLine.pen,
                     ),
                     Preference(
-                      title: AppLocalizations.of(context)
-                          .setupPagePreferenceTileDesignTitle,
-                      description: AppLocalizations.of(context)
-                          .setupPagePreferenceTileDesignDescription,
+                      title: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileDesignTitle,
+                      description: AppLocalizations.of(
+                        context,
+                      ).setupPagePreferenceTileDesignDescription,
                       icon: UniconsLine.brush_alt,
                     ),
                   ],
@@ -171,12 +176,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             PageViewModel(
               image: const RiveAnimationComponent(
                 assetPath: 'assets/graphics/animations/gpu.riv',
-                animationName: 'fan_rotation',
                 lightArtboardName: 'gpu_light',
                 darkArtboardName: 'gpu_dark',
               ),
-              title: AppLocalizations.of(context)
-                  .setupPageSystemAnalysisSlideTitle,
+              title: AppLocalizations.of(
+                context,
+              ).setupPageSystemAnalysisSlideTitle,
               bodyWidget: const SystemAnalysisPage(),
               decoration: const PageDecoration(
                 titleTextStyle: TextStyle(
@@ -187,10 +192,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             PageViewModel(
-              image: const Icon(
-                UniconsLine.brush_alt,
-                size: 150,
-              ),
+              image: const Icon(UniconsLine.brush_alt, size: 150),
               title: AppLocalizations.of(context).setupPageAppearanceSlideTitle,
               bodyWidget: const ThemeSelectionPage(),
               decoration: const PageDecoration(
@@ -202,10 +204,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             PageViewModel(
-              image: const Icon(
-                UniconsLine.check,
-                size: 150,
-              ),
+              image: const Icon(UniconsLine.check, size: 150),
               title: AppLocalizations.of(context).setupPageReadySlideTitle,
               bodyWidget: TypewriterTextComponent(
                 text: AppLocalizations.of(context).setupPageReadySlideText,
@@ -233,16 +232,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           back: const Icon(UniconsLine.arrow_down_right),
           skip: const Text(
             'Skip',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w600),
           ),
           next: const Icon(UniconsLine.arrow_right),
           done: const Text(
             'Done',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w600),
           ),
           curve: Curves.fastLinearToSlowEaseIn,
           controlsMargin: const EdgeInsets.all(16),
@@ -289,9 +284,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
     if (Platform.isWindows) {
       final result = await ProcessHelpers.runShellCommand(
         'winget',
-        arguments: [
-          'list',
-        ],
+        arguments: ['list'],
       );
 
       return result.contains('Ollama.Ollama');
@@ -308,12 +301,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
 
       await ProcessHelpers.runShellCommand(
         'winget',
-        arguments: [
-          'install',
-          '-e',
-          '--id',
-          'Ollama.Ollama',
-        ],
+        arguments: ['install', '-e', '--id', 'Ollama.Ollama'],
       );
 
       setState(() {
@@ -336,7 +324,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
         ? Column(
             children: [
               const Text('Installing Ollama using winget...'),
-              const Gap(16.0),
+
               SpinKitCircle(
                 color: AdaptiveTheme.of(context).mode.isDark
                     ? Colors.white
@@ -351,7 +339,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
                 return Column(
                   children: [
                     const Text('Checking if Ollama is installed...'),
-                    const Gap(16.0),
+
                     SpinKitCircle(
                       color: AdaptiveTheme.of(context).mode.isDark
                           ? Colors.white
@@ -390,10 +378,11 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
                                 ? Colors.black
                                 : Colors.white,
                           ),
-                          const Gap(16.0),
+
                           Text(
-                            AppLocalizations.of(context)
-                                .setupPageInstallOllamaButton,
+                            AppLocalizations.of(
+                              context,
+                            ).setupPageInstallOllamaButton,
                             style: TextStyle(
                               fontSize: 18,
                               color: AdaptiveTheme.of(context).mode.isDark
@@ -436,11 +425,12 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
   Future<String> _summarizeSystemCapabilities() async {
     final osName = SysInfo.operatingSystemName;
     final osVersion = SysInfo.operatingSystemVersion;
-    final cpuName =
-        SysInfo.cores.isNotEmpty ? SysInfo.cores[0].name : "Unknown CPU";
+    final cpuName = SysInfo.cores.isNotEmpty
+        ? SysInfo.cores[0].name
+        : "Unknown CPU";
     final cpuCores = SysInfo.cores.length;
-    final totalMemory =
-        (SysInfo.getTotalPhysicalMemory() / (1024 * 1024)).round();
+    final totalMemory = (SysInfo.getTotalPhysicalMemory() / (1024 * 1024))
+        .round();
 
     final List<GpuInfoStruct> gpusInfo = await _getGpusInfo();
 
@@ -556,13 +546,11 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
           AppLocalizations.of(context).settingsPageThemeLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const Gap(16.0),
+
         DropdownMenu(
           menuHeight: 128,
           menuStyle: MenuStyle(
-            elevation: WidgetStateProperty.all(
-              8.0,
-            ),
+            elevation: WidgetStateProperty.all(8.0),
             shape: WidgetStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -571,9 +559,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
           ),
           leadingIcon: const Icon(UniconsLine.moon_eclipse),
           inputDecorationTheme: const InputDecorationTheme(
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-            ),
+            border: OutlineInputBorder(borderSide: BorderSide.none),
             floatingLabelBehavior: FloatingLabelBehavior.never,
           ),
           initialSelection: _getThemeModeString(context),
@@ -605,42 +591,35 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
             }
           },
         ),
-        const Gap(16.0),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(UniconsLine.brush_alt),
-            const Gap(8.0),
+
             Text(
               AppLocalizations.of(context).settingsPageAccentColorLabel,
               style: const TextStyle(fontSize: 16.0),
             ),
-            const Gap(8.0),
+
             GestureDetector(
               onTap: () async {
-                await showColorPickerDialog(
-                  context,
-                  await _getAccent(),
-                ).then(
-                  (color) async {
-                    if (color == null) return;
+                await showColorPickerDialog(context, await _getAccent()).then((
+                  color,
+                ) async {
+                  if (color == null) return;
 
-                    final prefs = await SharedPreferences.getInstance();
+                  final prefs = await SharedPreferences.getInstance();
 
-                    if ((prefs.getBool('sync_accent_color') ?? false) ==
-                        false) {
-                      _setAccent(context, color);
-                    } else {
-                      setState(() {});
-                    }
+                  if ((prefs.getBool('sync_accent_color') ?? false) == false) {
+                    _setAccent(context, color);
+                  } else {
+                    setState(() {});
+                  }
 
-                    await prefs.setString(
-                      'accent_color',
-                      color.toJson(color),
-                    );
-                  },
-                );
+                  await prefs.setString('accent_color', color.toJson(color));
+                });
               },
               child: FutureBuilder(
                 future: _getAccent(),
@@ -660,14 +639,14 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
                 },
               ),
             ),
-            const Gap(16.0),
+
             const Icon(UniconsLine.sync),
-            const Gap(8.0),
+
             Text(
               AppLocalizations.of(context).settingsPageSyncAccentColorLabel,
               style: const TextStyle(fontSize: 16.0),
             ),
-            const Gap(8.0),
+
             FutureBuilder(
               future: _isAccentSynced(),
               builder: (context, snapshot) {
@@ -685,19 +664,14 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
                       if (value) {
                         await prefs.setBool('sync_accent_color', true);
-                        _setAccent(
-                          context,
-                          SystemTheme.accentColor.accent,
-                        );
+                        _setAccent(context, SystemTheme.accentColor.accent);
                       } else {
                         final savedColorCode = prefs.getString('accent_color');
                         await prefs.setBool('sync_accent_color', false);
 
                         _setAccent(
                           context,
-                          JSONColor.fromJson(
-                            savedColorCode ?? Colors.cyan.hex,
-                          ),
+                          JSONColor.fromJson(savedColorCode ?? Colors.cyan.hex),
                         );
                       }
                     },

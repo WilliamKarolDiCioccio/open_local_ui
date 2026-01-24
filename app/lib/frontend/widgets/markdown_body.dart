@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_highlight/themes/atom-one-dark.dart';
 // ignore: depend_on_referenced_packages
@@ -16,11 +16,7 @@ class MarkdownBodyWidget extends StatelessWidget {
   final String message;
   final ScrollController scrollController;
 
-  const MarkdownBodyWidget(
-    this.message,
-    this.scrollController, {
-    super.key,
-  });
+  const MarkdownBodyWidget(this.message, this.scrollController, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -116,19 +116,13 @@ class _FloatingMenuComponentState extends State<FloatingMenuComponent> {
             ),
           ],
           color: AdaptiveTheme.of(context).theme.canvasColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(16),
-          ),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: widget.actions,
-          ),
+          child: Column(children: widget.actions),
         ),
-      ).animate().fadeIn(
-            duration: 200.ms,
-          ),
+      ).animate().fadeIn(duration: 200.ms),
     );
   }
 }

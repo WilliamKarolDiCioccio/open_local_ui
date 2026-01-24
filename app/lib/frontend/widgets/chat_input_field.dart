@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../generated/i18n/app_localizations.dart';
-import 'package:gap/gap.dart';
+import '../../localization/app_localizations.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/core/image.dart';
@@ -69,9 +68,9 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
     }
 
     context.read<ChatProvider>().sendMessage(
-          _textEditingController.text,
-          imageBytes: _imageBytes,
-        );
+      _textEditingController.text,
+      imageBytes: _imageBytes,
+    );
 
     _textEditingController.clear();
 
@@ -82,10 +81,8 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   Widget build(BuildContext context) {
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(
-          LogicalKeyboardKey.enter,
-          shift: true,
-        ): () => _sendMessage(),
+        const SingleActivator(LogicalKeyboardKey.enter, shift: true): () =>
+            _sendMessage(),
       },
       child: Column(
         children: [
@@ -99,17 +96,17 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                   children: [
                     if (_imageBytes != null)
                       AttachmentsPreviewCardWidget(
-                        imageBytes: _imageBytes!,
-                        trashButtonCallback: () {
-                          setState(() {
-                            _imageBytes = null;
+                            imageBytes: _imageBytes!,
+                            trashButtonCallback: () {
+                              setState(() {
+                                _imageBytes = null;
 
-                            widget.hasUserInput.value =
-                                _textEditingController.text.isNotEmpty ||
+                                widget.hasUserInput.value =
+                                    _textEditingController.text.isNotEmpty ||
                                     _imageBytes != null;
-                          });
-                        },
-                      )
+                              });
+                            },
+                          )
                           .animate(delay: 100.ms)
                           .fadeIn(duration: 600.ms, delay: 300.ms)
                           .move(
@@ -120,95 +117,90 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
                 ),
               ),
             ),
-          if (_imageBytes != null) const Gap(8.0),
-          Container(
-            constraints: const BoxConstraints(
-              maxHeight: 110,
-            ),
-            child: TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).chatInputFieldHint,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                prefixIcon: context.watch<ChatProvider>().isMultimodalModel
-                    ? Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8.0,
-                          right: 8.0,
-                        ),
-                        child: IconButton(
-                          tooltip: _imageBytes == null
-                              ? AppLocalizations.of(context)
-                                  .chatAttachFilesTooltip
-                              : AppLocalizations.of(context)
-                                  .chatDetachFilesTooltip,
-                          icon: Icon(
-                            _imageBytes == null
-                                ? UniconsLine.link_broken
-                                : UniconsLine.link,
-                          ),
-                          onPressed: () async {
-                            _imageBytes = await showAttachmentsDropzoneDialog(
-                              context,
-                              _imageBytes,
-                            );
+          if (_imageBytes != null)
+            Container(
+              constraints: const BoxConstraints(maxHeight: 110),
+              child: TextField(
+                controller: _textEditingController,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).chatInputFieldHint,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  prefixIcon: context.watch<ChatProvider>().isMultimodalModel
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: IconButton(
+                            tooltip: _imageBytes == null
+                                ? AppLocalizations.of(
+                                    context,
+                                  ).chatAttachFilesTooltip
+                                : AppLocalizations.of(
+                                    context,
+                                  ).chatDetachFilesTooltip,
+                            icon: Icon(
+                              _imageBytes == null
+                                  ? UniconsLine.link_broken
+                                  : UniconsLine.link,
+                            ),
+                            onPressed: () async {
+                              _imageBytes = await showAttachmentsDropzoneDialog(
+                                context,
+                                _imageBytes,
+                              );
 
-                            setState(() {
-                              widget.hasUserInput.value =
-                                  _textEditingController.text.isNotEmpty ||
-                                      _imageBytes != null;
-                            });
-                          },
-                        ),
-                      )
-                    : null,
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 8.0,
-                    right: 8.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (context.watch<ChatProvider>().isGenerating)
-                        IconButton(
-                          tooltip: AppLocalizations.of(context)
-                              .chatCancelGenerationTooltip,
-                          icon: const Icon(UniconsLine.stop_circle),
-                          onPressed: () async {
-                            context.read<ChatProvider>().abortGeneration();
-                          },
+                              setState(() {
+                                widget.hasUserInput.value =
+                                    _textEditingController.text.isNotEmpty ||
+                                    _imageBytes != null;
+                              });
+                            },
+                          ),
                         )
-                      else
-                        IconButton(
-                          tooltip: AppLocalizations.of(context).chatSendTooltip,
-                          icon: const Icon(UniconsLine.message),
-                          onPressed: () async => _sendMessage(),
-                        ),
-                    ],
+                      : null,
+                  suffixIcon: Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (context.watch<ChatProvider>().isGenerating)
+                          IconButton(
+                            tooltip: AppLocalizations.of(
+                              context,
+                            ).chatCancelGenerationTooltip,
+                            icon: const Icon(UniconsLine.stop_circle),
+                            onPressed: () async {
+                              context.read<ChatProvider>().abortGeneration();
+                            },
+                          )
+                        else
+                          IconButton(
+                            tooltip: AppLocalizations.of(
+                              context,
+                            ).chatSendTooltip,
+                            icon: const Icon(UniconsLine.message),
+                            onPressed: () async => _sendMessage(),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: 'Neuton',
+                  fontWeight: FontWeight.w300,
+                ),
+                autofocus: true,
+                maxLength: TextField.noMaxLength,
+                maxLines: null,
+                expands: false,
               ),
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontFamily: 'Neuton',
-                fontWeight: FontWeight.w300,
-              ),
-              autofocus: true,
-              maxLength: TextField.noMaxLength,
-              maxLines: null,
-              expands: false,
             ),
-          ),
-          const Gap(8.0),
+
           Text(
             AppLocalizations.of(context).llmMistakesWarningText,
-            style: const TextStyle(
-              color: Colors.grey,
-            ),
+            style: const TextStyle(color: Colors.grey),
           ),
         ],
       ),
@@ -266,10 +258,7 @@ class _AttachmentsPreviewCardWidgetState
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.memory(
-                widget.imageBytes,
-                fit: BoxFit.fitHeight,
-              ),
+              child: Image.memory(widget.imageBytes, fit: BoxFit.fitHeight),
             ),
           ),
           if (_isHovered)

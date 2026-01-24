@@ -35,11 +35,7 @@ class ChatMessagesJSONConverter
   }
 }
 
-enum ChatSessionStatus {
-  idle,
-  generating,
-  aborting,
-}
+enum ChatSessionStatus { idle, generating, aborting }
 
 /// The classes with the V1 suffix are used to represent the version of the chat session wrapper format
 /// that is currently in use.
@@ -97,6 +93,5 @@ class ChatSessionWrapperV1 {
 
   static List<Map<String, dynamic>> _messagesToJson(
     List<ChatMessageWrapperV1> messages,
-  ) =>
-      const ChatMessagesJSONConverter().toJson(messages);
+  ) => const ChatMessagesJSONConverter().toJson(messages);
 }

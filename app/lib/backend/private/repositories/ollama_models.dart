@@ -112,9 +112,7 @@ class OllamaModelsDB {
         )
     ''');
 
-    _db!.execute(
-      'CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)',
-    );
+    _db!.execute('CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)');
 
     _db!.execute(
       'CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (capabilities)',
@@ -137,7 +135,7 @@ class OllamaModelsDB {
 
   // Deinitialize the database
   Future<void> deinit() async {
-    _db?.dispose();
+    _db?.close();
     _db = null;
   }
 
@@ -165,10 +163,9 @@ class OllamaModelsDB {
       for (final model in models) {
         onlineModelIds.add(model['id']);
 
-        final existingModel = _db!.select(
-          'SELECT * FROM models WHERE id = ?',
-          [model['id']],
-        );
+        final existingModel = _db!.select('SELECT * FROM models WHERE id = ?', [
+          model['id'],
+        ]);
 
         if (existingModel.isNotEmpty) {
           final existingModelData = existingModel.first;
@@ -178,12 +175,7 @@ class OllamaModelsDB {
               existingModelData['capabilities'] != model['capabilities']) {
             _db!.execute(
               'UPDATE models SET name = ?, url = ?, capabilities = ? WHERE id = ?',
-              [
-                model['name'],
-                model['url'],
-                model['capabilities'],
-                model['id'],
-              ],
+              [model['name'], model['url'], model['capabilities'], model['id']],
             );
           }
         } else {
@@ -212,21 +204,13 @@ class OllamaModelsDB {
 
           final existingRelease = _db!.select(
             'SELECT * FROM releases WHERE model_id = ? AND num_params = ? AND size = ?',
-            [
-              model['id'],
-              release['num_params'],
-              release['size'],
-            ],
+            [model['id'], release['num_params'], release['size']],
           );
 
           if (existingRelease.isEmpty) {
             _db!.execute(
               'INSERT INTO releases (model_id, num_params, size) VALUES (?, ?, ?)',
-              [
-                model['id'],
-                release['num_params'],
-                release['size'],
-              ],
+              [model['id'], release['num_params'], release['size']],
             );
           }
         }
@@ -236,10 +220,7 @@ class OllamaModelsDB {
 
       for (final localModel in localModels) {
         if (!onlineModelIds.contains(localModel['id'])) {
-          _db!.execute(
-            'DELETE FROM models WHERE id = ?',
-            [localModel['id']],
-          );
+          _db!.execute('DELETE FROM models WHERE id = ?', [localModel['id']]);
         }
       }
 
@@ -426,10 +407,7 @@ class OllamaModelsDB {
       throw Exception("Database not initialized");
     }
 
-    final result = _db!.select(
-      'SELECT * FROM models WHERE name = ?',
-      [name],
-    );
+    final result = _db!.select('SELECT * FROM models WHERE name = ?', [name]);
 
     return result.isNotEmpty;
   }

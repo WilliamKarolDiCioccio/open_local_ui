@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../generated/i18n/app_localizations.dart';
-import 'package:gap/gap.dart';
+import '../../../localization/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
@@ -23,16 +22,9 @@ import 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 
-enum ModelsSortBy {
-  name,
-  date,
-  size,
-}
+enum ModelsSortBy { name, date, size }
 
-enum ModelsSortOrder {
-  ascending,
-  descending,
-}
+enum ModelsSortOrder { ascending, descending }
 
 class InventoryPage extends StatefulWidget {
   final PageController pageController;
@@ -95,20 +87,16 @@ class _InventoryPageState extends State<InventoryPage> {
   Widget build(BuildContext context) {
     var sortedModels = List.from(context.watch<OllamaAPIProvider>().models);
 
-    sortedModels.sort(
-      (a, b) {
-        if (_sortBy.contains(ModelsSortBy.name)) {
-          return a.name.compareTo(b.name);
-        } else if (_sortBy.contains(ModelsSortBy.date)) {
-          return a.modifiedAt.compareTo(
-            b.modifiedAt,
-          );
-        } else if (_sortBy.contains(ModelsSortBy.size)) {
-          return a.size.compareTo(b.size);
-        }
-        return 0;
-      },
-    );
+    sortedModels.sort((a, b) {
+      if (_sortBy.contains(ModelsSortBy.name)) {
+        return a.name.compareTo(b.name);
+      } else if (_sortBy.contains(ModelsSortBy.date)) {
+        return a.modifiedAt.compareTo(b.modifiedAt);
+      } else if (_sortBy.contains(ModelsSortBy.size)) {
+        return a.size.compareTo(b.size);
+      }
+      return 0;
+    });
 
     if (_sortOrder.contains(ModelsSortOrder.descending)) {
       sortedModels = sortedModels.reversed.toList();
@@ -120,12 +108,9 @@ class _InventoryPageState extends State<InventoryPage> {
       children: [
         Text(
           AppLocalizations.of(context).inventoryPageTitle,
-          style: const TextStyle(
-            fontSize: 32.0,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
         ),
-        const Gap(16),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -165,36 +150,30 @@ class _InventoryPageState extends State<InventoryPage> {
             ),
           ],
         ),
-        const Gap(16),
+
         const Divider(),
-        const Gap(16),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(AppLocalizations.of(context).listFiltersSortByLabel),
-            const Gap(16),
+
             SegmentedButton<ModelsSortBy>(
               selectedIcon: const Icon(UniconsLine.check),
               segments: [
                 ButtonSegment(
                   value: ModelsSortBy.name,
-                  label: Text(
-                    AppLocalizations.of(context).sortByNameOption,
-                  ),
+                  label: Text(AppLocalizations.of(context).sortByNameOption),
                   icon: const Icon(UniconsLine.tag),
                 ),
                 ButtonSegment(
                   value: ModelsSortBy.date,
-                  label: Text(
-                    AppLocalizations.of(context).sortByDateOption,
-                  ),
+                  label: Text(AppLocalizations.of(context).sortByDateOption),
                   icon: const Icon(UniconsLine.clock),
                 ),
                 ButtonSegment(
                   value: ModelsSortBy.size,
-                  label: Text(
-                    AppLocalizations.of(context).sortBySizeOption,
-                  ),
+                  label: Text(AppLocalizations.of(context).sortBySizeOption),
                   icon: const Icon(UniconsLine.database),
                 ),
               ],
@@ -212,11 +191,9 @@ class _InventoryPageState extends State<InventoryPage> {
                 });
               },
             ),
-            const Gap(16),
-            Text(
-              AppLocalizations.of(context).listFiltersSortOrderLabel,
-            ),
-            const Gap(16),
+
+            Text(AppLocalizations.of(context).listFiltersSortOrderLabel),
+
             SegmentedButton<ModelsSortOrder>(
               selectedIcon: const Icon(UniconsLine.check),
               segments: [
@@ -257,10 +234,7 @@ class _InventoryPageState extends State<InventoryPage> {
                 if (snapshot.hasData) {
                   return Text(
                     AppLocalizations.of(context).totalOnDiskSizeLabel(
-                      '${snapshot.data!.convertFromTo(
-                            DIGITAL_DATA.byte,
-                            DIGITAL_DATA.gigabyte,
-                          )!.toStringAsFixed(2)} GB',
+                      '${snapshot.data!.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB',
                     ),
                   );
                 } else {
@@ -270,10 +244,9 @@ class _InventoryPageState extends State<InventoryPage> {
             ),
           ],
         ),
-        const Gap(16),
+
         Expanded(
           child: DynMouseScroll(
-            controller: ScrollController(),
             builder: (context, controller, physics) => ListView.builder(
               shrinkWrap: true,
               physics: physics,
@@ -285,9 +258,9 @@ class _InventoryPageState extends State<InventoryPage> {
               itemCount: context.watch<OllamaAPIProvider>().modelsCount,
               itemBuilder: (context, index) {
                 return ModelListTile(
-                  model: sortedModels[index],
-                  pageController: widget.pageController,
-                )
+                      model: sortedModels[index],
+                      pageController: widget.pageController,
+                    )
                     .animate(delay: (index * 100).ms)
                     .fadeIn(duration: 900.ms, delay: 300.ms)
                     .move(
@@ -368,23 +341,15 @@ class _ModelListTileState extends State<ModelListTile> {
     if (capabilities.contains('vision')) {
       tags.add(
         Chip(
-          avatar: const Icon(
-            UniconsLine.eye,
-            color: Colors.purple,
-          ),
+          avatar: const Icon(UniconsLine.eye, color: Colors.purple),
           label: Text(
             'vision'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontSize: 12),
           ),
           backgroundColor: Colors.purple.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.purple,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.purple, width: 1),
           ),
         ),
       );
@@ -393,23 +358,15 @@ class _ModelListTileState extends State<ModelListTile> {
     if (capabilities.contains('tools')) {
       tags.add(
         Chip(
-          avatar: const Icon(
-            UniconsLine.drill,
-            color: Colors.blue,
-          ),
+          avatar: const Icon(UniconsLine.drill, color: Colors.blue),
           label: Text(
             'tools'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontSize: 12),
           ),
           backgroundColor: Colors.blue.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.blue,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.blue, width: 1),
           ),
         ),
       );
@@ -418,23 +375,15 @@ class _ModelListTileState extends State<ModelListTile> {
     if (capabilities.contains('embedding')) {
       tags.add(
         Chip(
-          avatar: const Icon(
-            UniconsLine.arrow,
-            color: Colors.green,
-          ),
+          avatar: const Icon(UniconsLine.arrow, color: Colors.green),
           label: Text(
             'embedding'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontSize: 12),
           ),
           backgroundColor: Colors.green.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.green,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.green, width: 1),
           ),
         ),
       );
@@ -449,17 +398,12 @@ class _ModelListTileState extends State<ModelListTile> {
           ),
           label: Text(
             'code'.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontSize: 12),
           ),
           backgroundColor: Colors.deepOrange.withAlpha((255 * 0.25).toInt()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.deepOrange,
-              width: 1,
-            ),
+            side: const BorderSide(color: Colors.deepOrange, width: 1),
           ),
         ),
       );
@@ -482,16 +426,14 @@ class _ModelListTileState extends State<ModelListTile> {
         AppLocalizations.of(context).modifiedAtTextShared(
           FormatHelpers.standardDate(widget.model.modifiedAt),
         ),
-        style: const TextStyle(
-          color: Colors.grey,
-        ),
+        style: const TextStyle(color: Colors.grey),
       ),
       trailing: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildCapabilitiesTags(widget.model.name),
-          const Gap(16),
+
           IconButton(
             tooltip: AppLocalizations.of(context).inventoryPageSettingsButton,
             icon: const Icon(UniconsLine.setting),
@@ -502,28 +444,25 @@ class _ModelListTileState extends State<ModelListTile> {
               onTap: () => showModelSettingsDialog(widget.model.name, context),
             ),
           ),
-          const Gap(8),
+
           IconButton(
             tooltip: AppLocalizations.of(context).inventoryPageDetailsButton,
             icon: const Icon(UniconsLine.info_circle),
             onPressed: () => showModelDetailsDialog(widget.model, context),
           ),
-          const Gap(8),
+
           IconButton(
             tooltip: AppLocalizations.of(context).inventoryPageDeleteButton,
-            icon: const Icon(
-              UniconsLine.trash,
-              color: Colors.red,
-            ),
+            icon: const Icon(UniconsLine.trash, color: Colors.red),
             onPressed: () {
               showConfirmationDialog(
                 context: context,
-                title:
-                    AppLocalizations.of(context).inventoryPageDeleteDialogTitle,
-                content:
-                    AppLocalizations.of(context).inventoryPageDeleteDialogText(
-                  widget.model.name,
-                ),
+                title: AppLocalizations.of(
+                  context,
+                ).inventoryPageDeleteDialogTitle,
+                content: AppLocalizations.of(
+                  context,
+                ).inventoryPageDeleteDialogText(widget.model.name),
                 onConfirm: () => _deleteModel(),
               );
             },

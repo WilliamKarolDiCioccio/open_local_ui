@@ -6,9 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/models/chat_message.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/core/format.dart';
@@ -22,11 +21,7 @@ class ChatMessageWidget extends StatefulWidget {
   final ChatMessageWrapperV1 message;
   final ScrollController scrollController;
 
-  const ChatMessageWidget(
-    this.message,
-    this.scrollController, {
-    super.key,
-  });
+  const ChatMessageWidget(this.message, this.scrollController, {super.key});
 
   @override
   State<ChatMessageWidget> createState() => _ChatMessageWidgetState();
@@ -96,10 +91,10 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
       final userMessage = widget.message as ChatUserMessageWrapperV1;
 
       context.read<ChatProvider>().sendEditedMessage(
-            userMessage.uuid,
-            _textEditingController.text,
-            userMessage.imageBytes,
-          );
+        userMessage.uuid,
+        _textEditingController.text,
+        userMessage.imageBytes,
+      );
 
       _cancelEditingMessage();
     }
@@ -168,7 +163,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         break;
     }
 
-    final isMessageGenerating = context.watch<ChatProvider>().isGenerating &&
+    final isMessageGenerating =
+        context.watch<ChatProvider>().isGenerating &&
         context.watch<ChatProvider>().lastMessage!.uuid == widget.message.uuid;
 
     return Container(
@@ -186,11 +182,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 ? MainAxisAlignment.end
                 : MainAxisAlignment.start,
             children: [
-              Icon(
-                senderIconData,
-                size: 18.0,
-              ),
-              const Gap(8),
+              Icon(senderIconData, size: 18.0),
+
               Text(
                 senderName,
                 style: const TextStyle(
@@ -198,7 +191,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Gap(8),
+
               Text(
                 FormatHelpers.standardDate(widget.message.createdAt),
                 style: const TextStyle(
@@ -223,8 +216,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             if ((widget.message as ChatUserMessageWrapperV1).imageBytes != null)
               Center(
                 child: SizedBox(
-                  height:
-                      MediaQuery.of(context).size.height <= 900.0 ? 256 : 512,
+                  height: MediaQuery.of(context).size.height <= 900.0
+                      ? 256
+                      : 512,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.memory(
@@ -242,70 +236,66 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
             if ((widget.message as ChatUserMessageWrapperV1).imageBytes != null)
               const SizedBox(height: 8.0),
           if (!_showEditWidget && widget.message.text.isNotEmpty)
-            MarkdownBodyWidget(
-              widget.message.text,
-              widget.scrollController,
-            ),
+            MarkdownBodyWidget(widget.message.text, widget.scrollController),
           if (context.watch<ChatProvider>().isChatShowStatistics &&
               widget.message.text.isNotEmpty &&
               widget.message.sender == ChatMessageSender.model &&
               !isMessageGenerating)
             _buildStatisticsSummary(widget.message),
-          const Gap(8.0),
+
           if (!_showEditWidget && !_showPlayerWidget && !isMessageGenerating)
             Row(
-              children: [
-                IconButton(
-                  tooltip: AppLocalizations.of(context).markdownCopyTooltip,
-                  onPressed: () => _copyMessage(),
-                  icon: Icon(_isCopied ? UniconsLine.check : UniconsLine.copy),
-                ),
-                if (!Platform.isLinux) const Gap(8),
-                if (!Platform.isLinux)
-                  IconButton(
-                    tooltip: AppLocalizations.of(context).chatReadAloudTooltip,
-                    onPressed: () => _showTTSPlayer(),
-                    icon: const Icon(Icons.hearing),
-                  ),
-                const Gap(8),
-                if (widget.message.sender == ChatMessageSender.model)
-                  IconButton(
-                    tooltip: AppLocalizations.of(context)
-                        .chatRegenerateMessageTooltip,
-                    onPressed: () => _regenerateMessage(),
-                    icon: const Icon(UniconsLine.repeat),
-                  ),
-                if (widget.message.sender == ChatMessageSender.user)
-                  IconButton(
-                    tooltip:
-                        AppLocalizations.of(context).chatEditMessageTooltip,
-                    onPressed: () => _beginEditingMessage(),
-                    icon: const Icon(UniconsLine.edit),
-                  ),
-                if (widget.message.sender == ChatMessageSender.user)
-                  const Spacer(),
-                if (widget.message.sender == ChatMessageSender.user)
-                  IconButton(
-                    tooltip:
-                        AppLocalizations.of(context).chatEditMessageTooltip,
-                    onPressed: () => context.read<ChatProvider>().removeMessage(
-                          widget.message.uuid,
-                        ),
-                    icon: const Icon(
-                      UniconsLine.trash,
-                      color: Colors.red,
+                  children: [
+                    IconButton(
+                      tooltip: AppLocalizations.of(context).markdownCopyTooltip,
+                      onPressed: () => _copyMessage(),
+                      icon: Icon(
+                        _isCopied ? UniconsLine.check : UniconsLine.copy,
+                      ),
                     ),
-                  ),
-              ],
-            )
+                    if (!Platform.isLinux) SizedBox(width: 8.0),
+                    if (!Platform.isLinux)
+                      IconButton(
+                        tooltip: AppLocalizations.of(
+                          context,
+                        ).chatReadAloudTooltip,
+                        onPressed: () => _showTTSPlayer(),
+                        icon: const Icon(Icons.hearing),
+                      ),
+
+                    if (widget.message.sender == ChatMessageSender.model)
+                      IconButton(
+                        tooltip: AppLocalizations.of(
+                          context,
+                        ).chatRegenerateMessageTooltip,
+                        onPressed: () => _regenerateMessage(),
+                        icon: const Icon(UniconsLine.repeat),
+                      ),
+                    if (widget.message.sender == ChatMessageSender.user)
+                      IconButton(
+                        tooltip: AppLocalizations.of(
+                          context,
+                        ).chatEditMessageTooltip,
+                        onPressed: () => _beginEditingMessage(),
+                        icon: const Icon(UniconsLine.edit),
+                      ),
+                    if (widget.message.sender == ChatMessageSender.user)
+                      const Spacer(),
+                    if (widget.message.sender == ChatMessageSender.user)
+                      IconButton(
+                        tooltip: AppLocalizations.of(
+                          context,
+                        ).chatEditMessageTooltip,
+                        onPressed: () => context
+                            .read<ChatProvider>()
+                            .removeMessage(widget.message.uuid),
+                        icon: const Icon(UniconsLine.trash, color: Colors.red),
+                      ),
+                  ],
+                )
                 .animate()
-                .fadeIn(
-                  duration: 300.ms,
-                )
-                .move(
-                  begin: const Offset(-16, 0),
-                  curve: Curves.easeOutQuad,
-                )
+                .fadeIn(duration: 300.ms)
+                .move(begin: const Offset(-16, 0), curve: Curves.easeOutQuad)
           else if (_showEditWidget)
             Column(
               children: [
@@ -325,7 +315,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   expands: false,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 ),
-                const Gap(16),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
@@ -337,7 +327,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                       icon: const Icon(UniconsLine.times),
                       onPressed: () => _cancelEditingMessage(),
                     ),
-                    const Gap(8),
+
                     TextButton.icon(
                       label: Text(
                         AppLocalizations.of(context).chatResendMessageButton,
@@ -366,43 +356,36 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     final tps = (tokenCount / (durationInMs / 1000)).toStringAsFixed(2);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Text.rich(
-        style: const TextStyle(
-          fontSize: 16.0,
-          fontStyle: FontStyle.italic,
-          fontWeight: FontWeight.w300,
-        ),
-        TextSpan(
-          children: [
-            TextSpan(
-              text: AppLocalizations.of(context).chatStatisticsTokens(
-                tokenCount,
-              ),
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text.rich(
+            style: const TextStyle(
+              fontSize: 16.0,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w300,
             ),
-            const TextSpan(text: ' '),
             TextSpan(
-              text: AppLocalizations.of(context).chatStatisticsDuration(
-                durationInMs.toString(),
-              ),
+              children: [
+                TextSpan(
+                  text: AppLocalizations.of(
+                    context,
+                  ).chatStatisticsTokens(tokenCount),
+                ),
+                const TextSpan(text: ' '),
+                TextSpan(
+                  text: AppLocalizations.of(
+                    context,
+                  ).chatStatisticsDuration(durationInMs.toString()),
+                ),
+                const TextSpan(text: ' '),
+                TextSpan(
+                  text: AppLocalizations.of(context).chatStatisticsSpeed(tps),
+                ),
+              ],
             ),
-            const TextSpan(text: ' '),
-            TextSpan(
-              text: AppLocalizations.of(context).chatStatisticsSpeed(
-                tps,
-              ),
-            ),
-          ],
-        ),
-      ),
-    )
-        .animate()
-        .fadeIn(
-          duration: 300.ms,
+          ),
         )
-        .move(
-          begin: const Offset(-16, 0),
-          curve: Curves.easeOutQuad,
-        );
+        .animate()
+        .fadeIn(duration: 300.ms)
+        .move(begin: const Offset(-16, 0), curve: Curves.easeOutQuad);
   }
 }

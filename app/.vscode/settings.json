@@ -1,3 +1,9 @@
 {
-  "dart.flutterSdkPath": ".fvm/versions/stable"
+  "dart.flutterSdkPath": ".fvm/versions/stable",
+  "dartimportsorter.sortOnSave": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  }
 }

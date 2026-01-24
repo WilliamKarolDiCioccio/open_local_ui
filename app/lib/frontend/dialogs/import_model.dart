@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../generated/i18n/app_localizations.dart';
-import 'package:gap/gap.dart';
+import '../../localization/app_localizations.dart';
 import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:path/path.dart' as path;
@@ -29,7 +28,7 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
   void _selectFile() async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
-      allowCompression: false,
+      compressionQuality: 100,
       type: FileType.custom,
       allowedExtensions: ['gguf'],
     );
@@ -47,12 +46,9 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
 
       _progressValue += _stepsCount / 11;
 
-      _progressBarText =
-          AppLocalizations.of(context).progressBarStatusWithStepsText(
-        response.status,
-        11,
-        _stepsCount,
-      );
+      _progressBarText = AppLocalizations.of(
+        context,
+      ).progressBarStatusWithStepsText(response.status, 11, _stepsCount);
     });
   }
 
@@ -61,9 +57,9 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
 
     // ignore: use_build_context_synchronously
     final stream = context.read<OllamaAPIProvider>().create(
-          path.basenameWithoutExtension(_file!.path).toLowerCase(),
-          'FROM "${_file!.path}"',
-        );
+      path.basenameWithoutExtension(_file!.path).toLowerCase(),
+      'FROM "${_file!.path}"',
+    );
 
     await for (final data in stream) {
       if (mounted) _updateProgress(data);
@@ -81,83 +77,78 @@ class _ImportModelDialogState extends State<ImportModelDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        AppLocalizations.of(context).importModelDialogTitle,
-      ),
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Column(
+          title: Text(AppLocalizations.of(context).importModelDialogTitle),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              if (_file != null)
-                Text(
-                  path.basename(_file!.path),
-                  style: const TextStyle(fontSize: 16.0),
+              Column(
+                children: [
+                  if (_file != null)
+                    Text(
+                      path.basename(_file!.path),
+                      style: const TextStyle(fontSize: 16.0),
+                    ),
+                  if (_file != null)
+                    if (!_isImporting)
+                      TextButton.icon(
+                        label: Text(
+                          AppLocalizations.of(
+                            context,
+                          ).attachFilesDialogBrowseFilesButton,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
+                        icon: const Icon(UniconsLine.folder),
+                        onPressed: () => _selectFile(),
+                      ),
+                  if (!_isImporting)
+                    Text(
+                      AppLocalizations.of(
+                        context,
+                      ).attachFilesDialogAllowedFormats('GGUF'),
+                      style: const TextStyle(fontSize: 14.0),
+                    ),
+                ],
+              ),
+              Visibility(
+                visible: _isImporting,
+                child: Column(
+                  children: [
+                    Text(_progressBarText),
+                    const SizedBox(height: 8.0),
+                    LinearProgressIndicator(
+                      value: _progressValue,
+                      minHeight: 20.0,
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                  ],
                 ),
-              if (_file != null) const Gap(8.0),
-              if (!_isImporting)
-                TextButton.icon(
-                  label: Text(
-                    AppLocalizations.of(context)
-                        .attachFilesDialogBrowseFilesButton,
-                    style: const TextStyle(fontSize: 16.0),
-                  ),
-                  icon: const Icon(UniconsLine.folder),
-                  onPressed: () => _selectFile(),
-                ),
-              if (!_isImporting)
-                Text(
-                  AppLocalizations.of(context).attachFilesDialogAllowedFormats(
-                    'GGUF',
-                  ),
-                  style: const TextStyle(fontSize: 14.0),
-                ),
+              ),
             ],
           ),
-          Visibility(
-            visible: _isImporting,
-            child: Column(
-              children: [
-                Text(_progressBarText),
-                const SizedBox(height: 8.0),
-                LinearProgressIndicator(
-                  value: _progressValue,
-                  minHeight: 20.0,
-                  borderRadius: BorderRadius.circular(16.0),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                _isImporting
+                    ? AppLocalizations.of(
+                        context,
+                      ).dialogContinueInBackgroundButtonShared
+                    : AppLocalizations.of(context).dialogCloseButtonShared,
+              ),
+            ),
+            if (!_isImporting && _file != null)
+              TextButton(
+                onPressed: () => _importModel(),
+                child: Text(
+                  AppLocalizations.of(context).inventoryPageImportButton,
                 ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(
-            _isImporting
-                ? AppLocalizations.of(context)
-                    .dialogContinueInBackgroundButtonShared
-                : AppLocalizations.of(context).dialogCloseButtonShared,
-          ),
-        ),
-        if (!_isImporting && _file != null)
-          TextButton(
-            onPressed: () => _importModel(),
-            child: Text(
-              AppLocalizations.of(context).inventoryPageImportButton,
-            ),
-          ),
-      ],
-    )
-        .animate()
-        .fadeIn(
-          duration: 200.ms,
+              ),
+          ],
         )
-        .move(
-          begin: const Offset(0, 160),
-          curve: Curves.easeOutQuad,
-        );
+        .animate()
+        .fadeIn(duration: 200.ms)
+        .move(begin: const Offset(0, 160), curve: Curves.easeOutQuad);
   }
 }
 

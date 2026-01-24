@@ -4,16 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:feedback/feedback.dart';
-import '../../generated/i18n/app_localizations.dart';
-import 'package:gap/gap.dart';
+import '../../localization/app_localizations.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/core/feedback.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/update.dart';
 import 'package:open_local_ui/env.dart';
-import 'package:open_local_ui/frontend/components/floating_menu.dart';
-import 'package:open_local_ui/frontend/components/window_management_bar.dart';
+import 'package:open_local_ui/shared/components/floating_menu.dart';
+import 'package:open_local_ui/shared/components/window_management_bar.dart';
 import 'package:open_local_ui/frontend/dialogs/changelog.dart';
 import 'package:open_local_ui/frontend/dialogs/update.dart';
 import 'package:open_local_ui/frontend/screens/dashboard/dashboard.dart';
@@ -81,21 +80,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _checkForUpdates() {
-    UpdateHelper.isAppUpdateAvailable().then(
-      (updateAvailable) {
-        if (updateAvailable && mounted) {
-          SnackBarHelpers.showSnackBar(
-            AppLocalizations.of(context).snackBarUpdateTitle,
-            AppLocalizations.of(context)
-                .clickToDownloadLatestAppVersionSnackBar,
-            SnackbarContentType.info,
-            onTap: () => showUpdateDialog(
-              context: context,
-            ),
-          );
-        }
-      },
-    );
+    UpdateHelper.isAppUpdateAvailable().then((updateAvailable) {
+      if (updateAvailable && mounted) {
+        SnackBarHelpers.showSnackBar(
+          AppLocalizations.of(context).snackBarUpdateTitle,
+          AppLocalizations.of(context).clickToDownloadLatestAppVersionSnackBar,
+          SnackbarContentType.info,
+          onTap: () => showUpdateDialog(context: context),
+        );
+      }
+    });
   }
 
   @override
@@ -116,9 +110,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               textDirection: TextDirection.rtl,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: _PageView(_pageController),
-                ),
+                Expanded(child: _PageView(_pageController)),
                 _SideMenu(_pageController),
               ],
             ),
@@ -187,15 +179,13 @@ class _SideMenuState extends State<_SideMenu> {
           onPressed: () {
             BetterFeedback.of(context).show(
               (UserFeedback feedback) async =>
-                  await FeedbackHelpers.uploadFeedback(
-                feedback,
-              ),
+                  await FeedbackHelpers.uploadFeedback(feedback),
             );
           },
           icon: const Icon(UniconsLine.feedback),
           label: Text(AppLocalizations.of(context).feedbackButton),
         ),
-        const Gap(8),
+
         Stack(
           children: [
             TextButton.icon(
@@ -214,10 +204,7 @@ class _SideMenuState extends State<_SideMenu> {
                   return const Positioned(
                     top: 2.0,
                     right: 2.0,
-                    child: Icon(
-                      Icons.error,
-                      color: Colors.red,
-                    ),
+                    child: Icon(Icons.error, color: Colors.red),
                   );
                 }
 
@@ -237,13 +224,13 @@ class _SideMenuState extends State<_SideMenu> {
             ),
           ],
         ),
-        const Gap(8),
+
         TextButton.icon(
           onPressed: () => showChangelogDialog(context),
           icon: const Icon(UniconsLine.code_branch),
           label: Text(AppLocalizations.of(context).changelogButton),
         ),
-        const Gap(8),
+
         TextButton.icon(
           onPressed: () => showLicensePage(context: context),
           icon: const Icon(UniconsLine.keyhole_circle),
@@ -291,12 +278,9 @@ class _SideMenuState extends State<_SideMenu> {
             children: [
               const Text(
                 'OpenLocalUI',
-                style: TextStyle(
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
               ),
-              const Gap(8),
+
               const Text(
                 "${Env.version}-${Env.buildNumber}-${Env.buildTag}",
                 style: TextStyle(
@@ -305,10 +289,7 @@ class _SideMenuState extends State<_SideMenu> {
                   fontWeight: FontWeight.w100,
                 ),
               ),
-              const SizedBox(
-                width: 200,
-                child: Divider(height: 32.0),
-              ),
+              const SizedBox(width: 200, child: Divider(height: 32.0)),
               TextButton.icon(
                 label: Text(
                   AppLocalizations.of(context).dashboardChatButton,
@@ -341,10 +322,7 @@ class _SideMenuState extends State<_SideMenu> {
                 icon: const Icon(UniconsLine.shop),
                 onPressed: () => widget.pageController.jumpToPage(3),
               ),
-              const SizedBox(
-                width: 200,
-                child: Divider(height: 32.0),
-              ),
+              const SizedBox(width: 200, child: Divider(height: 32.0)),
               TextButton.icon(
                 label: Text(
                   AppLocalizations.of(context).dashboardSettingsButton,
@@ -371,11 +349,8 @@ class _SideMenuState extends State<_SideMenu> {
                       _buildOptionsOverlay(),
                   child: Row(
                     children: [
-                      const Icon(
-                        Icons.more_vert,
-                        color: Colors.grey,
-                      ),
-                      const Gap(8),
+                      const Icon(Icons.more_vert, color: Colors.grey),
+
                       Text(
                         AppLocalizations.of(context).moreOptionsButton,
                         style: TextStyle(

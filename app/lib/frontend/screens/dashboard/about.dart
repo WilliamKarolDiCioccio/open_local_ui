@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../generated/i18n/app_localizations.dart';
+import '../../../localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
 import 'package:open_local_ui/core/github.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,49 +22,36 @@ class AboutPage extends StatelessWidget {
       children: [
         const Text(
           'OpenLocalUI',
-          style: TextStyle(
-            fontSize: 72,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
         ),
-        Text(
-          AppLocalizations.of(context).aboutPageCopyrightNotice,
-        ),
-        const Gap(32),
+        Text(AppLocalizations.of(context).aboutPageCopyrightNotice),
         Text(
           AppLocalizations.of(context).aboutPageDiscoverTitle,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const Gap(16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              tooltip: AppLocalizations.of(context)
-                  .aboutPageSocialButtonContributeTooltip,
-              onPressed: () => launchUrl(
-                Uri.parse(gitHubPage),
-              ),
+              tooltip: AppLocalizations.of(
+                context,
+              ).aboutPageSocialButtonContributeTooltip,
+              onPressed: () => launchUrl(Uri.parse(gitHubPage)),
               icon: const Icon(UniconsLine.github),
               iconSize: 44,
             ),
-            const Gap(8),
             IconButton(
-              tooltip: AppLocalizations.of(context)
-                  .aboutPageSocialButtonJoinServerTooltip,
-              onPressed: () => launchUrl(
-                Uri.parse(discordInviteLink),
-              ),
+              tooltip: AppLocalizations.of(
+                context,
+              ).aboutPageSocialButtonJoinServerTooltip,
+              onPressed: () => launchUrl(Uri.parse(discordInviteLink)),
               icon: const Icon(UniconsLine.discord),
               iconSize: 44,
             ),
-            const Gap(8),
             IconButton(
-              tooltip: AppLocalizations.of(context)
-                  .aboutPageSocialButtonWatchTrailerTooltip,
+              tooltip: AppLocalizations.of(
+                context,
+              ).aboutPageSocialButtonWatchTrailerTooltip,
               onPressed: () {
                 launchUrl(
                   // WARNING: do not open if you don't want to be rickrolled!
@@ -77,15 +63,12 @@ class AboutPage extends StatelessWidget {
             ),
           ],
         ),
-        const Gap(32),
+
         Text(
           AppLocalizations.of(context).aboutPagePoweredByTitle,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const Gap(16),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -98,7 +81,7 @@ class AboutPage extends StatelessWidget {
                   ? Colors.white
                   : Colors.black,
             ),
-            const Gap(32),
+
             SvgPicture.asset(
               'assets/graphics/logos/langchain.svg',
               width: 44,
@@ -108,7 +91,7 @@ class AboutPage extends StatelessWidget {
                   ? Colors.white
                   : Colors.black,
             ),
-            const Gap(32),
+
             SvgPicture.asset(
               'assets/graphics/logos/supabase.svg',
               width: 44,
@@ -118,7 +101,7 @@ class AboutPage extends StatelessWidget {
                   ? Colors.white
                   : Colors.black,
             ),
-            const Gap(32),
+
             SvgPicture.asset(
               'assets/graphics/logos/ollama.svg',
               width: 44,
@@ -130,15 +113,12 @@ class AboutPage extends StatelessWidget {
             ),
           ],
         ),
-        const Gap(32),
+
         Text(
           AppLocalizations.of(context).aboutPageContributorsTitle,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const Gap(16),
+
         FutureBuilder(
           future: GitHubAPI.listRepositoryContributors(),
           builder: (context, snapshot) {
@@ -172,19 +152,16 @@ class AboutPage extends StatelessWidget {
                         children: [
                           CachedNetworkImage(
                             imageUrl: collaborator.avatar_url,
-                            progressIndicatorBuilder: (
-                              context,
-                              url,
-                              downloadProgress,
-                            ) =>
-                                SpinKitCircle(
-                              color: AdaptiveTheme.of(context).mode.isDark
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                            errorWidget: (context, url, error) => const Icon(
-                              UniconsLine.exclamation_triangle,
-                            ),
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    SpinKitCircle(
+                                      color:
+                                          AdaptiveTheme.of(context).mode.isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                            errorWidget: (context, url, error) =>
+                                const Icon(UniconsLine.exclamation_triangle),
                             width: 44,
                             height: 44,
                             memCacheWidth: 44,
@@ -197,15 +174,13 @@ class AboutPage extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(collaborator.login),
-                          const Gap(8),
                           IconButton(
-                            tooltip: AppLocalizations.of(context)
-                                .aboutPageVisitProfileTooltip,
+                            tooltip: AppLocalizations.of(
+                              context,
+                            ).aboutPageVisitProfileTooltip,
                             icon: const Icon(UniconsLine.github),
                             onPressed: () {
-                              launchUrl(
-                                Uri.parse(collaborator.html_url),
-                              );
+                              launchUrl(Uri.parse(collaborator.html_url));
                             },
                           ),
                         ],

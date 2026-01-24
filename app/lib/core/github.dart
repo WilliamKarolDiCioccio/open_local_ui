@@ -82,9 +82,7 @@ class GitHubAPI {
   /// This is used to check for app updates.
   static Future<GitHubRelease> getLatestRelease() async {
     // We'll switch to the releases/latest endpoint once we have a release as pre-release and draft releases are not considered as latest by the API
-    final url = Uri.parse(
-      'https://api.github.com/repos/$owner/$repo/releases',
-    );
+    final url = Uri.parse('https://api.github.com/repos/$owner/$repo/releases');
 
     final headers = {
       'Authorization': 'token ${Env.gitHubPat}',
@@ -120,9 +118,7 @@ class GitHubAPI {
   ///
   /// This is used to check for app updates if in the latest release the platform specific update is not available.
   static Future<List<GitHubRelease>> listReleases() async {
-    final url = Uri.parse(
-      'https://api.github.com/repos/$owner/$repo/releases',
-    );
+    final url = Uri.parse('https://api.github.com/repos/$owner/$repo/releases');
 
     final headers = {
       'Authorization': 'token ${Env.gitHubPat}',
@@ -184,9 +180,7 @@ class GitHubAPI {
       contributors.add(GitHubContributor.fromJson(contributor));
     }
 
-    logger.d(
-      'Contributors listed successfully. Contributors: $contributors',
-    );
+    logger.d('Contributors listed successfully. Contributors: $contributors');
 
     return contributors;
   }
@@ -208,9 +202,7 @@ class GitHubAPI {
     String logsUrl,
     String deviceInfo,
   ) async {
-    final url = Uri.parse(
-      'https://api.github.com/repos/$owner/$repo/issues',
-    );
+    final url = Uri.parse('https://api.github.com/repos/$owner/$repo/issues');
 
     final headers = {
       'Authorization': 'token ${Env.gitHubPat}',
@@ -221,8 +213,9 @@ class GitHubAPI {
 
     final packageInfo = await PackageInfo.fromPlatform();
 
-// @formatter:off
-    final issueTextBody = '''
+    // @formatter:off
+    final issueTextBody =
+        '''
 $text
 \n
 \n
@@ -242,7 +235,7 @@ $deviceInfo
 \n
 **NOTE: This issue was created automatically by the app.**
 ''';
-// @formatter:on
+    // @formatter:on
 
     final issueBody = jsonEncode({
       'title': 'App reported issue',

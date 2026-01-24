@@ -53,10 +53,9 @@ Future<void> initLogger() async {
 }
 
 Future<File> _createLogFile() async {
-  final timeStamp = FormatHelpers.standardDate(DateTime.now())
-      .replaceAll(' ', '_')
-      .replaceAll('/', '-')
-      .replaceAll(':', '-');
+  final timeStamp = FormatHelpers.standardDate(
+    DateTime.now(),
+  ).replaceAll(' ', '_').replaceAll('/', '-').replaceAll(':', '-');
 
   final directory = await getApplicationSupportDirectory();
   final logFile = File('${directory.path}/logs/log_$timeStamp.log');

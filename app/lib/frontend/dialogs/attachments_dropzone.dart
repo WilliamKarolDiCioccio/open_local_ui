@@ -8,23 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gap/gap.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
-enum ImageStatus {
-  unloaded,
-  loading,
-  loaded,
-  preloaded,
-  error,
-}
+enum ImageStatus { unloaded, loading, loaded, preloaded, error }
 
 class AttachmentsDropzoneDialog extends StatefulWidget {
   final Uint8List? imageBytes;
@@ -45,12 +38,14 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
     super.initState();
 
     _imageBytes = widget.imageBytes;
-    _imageStatus =
-        _imageBytes == null ? ImageStatus.unloaded : ImageStatus.preloaded;
+    _imageStatus = _imageBytes == null
+        ? ImageStatus.unloaded
+        : ImageStatus.preloaded;
   }
 
   bool _isURL(String str) {
-    const urlPattern = r'^(https?:\/\/)?'
+    const urlPattern =
+        r'^(https?:\/\/)?'
         r'((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'
         r'((\d{1,3}\.){3}\d{1,3}))'
         r'(:\d+)?(\/[-a-z\d%_.~+]*)*'
@@ -141,9 +136,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           final bytes = await stream.toList();
 
           final decodedWebP = img.decodeWebP(
-            Uint8List.fromList(
-              bytes.expand((x) => x).toList(),
-            ),
+            Uint8List.fromList(bytes.expand((x) => x).toList()),
           );
 
           final encodedPng = img.encodePng(decodedWebP!);
@@ -166,7 +159,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
   void _loadFromFile() async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
-      allowCompression: false,
+      compressionQuality: 100,
       type: FileType.custom,
       allowedExtensions: ['png', 'jpg', 'jpeg', 'webp'],
     );
@@ -195,21 +188,18 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
         innerWidget = Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              UniconsLine.cloud_upload,
-              size: 64.0,
-            ),
+            const Icon(UniconsLine.cloud_upload, size: 64.0),
             Text(
               AppLocalizations.of(context).attachFilesDialogDropFilesText,
               style: const TextStyle(fontSize: 24.0),
             ),
             Text(
-              AppLocalizations.of(context).attachFilesDialogAllowedFormats(
-                'PNG, JPEG, WEBP',
-              ),
+              AppLocalizations.of(
+                context,
+              ).attachFilesDialogAllowedFormats('PNG, JPEG, WEBP'),
               style: const TextStyle(fontSize: 14.0),
             ),
-            const Gap(16.0),
+
             TextButton.icon(
               label: Text(
                 AppLocalizations.of(context).attachFilesDialogBrowseFilesButton,
@@ -238,10 +228,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           ),
         );
       case ImageStatus.error:
-        innerWidget = const Icon(
-          UniconsLine.exclamation_triangle,
-          size: 64.0,
-        );
+        innerWidget = const Icon(UniconsLine.exclamation_triangle, size: 64.0);
     }
 
     return DropRegion(
@@ -253,68 +240,55 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
       ],
       onDropOver: (event) async => await _onDropOver(event),
       onPerformDrop: (event) async => await _onPerformDrop(event),
-      child: Center(
-        child: innerWidget,
-      ),
+      child: Center(child: innerWidget),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      actionsAlignment: MainAxisAlignment.center,
-      content: SizedBox(
-        width: 512.0,
-        height: 512.0,
-        child: Center(
-          child: _buildDropzone(),
-        ),
-      ),
-      actions: [
-        if (_imageStatus == ImageStatus.error ||
-            _imageStatus != ImageStatus.loaded ||
-            _imageStatus != ImageStatus.preloaded)
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(widget.imageBytes);
-            },
-            child: Text(
-              AppLocalizations.of(context).dialogCancelButtonShared,
-            ),
+          actionsAlignment: MainAxisAlignment.center,
+          content: SizedBox(
+            width: 512.0,
+            height: 512.0,
+            child: Center(child: _buildDropzone()),
           ),
-        if (_imageStatus == ImageStatus.preloaded)
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _imageBytes = null;
-                _imageStatus = ImageStatus.unloaded;
-              });
+          actions: [
+            if (_imageStatus == ImageStatus.error ||
+                _imageStatus != ImageStatus.loaded ||
+                _imageStatus != ImageStatus.preloaded)
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(widget.imageBytes);
+                },
+                child: Text(
+                  AppLocalizations.of(context).dialogCancelButtonShared,
+                ),
+              ),
+            if (_imageStatus == ImageStatus.preloaded)
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _imageBytes = null;
+                    _imageStatus = ImageStatus.unloaded;
+                  });
 
-              Navigator.of(context).pop(null);
-            },
-            child: Text(
-              AppLocalizations.of(context).dialogRemoveButton,
-            ),
-          ),
-        if (_imageStatus == ImageStatus.loaded)
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(_imageBytes);
-            },
-            child: Text(
-              AppLocalizations.of(context).dialogAttachButton,
-            ),
-          ),
-      ],
-    )
-        .animate()
-        .fadeIn(
-          duration: 200.ms,
+                  Navigator.of(context).pop(null);
+                },
+                child: Text(AppLocalizations.of(context).dialogRemoveButton),
+              ),
+            if (_imageStatus == ImageStatus.loaded)
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(_imageBytes);
+                },
+                child: Text(AppLocalizations.of(context).dialogAttachButton),
+              ),
+          ],
         )
-        .move(
-          begin: const Offset(0, 160),
-          curve: Curves.easeOutQuad,
-        );
+        .animate()
+        .fadeIn(duration: 200.ms)
+        .move(begin: const Offset(0, 160), curve: Curves.easeOutQuad);
   }
 
   void _setImageFromStream(Stream<List<int>> stream) async {

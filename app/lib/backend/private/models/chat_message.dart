@@ -159,17 +159,14 @@ class ChatMessageWrapperV1 {
 /// This class extends the [ChatMessageWrapperV1] class and sets the sender name and type to 'System'.
 @JsonSerializable()
 class ChatSystemMessageWrapperV1 extends ChatMessageWrapperV1 {
-  ChatSystemMessageWrapperV1(
-    String text,
-    DateTime createdAt,
-    String uuid,
-  ) : super(
-          text,
-          createdAt,
-          uuid,
-          ChatMessageSender.system,
-          senderName: 'System',
-        );
+  ChatSystemMessageWrapperV1(String text, DateTime createdAt, String uuid)
+    : super(
+        text,
+        createdAt,
+        uuid,
+        ChatMessageSender.system,
+        senderName: 'System',
+      );
 
   factory ChatSystemMessageWrapperV1.fromJson(Map<String, dynamic> json) =>
       _$ChatSystemMessageWrapperV1FromJson(json);
@@ -189,12 +186,12 @@ class ChatModelMessageWrapperV1 extends ChatMessageWrapperV1 {
     String uuid,
     String senderName,
   ) : super(
-          text,
-          createdAt,
-          uuid,
-          ChatMessageSender.model,
-          senderName: senderName,
-        );
+        text,
+        createdAt,
+        uuid,
+        ChatMessageSender.model,
+        senderName: senderName,
+      );
 
   factory ChatModelMessageWrapperV1.fromJson(Map<String, dynamic> json) =>
       _$ChatModelMessageWrapperV1FromJson(json);
@@ -227,13 +224,7 @@ class ChatUserMessageWrapperV1 extends ChatMessageWrapperV1 {
     String uuid, {
     this.imageBytes,
     this.filePaths,
-  }) : super(
-          text,
-          createdAt,
-          uuid,
-          ChatMessageSender.user,
-          senderName: 'User',
-        );
+  }) : super(text, createdAt, uuid, ChatMessageSender.user, senderName: 'User');
 
   factory ChatUserMessageWrapperV1.fromJson(Map<String, dynamic> json) =>
       _$ChatUserMessageWrapperV1FromJson(json);
@@ -338,17 +329,14 @@ class ChatMessageWrapperV2 {
 /// This class extends the [ChatMessageWrapperV2] class and sets the sender name and type to 'System'.
 @JsonSerializable()
 class ChatSystemMessageWrapperV2 extends ChatMessageWrapperV2 {
-  ChatSystemMessageWrapperV2(
-    String text,
-    DateTime createdAt,
-    String uuid,
-  ) : super(
-          text,
-          createdAt,
-          uuid,
-          ChatMessageSender.system,
-          senderName: 'System',
-        );
+  ChatSystemMessageWrapperV2(String text, DateTime createdAt, String uuid)
+    : super(
+        text,
+        createdAt,
+        uuid,
+        ChatMessageSender.system,
+        senderName: 'System',
+      );
 
   factory ChatSystemMessageWrapperV2.fromJson(Map<String, dynamic> json) =>
       _$ChatSystemMessageWrapperV2FromJson(json);
@@ -368,12 +356,12 @@ class ChatModelMessageWrapperV2 extends ChatMessageWrapperV2 {
     String uuid,
     String senderName,
   ) : super(
-          text,
-          createdAt,
-          uuid,
-          ChatMessageSender.model,
-          senderName: senderName,
-        );
+        text,
+        createdAt,
+        uuid,
+        ChatMessageSender.model,
+        senderName: senderName,
+      );
 
   factory ChatModelMessageWrapperV2.fromJson(Map<String, dynamic> json) =>
       _$ChatModelMessageWrapperV2FromJson(json);
@@ -404,13 +392,7 @@ class ChatUserMessageWrapperV2 extends ChatMessageWrapperV2 {
     String uuid, {
     this.imageBytes,
     this.filePaths,
-  }) : super(
-          text,
-          createdAt,
-          uuid,
-          ChatMessageSender.user,
-          senderName: 'User',
-        );
+  }) : super(text, createdAt, uuid, ChatMessageSender.user, senderName: 'User');
 
   factory ChatUserMessageWrapperV2.fromJson(Map<String, dynamic> json) =>
       _$ChatUserMessageWrapperV2FromJson(json);

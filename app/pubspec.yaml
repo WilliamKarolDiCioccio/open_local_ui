@@ -1,138 +1,87 @@
 name: open_local_ui
 
 environment:
-  sdk: ">=3.3.3 <4.0.0"
+  sdk: ">=3.9.0 <4.0.0"
 
 dependencies:
+  adaptive_theme: ^3.7.2
+  animated_splash_screen: ^1.3.0
+  archive: ^4.0.7
+  audioplayers: ^6.5.1
+  battery_plus: ^7.0.0
+  bitsdojo_window: ^0.1.6
+  cached_network_image: ^3.4.1
+  discord_rpc: ^0.0.2
+  duckduckgo_search: ^0.2.0
+  envied: ^1.3.2
+  feedback: ^3.2.0
+  file_picker: ^10.3.8
+  file_selector: ^1.1.0
+  flex_color_picker: ^3.8.0
   flutter:
     sdk: flutter
-
-  # Basic Flutter Packages
-  cupertino_icons: ^1.0.6
   flutter_localizations:
     sdk: flutter
-
-  # Utility Packages
-  uuid: ^4.4.0
-  provider: ^6.1.2
-  shared_preferences: ^2.2.3
-  path_provider: ^2.1.3
-  units_converter: ^3.0.0
-  path: ^1.9.1
-  archive: ^3.6.1
-  http: ^1.2.1
-  gap: ^3.0.1
-  indexed: ^0.0.8
-  intl: any
-
-  # Theming and UI
-  adaptive_theme: ^3.6.0
-  system_theme: ^3.0.0
-  flex_color_picker: ^3.5.0
-  visibility_detector: any
-  page_transition: any
-  timelines_plus: ^1.0.3
-  flutter_sticky_widgets: ^0.0.3
-  flutter_form_builder: ^9.5.0
-  form_builder_validators: ^11.0.0
-  smooth_scroll_multiplatform:
-    git:
-      url: https://github.com/WilliamKarolDiCioccio/dyn_mouse_scroll.git
-      ref: main
-
-  # Icons and Graphics
-  unicons: ^3.0.0
-  image: ^4.2.0
+  flutter_animate: ^4.5.2
+  flutter_form_builder: ^10.2.0
+  flutter_highlight: ^0.7.0
   flutter_image_converter: ^0.4.1
-  cached_network_image: ^3.3.1
-  flutter_svg: ^2.0.10+1
-
-  # Splash Screen
-  animated_splash_screen: ^1.3.0
-
-  # Window Management
-  bitsdojo_window: ^0.1.6
-
-  # Local Storage
-  hive_flutter: ^1.1.0
-  sqlite3: ^2.4.6
-  sqlite3_flutter_libs: ^0.5.24
-
-  # JSON and Annotations
+  flutter_localization: ^0.3.3
+  flutter_spinkit: ^5.2.2
+  flutter_sticky_widgets: ^0.0.3
+  flutter_svg: ^2.2.3
+  form_builder_validators: ^11.2.0
   freezed_annotation: ^2.4.1
-  json_annotation: ^4.9.0
-
-  # File Management
-  # Currently using both due to cross-platform requirements
-  file_selector: ^1.0.3
-  file_picker: ^8.1.2
-
-  # Audio and Video
-  audioplayers: ^6.0.0
-
-  # Markdown and HTML
-  flutter_highlight: any
-  markdown_widget: ^2.3.2+6
-  markdown: ^7.2.2
-  html: ^0.15.4
-
-  # Feedback and User Interaction
-  feedback: ^3.1.0
-  super_drag_and_drop: ^0.8.12
-
-  # Logging
-  logger: ^2.2.0
-
-  # URL Launcher
-  url_launcher: ^6.2.6
-
-  # Device and Package Info
-  package_info_plus: ^8.2.1
-  language_code: ^0.5.3+2
-  system_info2: ^4.0.0
+  get_it: ^9.2.0
   gpu_info: ^0.0.3
-  battery_plus: ^6.0.2
-
-  # Environment Variables
-  envied: ^0.5.4+1
-
-  # Animations
-  flutter_animate: ^4.5.0
-  flutter_spinkit: ^5.2.1
-
-  # Supabase Integration
-  supabase_flutter: ^2.7.0
-
-  # LangChain Integration
-  langchain: ^0.7.3
+  hive_flutter: ^1.1.0
+  html: ^0.15.6
+  http: ^1.6.0
+  image: ^4.7.2
+  indexed: ^0.0.8
+  intl: ^0.20.2
+  introduction_screen: ^4.0.0
+  json_annotation: ^4.9.0
+  langchain: ^0.7.9
   langchain_ollama: ^0.3.1
-  introduction_screen: ^3.1.14
-  rive: ^0.13.12
-
-  # Dependency Injection
-  get_it: ^7.7.0
-
-  # Third Party APIs
-  discord_rpc: ^0.0.2
-  duckduckgo_search: ^0.1.3
-
-  # Platform Specific
-  win32_registry: ^1.1.5
+  language_code: ^0.5.5
+  logger: ^2.6.2
+  markdown: ^7.3.0
+  markdown_widget: ^2.3.2+8
+  package_info_plus: ^9.0.0
+  page_transition: ^2.2.1
+  path: ^1.9.1
+  path_provider: ^2.1.5
+  provider: ^6.1.5+1
+  rive: ^0.14.1
+  shared_preferences: ^2.5.4
+  smooth_scroll_multiplatform: ^1.0.8
+  sqlite3: ^3.1.4
+  sqlite3_flutter_libs: ^0.5.41
+  supabase_flutter: ^2.12.0
+  super_drag_and_drop: ^0.9.1
+  system_info2: ^4.1.0
+  system_theme: ^3.2.0
+  timelines_plus: ^1.0.8
+  unicons: ^3.0.0
+  units_converter: ^3.0.4
+  url_launcher: ^6.3.2
+  uuid: ^4.5.2
+  visibility_detector: ^0.4.0+2
+  win32_registry: ^2.1.0
   windows_taskbar: ^1.1.2
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^4.0.0
+  freezed: ^2.5.2
+  flutter_lints: ^6.0.0
   mockito: ^5.4.4
   test_coverage_badge: ^0.3.2
-  build_runner: ^2.4.9
-  freezed: ^2.5.2
-  json_serializable: ^6.7.1
+  build_runner: ^2.4.13
+  json_serializable: ^6.8.0
   isar_generator: ^3.1.0+1
-  envied_generator: ^0.5.4+1
-  flutter_launcher_icons: ^0.14.3
-  msix: ^3.16.8
+  envied_generator: ^1.1.1
+  flutter_launcher_icons: ^0.14.4
+  msix: ^3.16.13
 
 flutter:
   generate: true

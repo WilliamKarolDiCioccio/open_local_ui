@@ -24,10 +24,7 @@ class _TypewriterTextComponentState extends State<TypewriterTextComponent>
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-      duration: widget.duration,
-      vsync: this,
-    );
+    _controller = AnimationController(duration: widget.duration, vsync: this);
 
     _characterCount = StepTween(
       begin: 0,
@@ -52,10 +49,7 @@ class _TypewriterTextComponentState extends State<TypewriterTextComponent>
           0,
           _characterCount.value,
         );
-        return Text(
-          visibleText,
-          textAlign: TextAlign.center,
-        );
+        return Text(visibleText, textAlign: TextAlign.center);
       },
     );
   }

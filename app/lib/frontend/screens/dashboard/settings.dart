@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:discord_rpc/discord_rpc.dart';
 import 'package:flex_color_picker/flex_color_picker.dart' as fcp;
-import '../../../generated/i18n/app_localizations.dart';
+import '../../../localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gap/gap.dart';
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/backend/private/providers/locale.dart';
 import 'package:open_local_ui/core/json_extensions.dart';
@@ -35,26 +34,23 @@ class _SettingsPageState extends State<SettingsPage> {
           Text(
             AppLocalizations.of(context).settingsPageTitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
           ),
-          const Gap(8),
+
           const Divider(),
-          const Gap(16),
+
           const ThemeSettings(),
-          const Gap(8),
+
           const Divider(),
-          const Gap(16),
+
           const AccessibilitySettings(),
-          const Gap(8),
+
           const Divider(),
-          const Gap(16),
+
           const DebugSettings(),
-          const Gap(8),
+
           const Divider(),
-          const Gap(16),
+
           const SocialSettings(),
         ],
       ),
@@ -131,13 +127,11 @@ class _ThemeSettingsState extends State<ThemeSettings> {
           AppLocalizations.of(context).settingsPageThemeLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const Gap(16.0),
+
         DropdownMenu(
           menuHeight: 128,
           menuStyle: MenuStyle(
-            elevation: WidgetStateProperty.all(
-              8.0,
-            ),
+            elevation: WidgetStateProperty.all(8.0),
             shape: WidgetStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -146,9 +140,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
           ),
           leadingIcon: const Icon(UniconsLine.moon_eclipse),
           inputDecorationTheme: const InputDecorationTheme(
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-            ),
+            border: OutlineInputBorder(borderSide: BorderSide.none),
             floatingLabelBehavior: FloatingLabelBehavior.never,
           ),
           initialSelection: _getThemeModeString(context),
@@ -180,42 +172,35 @@ class _ThemeSettingsState extends State<ThemeSettings> {
             }
           },
         ),
-        const Gap(16.0),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(UniconsLine.brush_alt),
-            const Gap(8.0),
+
             Text(
               AppLocalizations.of(context).settingsPageAccentColorLabel,
               style: const TextStyle(fontSize: 16.0),
             ),
-            const Gap(8.0),
+
             GestureDetector(
               onTap: () async {
-                await showColorPickerDialog(
-                  context,
-                  await _getAccent(),
-                ).then(
-                  (color) async {
-                    if (color == null) return;
+                await showColorPickerDialog(context, await _getAccent()).then((
+                  color,
+                ) async {
+                  if (color == null) return;
 
-                    final prefs = await SharedPreferences.getInstance();
+                  final prefs = await SharedPreferences.getInstance();
 
-                    if ((prefs.getBool('sync_accent_color') ?? false) ==
-                        false) {
-                      _setAccent(context, color);
-                    } else {
-                      setState(() {});
-                    }
+                  if ((prefs.getBool('sync_accent_color') ?? false) == false) {
+                    _setAccent(context, color);
+                  } else {
+                    setState(() {});
+                  }
 
-                    await prefs.setString(
-                      'accent_color',
-                      color.toJson(color),
-                    );
-                  },
-                );
+                  await prefs.setString('accent_color', color.toJson(color));
+                });
               },
               child: FutureBuilder(
                 future: _getAccent(),
@@ -235,14 +220,14 @@ class _ThemeSettingsState extends State<ThemeSettings> {
                 },
               ),
             ),
-            const Gap(16.0),
+
             const Icon(UniconsLine.sync),
-            const Gap(8.0),
+
             Text(
               AppLocalizations.of(context).settingsPageSyncAccentColorLabel,
               style: const TextStyle(fontSize: 16.0),
             ),
-            const Gap(8.0),
+
             FutureBuilder(
               future: _isAccentSynced(),
               builder: (context, snapshot) {
@@ -260,19 +245,14 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
                       if (value) {
                         await prefs.setBool('sync_accent_color', true);
-                        _setAccent(
-                          context,
-                          SystemTheme.accentColor.accent,
-                        );
+                        _setAccent(context, SystemTheme.accentColor.accent);
                       } else {
                         final savedColorCode = prefs.getString('accent_color');
                         await prefs.setBool('sync_accent_color', false);
 
                         _setAccent(
                           context,
-                          JSONColor.fromJson(
-                            savedColorCode ?? Colors.cyan.hex,
-                          ),
+                          JSONColor.fromJson(savedColorCode ?? Colors.cyan.hex),
                         );
                       }
                     },
@@ -298,13 +278,11 @@ class AccessibilitySettings extends StatelessWidget {
           AppLocalizations.of(context).settingsPageAccessibilityLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const Gap(16.0),
+
         DropdownMenu(
           menuHeight: 256,
           menuStyle: MenuStyle(
-            elevation: WidgetStateProperty.all(
-              8.0,
-            ),
+            elevation: WidgetStateProperty.all(8.0),
             shape: WidgetStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -313,9 +291,7 @@ class AccessibilitySettings extends StatelessWidget {
           ),
           leadingIcon: const Icon(UniconsLine.language),
           inputDecorationTheme: const InputDecorationTheme(
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-            ),
+            border: OutlineInputBorder(borderSide: BorderSide.none),
             floatingLabelBehavior: FloatingLabelBehavior.never,
           ),
           initialSelection: context.watch<LocaleProvider>().languageSetting,
@@ -324,59 +300,23 @@ class AccessibilitySettings extends StatelessWidget {
               value: LocaleProvider.systemLangCode,
               label: AppLocalizations.of(context).settingsLanguageSystem,
             ),
-            const DropdownMenuEntry(
-              value: 'en',
-              label: 'English',
-            ),
-            const DropdownMenuEntry(
-              value: 'es',
-              label: 'Spanish',
-            ),
-            const DropdownMenuEntry(
-              value: 'fr',
-              label: 'French',
-            ),
-            const DropdownMenuEntry(
-              value: 'de',
-              label: 'German',
-            ),
-            const DropdownMenuEntry(
-              value: 'it',
-              label: 'Italian',
-            ),
-            const DropdownMenuEntry(
-              value: 'ja',
-              label: 'Japanese',
-            ),
-            const DropdownMenuEntry(
-              value: 'ko',
-              label: 'Korean',
-            ),
-            const DropdownMenuEntry(
-              value: 'pt',
-              label: 'Portuguese',
-            ),
-            const DropdownMenuEntry(
-              value: 'ru',
-              label: 'Russian',
-            ),
-            const DropdownMenuEntry(
-              value: 'zh',
-              label: 'Chinese',
-            ),
-            const DropdownMenuEntry(
-              value: 'ar',
-              label: 'Arabic',
-            ),
-            const DropdownMenuEntry(
-              value: 'hi',
-              label: 'Hindi',
-            ),
+            const DropdownMenuEntry(value: 'en', label: 'English'),
+            const DropdownMenuEntry(value: 'es', label: 'Spanish'),
+            const DropdownMenuEntry(value: 'fr', label: 'French'),
+            const DropdownMenuEntry(value: 'de', label: 'German'),
+            const DropdownMenuEntry(value: 'it', label: 'Italian'),
+            const DropdownMenuEntry(value: 'ja', label: 'Japanese'),
+            const DropdownMenuEntry(value: 'ko', label: 'Korean'),
+            const DropdownMenuEntry(value: 'pt', label: 'Portuguese'),
+            const DropdownMenuEntry(value: 'ru', label: 'Russian'),
+            const DropdownMenuEntry(value: 'zh', label: 'Chinese'),
+            const DropdownMenuEntry(value: 'ar', label: 'Arabic'),
+            const DropdownMenuEntry(value: 'hi', label: 'Hindi'),
           ],
           onSelected: (value) {
-            context
-                .read<LocaleProvider>()
-                .setLanguage(value ?? LocaleProvider.systemLangCode);
+            context.read<LocaleProvider>().setLanguage(
+              value ?? LocaleProvider.systemLangCode,
+            );
           },
         ),
       ],
@@ -400,7 +340,7 @@ class _DebugSettingsState extends State<DebugSettings> {
           AppLocalizations.of(context).settingsPageDebugLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const Gap(16.0),
+
         FractionallySizedBox(
           widthFactor: 0.6,
           child: Column(
@@ -409,12 +349,12 @@ class _DebugSettingsState extends State<DebugSettings> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(UniconsLine.calculator),
-                  const Gap(8.0),
+
                   Text(
                     '${AppLocalizations.of(context).settingsPageDebugShowStatistics}:',
                     style: const TextStyle(fontSize: 16.0),
                   ),
-                  const Gap(8.0),
+
                   Switch(
                     value: context.watch<ChatProvider>().isChatShowStatistics,
                     onChanged: (value) =>
@@ -462,9 +402,7 @@ class _SocialSettingsState extends State<SocialSettings> {
       _discordRPCEnabled = value;
     });
 
-    final rpc = DiscordRPC(
-      applicationId: Env.discordClientId,
-    );
+    final rpc = DiscordRPC(applicationId: Env.discordClientId);
 
     if (_discordRPCEnabled) {
       rpc.start(autoRegister: true);
@@ -489,17 +427,17 @@ class _SocialSettingsState extends State<SocialSettings> {
           AppLocalizations.of(context).settingsPageSocialLabel,
           style: const TextStyle(fontSize: 24.0),
         ),
-        const Gap(16.0),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(UniconsLine.discord),
-            const Gap(8.0),
+
             Text(
               AppLocalizations.of(context).settingsPageDiscordRPCLabel,
               style: const TextStyle(fontSize: 16.0),
             ),
-            const Gap(8.0),
+
             Switch(
               value: _discordRPCEnabled,
               onChanged: (value) => _toggleDiscordRPC(value),

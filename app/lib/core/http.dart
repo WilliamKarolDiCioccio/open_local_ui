@@ -13,10 +13,7 @@ class HTTPResponse {
   final String status;
   final String currentTime;
 
-  HTTPResponse({
-    required this.status,
-    required this.currentTime,
-  });
+  HTTPResponse({required this.status, required this.currentTime});
 
   factory HTTPResponse.fromJson(Map<String, dynamic> json) =>
       _$HTTPResponseFromJson(json);

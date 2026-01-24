@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:markdown/markdown.dart' as md;
@@ -114,9 +113,7 @@ class _TTSPlayerState extends State<TTSPlayer>
       _audioBytes = GetIt.instance<TTSService>().synthesyzeText(text);
 
       await _audioPlayer.setSource(
-        BytesSource(
-          Uint8List.fromList(_audioBytes),
-        ),
+        BytesSource(Uint8List.fromList(_audioBytes)),
       );
     } catch (e) {
       logger.e(e);
@@ -201,7 +198,6 @@ class _TTSPlayerState extends State<TTSPlayer>
       ),
       child: Row(
         children: [
-          const Gap(8.0),
           IconButton(
             icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
             onPressed: () async {
@@ -212,11 +208,11 @@ class _TTSPlayerState extends State<TTSPlayer>
               }
             },
           ),
-          const Gap(8.0),
+
           Text(
             '${_formatDuration(_currentDuration)}/${_formatDuration(_totalDuration)}',
           ),
-          const Gap(8.0),
+
           TextButton.icon(
             icon: const Icon(Icons.speed),
             label: Text(_playbackRate.toStringAsFixed(2)),
@@ -254,7 +250,7 @@ class _TTSPlayerState extends State<TTSPlayer>
               }
             },
           ),
-          const Gap(8.0),
+
           Expanded(
             child: Slider(
               value: _progress,
@@ -276,7 +272,7 @@ class _TTSPlayerState extends State<TTSPlayer>
               max: 1.0,
             ),
           ),
-          const Gap(8.0),
+
           IconButton(
             onPressed: () {
               _audioPlayer.stop();
@@ -285,7 +281,6 @@ class _TTSPlayerState extends State<TTSPlayer>
             },
             icon: const Icon(UniconsLine.times),
           ),
-          const Gap(8.0),
         ],
       ),
     );

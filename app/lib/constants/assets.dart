@@ -13,12 +13,12 @@ class Assets {
     _Asset(
       'assets/graphics/animations/gpu.riv',
       AssetSource.local,
-      AssetType.rivefile,
+      AssetType.raw,
     ),
     _Asset(
       'assets/graphics/animations/human.riv',
       AssetSource.local,
-      AssetType.rivefile,
+      AssetType.raw,
     ),
     _Asset(
       'assets/graphics/logos/apache.svg',
@@ -35,11 +35,7 @@ class Assets {
       AssetSource.local,
       AssetType.binary,
     ),
-    _Asset(
-      'assets/graphics/logos/c.svg',
-      AssetSource.local,
-      AssetType.binary,
-    ),
+    _Asset('assets/graphics/logos/c.svg', AssetSource.local, AssetType.binary),
     _Asset(
       'assets/graphics/logos/clojure.svg',
       AssetSource.local,
@@ -60,11 +56,7 @@ class Assets {
       AssetSource.local,
       AssetType.binary,
     ),
-    _Asset(
-      'assets/graphics/logos/cs.svg',
-      AssetSource.local,
-      AssetType.binary,
-    ),
+    _Asset('assets/graphics/logos/cs.svg', AssetSource.local, AssetType.binary),
     _Asset(
       'assets/graphics/logos/css.svg',
       AssetSource.local,
@@ -110,11 +102,7 @@ class Assets {
       AssetSource.local,
       AssetType.binary,
     ),
-    _Asset(
-      'assets/graphics/logos/go.svg',
-      AssetSource.local,
-      AssetType.binary,
-    ),
+    _Asset('assets/graphics/logos/go.svg', AssetSource.local, AssetType.binary),
     _Asset(
       'assets/graphics/logos/gradle.svg',
       AssetSource.local,

@@ -5,7 +5,6 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:discord_rpc/discord_rpc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
 import 'package:open_local_ui/backend/private/repositories/chat_sessions.dart';
@@ -17,7 +16,7 @@ import 'package:open_local_ui/env.dart';
 import 'package:open_local_ui/frontend/screens/dashboard.dart';
 import 'package:open_local_ui/frontend/screens/onboarding.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -51,7 +50,7 @@ class SplashScreen extends StatelessWidget {
 
       // Rive
 
-      await RiveFile.initialize();
+      await rive.RiveNative.init();
 
       // Discord RPC
 
@@ -60,9 +59,7 @@ class SplashScreen extends StatelessWidget {
       final discordRPCEnabled = prefs.getBool('discordRPCEnabled') ?? false;
 
       if (discordRPCEnabled) {
-        final rpc = DiscordRPC(
-          applicationId: Env.discordClientId,
-        );
+        final rpc = DiscordRPC(applicationId: Env.discordClientId);
 
         rpc.start(autoRegister: true);
         rpc.updatePresence(
@@ -99,8 +96,9 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nextScreen =
-        userOnboarded ? const DashboardScreen() : const OnboardingScreen();
+    final nextScreen = userOnboarded
+        ? const DashboardScreen()
+        : const OnboardingScreen();
 
     return FutureBuilder(
       future: _init(),
@@ -113,7 +111,7 @@ class SplashScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 const Text('Updating resources...'),
-                const Gap(16),
+
                 SpinKitCircle(
                   color: AdaptiveTheme.of(context).mode.isDark
                       ? Colors.white

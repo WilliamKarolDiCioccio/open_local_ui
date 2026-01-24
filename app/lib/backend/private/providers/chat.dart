@@ -47,9 +47,9 @@ class ChatProvider extends ChangeNotifier {
 
   /// Default initializations for late variables are provided in the constructor because the [_init] method runs asynchronously and there is no way to await it in the constructor.
   ChatProvider()
-      : _chat = ChatOllama(),
-        _modelName = '',
-        _showStatistics = false {
+    : _chat = ChatOllama(),
+      _modelName = '',
+      _showStatistics = false {
     _init();
   }
 
@@ -85,43 +85,41 @@ class ChatProvider extends ChangeNotifier {
     final dataDir = await getApplicationSupportDirectory();
 
     _sessions.addAll(
-      await Isolate.run(
-        () async {
-          final getIt = GetIt.instance;
-          getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
+      await Isolate.run(() async {
+        final getIt = GetIt.instance;
+        getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
 
-          // Using Hive.init in the isolate instead of the DB init method due to path_provider initialization issues
-          Hive.init('${dataDir.path}/sessions');
+        // Using Hive.init in the isolate instead of the DB init method due to path_provider initialization issues
+        Hive.init('${dataDir.path}/sessions');
 
-          final legacySessionsDir = Directory(
-            '${docsDir.path}/OpenLocalUI/saved_data',
-          );
+        final legacySessionsDir = Directory(
+          '${docsDir.path}/OpenLocalUI/saved_data',
+        );
 
-          if (legacySessionsDir.existsSync()) {
-            final sourceDir = legacySessionsDir;
+        if (legacySessionsDir.existsSync()) {
+          final sourceDir = legacySessionsDir;
 
-            final sourceFiles = sourceDir.listSync();
+          final sourceFiles = sourceDir.listSync();
 
-            final destinationDir = Directory('${dataDir.path}/sessions');
+          final destinationDir = Directory('${dataDir.path}/sessions');
 
-            if (!destinationDir.existsSync()) {
-              destinationDir.createSync(recursive: true);
-            }
-
-            if (sourceFiles.isNotEmpty) {
-              for (final file in sourceFiles) {
-                File(file.path).copySync(
-                  '${destinationDir.path}/${file.path.split(Platform.pathSeparator).last}',
-                );
-              }
-            }
-
-            legacySessionsDir.deleteSync(recursive: true);
+          if (!destinationDir.existsSync()) {
+            destinationDir.createSync(recursive: true);
           }
 
-          return await GetIt.instance<ChatSessionsDB>().loadSessions();
-        },
-      ),
+          if (sourceFiles.isNotEmpty) {
+            for (final file in sourceFiles) {
+              File(file.path).copySync(
+                '${destinationDir.path}/${file.path.split(Platform.pathSeparator).last}',
+              );
+            }
+          }
+
+          legacySessionsDir.deleteSync(recursive: true);
+        }
+
+        return await GetIt.instance<ChatSessionsDB>().loadSessions();
+      }),
     );
 
     notifyListeners();
@@ -135,13 +133,7 @@ class ChatProvider extends ChangeNotifier {
   ///
   /// Returns the newly created [ChatSessionWrapperV1].
   ChatSessionWrapperV1 addSession(String title) {
-    _sessions.add(
-      ChatSessionWrapperV1(
-        DateTime.now(),
-        const Uuid().v4(),
-        [],
-      ),
-    );
+    _sessions.add(ChatSessionWrapperV1(DateTime.now(), const Uuid().v4(), []));
 
     GetIt.instance<ChatSessionsDB>().saveSession(_sessions.last);
 
@@ -186,9 +178,7 @@ class ChatProvider extends ChangeNotifier {
       if (message is ChatModelMessageWrapperV1) {
         final models = GetIt.instance<OllamaAPIProvider>().models;
 
-        if (models.any(
-          (model) => model.name == message.senderName,
-        )) {
+        if (models.any((model) => model.name == message.senderName)) {
           setModel(message.senderName!);
         } else {
           setModel(models.first.name);
@@ -327,14 +317,13 @@ class ChatProvider extends ChangeNotifier {
         _session!.messages.last.text = messageBuffer.toString();
       },
       onDone: () {
-        _session!.memory.chatHistory.addAIChatMessage(
-          messageBuffer.toString(),
-        );
+        _session!.memory.chatHistory.addAIChatMessage(messageBuffer.toString());
 
         GetIt.instance<ChatSessionsDB>().updateSession(_session!);
 
-        completer
-            .complete(_session!.messages.last as ChatModelMessageWrapperV1);
+        completer.complete(
+          _session!.messages.last as ChatModelMessageWrapperV1,
+        );
 
         notifyListeners();
       },
@@ -447,10 +436,11 @@ class ChatProvider extends ChangeNotifier {
       const MessagesPlaceholder(variableName: 'input'),
     ]);
 
-    final chain = Runnable.fromMap({
+    final chain =
+        Runnable.fromMap({
           'input': Runnable.passthrough(),
           'history': Runnable.fromFunction(
-            invoke: (final _, final __) async {
+            invoke: (final _, final _) async {
               final m = await _session!.memory.loadMemoryVariables();
               return m['history'];
             },
@@ -475,17 +465,13 @@ class ChatProvider extends ChangeNotifier {
   /// Builds a prompt message with the given text and optional image bytes.
   ChatMessage _buildPrompt(String text, {Uint8List? imageBytes}) {
     final prompt = ChatMessage.human(
-      ChatMessageContent.multiModal(
-        [
-          ChatMessageContent.text(text),
-          if (imageBytes != null)
-            ChatMessageContent.image(
-              data: base64.encode(
-                imageBytes.map((e) => e.toInt()).toList(),
-              ),
-            ),
-        ],
-      ),
+      ChatMessageContent.multiModal([
+        ChatMessageContent.text(text),
+        if (imageBytes != null)
+          ChatMessageContent.image(
+            data: base64.encode(imageBytes.map((e) => e.toInt()).toList()),
+          ),
+      ]),
     );
 
     return prompt;
@@ -750,14 +736,10 @@ class ChatProvider extends ChangeNotifier {
         case ChatMessageSender.system:
           continue;
         case ChatMessageSender.model:
-          await _session!.memory.chatHistory.addAIChatMessage(
-            message.text,
-          );
+          await _session!.memory.chatHistory.addAIChatMessage(message.text);
           break;
         case ChatMessageSender.user:
-          await _session!.memory.chatHistory.addHumanChatMessage(
-            message.text,
-          );
+          await _session!.memory.chatHistory.addHumanChatMessage(message.text);
           break;
       }
     }
@@ -804,6 +786,8 @@ class ChatProvider extends ChangeNotifier {
   ///
   /// Returns a [Future] that evaluates to `void`.
   Future<void> updateChatOllamaOptions() async {
+    if (_modelName.isEmpty) return;
+
     _modelSettingsHandler = ModelSettingsHandler(modelName);
 
     await _modelSettingsHandler.preloadSettings();
@@ -909,9 +893,7 @@ class ChatProvider extends ChangeNotifier {
     if (!models.any((model) => model.name == _modelName)) return false;
 
     final modelFamilies = models
-        .firstWhere(
-          (model) => model.name == _modelName,
-        )
+        .firstWhere((model) => model.name == _modelName)
         .details
         .families;
 
@@ -930,9 +912,7 @@ class ChatProvider extends ChangeNotifier {
   ChatSessionWrapperV1? get session => _session;
 
   ChatSessionWrapperV1? get sessionByUuid {
-    return _sessions.firstWhere(
-      (element) => element.uuid == _session?.uuid,
-    );
+    return _sessions.firstWhere((element) => element.uuid == _session?.uuid);
   }
 
   bool get isSessionSelected => _session != null;

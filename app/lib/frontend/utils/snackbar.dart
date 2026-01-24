@@ -58,10 +58,7 @@ class SnackBarHelpers {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    message,
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                  Text(message, style: const TextStyle(color: Colors.white)),
                 ],
               ),
             ),

@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-import '../../../generated/i18n/app_localizations.dart';
+import '../../../localization/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_local_ui/backend/private/models/model.dart';
 import 'package:open_local_ui/backend/private/models/ollama_responses.dart';
@@ -15,12 +15,7 @@ import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/frontend/utils/snackbar.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
-enum OllamaAPIProviderStatus {
-  idle,
-  pulling,
-  pushing,
-  creating,
-}
+enum OllamaAPIProviderStatus { idle, pulling, pushing, creating }
 
 /// A provider class for managing Ollama models.
 ///
@@ -139,15 +134,14 @@ class OllamaAPIProvider extends ChangeNotifier {
 
     final request = http.Request('POST', Uri.parse('$_api/pull'));
     request.headers['Content-Type'] = 'application/json';
-    request.body = jsonEncode({
-      'name': name,
-    });
+    request.body = jsonEncode({'name': name});
 
     final response = await request.send();
 
     if (response.statusCode != 200) {
-      logger
-          .e('Failed to pull model $name, status code: ${response.statusCode}');
+      logger.e(
+        'Failed to pull model $name, status code: ${response.statusCode}',
+      );
       return;
     }
 
@@ -197,15 +191,14 @@ class OllamaAPIProvider extends ChangeNotifier {
 
         logger.d('Incomplete or invalid JSON received: $data');
 
-        SnackBarHelpers.showSnackBar(
-          // ignore: use_build_context_synchronously
-          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-              .snackBarErrorTitle,
-          // ignore: use_build_context_synchronously
-          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-              .failedToPullModelSnackBar,
-          SnackbarContentType.failure,
-        );
+        if (scaffoldMessengerKey.currentState!.context.mounted) {
+          final context = scaffoldMessengerKey.currentState!.context;
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(context).snackBarErrorTitle,
+            AppLocalizations.of(context).failedToPullModelSnackBar,
+            SnackbarContentType.failure,
+          );
+        }
       }
     }
 
@@ -214,22 +207,16 @@ class OllamaAPIProvider extends ChangeNotifier {
       await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
-    SnackBarHelpers.showSnackBar(
-      // ignore: use_build_context_synchronously
-      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-          .snackBarSuccessTitle,
-      // ignore: use_build_context_synchronously
-      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-          .modelPulledSuccessfullySnackBar,
-      SnackbarContentType.success,
-    );
+    if (scaffoldMessengerKey.currentState!.context.mounted) {
+      final context = scaffoldMessengerKey.currentState!.context;
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).snackBarSuccessTitle,
+        AppLocalizations.of(context).modelPulledSuccessfullySnackBar,
+        SnackbarContentType.success,
+      );
+    }
 
-    sleep(
-      const Duration(
-        seconds: 1,
-        milliseconds: 500,
-      ),
-    );
+    sleep(const Duration(seconds: 1, milliseconds: 500));
 
     await updateList();
 
@@ -250,15 +237,14 @@ class OllamaAPIProvider extends ChangeNotifier {
 
     final request = http.Request('POST', Uri.parse('$_api/push'));
     request.headers['Content-Type'] = 'application/json';
-    request.body = jsonEncode({
-      'name': name,
-    });
+    request.body = jsonEncode({'name': name});
 
     final response = await request.send();
 
     if (response.statusCode != 200) {
-      logger
-          .e('Failed to push model $name, status code: ${response.statusCode}');
+      logger.e(
+        'Failed to push model $name, status code: ${response.statusCode}',
+      );
       return;
     }
 
@@ -308,15 +294,14 @@ class OllamaAPIProvider extends ChangeNotifier {
 
         logger.d('Incomplete or invalid JSON received: $data');
 
-        SnackBarHelpers.showSnackBar(
-          // ignore: use_build_context_synchronously
-          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-              .snackBarErrorTitle,
-          // ignore: use_build_context_synchronously
-          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-              .failedToPushModelSnackBar,
-          SnackbarContentType.failure,
-        );
+        if (scaffoldMessengerKey.currentState!.context.mounted) {
+          final context = scaffoldMessengerKey.currentState!.context;
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(context).snackBarErrorTitle,
+            AppLocalizations.of(context).failedToPushModelSnackBar,
+            SnackbarContentType.failure,
+          );
+        }
       }
     }
 
@@ -325,22 +310,16 @@ class OllamaAPIProvider extends ChangeNotifier {
       await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
-    SnackBarHelpers.showSnackBar(
-      // ignore: use_build_context_synchronously
-      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-          .snackBarSuccessTitle,
-      // ignore: use_build_context_synchronously
-      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-          .modelPushedSuccessfullySnackBar,
-      SnackbarContentType.success,
-    );
+    if (scaffoldMessengerKey.currentState!.context.mounted) {
+      final context = scaffoldMessengerKey.currentState!.context;
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).snackBarSuccessTitle,
+        AppLocalizations.of(context).modelPushedSuccessfullySnackBar,
+        SnackbarContentType.success,
+      );
+    }
 
-    sleep(
-      const Duration(
-        seconds: 1,
-        milliseconds: 500,
-      ),
-    );
+    sleep(const Duration(seconds: 1, milliseconds: 500));
 
     await updateList();
 
@@ -362,10 +341,7 @@ class OllamaAPIProvider extends ChangeNotifier {
 
     final request = http.Request('POST', Uri.parse('$_api/create'));
     request.headers['Content-Type'] = 'application/json';
-    request.body = jsonEncode({
-      'name': name,
-      'modelfile': modelfile,
-    });
+    request.body = jsonEncode({'name': name, 'modelfile': modelfile});
 
     final response = await request.send();
 
@@ -420,15 +396,15 @@ class OllamaAPIProvider extends ChangeNotifier {
 
         logger.d('Incomplete or invalid JSON received: $data');
 
-        SnackBarHelpers.showSnackBar(
-          // ignore: use_build_context_synchronously
-          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-              .snackBarErrorTitle,
-          // ignore: use_build_context_synchronously
-          AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-              .failedToCreateModelSnackBar,
-          SnackbarContentType.failure,
-        );
+        if (scaffoldMessengerKey.currentState!.context.mounted) {
+          final context = scaffoldMessengerKey.currentState!.context;
+          SnackBarHelpers.showSnackBar(
+            AppLocalizations.of(context).snackBarErrorTitle,
+
+            AppLocalizations.of(context).failedToCreateModelSnackBar,
+            SnackbarContentType.failure,
+          );
+        }
       }
     }
 
@@ -437,22 +413,16 @@ class OllamaAPIProvider extends ChangeNotifier {
       await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     }
 
-    SnackBarHelpers.showSnackBar(
-      // ignore: use_build_context_synchronously
-      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-          .snackBarSuccessTitle,
-      // ignore: use_build_context_synchronously
-      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-          .modelCreatedSuccessfullySnackBar,
-      SnackbarContentType.success,
-    );
+    if (scaffoldMessengerKey.currentState!.context.mounted) {
+      final context = scaffoldMessengerKey.currentState!.context;
+      SnackBarHelpers.showSnackBar(
+        AppLocalizations.of(context).snackBarSuccessTitle,
+        AppLocalizations.of(context).modelCreatedSuccessfullySnackBar,
+        SnackbarContentType.success,
+      );
+    }
 
-    sleep(
-      const Duration(
-        seconds: 1,
-        milliseconds: 500,
-      ),
-    );
+    sleep(const Duration(seconds: 1, milliseconds: 500));
 
     await updateList();
 

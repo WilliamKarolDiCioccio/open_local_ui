@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:gap/gap.dart';
 
 class Preference {
   final IconData icon;
@@ -78,77 +77,72 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
         final isSelected = _selectedIndices.contains(index);
         return GestureDetector(
           onTap: () => _onCardTapped(index),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? AdaptiveTheme.of(context)
-                      .theme
-                      .buttonTheme
-                      .colorScheme!
-                      .primary
-                  : AdaptiveTheme.of(
-                      context,
-                    ).theme.cardColor,
-              borderRadius: BorderRadius.circular(12.0),
-              boxShadow: isSelected
-                  ? [
-                      BoxShadow(
-                        color: AdaptiveTheme.of(context)
-                            .theme
-                            .buttonTheme
-                            .colorScheme!
-                            .primary
-                            .withAlpha((255 * 0.5).toInt()),
-                        blurRadius: 10.0,
-                        offset: const Offset(0, 5),
-                      ),
-                    ]
-                  : [
-                      const BoxShadow(
-                        blurRadius: 5.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    widget.preferences[index].icon,
-                    size: 50,
-                    color: _getCardContentColor(context, isSelected),
-                  ),
-                  const Gap(8),
-                  Text(
-                    widget.preferences[index].title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: _getCardContentColor(context, isSelected),
+          child:
+              AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? AdaptiveTheme.of(
+                              context,
+                            ).theme.buttonTheme.colorScheme!.primary
+                          : AdaptiveTheme.of(context).theme.cardColor,
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: AdaptiveTheme.of(context)
+                                    .theme
+                                    .buttonTheme
+                                    .colorScheme!
+                                    .primary
+                                    .withAlpha((255 * 0.5).toInt()),
+                                blurRadius: 10.0,
+                                offset: const Offset(0, 5),
+                              ),
+                            ]
+                          : [
+                              const BoxShadow(
+                                blurRadius: 5.0,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
                     ),
-                  ),
-                  const Gap(8),
-                  Text(
-                    widget.preferences[index].description,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: _getCardContentColor(context, isSelected),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            widget.preferences[index].icon,
+                            size: 50,
+                            color: _getCardContentColor(context, isSelected),
+                          ),
+
+                          Text(
+                            widget.preferences[index].title,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: _getCardContentColor(context, isSelected),
+                            ),
+                          ),
+
+                          Text(
+                            widget.preferences[index].description,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: _getCardContentColor(context, isSelected),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          )
-              .animate(
-                delay: 250.ms + ((Random().nextInt(4) + 1) * 100).ms,
-              )
-              .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
-              .fade(),
+                  )
+                  .animate(delay: 250.ms + ((Random().nextInt(4) + 1) * 100).ms)
+                  .scaleXY(begin: 1.1, curve: Curves.easeOutBack)
+                  .fade(),
         );
       },
     );

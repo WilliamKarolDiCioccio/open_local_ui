@@ -4,20 +4,11 @@ import 'package:flutter/services.dart';
 
 import 'package:open_local_ui/core/http.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum AssetSource {
-  local,
-  remote,
-}
+enum AssetSource { local, remote }
 
-enum AssetType {
-  raw,
-  json,
-  binary,
-  rivefile,
-}
+enum AssetType { raw, json, binary }
 
 /// Manages the assets used in the application.
 ///
@@ -89,19 +80,7 @@ class AssetManager {
     return _assetRegistry[key];
   }
 
-  /// Retrieves an asset from the asset pool in the RiveFile format.
-  ///
-  /// The [key] parameter should be a string representing the path of the asset to be retrieved.
-  ///
-  /// The method returns a [RiveFile] that represents the asset in RiveFile format.
-  static RiveFile _getAssetAsRiveFile(String key) {
-    return _getRawAsset(key) as RiveFile;
-  }
-
-  static dynamic getAsset(
-    String key, {
-    required AssetType type,
-  }) {
+  static dynamic getAsset(String key, {required AssetType type}) {
     switch (type) {
       case AssetType.raw:
         return _getRawAsset(key);
@@ -109,8 +88,6 @@ class AssetManager {
         return _getAssetAsJson(key);
       case AssetType.binary:
         return _getAssetAsBytes(key);
-      case AssetType.rivefile:
-        return _getAssetAsRiveFile(key);
     }
   }
 
@@ -152,15 +129,12 @@ class AssetManager {
             case AssetType.binary:
               assetContent = await rootBundle.load(key);
               break;
-            case AssetType.rivefile:
-              assetContent = RiveFile.import(await rootBundle.load(key));
-              break;
           }
           break;
         case AssetSource.remote:
-          assetContent = await HTTPHelpers.get(key).then(
-            (response) => response.body,
-          );
+          assetContent = await HTTPHelpers.get(
+            key,
+          ).then((response) => response.body);
           break;
       }
 

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import '../../generated/i18n/app_localizations.dart';
+import '../../localization/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_local_ui/constants/flutter.dart';
 import 'package:open_local_ui/core/github.dart';
@@ -58,12 +58,7 @@ class UpdateHelper {
   static Future<void> _windowsDownloadAndInstallOllama() async {
     final wingetInstallResult = await ProcessHelpers.runShellCommand(
       'winget',
-      arguments: [
-        'upgrade',
-        '-e',
-        '--id',
-        'Ollama.Ollama',
-      ],
+      arguments: ['upgrade', '-e', '--id', 'Ollama.Ollama'],
     );
 
     if (wingetInstallResult.contains('Successfully installed')) {
@@ -82,9 +77,10 @@ class UpdateHelper {
     logger.d('Current version: $currentVersion');
     logger.d('Latest available version: $newVersion');
 
-    final maxLength = [currentVersion.length, newVersion.length].reduce(
-      (a, b) => a > b ? a : b,
-    );
+    final maxLength = [
+      currentVersion.length,
+      newVersion.length,
+    ].reduce((a, b) => a > b ? a : b);
 
     for (var i = 0; i < maxLength; i++) {
       final current = i < currentVersion.length ? currentVersion[i] : 0;
@@ -204,10 +200,10 @@ class UpdateHelper {
     final String powershellCommand =
         'Invoke-WmiMethod -Class Win32_Process -Name Create -ArgumentList "$filePath"';
 
-    final result = await Process.run(
-      'powershell',
-      ['-Command', powershellCommand],
-    );
+    final result = await Process.run('powershell', [
+      '-Command',
+      powershellCommand,
+    ]);
 
     if (result.exitCode != 0) {
       logger.e('Failed to run installer: ${result.exitCode}');
@@ -221,11 +217,13 @@ class UpdateHelper {
     SnackBarHelpers.showSnackBar(
       duration: const Duration(seconds: 10),
       // ignore: use_build_context_synchronously
-      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-          .snackBarErrorTitle,
+      AppLocalizations.of(
+        scaffoldMessengerKey.currentState!.context,
+      ).snackBarErrorTitle,
       // ignore: use_build_context_synchronously
-      AppLocalizations.of(scaffoldMessengerKey.currentState!.context)
-          .somethingWentWrongSnackBar,
+      AppLocalizations.of(
+        scaffoldMessengerKey.currentState!.context,
+      ).somethingWentWrongSnackBar,
       SnackbarContentType.failure,
     );
   }

@@ -25,7 +25,6 @@ class OllamaPullResponse extends HTTPStreamResponse {
 }
 
 @JsonSerializable()
-
 /// Represents a response from the Ollama API when pushing a model to the registry.
 ///
 /// This class extends the [HTTPStreamResponse] class and provides additional functionality specific to OllamaPush responses.

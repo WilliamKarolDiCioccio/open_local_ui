@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 
 import 'package:open_local_ui/backend/private/providers/chat.dart';
 import 'package:open_local_ui/frontend/widgets/chat_example_questions.dart';
@@ -47,25 +46,24 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.keyN, control: true):
-            context.read<ChatProvider>().newSession,
+        const SingleActivator(LogicalKeyboardKey.keyN, control: true): context
+            .read<ChatProvider>()
+            .newSession,
       },
       child: Column(
         children: [
           const ChatToolbarWidget(),
-          const Gap(16.0),
+
           Expanded(
             child: FractionallySizedBox(
               widthFactor: 0.6,
               child: _buildInnerWidget(context),
             ),
           ),
-          const Gap(16.0),
+
           FractionallySizedBox(
             widthFactor: 0.6,
-            child: ChatInputFieldWidget(
-              hasUserInput: hasUserInput,
-            ),
+            child: ChatInputFieldWidget(hasUserInput: hasUserInput),
           ),
         ],
       ),

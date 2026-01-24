@@ -12,9 +12,10 @@
 #include <bitsdojo_window_windows/bitsdojo_window_plugin.h>
 #include <discord_rpc/discord_rpc_plugin.h>
 #include <file_selector_windows/file_selector_windows.h>
+#include <flutter_localization/flutter_localization_plugin_c_api.h>
 #include <gpu_info/gpu_info_plugin_c_api.h>
 #include <irondash_engine_context/irondash_engine_context_plugin_c_api.h>
-#include <rive_common/rive_plugin.h>
+#include <rive_native/rive_native_plugin.h>
 #include <sqlite3_flutter_libs/sqlite3_flutter_libs_plugin.h>
 #include <super_native_extensions/super_native_extensions_plugin_c_api.h>
 #include <system_theme/system_theme_plugin.h>
@@ -34,12 +35,14 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("DiscordRpcPlugin"));
   FileSelectorWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FileSelectorWindows"));
+  FlutterLocalizationPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FlutterLocalizationPluginCApi"));
   GpuInfoPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("GpuInfoPluginCApi"));
   IrondashEngineContextPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("IrondashEngineContextPluginCApi"));
-  RivePluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("RivePlugin"));
+  RiveNativePluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("RiveNativePlugin"));
   Sqlite3FlutterLibsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("Sqlite3FlutterLibsPlugin"));
   SuperNativeExtensionsPluginCApiRegisterWithRegistrar(

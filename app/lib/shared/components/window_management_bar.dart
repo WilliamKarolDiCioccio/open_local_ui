@@ -11,29 +11,30 @@ class WindowManagementBarComponent extends StatelessWidget {
     return WindowTitleBarBox(
       child: Row(
         children: [
-          Flexible(
-            child: MoveWindow(),
-          ),
+          Flexible(child: MoveWindow()),
           Row(
             children: [
               MinimizeWindowButton(
                 colors: WindowButtonColors(
-                  iconNormal:
-                      AdaptiveTheme.of(context).theme.colorScheme.secondary,
+                  iconNormal: AdaptiveTheme.of(
+                    context,
+                  ).theme.colorScheme.secondary,
                   iconMouseOver: Colors.green,
                 ),
               ),
               MaximizeWindowButton(
                 colors: WindowButtonColors(
-                  iconNormal:
-                      AdaptiveTheme.of(context).theme.colorScheme.secondary,
+                  iconNormal: AdaptiveTheme.of(
+                    context,
+                  ).theme.colorScheme.secondary,
                   iconMouseOver: Colors.orange,
                 ),
               ),
               CloseWindowButton(
                 colors: WindowButtonColors(
-                  iconNormal:
-                      AdaptiveTheme.of(context).theme.colorScheme.secondary,
+                  iconNormal: AdaptiveTheme.of(
+                    context,
+                  ).theme.colorScheme.secondary,
                   iconMouseOver: Colors.red,
                 ),
               ),

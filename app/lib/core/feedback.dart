@@ -47,9 +47,7 @@ class FeedbackHelpers {
     final tempDir = await getTemporaryDirectory();
     final filename = DateTime.now().millisecondsSinceEpoch;
 
-    final screenshotFile = File(
-      '${tempDir.path}/feedback-screenshot.temp.jpg',
-    );
+    final screenshotFile = File('${tempDir.path}/feedback-screenshot.temp.jpg');
 
     if (!await screenshotFile.exists()) {
       await screenshotFile.parent.create(recursive: true);
@@ -73,18 +71,17 @@ class FeedbackHelpers {
         .from('feedback')
         .upload('logs/$filename.txt', getLogFile());
 
-    final logUrl =
-        supabase.storage.from('feedback').getPublicUrl('logs/$filename.txt');
+    final logUrl = supabase.storage
+        .from('feedback')
+        .getPublicUrl('logs/$filename.txt');
 
-    logger.d(
-      '''
+    logger.d('''
       Feedback attachment uploaded successfully!
       \n
       Screenshot: $screenshotUrl
       \n
       Log: $logUrl
-      ''',
-    );
+      ''');
 
     final deviceInfo = await _getDeviceInfo();
 
