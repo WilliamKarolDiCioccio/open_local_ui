@@ -4,35 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:feedback/feedback.dart';
-import '../../localization/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:form_builder_validators/localization/l10n.dart';
-import 'package:get_it/get_it.dart';
-import 'package:open_local_ui/backend/private/providers/locale.dart';
-import 'package:open_local_ui/backend/private/providers/ollama_api.dart';
-import 'package:open_local_ui/backend/private/repositories/chat_sessions.dart';
-import 'package:open_local_ui/backend/private/repositories/ollama_models.dart';
-import 'package:open_local_ui/constants/constants.dart';
-import 'package:open_local_ui/core/json_extensions.dart';
+import 'package:open_local_ui/app.dart';
+import 'package:open_local_ui/bootstrap/app_bootstrap.dart';
 import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/frontend/screens/splash.dart';
+import 'package:open_local_ui/core/providers/locale.dart';
+import 'package:open_local_ui/core/constants/constants.dart';
+import 'package:open_local_ui/core/utils/json_extensions.dart';
+import 'package:open_local_ui/shared/widgets/bootstrap_error.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_theme/system_theme.dart';
 
 void main() async {
-  /// All loading and initialization code that does not return or yield data
-  /// needed for the material app or locale provider creation must be placed in the splash screen.
+  final bootstrap = AppBootstrap();
+  final result = await bootstrap.create();
 
-  WidgetsFlutterBinding.ensureInitialized();
+  if (result.hasError) {
+    runApp(BootstrapErrorWidget(error: result.error));
+    return;
+  }
+
+  // Setup theme accent color syncing with system
 
   final prefs = await SharedPreferences.getInstance();
-
-  // Debugging and tracing
-
-  await initLogger();
-
-  // Theme
 
   if (defaultTargetPlatform.supportsAccentColor) {
     await SystemTheme.accentColor.load();
@@ -54,7 +48,7 @@ void main() async {
           ),
         );
 
-        logger.i('System accent color changed: ${event.accent}');
+        appLogger.i('System accent color changed: ${event.accent}');
       }
     });
   }
@@ -68,6 +62,8 @@ void main() async {
   } else {
     themeAccentColor = SystemTheme.accentColor.accent;
   }
+
+  // Get saved theme mode
 
   final themeMode =
       await AdaptiveTheme.getThemeMode() ?? AdaptiveThemeMode.light;
@@ -91,7 +87,7 @@ void main() async {
       ],
       child: BetterFeedback(
         theme: FeedbackThemeData(),
-        child: MyApp(
+        child: OpenLocalUIApp(
           themeAccentColor: themeAccentColor,
           themeMode: themeMode,
           userOnboarded: kDebugMode ? false : userOnboarded,
@@ -108,68 +104,4 @@ void main() async {
     appWindow.title = 'OpenLocalUI';
     appWindow.show();
   });
-}
-
-class MyApp extends StatefulWidget {
-  final Color themeAccentColor;
-  final AdaptiveThemeMode themeMode;
-  final bool userOnboarded;
-
-  const MyApp({
-    super.key,
-    required this.themeAccentColor,
-    required this.themeMode,
-    required this.userOnboarded,
-  });
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void dispose() {
-    GetIt.instance<ChatSessionsDB>().deinit();
-    GetIt.instance<OllamaModelsDB>().deinit();
-    GetIt.instance<OllamaAPIProvider>().stopOllama();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AdaptiveTheme(
-      light: ThemeData(
-        fontFamily: 'ValeraRound',
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorSchemeSeed: widget.themeAccentColor,
-      ),
-      dark: ThemeData(
-        fontFamily: 'ValeraRound',
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorSchemeSeed: widget.themeAccentColor,
-      ),
-      initial: widget.themeMode,
-      debugShowFloatingThemeButton: false,
-      builder: (lightTheme, darkTheme) => MaterialApp(
-        scaffoldMessengerKey: scaffoldMessengerKey,
-        title: 'OpenLocalUI',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        supportedLocales: languages,
-        locale: context.watch<LocaleProvider>().locale,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          FormBuilderLocalizations.delegate,
-        ],
-        home: SplashScreen(userOnboarded: widget.userOnboarded),
-        debugShowCheckedModeBanner: kDebugMode,
-      ),
-    );
-  }
 }
