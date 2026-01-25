@@ -70,6 +70,9 @@ dependencies:
   visibility_detector: ^0.4.0+2
   win32_registry: ^2.1.0
   windows_taskbar: ^1.1.2
+  rust_lib_open_local_ui:
+    path: rust_builder
+  flutter_rust_bridge: 2.11.1
 
 dev_dependencies:
   freezed: ^2.5.2
@@ -82,6 +85,10 @@ dev_dependencies:
   envied_generator: ^1.1.1
   flutter_launcher_icons: ^0.14.4
   msix: ^3.16.13
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
 
 flutter:
   generate: true
