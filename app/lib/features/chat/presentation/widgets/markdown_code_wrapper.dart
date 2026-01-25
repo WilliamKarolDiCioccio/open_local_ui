@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_sticky_widgets/flutter_sticky_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:open_local_ui/core/constants/constants.dart';
 import 'package:open_local_ui/core/assets_manager.dart';
+import 'package:open_local_ui/core/constants/constants.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:unicons/unicons.dart';
 import 'package:uuid/uuid.dart';
 
@@ -58,7 +57,7 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
 
     Clipboard.setData(ClipboardData(text: widget.text));
 
-    SnackBarHelper.showSnackBar(
+    SnackbarUtils.showSnackBar(
       AppLocalizations.of(context).snackBarSuccessTitle,
       AppLocalizations.of(context).codeCopiedSnackBar,
       SnackbarContentType.success,
@@ -101,7 +100,7 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
 
       await file.writeAsString(widget.text);
 
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(
           scaffoldMessengerKey.currentContext!,
         ).snackBarSuccessTitle,
@@ -109,7 +108,7 @@ class _CodeWrapperState extends State<MarkdownCodeWrapperWidget> {
         SnackbarContentType.success,
       );
     } else {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(
           scaffoldMessengerKey.currentContext!,
         ).snackBarErrorTitle,

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:open_local_ui/core/helpers/http.dart';
+import 'package:open_local_ui/core/utils/http.dart';
 
 part 'ollama_responses.g.dart';
 

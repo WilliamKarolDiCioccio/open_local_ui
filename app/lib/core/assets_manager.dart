@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-
-import 'package:open_local_ui/core/helpers/http.dart';
 import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/utils/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AssetSource { local, remote }
@@ -132,7 +131,7 @@ class AssetsManager {
           }
           break;
         case AssetSource.remote:
-          assetContent = await HTTPHelper.get(
+          assetContent = await HTTPUtils.get(
             key,
           ).then((response) => response.body);
           break;

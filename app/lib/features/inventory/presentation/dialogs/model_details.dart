@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/core/models/model.dart';
 import 'package:open_local_ui/core/repositories/ollama_models.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 
@@ -126,7 +125,7 @@ Quantization level: ${widget.model.details.quantizationLevel}
 
                 Clipboard.setData(ClipboardData(text: details));
 
-                SnackBarHelper.showSnackBar(
+                SnackbarUtils.showSnackBar(
                   AppLocalizations.of(context).snackBarSuccessTitle,
                   AppLocalizations.of(context).digestCopiedSnackBar,
                   SnackbarContentType.success,

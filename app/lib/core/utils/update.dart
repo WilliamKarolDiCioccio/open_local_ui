@@ -1,20 +1,20 @@
 import 'dart:io';
 
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:http/http.dart' as http;
-import 'package:open_local_ui/core/constants/flutter.dart';
-import 'package:open_local_ui/core/helpers/github.dart';
-import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/core/helpers/process.dart';
 import 'package:open_local_ui/bootstrap/env.dart';
+import 'package:open_local_ui/core/constants/flutter.dart';
+import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/utils/github.dart';
+import 'package:open_local_ui/core/utils/process.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A helper class for handling updates.
 ///
-/// The [UpdateHelper] class provides methods for checking and installing updates for the application and the Ollama tool.
-class UpdateHelper {
+/// The [UpdateUtils] class provides methods for checking and installing updates for the application and the Ollama tool.
+class UpdateUtils {
   static late GitHubRelease _latestRelease;
 
   /// Checks if a new version of the Ollama tool is available.
@@ -30,7 +30,7 @@ class UpdateHelper {
 
   /// The method uses the `winget` command to check for updates.
   static Future<bool> _windowsIsOllamaUpdateAvailable() async {
-    final wingetUpgradesList = await ProcessHelper.runShellCommand(
+    final wingetUpgradesList = await ProcessUtils.runShellCommand(
       'winget',
       arguments: ['upgrade'],
     );
@@ -56,7 +56,7 @@ class UpdateHelper {
 
   /// The method uses the `winget` command to download and install the latest version of the Ollama tool.
   static Future<void> _windowsDownloadAndInstallOllama() async {
-    final wingetInstallResult = await ProcessHelper.runShellCommand(
+    final wingetInstallResult = await ProcessUtils.runShellCommand(
       'winget',
       arguments: ['upgrade', '-e', '--id', 'Ollama.Ollama'],
     );
@@ -100,7 +100,7 @@ class UpdateHelper {
   ///
   /// Returns a [Future] that resolves to a [bool] indicating whether a new version is available.
   ///
-  /// The method uses the [GitHubHelper] class to fetch the latest release and compares it to the current version.
+  /// The method uses the [GitHubAPIUtils] class to fetch the latest release and compares it to the current version.
   /// It then dispatches the check to the platform-specific method.
   static Future<bool> isAppUpdateAvailable() async {
     if (!Platform.isWindows) {
@@ -111,7 +111,7 @@ class UpdateHelper {
       return false;
     }
 
-    final releases = await GitHubHelper.listReleases();
+    final releases = await GitHubAPIUtils.listReleases();
 
     if (releases.isEmpty) {
       appLogger.e('Failed to list releases');
@@ -214,7 +214,7 @@ class UpdateHelper {
   }
 
   static void _showErrorMessage() {
-    SnackBarHelper.showSnackBar(
+    SnackbarUtils.showSnackBar(
       duration: const Duration(seconds: 10),
       // ignore: use_build_context_synchronously
       AppLocalizations.of(

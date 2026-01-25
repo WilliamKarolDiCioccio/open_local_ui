@@ -1,13 +1,12 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -196,7 +195,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
   void _sendMessage(String message) async {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<OllamaAPIProvider>().modelsCount == 0) {
-        return SnackBarHelper.showSnackBar(
+        return SnackbarUtils.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).noModelsAvailableSnackBar,
           SnackbarContentType.failure,
@@ -206,7 +205,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
         await context.read<ChatProvider>().setModel(models.first.name);
       }
     } else if (context.read<ChatProvider>().isGenerating) {
-      return SnackBarHelper.showSnackBar(
+      return SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
@@ -220,7 +219,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
   void _addEditableMessage(String message) {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<OllamaAPIProvider>().modelsCount == 0) {
-        return SnackBarHelper.showSnackBar(
+        return SnackbarUtils.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).noModelsAvailableSnackBar,
           SnackbarContentType.failure,
@@ -230,7 +229,7 @@ class _ChatExampleQuestionCardState extends State<ChatExampleQuestionCard> {
         context.read<ChatProvider>().setModel(models.first.name);
       }
     } else if (context.read<ChatProvider>().isGenerating) {
-      return SnackBarHelper.showSnackBar(
+      return SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,

@@ -2,17 +2,16 @@
 
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:open_local_ui/core/constants/languages.dart';
+import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/providers/model_settings.dart';
-import 'package:open_local_ui/core/constants/languages.dart';
-import 'package:open_local_ui/core/helpers/format.dart';
-import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/utils/format.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/shared/dialogs/confirmation.dart';
 import 'package:open_local_ui/shared/dialogs/text_field.dart';
 import 'package:provider/provider.dart';
@@ -214,13 +213,13 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
         .getModelSettingsProfileFile(widget.modelName, profileName);
 
     if (await launchUrl(file.uri)) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarSuccessTitle,
         AppLocalizations.of(context).profileSharedSnackBar,
         SnackbarContentType.success,
       );
     } else {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).failedToShareProfileSnackBar,
         SnackbarContentType.failure,
@@ -353,7 +352,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                                           AppLocalizations.of(
                                             context,
                                           ).modifiedAtTextShared(
-                                            FormatHelper.standardDate(
+                                            FormatUtils.standardDate(
                                               lastAccessTimestamp,
                                             ),
                                           ),

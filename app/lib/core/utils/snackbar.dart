@@ -3,7 +3,7 @@ import 'package:open_local_ui/core/constants/flutter.dart';
 
 enum SnackbarContentType { success, failure, warning, info }
 
-class SnackBarHelper {
+class SnackbarUtils {
   static void showSnackBar(
     String title,
     String message,

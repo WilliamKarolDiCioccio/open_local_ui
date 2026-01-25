@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
+import 'package:open_local_ui/core/image_cache_manager.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
-import 'package:open_local_ui/core/helpers/image.dart';
-import 'package:open_local_ui/features/chat/presentation/dialogs/attachments_dropzone.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/features/chat/presentation/dialogs/attachments_dropzone.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -50,7 +49,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
   void _sendMessage() {
     if (!context.read<ChatProvider>().isModelSelected) {
       if (context.read<OllamaAPIProvider>().modelsCount == 0) {
-        return SnackBarHelper.showSnackBar(
+        return SnackbarUtils.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).noModelsAvailableSnackBar,
           SnackbarContentType.failure,
@@ -60,7 +59,7 @@ class _ChatInputFieldWidgetState extends State<ChatInputFieldWidget> {
         context.read<ChatProvider>().setModel(models.first.name);
       }
     } else if (context.read<ChatProvider>().isGenerating) {
-      return SnackBarHelper.showSnackBar(
+      return SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,

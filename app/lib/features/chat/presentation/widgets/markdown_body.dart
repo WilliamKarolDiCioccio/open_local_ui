@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_highlight/themes/atom-one-dark.dart';
 // ignore: depend_on_referenced_packages
@@ -54,7 +53,7 @@ class MarkdownBodyWidget extends StatelessWidget {
               try {
                 launchUrl(Uri.parse(url));
               } catch (e) {
-                SnackBarHelper.showSnackBar(
+                SnackbarUtils.showSnackBar(
                   AppLocalizations.of(context).snackBarErrorTitle,
                   AppLocalizations.of(context).somethingWentWrongSnackBar,
                   SnackbarContentType.failure,

@@ -2,18 +2,17 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image/image.dart' as img;
-import 'package:open_local_ui/core/helpers/http.dart';
 import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/utils/http.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 import 'package:unicons/unicons.dart';
 
@@ -103,7 +102,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
             url = _extractUrlFromQuery(text) ?? text;
           }
 
-          final response = await HTTPHelper.get(url);
+          final response = await HTTPUtils.get(url);
 
           if (response.statusCode != 200) {
             setState(() {

@@ -47,8 +47,8 @@ class HTTPStreamResponse extends HTTPResponse {
 
 /// A helper class for handling HTTP requests.
 ///
-/// The [HTTPHelper] class provides basic wrappers around the `http` package for making HTTP requests.
-class HTTPHelper {
+/// The [HTTPUtils] class provides basic wrappers around the `http` package for making HTTP requests.
+class HTTPUtils {
   /// Sends a GET request to the given [url].
   ///
   /// See https://restfulapi.net/http-methods/#get.

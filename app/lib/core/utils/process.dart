@@ -10,8 +10,8 @@ class _IsolateData {
   _IsolateData(this.sendPort, this.command, this.arguments);
 }
 
-/// A helper class for working with processes and shell commands.
-class ProcessHelper {
+/// A utility class for process-related operations.
+class ProcessUtils {
   /// Runs a shell command and returns the output as a string.
   ///
   /// Returns a [Future] that completes with the output of the shell command.

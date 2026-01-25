@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:open_local_ui/core/helpers/update.dart';
+import 'package:open_local_ui/core/utils/update.dart';
 import 'package:open_local_ui/features/update/presentation/screens/update_in_progress.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 
 class UpdateDialog extends StatefulWidget {
   const UpdateDialog({super.key});
@@ -25,7 +24,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
   }
 
   Future<void> _checkForUpdates() async {
-    final bool isUpdateAvailable = await UpdateHelper.isAppUpdateAvailable();
+    final bool isUpdateAvailable = await UpdateUtils.isAppUpdateAvailable();
     setState(() {
       _isUpdateAvailable = isUpdateAvailable;
       _isLoading = false;
@@ -71,7 +70,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
             if (_isUpdateAvailable) ...[
               TextButton(
                 onPressed: () {
-                  UpdateHelper.skipUpdate();
+                  UpdateUtils.skipUpdate();
                   Navigator.of(context).pop();
                 },
                 child: Text(AppLocalizations.of(context).dialogSkipButton),

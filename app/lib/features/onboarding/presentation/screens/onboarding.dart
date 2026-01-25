@@ -1,31 +1,26 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flex_color_picker/flex_color_picker.dart' as fcp;
+import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:open_local_ui/core/helpers/process.dart';
+import 'package:open_local_ui/core/helpers/json_color.dart';
+import 'package:open_local_ui/core/utils/process.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/features/dashboard/presentation/screens/dashboard.dart';
+import 'package:open_local_ui/features/onboarding/presentation/widgets/preference_selector.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/shared/widgets/rive_animation.dart';
 import 'package:open_local_ui/shared/widgets/typewriter_text.dart';
 import 'package:open_local_ui/shared/widgets/window_management_bar.dart';
-import 'package:open_local_ui/shared/dialogs/color_picker.dart';
-import 'package:open_local_ui/features/dashboard/presentation/screens/dashboard.dart';
-import 'package:open_local_ui/features/onboarding/presentation/widgets/preference_selector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_info2/system_info2.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:unicons/unicons.dart';
-
-import '../../../../core/utils/json_extensions.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -282,7 +277,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
 
   Future<bool> _isOllamaInstalled() async {
     if (Platform.isWindows) {
-      final result = await ProcessHelper.runShellCommand(
+      final result = await ProcessUtils.runShellCommand(
         'winget',
         arguments: ['list'],
       );
@@ -299,7 +294,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
         _isInstalling = true;
       });
 
-      await ProcessHelper.runShellCommand(
+      await ProcessUtils.runShellCommand(
         'winget',
         arguments: ['install', '-e', '--id', 'Ollama.Ollama'],
       );
@@ -445,15 +440,19 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
     final gpuName = bestGpu?.deviceName ?? "Unknown GPU";
     final gpuMemory = bestGpu?.memoryAmount ?? 0;
 
-    return AppLocalizations.of(context).systemInfo(
-      osName,
-      osVersion,
-      cpuName,
-      (cpuCores * 2),
-      gpuName,
-      (totalMemory / 1024).round(),
-      (gpuMemory / 1024).round(),
-    );
+    if (mounted) {
+      return AppLocalizations.of(context).systemInfo(
+        osName,
+        osVersion,
+        cpuName,
+        (cpuCores * 2),
+        gpuName,
+        (totalMemory / 1024).round(),
+        (gpuMemory / 1024).round(),
+      );
+    } else {
+      return 'Unable to retrieve system information.';
+    }
   }
 
   @override
@@ -469,7 +468,7 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
           );
         } else if (snapshot.hasError) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            SnackBarHelper.showSnackBar(
+            SnackbarUtils.showSnackBar(
               AppLocalizations.of(context).snackBarErrorTitle,
               AppLocalizations.of(context).errorRetrievingSystemInfoSnackBar,
               SnackbarContentType.failure,
@@ -503,9 +502,9 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
   Future<Color> _getAccent() async {
     final prefs = await SharedPreferences.getInstance();
-    return JSONColor.fromJson(
+    return JsonColorHelper.fromJson(
       prefs.getString('accent_color') ?? Colors.cyan.hex,
-    );
+    ).value;
   }
 
   void _setAccent(BuildContext context, Color color) {
@@ -605,20 +604,23 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
             GestureDetector(
               onTap: () async {
+                // ignore: use_build_context_synchronously
                 await showColorPickerDialog(context, await _getAccent()).then((
                   color,
                 ) async {
-                  if (color == null) return;
-
                   final prefs = await SharedPreferences.getInstance();
 
                   if ((prefs.getBool('sync_accent_color') ?? false) == false) {
+                    // ignore: use_build_context_synchronously
                     _setAccent(context, color);
                   } else {
                     setState(() {});
                   }
 
-                  await prefs.setString('accent_color', color.toJson(color));
+                  await prefs.setString(
+                    'accent_color',
+                    JsonColorHelper(color).toJson(),
+                  );
                 });
               },
               child: FutureBuilder(
@@ -664,14 +666,18 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
                       if (value) {
                         await prefs.setBool('sync_accent_color', true);
+                        // ignore: use_build_context_synchronously
                         _setAccent(context, SystemTheme.accentColor.accent);
                       } else {
                         final savedColorCode = prefs.getString('accent_color');
                         await prefs.setBool('sync_accent_color', false);
 
                         _setAccent(
+                          // ignore: use_build_context_synchronously
                           context,
-                          JSONColor.fromJson(savedColorCode ?? Colors.cyan.hex),
+                          JsonColorHelper.fromJson(
+                            savedColorCode ?? Colors.cyan.hex,
+                          ).value,
                         );
                       }
                     },

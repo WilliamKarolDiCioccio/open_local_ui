@@ -5,11 +5,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-
-import 'package:open_local_ui/localization/app_localizations.dart';
-import 'package:open_local_ui/core/models/model.dart';
 import 'package:open_local_ui/core/constants/constants.dart';
+import 'package:open_local_ui/core/models/model.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// A class for managing model settings within a Flutter app.
@@ -492,7 +491,7 @@ class ModelSettingsProvider extends ModelSettingsHandler with ChangeNotifier {
       case 'numGpu':
         super.modelSettingsMap[profile]!.numGpu = newValue;
         if (newValue == 0) {
-          SnackBarHelper.showSnackBar(
+          SnackbarUtils.showSnackBar(
             AppLocalizations.of(
               scaffoldMessengerKey.currentContext!,
             ).snackBarWarningTitle,

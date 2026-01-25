@@ -1,16 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:discord_rpc/discord_rpc.dart';
 import 'package:flex_color_picker/flex_color_picker.dart' as fcp;
-import 'package:open_local_ui/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:open_local_ui/bootstrap/env.dart';
+import 'package:open_local_ui/core/helpers/json_color.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/providers/locale.dart';
-import 'package:open_local_ui/core/utils/json_extensions.dart';
-import 'package:open_local_ui/bootstrap/env.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/shared/dialogs/color_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,9 +83,9 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
   Future<Color> _getAccent() async {
     final prefs = await SharedPreferences.getInstance();
-    return JSONColor.fromJson(
+    return JsonColorHelper.fromJson(
       prefs.getString('accent_color') ?? Colors.cyan.hex,
-    );
+    ).value;
   }
 
   void _setAccent(BuildContext context, Color color) {
@@ -199,7 +198,10 @@ class _ThemeSettingsState extends State<ThemeSettings> {
                     setState(() {});
                   }
 
-                  await prefs.setString('accent_color', color.toJson(color));
+                  await prefs.setString(
+                    'accent_color',
+                    JsonColorHelper(color).toJson(),
+                  );
                 });
               },
               child: FutureBuilder(
@@ -252,7 +254,9 @@ class _ThemeSettingsState extends State<ThemeSettings> {
 
                         _setAccent(
                           context,
-                          JSONColor.fromJson(savedColorCode ?? Colors.cyan.hex),
+                          JsonColorHelper.fromJson(
+                            savedColorCode ?? Colors.cyan.hex,
+                          ).value,
                         );
                       }
                     },

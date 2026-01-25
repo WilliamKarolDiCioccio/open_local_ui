@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:open_local_ui/core/helpers/github.dart';
+import 'package:open_local_ui/core/utils/github.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -120,7 +119,7 @@ class AboutPage extends StatelessWidget {
         ),
 
         FutureBuilder(
-          future: GitHubHelper.listRepositoryContributors(),
+          future: GitHubAPIUtils.listRepositoryContributors(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return SpinKitCircle(

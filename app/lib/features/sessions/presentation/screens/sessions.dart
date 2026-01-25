@@ -3,16 +3,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:open_local_ui/core/models/chat_session.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
-import 'package:open_local_ui/core/helpers/format.dart';
+import 'package:open_local_ui/core/utils/format.dart';
+import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/features/dashboard/presentation/screens/dashboard.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/shared/dialogs/confirmation.dart';
 import 'package:open_local_ui/shared/dialogs/text_field.dart';
-import 'package:open_local_ui/features/dashboard/presentation/screens/dashboard.dart';
-import 'package:open_local_ui/core/utils/snackbar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,8 +20,6 @@ import 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
 import 'package:unicons/unicons.dart';
 import 'package:units_converter/units_converter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:open_local_ui/localization/app_localizations.dart';
 
 enum SessionsSortBy { name, date, size }
 
@@ -262,7 +260,7 @@ class _SessionsPageState extends State<SessionsPage> {
                       DateTime.now().difference(session.createdAt).inDays > 6;
 
                   final sessionDateText = isOlderThanSixDays
-                      ? FormatHelper.standardDate(session.createdAt)
+                      ? FormatUtils.standardDate(session.createdAt)
                       : DateFormat('EEEE').format(session.createdAt);
 
                   final dateHeaderText = 'Before $sessionDateText';
@@ -320,7 +318,7 @@ class SessionListTile extends StatefulWidget {
 class _SessionListTileState extends State<SessionListTile> {
   Future<void> _setSession() async {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
@@ -333,7 +331,7 @@ class _SessionListTileState extends State<SessionListTile> {
 
   Future<void> _shareSession() async {
     if (widget.session.status == ChatSessionStatus.generating) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
@@ -348,13 +346,13 @@ class _SessionListTileState extends State<SessionListTile> {
       await file.writeAsString(widget.session.toJson().toString());
 
       if (await launchUrl(file.uri)) {
-        SnackBarHelper.showSnackBar(
+        SnackbarUtils.showSnackBar(
           AppLocalizations.of(context).snackBarSuccessTitle,
           AppLocalizations.of(context).sessionSharedSnackBar,
           SnackbarContentType.success,
         );
       } else {
-        SnackBarHelper.showSnackBar(
+        SnackbarUtils.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).failedToShareSessionSnackBar,
           SnackbarContentType.failure,
@@ -365,7 +363,7 @@ class _SessionListTileState extends State<SessionListTile> {
 
   Future<void> _deleteSession() async {
     if (widget.session.status == ChatSessionStatus.generating) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
@@ -383,7 +381,7 @@ class _SessionListTileState extends State<SessionListTile> {
       initialValue: widget.session.title,
       onConfirm: (newName) {
         if (widget.session.status == ChatSessionStatus.generating) {
-          SnackBarHelper.showSnackBar(
+          SnackbarUtils.showSnackBar(
             AppLocalizations.of(context).snackBarErrorTitle,
             AppLocalizations.of(context).modelIsGeneratingSnackBar,
             SnackbarContentType.failure,
@@ -406,7 +404,7 @@ class _SessionListTileState extends State<SessionListTile> {
       title: Text(widget.session.title),
       subtitle: Text(
         AppLocalizations.of(context).createdAtTextShared(
-          FormatHelper.standardDate(widget.session.createdAt),
+          FormatUtils.standardDate(widget.session.createdAt),
         ),
         style: const TextStyle(color: Colors.grey),
       ),

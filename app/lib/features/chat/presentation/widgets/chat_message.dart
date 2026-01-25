@@ -1,19 +1,17 @@
 import 'dart:io';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:adaptive_theme/adaptive_theme.dart';
-
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:open_local_ui/core/models/chat_message.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
-import 'package:open_local_ui/core/helpers/format.dart';
+import 'package:open_local_ui/core/utils/format.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
 import 'package:open_local_ui/features/chat/presentation/widgets/markdown_body.dart';
 import 'package:open_local_ui/features/chat/presentation/widgets/tts_player.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -45,7 +43,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
     Clipboard.setData(ClipboardData(text: widget.message.text));
 
-    SnackBarHelper.showSnackBar(
+    SnackbarUtils.showSnackBar(
       AppLocalizations.of(context).snackBarSuccessTitle,
       AppLocalizations.of(context).messageCopiedSnackBar,
       SnackbarContentType.success,
@@ -60,7 +58,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
   void _regenerateMessage() {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
@@ -80,7 +78,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
   void _sendEditedText() {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         '',
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
@@ -113,13 +111,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
         context.read<ChatProvider>().lastMessage!.uuid == widget.message.uuid;
 
     if (context.read<ChatProvider>().isGenerating && isLastMessage) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         '',
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
       );
     } else if (widget.message.text.isEmpty) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         '',
         AppLocalizations.of(context).nothingToSynthesizeSnackBar,
         SnackbarContentType.failure,
@@ -193,7 +191,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
               ),
 
               Text(
-                FormatHelper.standardDate(widget.message.createdAt),
+                FormatUtils.standardDate(widget.message.createdAt),
                 style: const TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w100,

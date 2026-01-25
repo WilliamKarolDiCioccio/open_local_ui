@@ -1,15 +1,15 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:open_local_ui/app.dart';
 import 'package:open_local_ui/bootstrap/app_bootstrap.dart';
+import 'package:open_local_ui/core/constants/constants.dart';
+import 'package:open_local_ui/core/helpers/json_color.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/providers/locale.dart';
-import 'package:open_local_ui/core/constants/constants.dart';
-import 'package:open_local_ui/core/utils/json_extensions.dart';
 import 'package:open_local_ui/shared/widgets/bootstrap_error.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,9 +56,9 @@ void main() async {
   late Color themeAccentColor;
 
   if ((prefs.getBool('sync_accent_color') ?? false) == false) {
-    themeAccentColor = JSONColor.fromJson(
-      prefs.getString('accent_color') ?? Colors.cyan.toJson(Colors.cyan),
-    );
+    themeAccentColor = JsonColorHelper.fromJson(
+      prefs.getString('accent_color') ?? Colors.cyan.hex,
+    ).value;
   } else {
     themeAccentColor = SystemTheme.accentColor.accent;
   }

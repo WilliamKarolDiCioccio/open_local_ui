@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:open_local_ui/core/helpers/update.dart';
+import 'package:open_local_ui/core/utils/update.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/shared/widgets/window_management_bar.dart';
 
 class UpdateInProgressScreen extends StatefulWidget {
@@ -18,7 +17,7 @@ class _UpdateInProgressScreenState extends State<UpdateInProgressScreen> {
   void initState() {
     super.initState();
 
-    UpdateHelper.downloadAndInstallAppLatestVersion();
+    UpdateUtils.downloadAndInstallAppLatestVersion();
   }
 
   @override

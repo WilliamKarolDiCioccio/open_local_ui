@@ -3,16 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:http/http.dart' as http;
+import 'package:open_local_ui/core/constants/flutter.dart';
+import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/models/model.dart';
 import 'package:open_local_ui/core/models/ollama_responses.dart';
 import 'package:open_local_ui/core/providers/model_settings.dart';
-import 'package:open_local_ui/core/constants/flutter.dart';
-import 'package:open_local_ui/core/helpers/http.dart';
-import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/utils/http.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
 enum OllamaAPIProviderStatus { idle, pulling, pushing, creating }
@@ -78,7 +77,7 @@ class OllamaAPIProvider extends ChangeNotifier {
   /// Returns a [Future] that resolves to a [bool] indicating whether the Ollama server is running.
   Future<bool> _isOllamaRunning() async {
     try {
-      final response = await HTTPHelper.get('$_api/ps');
+      final response = await HTTPUtils.get('$_api/ps');
       return response.statusCode == HttpStatus.ok;
     } catch (e) {
       return false;
@@ -99,7 +98,7 @@ class OllamaAPIProvider extends ChangeNotifier {
   /// Returns a [Future] that resolves to null when the models list is updated.
   Future<void> updateList() async {
     try {
-      final response = await HTTPHelper.get('$_api/tags');
+      final response = await HTTPUtils.get('$_api/tags');
       if (response.statusCode != HttpStatus.ok) {
         appLogger.e('Failed to fetch models list');
         return;
@@ -193,7 +192,7 @@ class OllamaAPIProvider extends ChangeNotifier {
 
         if (scaffoldMessengerKey.currentState!.context.mounted) {
           final context = scaffoldMessengerKey.currentState!.context;
-          SnackBarHelper.showSnackBar(
+          SnackbarUtils.showSnackBar(
             AppLocalizations.of(context).snackBarErrorTitle,
             AppLocalizations.of(context).failedToPullModelSnackBar,
             SnackbarContentType.failure,
@@ -209,7 +208,7 @@ class OllamaAPIProvider extends ChangeNotifier {
 
     if (scaffoldMessengerKey.currentState!.context.mounted) {
       final context = scaffoldMessengerKey.currentState!.context;
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarSuccessTitle,
         AppLocalizations.of(context).modelPulledSuccessfullySnackBar,
         SnackbarContentType.success,
@@ -296,7 +295,7 @@ class OllamaAPIProvider extends ChangeNotifier {
 
         if (scaffoldMessengerKey.currentState!.context.mounted) {
           final context = scaffoldMessengerKey.currentState!.context;
-          SnackBarHelper.showSnackBar(
+          SnackbarUtils.showSnackBar(
             AppLocalizations.of(context).snackBarErrorTitle,
             AppLocalizations.of(context).failedToPushModelSnackBar,
             SnackbarContentType.failure,
@@ -312,7 +311,7 @@ class OllamaAPIProvider extends ChangeNotifier {
 
     if (scaffoldMessengerKey.currentState!.context.mounted) {
       final context = scaffoldMessengerKey.currentState!.context;
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarSuccessTitle,
         AppLocalizations.of(context).modelPushedSuccessfullySnackBar,
         SnackbarContentType.success,
@@ -398,9 +397,8 @@ class OllamaAPIProvider extends ChangeNotifier {
 
         if (scaffoldMessengerKey.currentState!.context.mounted) {
           final context = scaffoldMessengerKey.currentState!.context;
-          SnackBarHelper.showSnackBar(
+          SnackbarUtils.showSnackBar(
             AppLocalizations.of(context).snackBarErrorTitle,
-
             AppLocalizations.of(context).failedToCreateModelSnackBar,
             SnackbarContentType.failure,
           );
@@ -415,7 +413,7 @@ class OllamaAPIProvider extends ChangeNotifier {
 
     if (scaffoldMessengerKey.currentState!.context.mounted) {
       final context = scaffoldMessengerKey.currentState!.context;
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarSuccessTitle,
         AppLocalizations.of(context).modelCreatedSuccessfullySnackBar,
         SnackbarContentType.success,
@@ -438,7 +436,7 @@ class OllamaAPIProvider extends ChangeNotifier {
   /// Returns a [Future] that resolves when the model is removed.
   Future remove(String name) async {
     try {
-      final response = await HTTPHelper.delete(
+      final response = await HTTPUtils.delete(
         '$_api/delete',
         body: {'name': name},
       );

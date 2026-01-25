@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/core/models/ollama_responses.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
-import 'package:open_local_ui/core/helpers/http.dart';
+import 'package:open_local_ui/core/utils/http.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:units_converter/units_converter.dart';
 
@@ -82,7 +81,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
                       final total = response.total;
                       final completed = response.completed;
                       final progressValue = completed / total;
-                      final duration = HTTPHelper.calculateRemainingTime(
+                      final duration = HTTPUtils.calculateRemainingTime(
                         response,
                       );
                       final progressBarText = AppLocalizations.of(context)

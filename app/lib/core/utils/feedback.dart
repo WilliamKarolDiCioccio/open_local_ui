@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:feedback/feedback.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:image/image.dart' as img;
-import 'package:open_local_ui/core/helpers/github.dart';
 import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/utils/github.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_info2/system_info2.dart';
 
-class FeedbackHelper {
+/// A utility class for handling user feedback uploads to Supabase and GitHub.
+class FeedbackUtils {
   static Future<String> _getDeviceInfo() async {
     final gpuInfoPlugin = GpuInfo();
 
@@ -85,7 +86,7 @@ class FeedbackHelper {
 
     final deviceInfo = await _getDeviceInfo();
 
-    await GitHubHelper.createGitHubIssue(
+    await GitHubAPIUtils.createGitHubIssue(
       feedback.text,
       screenshotUrl,
       logUrl,

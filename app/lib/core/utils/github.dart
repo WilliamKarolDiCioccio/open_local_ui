@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
-import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/bootstrap/env.dart';
+import 'package:open_local_ui/core/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 part 'github.g.dart';
@@ -70,10 +70,10 @@ class GitHubContributor {
   Map<String, dynamic> toJson() => _$GitHubContributorToJson(this);
 }
 
-/// A class to interact with the GitHub API.
+/// A utility class to interact with the GitHub API.
 ///
 /// Authenticated requests are made using Personal Access Tokens (PATs) found in the `.env` file and baked into the app during build time.
-class GitHubHelper {
+class GitHubAPIUtils {
   static const owner = 'WilliamKarolDiCioccio';
   static const repo = 'open_local_ui';
 

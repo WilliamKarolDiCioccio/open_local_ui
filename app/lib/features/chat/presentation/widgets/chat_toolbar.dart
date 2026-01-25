@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/shared/dialogs/model_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -19,13 +18,13 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
   void _newSession() {
     if (context.read<ChatProvider>().isSessionSelected) {
       if (context.read<ChatProvider>().session!.messages.isEmpty) {
-        SnackBarHelper.showSnackBar(
+        SnackbarUtils.showSnackBar(
           AppLocalizations.of(context).snackBarInfoTitle,
           AppLocalizations.of(context).noNeedToCreateSessionSnackBar,
           SnackbarContentType.info,
         );
       } else if (context.read<ChatProvider>().isGenerating) {
-        SnackBarHelper.showSnackBar(
+        SnackbarUtils.showSnackBar(
           AppLocalizations.of(context).snackBarErrorTitle,
           AppLocalizations.of(context).modelIsGeneratingSnackBar,
           SnackbarContentType.failure,
@@ -34,7 +33,7 @@ class _ChatToolbarWidgetState extends State<ChatToolbarWidget> {
         context.read<ChatProvider>().newSession();
       }
     } else {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarInfoTitle,
         AppLocalizations.of(context).noNeedToCreateSessionSnackBar,
         SnackbarContentType.info,

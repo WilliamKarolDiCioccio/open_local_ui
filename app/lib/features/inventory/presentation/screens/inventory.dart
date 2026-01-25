@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/core/models/model.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/repositories/ollama_models.dart';
-import 'package:open_local_ui/core/helpers/format.dart';
+import 'package:open_local_ui/core/utils/format.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
-import 'package:open_local_ui/shared/dialogs/confirmation.dart';
+import 'package:open_local_ui/features/dashboard/presentation/screens/dashboard.dart';
 import 'package:open_local_ui/features/inventory/presentation/dialogs/create_model.dart';
 import 'package:open_local_ui/features/inventory/presentation/dialogs/import_model.dart';
 import 'package:open_local_ui/features/inventory/presentation/dialogs/model_details.dart';
-import 'package:open_local_ui/shared/dialogs/model_settings.dart';
 import 'package:open_local_ui/features/inventory/presentation/dialogs/push_model.dart';
-import 'package:open_local_ui/features/dashboard/presentation/screens/dashboard.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
+import 'package:open_local_ui/shared/dialogs/confirmation.dart';
+import 'package:open_local_ui/shared/dialogs/model_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
@@ -293,7 +292,7 @@ class ModelListTile extends StatefulWidget {
 class _ModelListTileState extends State<ModelListTile> {
   void _setModel(Model model) async {
     if (context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
@@ -312,7 +311,7 @@ class _ModelListTileState extends State<ModelListTile> {
   void _deleteModel() async {
     if (context.read<ChatProvider>().modelName == widget.model.name &&
         context.read<ChatProvider>().isGenerating) {
-      SnackBarHelper.showSnackBar(
+      SnackbarUtils.showSnackBar(
         AppLocalizations.of(context).snackBarErrorTitle,
         AppLocalizations.of(context).modelIsGeneratingSnackBar,
         SnackbarContentType.failure,
@@ -424,7 +423,7 @@ class _ModelListTileState extends State<ModelListTile> {
       title: Text(widget.model.name),
       subtitle: Text(
         AppLocalizations.of(context).modifiedAtTextShared(
-          FormatHelper.standardDate(widget.model.modifiedAt),
+          FormatUtils.standardDate(widget.model.modifiedAt),
         ),
         style: const TextStyle(color: Colors.grey),
       ),
@@ -437,7 +436,7 @@ class _ModelListTileState extends State<ModelListTile> {
           IconButton(
             tooltip: AppLocalizations.of(context).inventoryPageSettingsButton,
             icon: const Icon(UniconsLine.setting),
-            onPressed: () => SnackBarHelper.showSnackBar(
+            onPressed: () => SnackbarUtils.showSnackBar(
               AppLocalizations.of(context).snackBarWarningTitle,
               AppLocalizations.of(context).enteringCriticalSectionSnackBar,
               SnackbarContentType.warning,

@@ -1,27 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:open_local_ui/bootstrap/env.dart';
+import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/providers/chat.dart';
+import 'package:open_local_ui/core/providers/ollama_api.dart';
+import 'package:open_local_ui/core/utils/feedback.dart';
+import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/core/utils/update.dart';
 import 'package:open_local_ui/features/about/presentation/screens/about.dart';
 import 'package:open_local_ui/features/chat/presentation/screens/chat.dart';
 import 'package:open_local_ui/features/inventory/presentation/screens/inventory.dart';
 import 'package:open_local_ui/features/market/presentation/screens/market.dart';
 import 'package:open_local_ui/features/sessions/presentation/screens/sessions.dart';
 import 'package:open_local_ui/features/settings/presentation/screens/settings.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
-import 'package:open_local_ui/core/providers/chat.dart';
-import 'package:open_local_ui/core/providers/ollama_api.dart';
-import 'package:open_local_ui/core/helpers/feedback.dart';
-import 'package:open_local_ui/core/logger.dart';
-import 'package:open_local_ui/core/helpers/update.dart';
-import 'package:open_local_ui/bootstrap/env.dart';
-import 'package:open_local_ui/shared/widgets/floating_menu.dart';
-import 'package:open_local_ui/shared/widgets/window_management_bar.dart';
 import 'package:open_local_ui/features/sidebar/presentation/dialogs/changelog.dart';
 import 'package:open_local_ui/features/update/presentation/dialogs/update.dart';
-import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
+import 'package:open_local_ui/shared/widgets/floating_menu.dart';
+import 'package:open_local_ui/shared/widgets/window_management_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -61,7 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (mounted) {
         switch (state) {
           case BatteryState.discharging:
-            SnackBarHelper.showSnackBar(
+            SnackbarUtils.showSnackBar(
               AppLocalizations.of(context).snackBarWarningTitle,
               AppLocalizations.of(context).deviceUnpluggedSnackBar,
               SnackbarContentType.warning,
@@ -69,7 +68,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             appLogger.i('Battery charging');
             break;
           case BatteryState.charging:
-            SnackBarHelper.showSnackBar(
+            SnackbarUtils.showSnackBar(
               AppLocalizations.of(context).snackBarSuccessTitle,
               AppLocalizations.of(context).devicePluggedInSnackBar,
               SnackbarContentType.success,
@@ -85,9 +84,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _checkForUpdates() {
-    UpdateHelper.isAppUpdateAvailable().then((updateAvailable) {
+    UpdateUtils.isAppUpdateAvailable().then((updateAvailable) {
       if (updateAvailable && mounted) {
-        SnackBarHelper.showSnackBar(
+        SnackbarUtils.showSnackBar(
           AppLocalizations.of(context).snackBarUpdateTitle,
           AppLocalizations.of(context).clickToDownloadLatestAppVersionSnackBar,
           SnackbarContentType.info,
@@ -184,7 +183,7 @@ class _SideMenuState extends State<_SideMenu> {
           onPressed: () {
             BetterFeedback.of(context).show(
               (UserFeedback feedback) async =>
-                  await FeedbackHelper.uploadFeedback(feedback),
+                  await FeedbackUtils.uploadFeedback(feedback),
             );
           },
           icon: const Icon(UniconsLine.feedback),
@@ -199,7 +198,7 @@ class _SideMenuState extends State<_SideMenu> {
               label: Text(AppLocalizations.of(context).updateButton),
             ),
             FutureBuilder(
-              future: UpdateHelper.isAppUpdateAvailable(),
+              future: UpdateUtils.isAppUpdateAvailable(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SizedBox.shrink();
