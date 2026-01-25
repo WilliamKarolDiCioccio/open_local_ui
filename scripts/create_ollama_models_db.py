@@ -33,7 +33,7 @@ def create_database_schema():
 
     # Create an index on the model name for fast querying
     c.execute('CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)')
-    
+
     # Create an index on the model capabilities for fast querying
     c.execute('CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (capabilities)')
 

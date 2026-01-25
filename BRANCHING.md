@@ -25,7 +25,7 @@ In this project, we will be using the **GitHub Flow** branching strategy. This s
 
 ## Workflow
 
-1. **Create a Feature Branch**: 
+1. **Create a Feature Branch**:
    - Always branch off from `main`.
    - Name your branch descriptively (e.g., `feature/user-authentication`).
 

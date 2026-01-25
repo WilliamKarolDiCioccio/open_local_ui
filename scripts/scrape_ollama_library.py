@@ -21,7 +21,7 @@ def convert_to_bytes(size_string: str) -> float:
     # Split the string into the numeric part and the unit
     import re
     match = re.match(r"([\d.]+)\s*([a-zA-Z]+)", size_string)
-    
+
     if not match:
         raise ValueError(f"Invalid size string: {size_string}")
 
@@ -34,7 +34,7 @@ def convert_to_bytes(size_string: str) -> float:
     # Get the byte multiplier for the unit
     if unit not in units:
         raise ValueError(f"Unknown unit: {unit}")
-    
+
     multiplier = units[unit]
 
     # Return the size in bytes
@@ -74,15 +74,15 @@ def scrape_model_details(model_url):
     model_name = soup.find('h1', attrs={'class': 'flex items-center sm:text-[28px] text-xl tracking-tight'}, recursive=True)
     if model_name:
         model_details['name'] = model_name.text.strip()
-        
+
     # Find model description
     model_description = soup.find('h2', attrs={'class': 'break-words sm:max-w-md'}, recursive=True)
     if model_description:
         model_details['description'] = model_description.text.strip()
-    
+
     # Store model page url
     model_details['url'] = model_url
-    
+
     print(f"Scraping: {model_details['url']}")
 
     # Check for various capabilities (vision, tools, embedding, code)
@@ -95,16 +95,16 @@ def scrape_model_details(model_url):
 
     # Select all <a> tags within the div with id 'primary-tags'
     release_links = soup.select('#primary-tags a')
-    
+
     for link in release_links:
         release_name = link.find('span', class_='truncate group-hover:underline').text.strip()
         if release_name == 'latest':
             continue
-        
+
         # Extract the release size string and convert it to bytes
         release_size_string = link.find('span', class_='text-neutral-400 text-xs').text.strip()
         release_size = convert_to_bytes(release_size_string)
-        
+
         model_releases.append({
             'num_params': release_name,
             'size': release_size
@@ -118,7 +118,7 @@ def scrape_model_details(model_url):
 def scrape_ollama_library():
     base_url = 'https://ollama.com'
     library_url = f'{base_url}/library'
-    
+
     library_soup = get_soup(library_url)
     if library_soup is None:
         return {}  # Return an empty dictionary if the library page could not be retrieved
@@ -136,7 +136,7 @@ def scrape_ollama_library():
                 model_name = model_details.get('name')
                 if model_name:
                     models[model_name] = model_details  # Assign details to the model name key
-    
+
     return models
 
 
@@ -172,7 +172,7 @@ def save_data_to_sqlite(models_info):
 
     # Create an index on the model name for fast querying
     c.execute('CREATE INDEX IF NOT EXISTS idx_model_name ON models (name)')
-    
+
     # Create an index on the model capabilities for fast querying
     c.execute('CREATE INDEX IF NOT EXISTS idx_model_capabilities ON models (capabilities)')
 
@@ -185,7 +185,7 @@ def save_data_to_sqlite(models_info):
             embedding=details['embedding'],
             code=details['code']
         )
-        
+
         # Insert the model details into the models table
         c.execute('''
             INSERT OR IGNORE INTO models (name, description, url, capabilities)
@@ -206,11 +206,11 @@ def save_data_to_sqlite(models_info):
     # Commit the transaction and close the connection
     conn.commit()
     conn.close()
-    
+
 
 if __name__ == "__main__":
     models_info = scrape_ollama_library()
 
     save_data_to_sqlite(models_info)
-    
+
     print(f"Scraped {len(models_info)} models. Data saved to 'ollama_models.db'.")

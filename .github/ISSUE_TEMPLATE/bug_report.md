@@ -56,7 +56,7 @@ _Describe what actually happened._
 
 _If applicable, add screenshots to help explain your problem._
 
-**Example:** 
+**Example:**
 ![Screenshot](https://example.com/screenshot.jpg)
 
 #### Additional Context 📂

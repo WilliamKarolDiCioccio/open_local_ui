@@ -27,7 +27,7 @@ _If applicable, reference the issue this pull request addresses._
 
 _Describe the details of the implementation and any important points to note._
 
-**Example:** 
+**Example:**
 - Added a toggle in the settings menu to switch between light and dark modes.
 - Updated the application styles to support dark theme.
 - Ensured the feature is responsive and works across all supported devices.

@@ -33,7 +33,7 @@ This document outlines the versioning strategy for OpenLocalUI starting from the
 ## Versioning Practices
 
 1. **Backward Compatibility**: Minor and patch updates will maintain backward compatibility. Breaking changes will only occur in major updates.
-   
+
 2. **Deprecation Policy**: Features or APIs that are deprecated will be removed in the next major version release. Users will be informed about deprecations in the release notes of minor and patch versions leading up to the major release.
 
 3. **Release Notes**: Each release will include detailed release notes outlining new features, bug fixes, and any breaking changes. This will help users and developers understand the impact of updating to a new version.
