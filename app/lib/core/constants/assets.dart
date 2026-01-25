@@ -13,12 +13,12 @@ class Assets {
     _Asset(
       'assets/graphics/animations/gpu.riv',
       AssetSource.local,
-      AssetType.raw,
+      AssetType.binary,
     ),
     _Asset(
       'assets/graphics/animations/human.riv',
       AssetSource.local,
-      AssetType.raw,
+      AssetType.binary,
     ),
     _Asset(
       'assets/graphics/logos/apache.svg',

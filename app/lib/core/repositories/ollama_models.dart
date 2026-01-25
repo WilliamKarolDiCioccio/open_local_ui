@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -126,8 +125,13 @@ class OllamaModelsDB {
     final lastFetch = prefs.getString('last_ollama_model_db_fetch') ?? "";
 
     if (lastFetch != currentDate || kDebugMode) {
-      await _fetchOnlineDatabase();
-      appLogger.d('Database fetched from Supabase');
+      try {
+        await _fetchOnlineDatabase();
+      } catch (e) {
+        appLogger.e('Error fetching online database: $e');
+      } finally {
+        appLogger.d('Database fetch attempt completed');
+      }
     } else {
       appLogger.d('Database skipped fetching from Supabase');
     }
