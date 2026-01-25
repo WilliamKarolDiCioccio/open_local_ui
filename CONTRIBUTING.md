@@ -47,17 +47,9 @@ This section provides detailed instructions on how to set up your environment ba
 ### For Developers
 
 1. **Install Flutter**: Ensure Flutter is installed on your system. Follow the official [Flutter installation guide](https://flutter.dev/docs/get-started/install) if you don't have it set up yet.
-2. **Install Python**: Python should be installed on your system to build the gRPC server. The server build script will automatically create a virtual environment using `venv`.
-3. **Install FFmpeg**: The FFmpeg library is required by the `pydub` pip package. Install it using the appropriate command for your OS:
 
-```bash
-winget install -e --id Gyan.FFmpeg # Windows
-sudo apt install ffmpeg # Linux
-brew install ffmpeg # MacOS
-```
-
-4. **Install OLLAMA**: Ensure the OLLAMA client is installed on your system and you have at least one available model—more details [here](https://ollama.ai/).
-5. **Install Vulkan SDK**: The [gpu_info](https://github.com/WilliamKarolDiCioccio/gpu_info) package, developed for OpenLocalUI, requires the Vulkan SDK. Install it using the appropriate command for your OS:
+2. **Install OLLAMA**: Ensure the OLLAMA client is installed on your system and you have at least one available model—more details [here](https://ollama.ai/).
+3. **Install Vulkan SDK**: The [gpu_info](https://github.com/WilliamKarolDiCioccio/gpu_info) package, developed for OpenLocalUI, requires the Vulkan SDK. Install it using the appropriate command for your OS:
 
 ```bash
 winget install -e --id KhronosGroup.VulkanSDK # Windows
