@@ -5,9 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/core/models/model.dart';
 import 'package:open_local_ui/core/repositories/ollama_models.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/core/utils/units_conversion.dart';
 import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:unicons/unicons.dart';
-import 'package:units_converter/units_converter.dart';
 
 class ModelDetailsDialog extends StatefulWidget {
   final Model model;
@@ -59,7 +59,7 @@ class _ModelDetailsDialogState extends State<ModelDetailsDialog> {
                   ),
                   Text(
                     AppLocalizations.of(context).modelDetailsSizeText(
-                      '${widget.model.size.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB',
+                      UnitsConversionUtils.formatBytes(widget.model.size),
                     ),
                     style: const TextStyle(color: Colors.grey),
                   ),
@@ -115,7 +115,7 @@ class _ModelDetailsDialogState extends State<ModelDetailsDialog> {
                     '''
 Name: ${widget.model.name}
 Modified at: ${widget.model.modifiedAt}
-Size: ${widget.model.size.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!.toStringAsFixed(2)} GB
+Size: ${UnitsConversionUtils.formatBytes(widget.model.size)}
 Digest: ${widget.model.digest}
 Format: ${widget.model.details.format}
 Families: ${widget.model.details.families?.join(', ') ?? 'None'}

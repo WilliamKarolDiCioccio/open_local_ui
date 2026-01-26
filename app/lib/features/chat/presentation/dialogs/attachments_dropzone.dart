@@ -7,8 +7,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_image_converter/flutter_image_converter.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/utils/http.dart';
@@ -112,7 +110,9 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
             return;
           }
 
-          final encodedPng = await Image.network(url).pngUint8List;
+          final imageBytes = response.bodyBytes;
+          final decodedImage = img.decodeImage(imageBytes);
+          final encodedPng = img.encodePng(decodedImage!);
 
           setState(() {
             _imageBytes = encodedPng;
@@ -210,7 +210,7 @@ class _AttachmentsDropzoneDialogState extends State<AttachmentsDropzoneDialog> {
           ],
         );
       case ImageStatus.loading:
-        innerWidget = SpinKitCircle(
+        innerWidget = CircularProgressIndicator(
           color: AdaptiveTheme.of(context).mode.isDark
               ? Colors.white
               : Colors.black,

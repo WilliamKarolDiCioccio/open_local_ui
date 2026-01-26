@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:open_local_ui/core/constants/languages.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
@@ -263,7 +262,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
                         return Center(
-                          child: SpinKitCircle(
+                          child: CircularProgressIndicator(
                             color: AdaptiveTheme.of(context).mode.isDark
                                 ? Colors.white
                                 : Colors.black,
@@ -438,7 +437,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
                         return Center(
-                          child: SpinKitCircle(
+                          child: CircularProgressIndicator(
                             color: AdaptiveTheme.of(context).mode.isDark
                                 ? Colors.white
                                 : Colors.black,

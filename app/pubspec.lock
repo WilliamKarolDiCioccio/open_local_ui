@@ -707,14 +707,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
-  flutter_image_converter:
-    dependency: "direct main"
-    description:
-      name: flutter_image_converter
-      sha256: d175554baeec90bc34a68ea3665a197fef509e9f921ae7679ac99be754d3ee70
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.1"
   flutter_keyboard_visibility_linux:
     dependency: transitive
     description:
@@ -808,14 +800,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.3"
-  flutter_spinkit:
-    dependency: "direct main"
-    description:
-      name: flutter_spinkit
-      sha256: "77850df57c00dc218bfe96071d576a8babec24cf58b2ed121c83cca4a2fdce7f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.2.2"
   flutter_sticky_widgets:
     dependency: "direct main"
     description:
@@ -1928,14 +1912,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  units_converter:
-    dependency: "direct main"
-    description:
-      name: units_converter
-      sha256: "103a5f849b12111ca576957035762dc8a23f8f8f4c29ea272740c57b2d0f08bb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.4"
   universal_io:
     dependency: transitive
     description:

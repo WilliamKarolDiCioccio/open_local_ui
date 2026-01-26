@@ -4,7 +4,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:open_local_ui/core/models/chat_message.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/utils/format.dart';
@@ -204,11 +203,13 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
           if ((widget.message is ChatModelMessageWrapperV1))
             if (context.watch<ChatProvider>().isGenerating &&
                 widget.message.text.isEmpty)
-              SpinKitThreeBounce(
-                size: 32,
-                color: AdaptiveTheme.of(context).mode.isDark
-                    ? Colors.white
-                    : Colors.black,
+              CircularProgressIndicator(
+                strokeWidth: 3.0,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  AdaptiveTheme.of(context).mode.isDark
+                      ? Colors.white
+                      : Colors.black,
+                ),
               ),
           if ((widget.message is ChatUserMessageWrapperV1))
             if ((widget.message as ChatUserMessageWrapperV1).imageBytes != null)

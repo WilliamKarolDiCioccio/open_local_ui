@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:open_local_ui/core/utils/units_conversion.dart';
 import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
-import 'package:units_converter/units_converter.dart';
 
 class ModelSearchFilters {
   Set<String> order = {'name'};
   Set<String> sort = {'ascending'};
   Set<String> capabilities = {};
-  int maxSize = 512
-      .convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!
-      .toInt();
+  int maxSize = UnitsConversionUtils.convert(
+    512,
+    from: StorageUnit.gb,
+    to: StorageUnit.byte,
+  ).toInt();
   int minSize = 0;
   int maxResults = 255;
 
@@ -22,7 +23,11 @@ class ModelSearchFilters {
         prefs.getStringList('model_search_filters_capabilities') ?? [];
     final maxSize =
         prefs.getInt('model_search_filters_max_size') ??
-        512.convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!.toInt();
+        UnitsConversionUtils.convert(
+          512,
+          from: StorageUnit.gb,
+          to: StorageUnit.byte,
+        ).toInt();
     final minSize = prefs.getInt('model_search_filters_min_size') ?? 0;
     final maxResults = prefs.getInt('model_search_filters_max_results') ?? 255;
 
@@ -201,16 +206,22 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
             AppLocalizations.of(
               context,
             ).modelSearchFiltersDialogSelectedMinSizeLabel(
-              _filters.minSize
-                  .convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!
-                  .toStringAsFixed(2),
+              UnitsConversionUtils.convert(
+                _filters.minSize.toDouble(),
+                from: StorageUnit.byte,
+                to: StorageUnit.gb,
+              ).toStringAsFixed(2),
             ),
           ),
 
           Slider(
             value: _filters.minSize.toDouble(),
             min: 0,
-            max: 512.convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!,
+            max: UnitsConversionUtils.convert(
+              512,
+              from: StorageUnit.gb,
+              to: StorageUnit.byte,
+            ).toDouble(),
             onChanged: (value) {
               setState(() {
                 _filters.minSize = value.toInt();
@@ -223,23 +234,30 @@ class _ModelSearchFiltersDialogState extends State<ModelSearchFiltersDialog> {
             AppLocalizations.of(
               context,
             ).modelSearchFiltersDialogSelectedMaxSizeLabel(
-              _filters.maxSize
-                  .convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)!
-                  .toStringAsFixed(2),
+              UnitsConversionUtils.convert(
+                _filters.maxSize.toDouble(),
+                from: StorageUnit.byte,
+                to: StorageUnit.gb,
+              ).toStringAsFixed(2),
             ),
           ),
 
           Slider(
             value: _filters.maxSize.toDouble(),
             min: 0,
-            max: 512.convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!,
+            max: UnitsConversionUtils.convert(
+              512,
+              from: StorageUnit.gb,
+              to: StorageUnit.byte,
+            ).toDouble(),
             onChanged: (value) {
               setState(() {
                 _filters.maxSize = value.toInt();
-                _filters.maxSize = 512
-                    .convertFromTo(DIGITAL_DATA.gigabyte, DIGITAL_DATA.byte)!
-                    .toInt()
-                    .clamp(_filters.minSize, _filters.maxSize);
+                _filters.maxSize = UnitsConversionUtils.convert(
+                  512,
+                  from: StorageUnit.gb,
+                  to: StorageUnit.byte,
+                ).toInt().clamp(_filters.minSize, _filters.maxSize);
               });
             },
           ),

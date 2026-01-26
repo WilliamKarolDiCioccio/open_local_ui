@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter/material.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -53,7 +51,7 @@ class _RiveAnimationWidgetState extends State<RiveAnimationWidget> {
               : widget.lightArtboardName,
         ),
         builder: (context, state) => switch (state) {
-          rive.RiveLoading() => SpinKitCircle(
+          rive.RiveLoading() => CircularProgressIndicator(
             color: AdaptiveTheme.of(context).mode.isDark
                 ? Colors.white
                 : Colors.black,

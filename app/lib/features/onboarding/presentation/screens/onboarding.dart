@@ -4,7 +4,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -320,7 +319,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
             children: [
               const Text('Installing Ollama using winget...'),
 
-              SpinKitCircle(
+              CircularProgressIndicator(
                 color: AdaptiveTheme.of(context).mode.isDark
                     ? Colors.white
                     : Colors.black,
@@ -335,7 +334,7 @@ class _OllamaSetupPageState extends State<OllamaSetupPage> {
                   children: [
                     const Text('Checking if Ollama is installed...'),
 
-                    SpinKitCircle(
+                    CircularProgressIndicator(
                       color: AdaptiveTheme.of(context).mode.isDark
                           ? Colors.white
                           : Colors.black,
@@ -461,7 +460,7 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
       future: _summarizeSystemCapabilities(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return SpinKitCircle(
+          return CircularProgressIndicator(
             color: AdaptiveTheme.of(context).mode.isDark
                 ? Colors.white
                 : Colors.black,
@@ -627,7 +626,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
                 future: _getAccent(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return SpinKitCircle(
+                    return CircularProgressIndicator(
                       color: AdaptiveTheme.of(context).mode.isDark
                           ? Colors.white
                           : Colors.black,
@@ -653,7 +652,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
               future: _isAccentSynced(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return SpinKitCircle(
+                  return CircularProgressIndicator(
                     color: AdaptiveTheme.of(context).mode.isDark
                         ? Colors.white
                         : Colors.black,

@@ -1,7 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:open_local_ui/core/utils/update.dart';
 import 'package:open_local_ui/features/update/presentation/screens/update_in_progress.dart';
 import 'package:open_local_ui/localization/app_localizations.dart';
@@ -48,7 +47,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
             height: 128.0,
             child: _isLoading
                 ? Center(
-                    child: SpinKitCircle(
+                    child: CircularProgressIndicator(
                       color: AdaptiveTheme.of(context).mode.isDark
                           ? Colors.white
                           : Colors.black,

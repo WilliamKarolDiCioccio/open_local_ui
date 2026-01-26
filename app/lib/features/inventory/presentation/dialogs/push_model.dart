@@ -3,9 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:open_local_ui/core/models/ollama_responses.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/utils/http.dart';
+import 'package:open_local_ui/core/utils/units_conversion.dart';
 import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:units_converter/units_converter.dart';
 
 class PushModelDialog extends StatefulWidget {
   const PushModelDialog({super.key});
@@ -103,7 +103,7 @@ class _PushModelDialogState extends State<PushModelDialog> {
                           ),
 
                           Text(
-                            '${completed.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)} / ${total.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.gigabyte)}',
+                            '${UnitsConversionUtils.formatBytes(completed)} / ${UnitsConversionUtils.formatBytes(total)}',
                           ),
                         ],
                       );

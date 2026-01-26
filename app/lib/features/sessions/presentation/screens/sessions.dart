@@ -9,6 +9,7 @@ import 'package:open_local_ui/core/models/chat_session.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/utils/format.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
+import 'package:open_local_ui/core/utils/units_conversion.dart';
 import 'package:open_local_ui/features/dashboard/presentation/screens/dashboard.dart';
 import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/shared/dialogs/confirmation.dart';
@@ -18,7 +19,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_scroll_multiplatform/smooth_scroll_multiplatform.dart';
 import 'package:unicons/unicons.dart';
-import 'package:units_converter/units_converter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum SessionsSortBy { name, date, size }
@@ -208,7 +208,7 @@ class _SessionsPageState extends State<SessionsPage> {
                 if (snapshot.hasData) {
                   return Text(
                     AppLocalizations.of(context).totalOnDiskSizeLabel(
-                      '${snapshot.data!.convertFromTo(DIGITAL_DATA.byte, DIGITAL_DATA.megabyte)!.toStringAsFixed(2)} MB',
+                      UnitsConversionUtils.formatBytes(snapshot.data!),
                     ),
                   );
                 } else {

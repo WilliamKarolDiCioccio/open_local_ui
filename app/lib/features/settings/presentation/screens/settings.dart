@@ -4,7 +4,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:discord_rpc/discord_rpc.dart';
 import 'package:flex_color_picker/flex_color_picker.dart' as fcp;
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:open_local_ui/bootstrap/env.dart';
 import 'package:open_local_ui/core/helpers/json_color.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
@@ -208,7 +207,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
                 future: _getAccent(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return SpinKitCircle(
+                    return CircularProgressIndicator(
                       color: AdaptiveTheme.of(context).mode.isDark
                           ? Colors.white
                           : Colors.black,
@@ -234,7 +233,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
               future: _isAccentSynced(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return SpinKitCircle(
+                  return CircularProgressIndicator(
                     color: AdaptiveTheme.of(context).mode.isDark
                         ? Colors.white
                         : Colors.black,
