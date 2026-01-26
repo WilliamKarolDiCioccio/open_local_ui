@@ -3,20 +3,19 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
-import 'package:open_local_ui/core/repositories/chat_sessions.dart';
+import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/models/chat_message.dart';
 import 'package:open_local_ui/core/models/chat_session.dart';
-import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/providers/model_settings.dart';
-import 'package:open_local_ui/core/logger.dart';
+import 'package:open_local_ui/core/providers/ollama_api.dart';
+import 'package:open_local_ui/core/repositories/chat_sessions.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -57,7 +56,7 @@ class ChatProvider extends ChangeNotifier {
   ///
   /// Global override settings are stored using the [SharedPreferences] plugin.
   /// Model specific settings are stored in the app's data directory as JSON files (see [ModelSettingsProvider]).
-  /// Chat sessions are stored in the app's data directory using the Hive database (see [ChatSessionsDB]).
+  /// Chat sessions are stored in the app's data directory using the Hive database (see [ChatSessionsRepository]).
   ///
   /// Returns a `void`.
   void _init() async {
@@ -87,7 +86,9 @@ class ChatProvider extends ChangeNotifier {
     _sessions.addAll(
       await Isolate.run(() async {
         final getIt = GetIt.instance;
-        getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
+        getIt.registerSingleton<ChatSessionsRepository>(
+          ChatSessionsRepository(),
+        );
 
         // Using Hive.init in the isolate instead of the DB init method due to path_provider initialization issues
         Hive.init('${dataDir.path}/sessions');
@@ -118,7 +119,7 @@ class ChatProvider extends ChangeNotifier {
           legacySessionsDir.deleteSync(recursive: true);
         }
 
-        return await GetIt.instance<ChatSessionsDB>().loadSessions();
+        return await GetIt.instance<ChatSessionsRepository>().loadSessions();
       }),
     );
 
@@ -135,7 +136,7 @@ class ChatProvider extends ChangeNotifier {
   ChatSessionWrapperV1 addSession(String title) {
     _sessions.add(ChatSessionWrapperV1(DateTime.now(), const Uuid().v4(), []));
 
-    GetIt.instance<ChatSessionsDB>().saveSession(_sessions.last);
+    GetIt.instance<ChatSessionsRepository>().saveSession(_sessions.last);
 
     notifyListeners();
 
@@ -213,7 +214,7 @@ class ChatProvider extends ChangeNotifier {
 
     _session = null;
 
-    GetIt.instance<ChatSessionsDB>().deleteSession(uuid);
+    GetIt.instance<ChatSessionsRepository>().deleteSession(uuid);
 
     notifyListeners();
   }
@@ -252,7 +253,7 @@ class ChatProvider extends ChangeNotifier {
       }();
     }
 
-    GetIt.instance<ChatSessionsDB>().updateSession(_sessions[index]);
+    GetIt.instance<ChatSessionsRepository>().updateSession(_sessions[index]);
 
     notifyListeners();
   }
@@ -279,7 +280,7 @@ class ChatProvider extends ChangeNotifier {
 
     // System messages shouldn't be added to the memory
 
-    GetIt.instance<ChatSessionsDB>().updateSession(_session!);
+    GetIt.instance<ChatSessionsRepository>().updateSession(_session!);
 
     notifyListeners();
 
@@ -319,7 +320,7 @@ class ChatProvider extends ChangeNotifier {
       onDone: () {
         _session!.memory.chatHistory.addAIChatMessage(messageBuffer.toString());
 
-        GetIt.instance<ChatSessionsDB>().updateSession(_session!);
+        GetIt.instance<ChatSessionsRepository>().updateSession(_session!);
 
         completer.complete(
           _session!.messages.last as ChatModelMessageWrapperV1,
@@ -362,7 +363,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.add(chatMessage);
     _session!.memory.chatHistory.addHumanChatMessage(message);
 
-    GetIt.instance<ChatSessionsDB>().updateSession(_session!);
+    GetIt.instance<ChatSessionsRepository>().updateSession(_session!);
 
     notifyListeners();
 
@@ -387,7 +388,7 @@ class ChatProvider extends ChangeNotifier {
       await _session!.memory.chatHistory.removeLast();
     }
 
-    await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsRepository>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -405,7 +406,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.removeLast();
     await _session!.memory.chatHistory.removeLast();
 
-    await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsRepository>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -416,7 +417,7 @@ class ChatProvider extends ChangeNotifier {
     _session!.messages.clear();
     await _session!.memory.chatHistory.clear();
 
-    await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
+    await GetIt.instance<ChatSessionsRepository>().updateSession(_session!);
 
     notifyListeners();
   }
@@ -573,7 +574,7 @@ class ChatProvider extends ChangeNotifier {
         setSessionTitle(_session!.uuid, response.toString());
       }
 
-      await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
+      await GetIt.instance<ChatSessionsRepository>().updateSession(_session!);
 
       notifyListeners();
     } catch (e) {
@@ -592,7 +593,7 @@ class ChatProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      await GetIt.instance<ChatSessionsDB>().updateSession(_session!);
+      await GetIt.instance<ChatSessionsRepository>().updateSession(_session!);
 
       appLogger.e(e);
     }

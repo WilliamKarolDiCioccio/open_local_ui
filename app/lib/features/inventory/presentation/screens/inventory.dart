@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/core/models/model.dart';
@@ -326,7 +327,7 @@ class _ModelListTileState extends State<ModelListTile> {
 
     final cleanModelName = modelName.toLowerCase().split(':').first;
 
-    final db = GetIt.instance<OllamaModelsDB>();
+    final db = GetIt.instance<OllamaModelsRepository>();
 
     if (!db.isModelInDatabase(cleanModelName)) {
       return const SizedBox.shrink();

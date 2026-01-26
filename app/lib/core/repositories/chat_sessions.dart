@@ -1,15 +1,17 @@
 import 'dart:convert';
+
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:open_local_ui/core/models/chat_session.dart';
 import 'package:open_local_ui/core/models/chat_message.dart';
+import 'package:open_local_ui/core/models/chat_session.dart';
 import 'package:path_provider/path_provider.dart';
 
-class ChatSessionsDB {
-  ChatSessionsDB._internal();
+class ChatSessionsRepository {
+  ChatSessionsRepository._internal();
 
-  static final ChatSessionsDB _instance = ChatSessionsDB._internal();
+  static final ChatSessionsRepository _instance =
+      ChatSessionsRepository._internal();
 
-  factory ChatSessionsDB() {
+  factory ChatSessionsRepository() {
     return _instance;
   }
 

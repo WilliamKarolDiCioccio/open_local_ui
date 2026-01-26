@@ -8,7 +8,7 @@ import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/repositories/chat_sessions.dart';
 import 'package:open_local_ui/core/repositories/ollama_models.dart';
-import 'package:open_local_ui/core/services/tts.dart';
+import 'package:open_local_ui/core/services/vocal_interaction.dart';
 import 'package:open_local_ui/src/rust/frb_generated.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,9 +58,9 @@ class AppBootstrap {
   void _setupDependencyInjection() {
     final getIt = GetIt.instance;
     getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
-    getIt.registerSingleton<ChatSessionsDB>(ChatSessionsDB());
-    getIt.registerSingleton<OllamaModelsDB>(OllamaModelsDB());
-    getIt.registerSingleton<TTSService>(TTSService());
+    getIt.registerSingleton<ChatSessionsRepository>(ChatSessionsRepository());
+    getIt.registerSingleton<OllamaModelsRepository>(OllamaModelsRepository());
+    getIt.registerSingleton<VocalInteractionService>(VocalInteractionService());
   }
 
   Future<void> _initAppServices(SharedPreferences prefs) async {
@@ -80,8 +80,8 @@ class AppBootstrap {
 
     // Database / API Inits
     await GetIt.I<OllamaAPIProvider>().startOllama();
-    await GetIt.I<ChatSessionsDB>().init();
-    await GetIt.I<OllamaModelsDB>().init();
+    await GetIt.I<ChatSessionsRepository>().init();
+    await GetIt.I<OllamaModelsRepository>().init();
   }
 
   Future<void> _preloadAssets() async {

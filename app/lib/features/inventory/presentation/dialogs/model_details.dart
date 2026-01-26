@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/core/models/model.dart';
@@ -25,7 +26,7 @@ class _ModelDetailsDialogState extends State<ModelDetailsDialog> {
   Widget build(BuildContext context) {
     final cleanModelName = widget.model.name.toLowerCase().split(':')[0];
 
-    final db = GetIt.instance<OllamaModelsDB>();
+    final db = GetIt.instance<OllamaModelsRepository>();
 
     late String description;
 

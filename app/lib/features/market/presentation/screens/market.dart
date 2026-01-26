@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/core/repositories/ollama_models.dart';
-import 'package:open_local_ui/features/market/presentation/dialogs/model_search_filters.dart';
 import 'package:open_local_ui/features/inventory/presentation/dialogs/pull_model.dart';
+import 'package:open_local_ui/features/market/presentation/dialogs/model_search_filters.dart';
+import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +22,7 @@ class MarketPage extends StatefulWidget {
 
 class _MarketPageState extends State<MarketPage> {
   final _searchController = TextEditingController();
-  List<ModelDBEntry> _filteredModels = [];
+  List<OllamaModelEntry> _filteredModels = [];
   ModelSearchFilters _filters = ModelSearchFilters();
 
   @override
@@ -43,15 +43,16 @@ class _MarketPageState extends State<MarketPage> {
   }
 
   void _updateFilteredModels() {
-    _filteredModels = GetIt.instance<OllamaModelsDB>().getModelsFiltered(
-      name: _searchController.text,
-      order: _filters.order.first,
-      sort: _filters.sort.first,
-      capabilities: _filters.capabilities,
-      maxSize: _filters.maxSize,
-      minSize: _filters.minSize,
-      maxResults: _filters.maxResults,
-    );
+    _filteredModels = GetIt.instance<OllamaModelsRepository>()
+        .getModelsFiltered(
+          name: _searchController.text,
+          order: _filters.order.first,
+          sort: _filters.sort.first,
+          capabilities: _filters.capabilities,
+          maxSize: _filters.maxSize,
+          minSize: _filters.minSize,
+          maxResults: _filters.maxResults,
+        );
 
     if (mounted) {
       setState(() {});
@@ -136,7 +137,7 @@ class _MarketPageState extends State<MarketPage> {
 }
 
 class ModelCard extends StatefulWidget {
-  final ModelDBEntry model;
+  final OllamaModelEntry model;
 
   const ModelCard({super.key, required this.model});
 
@@ -157,7 +158,7 @@ class _ModelCardState extends State<ModelCard> {
 
     final cleanModelName = modelName.toLowerCase().split(':').first;
 
-    final db = GetIt.instance<OllamaModelsDB>();
+    final db = GetIt.instance<OllamaModelsRepository>();
 
     final tags = <Widget>[];
     final capabilities = db.getModelCapabilities(cleanModelName);

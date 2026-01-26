@@ -33,8 +33,8 @@ class OpenLocalUIApp extends StatefulWidget {
 class _OpenLocalUIAppState extends State<OpenLocalUIApp> {
   @override
   void dispose() {
-    GetIt.instance<ChatSessionsDB>().deinit();
-    GetIt.instance<OllamaModelsDB>().deinit();
+    GetIt.instance<ChatSessionsRepository>().deinit();
+    GetIt.instance<OllamaModelsRepository>().deinit();
     GetIt.instance<OllamaAPIProvider>().stopOllama();
 
     super.dispose();

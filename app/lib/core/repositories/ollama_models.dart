@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import 'package:intl/intl.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path/path.dart' as p;
@@ -7,19 +8,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ModelReleaseDBEntry {
+class OllamaModelReleaseEntry {
   final int id;
   final String numParams;
   final int size;
 
-  ModelReleaseDBEntry({
+  OllamaModelReleaseEntry({
     required this.id,
     required this.numParams,
     required this.size,
   });
 
-  factory ModelReleaseDBEntry.fromMap(Map<String, dynamic> map) {
-    return ModelReleaseDBEntry(
+  factory OllamaModelReleaseEntry.fromMap(Map<String, dynamic> map) {
+    return OllamaModelReleaseEntry(
       id: map['release_id'] as int,
       numParams: map['num_params'] as String,
       size: map['size'] as int,
@@ -30,15 +31,15 @@ class ModelReleaseDBEntry {
   String toString() => 'Release(id: $id, numParams: $numParams, size: $size)';
 }
 
-class ModelDBEntry {
+class OllamaModelEntry {
   final int id;
   final String name;
   final String description;
   final String url;
   final int capabilities;
-  final List<ModelReleaseDBEntry> releases;
+  final List<OllamaModelReleaseEntry> releases;
 
-  ModelDBEntry({
+  OllamaModelEntry({
     required this.id,
     required this.name,
     required this.description,
@@ -47,11 +48,11 @@ class ModelDBEntry {
     required this.releases,
   });
 
-  factory ModelDBEntry.fromMap(
+  factory OllamaModelEntry.fromMap(
     Map<String, dynamic> map,
-    List<ModelReleaseDBEntry> releases,
+    List<OllamaModelReleaseEntry> releases,
   ) {
-    return ModelDBEntry(
+    return OllamaModelEntry(
       id: map['model_id'] as int,
       name: map['name'] as String,
       description: map['description'] as String,
@@ -65,13 +66,14 @@ class ModelDBEntry {
   String toString() => 'Model(id: $id, name: $name, releases: $releases)';
 }
 
-class OllamaModelsDB {
-  static final OllamaModelsDB _instance = OllamaModelsDB._internal();
+class OllamaModelsRepository {
+  static final OllamaModelsRepository _instance =
+      OllamaModelsRepository._internal();
   Database? _db;
 
-  OllamaModelsDB._internal();
+  OllamaModelsRepository._internal();
 
-  factory OllamaModelsDB() {
+  factory OllamaModelsRepository() {
     return _instance;
   }
 
@@ -255,7 +257,7 @@ class OllamaModelsDB {
   }
 
   // Get models filtered by name, release size and/or capabilities
-  List<ModelDBEntry> getModelsFiltered({
+  List<OllamaModelEntry> getModelsFiltered({
     String? name,
     Set<String>? capabilities,
     int? minSize,
@@ -373,13 +375,13 @@ class OllamaModelsDB {
 
     final result = _db!.select(query, queryParams);
 
-    final Map<int, ModelDBEntry> modelsMap = {};
+    final Map<int, OllamaModelEntry> modelsMap = {};
 
     for (final row in result) {
       final modelId = row['model_id'] as int;
 
       if (!modelsMap.containsKey(modelId)) {
-        modelsMap[modelId] = ModelDBEntry(
+        modelsMap[modelId] = OllamaModelEntry(
           id: modelId,
           name: row['name'] as String,
           description: row['description'] as String,
@@ -392,7 +394,7 @@ class OllamaModelsDB {
       if (row['release_id'] != null &&
           row['num_params'] != null &&
           row['size'] != null) {
-        final release = ModelReleaseDBEntry.fromMap(row);
+        final release = OllamaModelReleaseEntry.fromMap(row);
 
         modelsMap[modelId]!.releases.add(release);
       }
@@ -417,7 +419,7 @@ class OllamaModelsDB {
   }
 
   // Get model releases by model name
-  List<ModelReleaseDBEntry> getModelReleases(String name) {
+  List<OllamaModelReleaseEntry> getModelReleases(String name) {
     if (_db == null) {
       throw Exception("Database not initialized");
     }
@@ -427,7 +429,7 @@ class OllamaModelsDB {
       [name],
     );
 
-    return result.map((row) => ModelReleaseDBEntry.fromMap(row)).toList();
+    return result.map((row) => OllamaModelReleaseEntry.fromMap(row)).toList();
   }
 
   // Get the capabilities of a model by its name
