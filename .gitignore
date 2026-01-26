@@ -72,6 +72,9 @@ lcov.info
 *.db-shm
 *.db-wal
 
+# CSV files
+*.csv
+
 # Contains the PFX password
 make_config.yaml
 
