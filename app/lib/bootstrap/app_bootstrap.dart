@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:discord_rpc/discord_rpc.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/bootstrap/env.dart';
 import 'package:open_local_ui/core/assets_manager.dart';
@@ -28,7 +27,7 @@ class AppBootstrap {
 
       await Supabase.initialize(
         url: Env.supabaseUrl,
-        anonKey: Env.supabaseAnonKey,
+        anonKey: Env.supabasePublishableKey,
       );
 
       await rive.RiveNative.init();
