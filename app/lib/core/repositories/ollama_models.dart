@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:intl/intl.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:path/path.dart' as p;
@@ -121,22 +120,10 @@ class OllamaModelsRepository {
 
     appLogger.d('Database initialized at $dbPath');
 
-    final currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-    final prefs = await SharedPreferences.getInstance();
-    final lastFetch = prefs.getString('last_ollama_model_db_fetch') ?? "";
-
-    if (lastFetch != currentDate || kDebugMode) {
-      try {
-        await _fetchOnlineDatabase();
-      } catch (e) {
-        appLogger.e('Error fetching online database: $e');
-      } finally {
-        appLogger.d('Database fetch attempt completed');
-      }
-    } else {
-      appLogger.d('Database skipped fetching from Supabase');
-    }
+    // Run the fetch asynchronously without blocking initialization
+    // Note: Using Future.microtask instead of compute because the database
+    // handle (FfiDatabase) cannot be sent across isolate boundaries
+    Future.microtask(() => _attemptFetchOnlineDatabase());
   }
 
   // Deinitialize the database
@@ -145,25 +132,34 @@ class OllamaModelsRepository {
     _db = null;
   }
 
-  // Fetch the online database and store it locally
-  Future<void> _fetchOnlineDatabase() async {
+  // Attempt fetching the online database from Supabase and updating local database
+  Future<void> _attemptFetchOnlineDatabase() async {
     final currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('last_ollama_model_db_fetch', currentDate);
 
-    final models = await Supabase.instance.client.from('models').select();
+    final lastFetch = prefs.getString('last_ollama_model_db_fetch') ?? "";
 
-    if (models.isEmpty) return;
-
-    final onlineModelIds = <int>{};
-    final onlineReleaseIdentifiers = <String>{};
-
-    appLogger.i('Fetching ${models.length} models from Supabase');
-
-    _db!.execute('BEGIN TRANSACTION;');
+    if (lastFetch == currentDate) {
+      appLogger.d('Database already fetched today, skipping fetch.');
+      return;
+    } else {
+      await prefs.setString('last_ollama_model_db_fetch', currentDate);
+      appLogger.d('Fetching online database from Supabase.');
+    }
 
     try {
+      final models = await Supabase.instance.client.from('models').select();
+
+      if (models.isEmpty) return;
+
+      final onlineModelIds = <int>{};
+      final onlineReleaseIdentifiers = <String>{};
+
+      appLogger.i('Fetching ${models.length} models from Supabase');
+
+      _db!.execute('BEGIN TRANSACTION;');
+
       appLogger.i('Updating local database with online models');
 
       for (final model in models) {
@@ -253,6 +249,9 @@ class OllamaModelsRepository {
       _db!.execute('COMMIT;');
     } catch (e) {
       _db!.execute('ROLLBACK;');
+      appLogger.e('Error fetching online database: $e');
+    } finally {
+      appLogger.d('Online database fetch attempt completed.');
     }
   }
 
