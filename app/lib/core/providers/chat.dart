@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langchain/langchain.dart';
@@ -16,6 +17,7 @@ import 'package:open_local_ui/core/models/chat_session.dart';
 import 'package:open_local_ui/core/providers/model_settings.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/repositories/chat_sessions.dart';
+import 'package:open_local_ui/core/services/model_settings.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -38,7 +40,7 @@ class ChatProvider extends ChangeNotifier {
   // Chat settings
   late String _modelName;
   late bool _showStatistics;
-  late ModelSettingsHandler _modelSettingsHandler;
+  late ModelSettingsService _modelSettingsService;
 
   // Chat session
   ChatSessionWrapperV1? _session;
@@ -455,9 +457,9 @@ class ChatProvider extends ChangeNotifier {
 
   /// Use model specific prompt if available, otherwise use default from assets.
   Future<String> _loadSystemPrompt() async {
-    if (_modelSettingsHandler.activeModelSettings.systemPrompt != null &&
-        _modelSettingsHandler.activeModelSettings.systemPrompt!.isNotEmpty) {
-      return _modelSettingsHandler.activeModelSettings.systemPrompt!;
+    if (_modelSettingsService.activeModelSettings.systemPrompt != null &&
+        _modelSettingsService.activeModelSettings.systemPrompt!.isNotEmpty) {
+      return _modelSettingsService.activeModelSettings.systemPrompt!;
     }
 
     return rootBundle.loadString('assets/prompts/default.txt');
@@ -789,11 +791,11 @@ class ChatProvider extends ChangeNotifier {
   Future<void> updateChatOllamaOptions() async {
     if (_modelName.isEmpty) return;
 
-    _modelSettingsHandler = ModelSettingsHandler(modelName);
+    _modelSettingsService = ModelSettingsService(modelName);
 
-    await _modelSettingsHandler.preloadSettings();
+    await _modelSettingsService.preloadSettings();
 
-    final settings = _modelSettingsHandler.activeModelSettings;
+    final settings = _modelSettingsService.activeModelSettings;
 
     int? numGpu;
 

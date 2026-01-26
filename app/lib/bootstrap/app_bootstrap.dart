@@ -1,14 +1,15 @@
-import 'package:discord_rpc/discord_rpc.dart';
 import 'package:flutter/material.dart';
+
+import 'package:discord_rpc/discord_rpc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:open_local_ui/bootstrap/env.dart';
 import 'package:open_local_ui/core/assets_manager.dart';
 import 'package:open_local_ui/core/constants/assets.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
+import 'package:open_local_ui/core/providers/vocal_interaction.dart';
 import 'package:open_local_ui/core/repositories/chat_sessions.dart';
 import 'package:open_local_ui/core/repositories/ollama_models.dart';
-import 'package:open_local_ui/core/services/vocal_interaction.dart';
 import 'package:open_local_ui/src/rust/frb_generated.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,7 +61,9 @@ class AppBootstrap {
     getIt.registerSingleton<OllamaAPIProvider>(OllamaAPIProvider());
     getIt.registerSingleton<ChatSessionsRepository>(ChatSessionsRepository());
     getIt.registerSingleton<OllamaModelsRepository>(OllamaModelsRepository());
-    getIt.registerSingleton<VocalInteractionService>(VocalInteractionService());
+    getIt.registerSingleton<VocalInteractionProvider>(
+      VocalInteractionProvider(),
+    );
   }
 
   Future<void> _initAppServices(SharedPreferences prefs) async {

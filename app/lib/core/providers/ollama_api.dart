@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:open_local_ui/core/constants/flutter.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/models/model.dart';
 import 'package:open_local_ui/core/models/ollama_responses.dart';
-import 'package:open_local_ui/core/providers/model_settings.dart';
+import 'package:open_local_ui/core/services/model_settings.dart';
 import 'package:open_local_ui/core/utils/http.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
 import 'package:open_local_ui/localization/app_localizations.dart';
@@ -448,7 +449,7 @@ class OllamaAPIProvider extends ChangeNotifier {
         return;
       }
 
-      await ModelSettingsHandler(name).removeAllProfiles();
+      await ModelSettingsService(name).removeAllProfiles();
 
       appLogger.i('Model $name removed');
     } catch (error) {

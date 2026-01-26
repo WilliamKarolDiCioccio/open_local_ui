@@ -2,12 +2,14 @@
 
 import 'dart:io';
 
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:open_local_ui/core/constants/languages.dart';
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/providers/chat.dart';
 import 'package:open_local_ui/core/providers/model_settings.dart';
+import 'package:open_local_ui/core/services/model_settings.dart';
 import 'package:open_local_ui/core/utils/format.dart';
 import 'package:open_local_ui/core/utils/snackbar.dart';
 import 'package:open_local_ui/localization/app_localizations.dart';
@@ -35,7 +37,7 @@ class _ModelSettingsDialogState extends State<ModelSettingsDialog> {
   void initState() {
     super.initState();
 
-    final handler = ModelSettingsHandler(widget.modelName);
+    final handler = ModelSettingsService(widget.modelName);
     handler.getAssociatedProfileName().then((value) {
       if (mounted) {
         setState(() {
