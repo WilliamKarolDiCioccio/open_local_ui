@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langchain/langchain.dart';
@@ -17,6 +16,7 @@ import 'package:open_local_ui/core/models/chat_session.dart';
 import 'package:open_local_ui/core/providers/model_settings.dart';
 import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/repositories/chat_sessions.dart';
+import 'package:open_local_ui/core/repositories/ollama_models.dart';
 import 'package:open_local_ui/core/services/model_settings.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -891,25 +891,58 @@ class ChatProvider extends ChangeNotifier {
   bool get isChatShowStatistics => _showStatistics;
 
   bool get isMultimodalModel {
-    final models = GetIt.instance<OllamaAPIProvider>().models;
+    if (!isModelSelected) return false;
 
-    if (!models.any((model) => model.name == _modelName)) return false;
+    bool checkInDatabase(String modelName) {
+      final cleanModelName = modelName.toLowerCase().split(':').first;
 
-    final modelFamilies = models
-        .firstWhere((model) => model.name == _modelName)
-        .details
-        .families;
+      final db = GetIt.instance<OllamaModelsRepository>();
 
-    if (modelFamilies == null) return false;
+      if (!db.isModelInDatabase(cleanModelName)) return false;
 
-    final List<String> multiModalFamilies = [
-      'clip',
-      'blip',
-      'flaming',
-      'dall-e',
-    ];
+      final capabilities = db.getModelCapabilities(cleanModelName);
 
-    return multiModalFamilies.any((family) => modelFamilies.contains(family));
+      if (capabilities.isEmpty) return false;
+
+      if (capabilities.contains('vision')) return true;
+
+      return false;
+    }
+
+    bool inferFromModelFamily(String modelName) {
+      final models = GetIt.instance<OllamaAPIProvider>().models;
+
+      final modelFamilies = models
+          .firstWhere((model) => model.name == _modelName)
+          .details
+          .families;
+
+      if (modelFamilies == null) return false;
+
+      final List<String> multiModalFamilies = [
+        'clip',
+        'blip',
+        'flamingo', // Corrected from 'flaming'
+        'dall-e',
+        'llava', // The most common family for Ollama vision models
+        'bakllava', // A specialized variant of LLaVA
+        'mplug', // Used for mPLUG-Owl models
+        'phi3', // Specifically for Phi-3 Vision
+        'moondream', // Popular small-scale vision model
+        'minicpm', // For MiniCPM-V series
+        'qwen2-vl', // Alibaba's latest vision-language models
+      ];
+
+      if (modelFamilies.any(
+        (family) => multiModalFamilies.contains(family.toLowerCase()),
+      )) {
+        return true;
+      }
+
+      return false;
+    }
+
+    return checkInDatabase(_modelName) || inferFromModelFamily(_modelName);
   }
 
   ChatSessionWrapperV1? get session => _session;
