@@ -9,6 +9,7 @@ import 'package:open_local_ui/core/providers/ollama_api.dart';
 import 'package:open_local_ui/core/repositories/chat_sessions.dart';
 import 'package:open_local_ui/core/repositories/ollama_models.dart';
 import 'package:open_local_ui/core/services/tts.dart';
+import 'package:open_local_ui/src/rust/frb_generated.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -22,7 +23,10 @@ class AppBootstrap {
       // 1. Logging
       await AppLogger().init();
 
-      // 1. Core Services
+      // 2. Rust FFI
+      await RustLib.init();
+
+      // 3. Core Services
       final prefs = await SharedPreferences.getInstance();
 
       await Supabase.initialize(
@@ -32,13 +36,13 @@ class AppBootstrap {
 
       await rive.RiveNative.init();
 
-      // 2. Dependency Injection
+      // 4. Dependency Injection
       _setupDependencyInjection();
 
-      // 3. Service-specific initialization
+      // 5. Service-specific initialization
       await _initAppServices(prefs);
 
-      // 4. Asset Preloading
+      // 6. Asset Preloading
       await _preloadAssets();
 
       // Return success data

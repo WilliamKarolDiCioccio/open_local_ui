@@ -5,7 +5,6 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gpu_info/gpu_info.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:open_local_ui/core/helpers/json_color.dart';
 import 'package:open_local_ui/core/utils/process.dart';
@@ -16,6 +15,7 @@ import 'package:open_local_ui/localization/app_localizations.dart';
 import 'package:open_local_ui/shared/widgets/rive_animation.dart';
 import 'package:open_local_ui/shared/widgets/typewriter_text.dart';
 import 'package:open_local_ui/shared/widgets/window_management_bar.dart';
+import 'package:open_local_ui/src/rust/api/gpu.dart' as rust_gpu;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_info2/system_info2.dart';
 import 'package:system_theme/system_theme.dart';
@@ -403,20 +403,7 @@ class SystemAnalysisPage extends StatefulWidget {
 }
 
 class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
-  List<GpuInfoStruct>? _gpusInfo;
-
-  Future<List<GpuInfoStruct>> _getGpusInfo() async {
-    if (_gpusInfo != null) {
-      return _gpusInfo!;
-    }
-
-    final gpuInfoPlugin = GpuInfo();
-    _gpusInfo = await gpuInfoPlugin.getGpusInfo();
-
-    return _gpusInfo!;
-  }
-
-  Future<String> _summarizeSystemCapabilities() async {
+  String _summarizeSystemCapabilities() {
     final osName = SysInfo.operatingSystemName;
     final osVersion = SysInfo.operatingSystemVersion;
     final cpuName = SysInfo.cores.isNotEmpty
@@ -426,18 +413,10 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
     final totalMemory = (SysInfo.getTotalPhysicalMemory() / (1024 * 1024))
         .round();
 
-    final List<GpuInfoStruct> gpusInfo = await _getGpusInfo();
-
-    GpuInfoStruct? bestGpu;
-
-    for (final gpuInfo in gpusInfo) {
-      if (bestGpu == null || gpuInfo.memoryAmount > bestGpu.memoryAmount) {
-        bestGpu = gpuInfo;
-      }
-    }
+    final bestGpu = rust_gpu.getBestGpu();
 
     final gpuName = bestGpu?.deviceName ?? "Unknown GPU";
-    final gpuMemory = bestGpu?.memoryAmount ?? 0;
+    final gpuMemory = bestGpu?.memoryMb.toInt() ?? 0;
 
     if (mounted) {
       return AppLocalizations.of(context).systemInfo(
@@ -447,7 +426,7 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
         (cpuCores * 2),
         gpuName,
         (totalMemory / 1024).round(),
-        (gpuMemory / 1024).round(),
+        (gpuMemory ~/ 1024).round(),
       );
     } else {
       return 'Unable to retrieve system information.';
@@ -456,33 +435,23 @@ class _SystemAnalysisPageState extends State<SystemAnalysisPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: _summarizeSystemCapabilities(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(
-            color: AdaptiveTheme.of(context).mode.isDark
-                ? Colors.white
-                : Colors.black,
-          );
-        } else if (snapshot.hasError) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            SnackbarUtils.showSnackBar(
-              AppLocalizations.of(context).snackBarErrorTitle,
-              AppLocalizations.of(context).errorRetrievingSystemInfoSnackBar,
-              SnackbarContentType.failure,
-            );
-          });
+    try {
+      final systemInfo = _summarizeSystemCapabilities();
+      return TypewriterTextWidget(
+        text: systemInfo,
+        duration: const Duration(milliseconds: 5000),
+      );
+    } catch (e) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        SnackbarUtils.showSnackBar(
+          AppLocalizations.of(context).snackBarErrorTitle,
+          AppLocalizations.of(context).errorRetrievingSystemInfoSnackBar,
+          SnackbarContentType.failure,
+        );
+      });
 
-          return Text(snapshot.error.toString());
-        } else {
-          return TypewriterTextWidget(
-            text: snapshot.data ?? '',
-            duration: const Duration(milliseconds: 5000),
-          );
-        }
-      },
-    );
+      return Text(e.toString());
+    }
   }
 }
 

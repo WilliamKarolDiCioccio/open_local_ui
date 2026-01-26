@@ -31,7 +31,6 @@ dependencies:
   form_builder_validators: ^11.2.0
   freezed_annotation: ^2.4.1
   get_it: ^9.2.0
-  gpu_info: ^0.0.3
   hive_flutter: ^1.1.0
   html: ^0.15.6
   http: ^1.6.0

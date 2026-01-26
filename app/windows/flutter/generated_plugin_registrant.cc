@@ -13,7 +13,6 @@
 #include <discord_rpc/discord_rpc_plugin.h>
 #include <file_selector_windows/file_selector_windows.h>
 #include <flutter_localization/flutter_localization_plugin_c_api.h>
-#include <gpu_info/gpu_info_plugin_c_api.h>
 #include <irondash_engine_context/irondash_engine_context_plugin_c_api.h>
 #include <rive_native/rive_native_plugin.h>
 #include <sqlite3_flutter_libs/sqlite3_flutter_libs_plugin.h>
@@ -37,8 +36,6 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("FileSelectorWindows"));
   FlutterLocalizationPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterLocalizationPluginCApi"));
-  GpuInfoPluginCApiRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("GpuInfoPluginCApi"));
   IrondashEngineContextPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("IrondashEngineContextPluginCApi"));
   RiveNativePluginRegisterWithRegistrar(

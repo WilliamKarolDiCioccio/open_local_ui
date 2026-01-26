@@ -1,34 +1,18 @@
 import 'dart:io';
 
 import 'package:feedback/feedback.dart';
-import 'package:gpu_info/gpu_info.dart';
 import 'package:image/image.dart' as img;
 import 'package:open_local_ui/core/logger.dart';
 import 'package:open_local_ui/core/utils/github.dart';
+import 'package:open_local_ui/src/rust/api/gpu.dart' as rust_gpu;
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:system_info2/system_info2.dart';
 
 /// A utility class for handling user feedback uploads to Supabase and GitHub.
 class FeedbackUtils {
-  static Future<String> _getDeviceInfo() async {
-    final gpuInfoPlugin = GpuInfo();
-
-    List<GpuInfoStruct> gpusInfo;
-
-    gpusInfo = await gpuInfoPlugin.getGpusInfo();
-
-    GpuInfoStruct? bestGpu;
-
-    for (final gpuInfo in gpusInfo) {
-      if (bestGpu == null) {
-        bestGpu = gpuInfo;
-      } else {
-        if (gpuInfo.memoryAmount > bestGpu.memoryAmount) {
-          bestGpu = gpuInfo;
-        }
-      }
-    }
+  static String _getDeviceInfo() {
+    final bestGpu = rust_gpu.getBestGpu();
 
     return '''
 - OS Name: ${SysInfo.operatingSystemName}
@@ -38,7 +22,7 @@ class FeedbackUtils {
 - CPU Cores: ${SysInfo.cores.length}
 - System Memory: ${(SysInfo.getTotalPhysicalMemory() / (1024 * 1024)).round()}
 - GPU: ${bestGpu?.deviceName}
-- GPU Memory: ${bestGpu?.memoryAmount}
+- GPU Memory: ${bestGpu?.memoryMb}
 ''';
   }
 
@@ -84,7 +68,7 @@ class FeedbackUtils {
       Log: $logUrl
       ''');
 
-    final deviceInfo = await _getDeviceInfo();
+    final deviceInfo = _getDeviceInfo();
 
     await GitHubAPIUtils.createGitHubIssue(
       feedback.text,

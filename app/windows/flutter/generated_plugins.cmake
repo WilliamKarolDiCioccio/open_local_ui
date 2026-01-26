@@ -10,7 +10,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   discord_rpc
   file_selector_windows
   flutter_localization
-  gpu_info
   irondash_engine_context
   rive_native
   sqlite3_flutter_libs
