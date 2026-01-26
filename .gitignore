@@ -64,6 +64,9 @@ lcov.info
 # Environment variable file
 .env
 
+# Python virtual environment
+venv/
+
 # Ignore local VS Code settings
 .vscode/settings.json
 
